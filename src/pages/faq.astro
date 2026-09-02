@@ -1,0 +1,228 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const faqs = [
+  {
+    code: "a",
+    tag: "Masa Studi & SKS",
+    question: "Berapa lama masa tempuh studi dan ketentuan beban SKS program sarjana FAPERTA?",
+    answer: "Program Sarjana (S1) di Fakultas Pertanian INSTIPER (Program Studi Agroteknologi dan Program Studi Agribisnis) dirancang untuk ditempuh dalam 8 semester (4 tahun) dengan beban total minimal 144 SKS. Mahasiswa dengan prestasi akademik tinggi (IPK ≥ 3.00) dapat mengambil beban SKS maksimal per semester sehingga berpeluang menyelesaikan masa studi lebih cepat (7 semester). Batas masa studi maksimal adalah 14 semester (7 tahun) sesuai regulasi pendidikan tinggi nasional."
+  },
+  {
+    code: "b",
+    tag: "Kehadiran Kuliah",
+    question: "Berapa presensi minimal sebagai syarat wajib mengikuti ujian?",
+    answer: "Mahasiswa wajib memenuhi tingkat kehadiran kuliah minimal 75% dari total tatap muka efektif dalam satu semester untuk setiap mata kuliah agar berhak mengikuti Ujian Akhir Semester (UAS). Untuk kegiatan praktikum di laboratorium maupun kebun percobaan, presensi wajib 100% (atau mengikuti tata tertib khusus laboratorium). Mahasiswa yang tingkat kehadirannya di bawah 75% tanpa keterangan sah tidak diperkenankan mengikuti ujian dan dinyatakan tidak lulus (nilai K/E)."
+  },
+  {
+    code: "c",
+    tag: "Predikat Kelulusan",
+    question: "Apa saja kriteria dan syarat kelulusan dengan predikat Cumlaude?",
+    answer: "Predikat kelulusan Dengan Pujian (Cumlaude) diberikan kepada lulusan sarjana FAPERTA INSTIPER yang memenuhi seluruh kriteria berikut: (1) Meraih Indeks Prestasi Kumulatif (IPK) minimal 3.51 sampai 4.00, (2) Masa studi maksimal 8 semester (4 tahun) tanpa pernah cuti akademik, (3) Tidak pernah mengulang mata kuliah untuk perbaikan nilai, (4) Tidak ada nilai mata kuliah di bawah B, dan (5) Bebas dari sanksi pelanggaran etika maupun tata tertib akademik kampus."
+  },
+  {
+    code: "d",
+    tag: "Integritas & AI",
+    question: "Berapa batas toleransi Turnitin dan bagaimana etika penggunaan AI dalam karya ilmiah?",
+    answer: "Ambang batas kesamaan (similarity index) naskah tugas akhir/skripsi menggunakan Turnitin di FAPERTA INSTIPER ditetapkan maksimal 20% - 25% (setelah mengecualikan daftar pustaka, template halaman persetujuan, dan kutipan langsung yang diberi tanda kutip). Penggunaan Artificial Intelligence (Generative AI seperti ChatGPT, Claude, dsb.) hanya diizinkan sebagai instrumen asistensi bahasa, pengecekan tata bahasa, atau pengayaan wawasan literatur. AI tidak boleh menggantikan pemikiran mandiri, analisis data hasil penelitian, interpretasi agronomis/ekonomis, atau penarikan kesimpulan. Mahasiswa wajib mencantumkan lembar pernyataan orisinalitas bermeterai."
+  },
+  {
+    code: "e",
+    tag: "Ujian Susulan",
+    question: "Bagaimana mekanisme dan syarat permohonan Ujian Susulan?",
+    answer: "Ujian susulan hanya disetujui apabila mahasiswa berhalangan hadir pada jadwal ujian resmi karena alasan sah dan tidak terduga: (1) Sakit yang dibuktikan surat keterangan rawat inap atau dokter berizin praktik resmi, (2) Duka cita keluarga inti (orang tua/wali/saudara kandung) dibuktikan surat kematian, atau (3) Tugas resmi mewakili INSTIPER dibuktikan surat tugas universitas. Permohonan wajib diajukan ke Bagian Akademik FAPERTA paling lambat 3 (tiga) hari kerja setelah jadwal ujian yang ditinggalkan."
+  },
+  {
+    code: "f",
+    tag: "Perbaikan Nilai",
+    question: "Bagaimana aturan pelaksanaan dan batas nilai pada Ujian Remidi?",
+    answer: "Ujian remidi diselenggarakan pada akhir semester sesuai kalender akademik untuk mata kuliah yang membuka kesempatan remidi. Syarat peserta remidi adalah mahasiswa yang telah memenuhi presensi minimal 75% saat perkuliahan berlangsung dan mendapatkan nilai akhir C, D, atau E. Sesuai ketentuan akademik fakultas, nilai akhir tertinggi yang dapat diperoleh mahasiswa setelah mengikuti ujian remidi adalah nilai B."
+  },
+  {
+    code: "g",
+    tag: "Tingkat Akhir",
+    question: "Apa itu Ujian Khusus dan apa saja syarat pengajuannya?",
+    answer: "Ujian khusus adalah jalur evaluasi istimewa yang diberikan kepada mahasiswa tingkat akhir yang telah menempuh seluruh beban SKS teori dan sedang/telah menyusun skripsi, namun masih menyisakan maksimal 2 mata kuliah dengan nilai belum memenuhi syarat kelulusan. Pengajuan ujian khusus dilakukan dengan mengisi Blangko Permohonan Ujian Khusus di Bagian Akademik, melampirkan transkrip nilai sementara, serta memperoleh persetujuan tertulis dari Dosen Pembimbing Akademik (DPA) dan Ketua Program Studi."
+  }
+];
+
+const regulasiList = [
+  {
+    type: "SK Rektor",
+    year: "2025",
+    title: "Pedoman Pokok Akademik INSTIPER",
+    desc: "Keputusan resmi tentang tata kelola, hak, kewajiban, dan standar pembelajaran.",
+    file: "/dokumen/sk-pedoman-akademik.pdf"
+  },
+  {
+    type: "Surat Edaran",
+    year: "2025",
+    title: "Ketentuan Tugas Akhir & Skripsi",
+    desc: "Panduan alur pengajuan judul, seminar proposal, penelitian, dan sidang pendadaran.",
+    file: "/dokumen/se-tugas-akhir.pdf"
+  },
+  {
+    type: "Surat Edaran",
+    year: "2025",
+    title: "Etika Penggunaan Kecerdasan Buatan (AI)",
+    desc: "Pedoman integritas ilmiah dan batasan penggunaan AI dalam penulisan tugas dan skripsi.",
+    file: "/dokumen/se-etika-ai.pdf"
+  }
+];
+---
+<BaseLayout title="FAQ & Regulasi Akademik" description="Aturan, ketentuan umum, dan regulasi resmi akademik FAPERTA INSTIPER Yogyakarta.">
+  <!-- Header Banner -->
+  <section class="hero-noise border-b border-[var(--line)]">
+    <div class="container-shell py-12 sm:py-16 md:py-20">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+          <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+          Pusat Bantuan & Regulasi FAPERTA
+        </div>
+        <h1 class="display-title mt-5 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-[var(--leaf)]">
+          Aturan akademik jelas,<br /><em class="font-extrabold text-[var(--gold)] not-italic underline decoration-[var(--leaf)] decoration-wavy decoration-from-font">studi lebih terarah.</em>
+        </h1>
+        <p class="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--ink)]">
+          Ringkasan panduan resmi dan jawaban tuntas atas 7 hal pokok akademik yang wajib dipahami seluruh mahasiswa Fakultas Pertanian INSTIPER.
+        </p>
+      </div>
+
+      <!-- Quick Category Jump -->
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#aturan-akademik" class="btn-cta text-sm">
+          ↓ 01 / Ketentuan Akademik (a - g)
+        </a>
+        <a href="#regulasi-sk" class="btn-secondary text-sm">
+          ↓ 02 / Regulasi SK & Surat Edaran
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 01: Aturan & Penjelasan FAQ -->
+  <section id="aturan-akademik" class="container-shell py-14 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-[.65fr_1.35fr]">
+      <!-- Sticky / Informational Sidebar -->
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <div class="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-xs">
+          <p class="eyebrow">Daftar Pokok Aturan</p>
+          <h2 class="mt-2 text-xl font-black text-[var(--ink)]">Ketentuan Studi</h2>
+          <p class="mt-2 text-xs leading-relaxed text-[var(--muted)]">
+            Klik topik pertanyaan di samping untuk membuka uraian lengkap dan rujukan ketentuannya.
+          </p>
+
+          <nav class="mt-6 space-y-2 text-xs font-bold" aria-label="Indeks pertanyaan">
+            {faqs.map((faq) => (
+              <a 
+                href={`#faq-${faq.code}`} 
+                class="flex items-center gap-2 rounded-xl p-2.5 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] transition"
+              >
+                <span class="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#eaf3eb] text-[11px] font-black text-[var(--leaf)]">
+                  {faq.code.toUpperCase()}
+                </span>
+                <span class="truncate">{faq.tag}</span>
+              </a>
+            ))}
+          </nav>
+
+          <div class="mt-6 pt-5 border-t border-[var(--line)]">
+            <p class="text-xs font-bold text-[var(--ink)]">Perlu konsultasi khusus?</p>
+            <p class="mt-1 text-[11px] text-[var(--muted)]">Temui Dosen Pembimbing Akademik (DPA) atau loket Akademik FAPERTA.</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- FAQ Accordion List -->
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-[var(--line)]">
+          <div>
+            <p class="eyebrow">01 / Penjelasan Umum Akademik</p>
+            <h2 class="mt-1 text-2xl sm:text-3xl font-black text-[var(--ink)]">FAQ Ketentuan Perkuliahan & Ujian</h2>
+          </div>
+          <span class="text-xs font-bold px-3 py-1 rounded-full bg-[var(--leaf-soft)] text-[var(--leaf)]">
+            7 Poin
+          </span>
+        </div>
+
+        <div class="mt-6 divide-y divide-[var(--line)]">
+          {faqs.map((faq, index) => (
+            <details id={`faq-${faq.code}`} class="group py-5 transition scroll-mt-28" open={index === 0}>
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-4 text-left">
+                <div class="flex items-start gap-3.5">
+                  <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[var(--leaf-soft)] text-xs font-black text-[var(--leaf)]">
+                    {faq.code.toUpperCase()}
+                  </span>
+                  <div>
+                    <span class="inline-block text-[11px] font-bold text-[var(--gold)] uppercase tracking-wider mb-1">
+                      {faq.tag}
+                    </span>
+                    <h3 class="text-base sm:text-lg font-black leading-snug text-[var(--ink)] group-open:text-[var(--leaf)] transition">
+                      {faq.question}
+                    </h3>
+                  </div>
+                </div>
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[var(--line)] bg-[#f7faf5] text-sm font-bold text-[var(--leaf)] transition duration-200 group-open:rotate-45 group-hover:border-[var(--leaf)]">
+                  +
+                </span>
+              </summary>
+              <div class="mt-4 pl-10 pr-2">
+                <div class="rounded-2xl bg-[#f7faf5] p-5 border border-[var(--line)]">
+                  <p class="text-sm leading-relaxed text-[var(--muted)]">
+                    {faq.answer}
+                  </p>
+                </div>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: SK dan Surat Edaran Resmi -->
+  <section id="regulasi-sk" class="bg-[#edf4eb] border-t border-[var(--line)] py-16 sm:py-20">
+    <div class="container-shell">
+      <div class="max-w-2xl">
+        <p class="eyebrow">02 / Dokumen Hukum & Regulasi Resmi</p>
+        <h2 class="display-serif mt-2 text-3xl sm:text-4xl font-bold text-[var(--ink)]">
+          Surat Keputusan & Surat Edaran
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+          Pondasi aturan formal pelaksanaan tridharma perguruan tinggi di lingkungan INSTIPER Yogyakarta yang berlaku saat ini.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {regulasiList.map((item) => (
+          <article class="flex flex-col justify-between rounded-3xl border border-[var(--line)] bg-white p-6 shadow-xs transition hover:border-[var(--leaf)] hover:shadow-md">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="rounded-full bg-[#fef8ea] px-3 py-1 text-[11px] font-bold text-[var(--gold)] border border-[var(--gold)]/30">
+                  {item.type}
+                </span>
+                <span class="text-xs font-bold text-[var(--muted)]">{item.year}</span>
+              </div>
+              <h3 class="mt-5 text-lg font-black text-[var(--ink)] leading-snug">
+                {item.title}
+              </h3>
+              <p class="mt-2.5 text-xs leading-relaxed text-[var(--muted)]">
+                {item.desc}
+              </p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-[var(--line)]">
+              <a 
+                href={item.file} 
+                download
+                class="touch-target inline-flex items-center gap-1.5 text-xs font-bold text-[var(--leaf)] hover:text-[var(--leaf-dark)] transition"
+              >
+                <span>Unduh Dokumen PDF</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

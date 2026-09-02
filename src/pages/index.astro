@@ -1,17 +1,135 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
+<BaseLayout title="Beranda" description="Pusat informasi akademik resmi FAPERTA INSTIPER Yogyakarta.">
+	<!-- Hero Section -->
+	<section class="hero-noise border-b border-[var(--line)]">
+		<div class="container-shell grid items-center gap-10 py-12 sm:py-16 md:grid-cols-[1.05fr_.95fr] md:py-24">
+			<div class="relative z-10 max-w-2xl">
+				<div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+					<span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+					Pusat Informasi Akademik FAPERTA
+				</div>
+				<h1 class="display-title mt-5 text-4xl leading-[1.1] sm:text-5xl md:text-6xl font-extrabold text-[var(--leaf)]">
+					Semua yang kamu butuhkan untuk <em class="font-extrabold text-[var(--gold)] not-italic underline decoration-[var(--leaf)] decoration-wavy decoration-from-font">melangkah.</em>
+				</h1>
+				<p class="mt-6 max-w-lg text-base sm:text-lg leading-relaxed text-[var(--ink)]">
+					Temukan buku panduan, kalender perkuliahan, kurikulum prodi, template skripsi, dan regulasi akademik FAPERTA INSTIPER dalam satu ruang yang tertata rapi.
+				</p>
+				<div class="mt-8 flex flex-col sm:flex-row gap-3.5">
+					<a href="/unduhan" class="btn-cta text-base">
+						Jelajahi Dokumen <span aria-hidden="true" class="ml-1 font-bold">→</span>
+					</a>
+					<a href="/faq" class="btn-secondary text-base">
+						Baca FAQ & Aturan
+					</a>
+				</div>
+			</div>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+			<!-- Quick Highlights Grid -->
+			<div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3.5 md:rotate-1">
+				<div class="sm:col-span-2 rounded-3xl bg-[var(--leaf)] p-7 text-white shadow-xl relative overflow-hidden">
+					<div class="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-[var(--leaf-dark)] opacity-40"></div>
+					<div class="flex items-center justify-between">
+						<span class="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-bold tracking-wider text-[var(--gold)] uppercase">
+							Mulai Dari Sini
+						</span>
+						<span class="text-xs font-semibold text-white/80">TA 2025 / 2026</span>
+					</div>
+					<h2 class="display-title mt-8 text-3xl sm:text-4xl font-extrabold !text-white leading-tight">
+						Buku Panduan<br />Akademik Resmi
+					</h2>
+					<div class="mt-8 flex items-center justify-between gap-4 border-t border-white/20 pt-4">
+						<span class="text-xs font-medium !text-white/90">Dokumen pegangan mahasiswa baru & lama</span>
+						<a class="touch-target inline-flex items-center gap-1.5 font-bold text-sm text-[var(--gold)] hover:text-white transition" href="/dokumen/buku-panduan-akademik.pdf" download>
+							Unduh PDF ↗
+						</a>
+					</div>
+				</div>
+
+				<div class="rounded-3xl bg-white border-2 border-[var(--gold)]/40 p-6 shadow-sm">
+					<p class="text-4xl sm:text-5xl font-black text-[var(--gold)]">75%</p>
+					<p class="mt-4 text-sm font-bold leading-snug text-[var(--ink)]">
+						Presensi minimal kuliah<br /><span class="text-xs font-normal text-[var(--muted)]">Syarat wajib mengikuti ujian akhir (UAS)</span>
+					</p>
+				</div>
+
+				<div class="rounded-3xl bg-white border-2 border-[var(--leaf)]/20 p-6 shadow-sm">
+					<p class="text-4xl sm:text-5xl font-black text-[var(--leaf)]">8</p>
+					<p class="mt-4 text-sm font-bold leading-snug text-[var(--ink)]">
+						Semester masa tempuh studi<br /><span class="text-xs font-normal text-[var(--muted)]">Program Sarjana S1 Pertanian</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Quick Resource Nav Section -->
+	<section class="container-shell py-16 sm:py-20">
+		<div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+			<div>
+				<p class="eyebrow">Pusat Sumber Daya</p>
+				<h2 class="section-title text-[var(--ink)]">Cari tahu lebih cepat.</h2>
+			</div>
+			<p class="max-w-md text-sm leading-relaxed text-[var(--muted)]">
+				Akses panduan studi, format laporan skripsi, dan informasi aturan akademik tanpa kebingungan.
+			</p>
+		</div>
+
+		<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+			<a href="/unduhan" class="group rounded-3xl border border-[var(--line)] bg-white p-7 shadow-xs transition duration-200 hover:-translate-y-1 hover:border-[var(--leaf)] hover:shadow-md flex flex-col justify-between">
+				<div>
+					<span class="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--leaf-soft)] text-xl text-[var(--leaf)] font-bold">
+						▣
+					</span>
+					<h3 class="mt-6 text-xl font-black text-[var(--ink)] group-hover:text-[var(--leaf)] transition">
+						Unduhan Dokumen
+					</h3>
+					<p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+						Buku panduan, kalender akademik, kurikulum Agroteknologi & Agribisnis, serta template proposal dan skripsi.
+					</p>
+				</div>
+				<span class="mt-6 inline-flex items-center text-sm font-bold text-[var(--leaf)] group-hover:gap-1 transition-all">
+					Lihat semua dokumen →
+				</span>
+			</a>
+
+			<a href="/faq" class="group rounded-3xl border border-[var(--line)] bg-white p-7 shadow-xs transition duration-200 hover:-translate-y-1 hover:border-[var(--leaf)] hover:shadow-md flex flex-col justify-between">
+				<div>
+					<span class="grid h-12 w-12 place-items-center rounded-2xl bg-[#fef5e7] text-xl text-[var(--gold)] font-bold">
+						?
+					</span>
+					<h3 class="mt-6 text-xl font-black text-[var(--ink)] group-hover:text-[var(--leaf)] transition">
+						FAQ & Regulasi Akademik
+					</h3>
+					<p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+						Penjelasan lengkap aturan presensi, cumlaude, batas Turnitin & AI, serta mekanisme ujian susulan, remidi, dan ujian khusus.
+					</p>
+				</div>
+				<span class="mt-6 inline-flex items-center text-sm font-bold text-[var(--leaf)] group-hover:gap-1 transition-all">
+					Buka pusat bantuan FAQ →
+				</span>
+			</a>
+
+			<div class="sm:col-span-2 lg:col-span-1 rounded-3xl bg-[var(--leaf-dark)] p-7 text-white shadow-md flex flex-col justify-between">
+				<div>
+					<span class="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-xl text-[var(--gold)] font-bold">
+						✦
+					</span>
+					<h3 class="mt-6 text-xl font-black !text-white">
+						Butuh Konfirmasi?
+					</h3>
+					<p class="mt-2 text-sm leading-relaxed !text-white/90">
+						Pertanyaan seputar KRS, transkrip, atau administrasi langsung dapat dikonsultasikan ke Bagian Akademik FAPERTA.
+					</p>
+				</div>
+				<div class="mt-6 pt-4 border-t border-white/15">
+					<p class="text-xs !text-white/70">Email Layanan:</p>
+					<a href="mailto:akademik@instiperjogja.ac.id" class="mt-1 inline-flex items-center font-bold text-sm text-[var(--gold)] hover:underline">
+						akademik@instiperjogja.ac.id ↗
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

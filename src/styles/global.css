@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+:root {
+  /* Warna Utama & Tipografi Spesifikasi */
+  --leaf: #1E4620;        /* Hijau Tua Perkebunan (H1/H2) */
+  --leaf-dark: #143516;   /* Hijau Gelap */
+  --leaf-soft: #EEF6ED;   /* Hijau Muda Lembut */
+  --leaf-tint: #E2EFE0;   /* Aksen Hijau Muda Segar */
+  --ink: #2B2B2B;         /* Hitam Arang Ringan (Teks Paragraf) */
+  --muted: #55625B;       /* Teks Sekunder Bersih */
+  --gold: #F2A900;        /* Kuning Janur / Oranye (Tombol CTA) */
+  --gold-hover: #DB9800;  /* Kuning Janur Hover */
+  --gold-soft: #FEF8EC;   /* Latar Lembut Kuning Janur */
+  --paper: #F9FCF8;       /* Latar Belakang Bersih Nuansa Alam */
+  --white: #FFFFFF;       /* Putih Bersih */
+  --line: #D9E6D8;        /* Garis Halus Bersih */
+  --coral: #C9513E;
+
+  /* Font Stacks */
+  --font-heading: 'Montserrat', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { 
+  margin: 0; 
+  min-width: 320px; 
+  background: var(--paper); 
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--leaf);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+}
+
+/* Kontras Tinggi Otomatis untuk Elemen Berlatar Gelap */
+.bg-\[var\(--leaf\)\],
+.bg-\[var\(--leaf-dark\)\] {
+  color: #ffffff;
+}
+.bg-\[var\(--leaf\)\] h1,
+.bg-\[var\(--leaf\)\] h2,
+.bg-\[var\(--leaf\)\] h3,
+.bg-\[var\(--leaf-dark\)\] h1,
+.bg-\[var\(--leaf-dark\)\] h2,
+.bg-\[var\(--leaf-dark\)\] h3 {
+  color: #ffffff !important;
+}
+.bg-\[var\(--leaf\)\] p,
+.bg-\[var\(--leaf-dark\)\] p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+::selection { color: #ffffff; background: var(--leaf); }
+
+.container-shell { 
+  width: min(1160px, calc(100% - 40px)); 
+  margin-inline: auto; 
+}
+
+.eyebrow { 
+  font-family: var(--font-heading);
+  color: var(--leaf); 
+  font-size: .75rem; 
+  font-weight: 800; 
+  letter-spacing: .16em; 
+  text-transform: uppercase; 
+}
+
+.section-title { 
+  margin: .65rem 0 1rem; 
+  font-family: var(--font-heading); 
+  color: var(--leaf);
+  font-size: clamp(2rem, 4vw, 3.25rem); 
+  font-weight: 800;
+  line-height: 1.15; 
+  letter-spacing: -.025em; 
+}
+
+.display-title { 
+  font-family: var(--font-heading); 
+  letter-spacing: -.025em; 
+}
+
+/* Tombol Aksi CTA: Montserrat Bold + Kuning Janur #F2A900 */
+.btn-cta {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  background-color: var(--gold);
+  color: #1E4620;
+  border-radius: 9999px;
+  padding: 0.85rem 1.75rem;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(242, 169, 0, 0.28);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.btn-cta:hover {
+  background-color: var(--gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(242, 169, 0, 0.38);
+}
+.btn-cta:active {
+  transform: scale(0.98);
+}
+
+/* Tombol Sekunder / Outlined */
+.btn-secondary {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border: 2px solid rgba(30, 70, 32, 0.25);
+  background-color: #ffffff;
+  color: var(--leaf);
+  border-radius: 9999px;
+  padding: 0.85rem 1.75rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-secondary:hover {
+  border-color: var(--leaf);
+  background-color: var(--leaf-soft);
+}
+
+.grid-paper { 
+  background-color: #F3F8F1; 
+  background-image: linear-gradient(#E2EEE0 1px, transparent 1px), linear-gradient(90deg, #E2EEE0 1px, transparent 1px); 
+  background-size: 28px 28px; 
+}
+
+.hero-noise { 
+  position: relative; 
+  isolation: isolate; 
+  overflow: hidden; 
+  background: linear-gradient(135deg, #EEF6ED 0%, #E2F0E0 50%, #F5FAF3 100%); 
+}
+
+.hero-noise::after { 
+  content: ""; 
+  position: absolute; 
+  inset: 0; 
+  z-index: -1; 
+  opacity: .25; 
+  background-image: url('/campus-map.svg'); 
+  background-position: right 14% center; 
+  background-repeat: no-repeat; 
+  background-size: min(50%, 540px); 
+}
+
+/* Touch-friendly touch targets */
+.touch-target {
+  min-height: 44px;
+}
+
+@media (min-width: 768px) {
+  #menu-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-shell { 
+    width: min(100% - 32px, 1160px); 
+  }
+  .hero-noise::after { 
+    opacity: .12; 
+    background-size: 85%; 
+    background-position: center 85%; 
+  }
+}
