@@ -1,0 +1,329 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Formulir Komplain & Cek Nilai" description="Formulir resmi pelaporan dan verifikasi ketidaksesuaian nilai akademik mahasiswa FAPERTA INSTIPER Yogyakarta.">
+  <!-- Breadcrumbs & Header -->
+  <section class="grid-paper border-b border-[var(--line)]">
+    <div class="container-shell py-8 sm:py-12">
+      <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-4" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--leaf)]">Beranda</a>
+        <span>/</span>
+        <a href="/layanan" class="hover:text-[var(--leaf)]">Layanan Akademik</a>
+        <span>/</span>
+        <span class="text-[var(--leaf)] font-bold">Formulir Komplain Nilai (Poin 1)</span>
+      </nav>
+
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+          <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+          Formulir Pengaduan Digital Mandiri
+        </div>
+        <h1 class="display-title mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+          Komplain & Cek Nilai
+        </h1>
+        <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+          Fasilitas pelaporan resmi jika terdapat ketidaksesuaian nilai akhir mata kuliah di portal SIAKAD. Laporan akan diverifikasi oleh Bagian Akademik dan diteruskan ke Dosen Pengampu / Program Studi.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Form Section (Google Form Style) -->
+  <section class="container-shell py-12">
+    <div class="max-w-3xl mx-auto">
+      
+      <!-- FORM CONTAINER (Google Form Appearance) -->
+      <div id="form-wrapper" class="space-y-6">
+        
+        <!-- Header Card Google Form -->
+        <div class="rounded-3xl border border-[var(--line)] bg-white overflow-hidden shadow-xs border-t-8 border-t-[var(--leaf)]">
+          <div class="p-6 sm:p-8">
+            <h2 class="text-2xl font-black text-[var(--leaf)]">
+              Formulir Verifikasi Nilai Akhir Semester
+            </h2>
+            <p class="mt-2 text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
+              Silakan lengkapi seluruh data dengan benar. Pastikan Anda telah melakukan konfirmasi awal kepada Dosen Pengampu mata kuliah sebelum mengajukan komplain resmi.
+            </p>
+            <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between text-xs text-[var(--coral)] font-bold">
+              <span>* Menunjukkan pertanyaan yang wajib diisi</span>
+              <span class="text-[var(--muted)] font-normal">FAPERTA INSTIPER</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="komplain-form" class="space-y-6">
+          
+          <!-- SEKSI 1: Data Identitas Mahasiswa -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              1. Identitas Mahasiswa Pemohon
+            </h3>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label for="nama" class="form-label">Nama Lengkap Mahasiswa *</label>
+                <input type="text" id="nama" name="nama" required placeholder="Jawaban Anda" class="form-input" />
+              </div>
+
+              <div>
+                <label for="nim" class="form-label">NIM (Nomor Induk Mahasiswa) *</label>
+                <input type="text" id="nim" name="nim" required placeholder="Contoh: 21/23456/SP/12345" class="form-input" />
+              </div>
+
+              <div>
+                <label for="prodi" class="form-label">Program Studi *</label>
+                <select id="prodi" name="prodi" required class="form-select">
+                  <option value="">-- Pilih Program Studi --</option>
+                  <option value="S1 Agroteknologi">S1 Agroteknologi</option>
+                  <option value="S1 Agribisnis">S1 Agribisnis</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="semester" class="form-label">Semester Berjalan *</label>
+                <input type="text" id="semester" name="semester" required placeholder="Contoh: Semester Gasal 2025/2026" class="form-input" />
+              </div>
+
+              <div>
+                <label for="email" class="form-label">Alamat Email Mahasiswa *</label>
+                <input type="email" id="email" name="email" required placeholder="nama@instiperjogja.ac.id" class="form-input" />
+              </div>
+
+              <div>
+                <label for="whatsapp" class="form-label">Nomor WhatsApp *</label>
+                <input type="tel" id="whatsapp" name="whatsapp" required placeholder="0812xxxxxxxx" class="form-input" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SEKSI 2: Data Mata Kuliah -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              2. Mata Kuliah yang Dikomplain
+            </h3>
+
+            <div class="space-y-4">
+              <div>
+                <label for="mata_kuliah" class="form-label">Nama Mata Kuliah *</label>
+                <input type="text" id="mata_kuliah" name="mata_kuliah" required placeholder="Contoh: Fisiologi Tumbuhan / Manajemen Agribisnis" class="form-input" />
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="dosen" class="form-label">Dosen Pengampu / Penanggung Jawab MK *</label>
+                  <input type="text" id="dosen" name="dosen" required placeholder="Nama Dosen Lengkap Beserta Gelar" class="form-input" />
+                </div>
+                <div>
+                  <label for="kelas" class="form-label">Kelas Perkuliahan *</label>
+                  <input type="text" id="kelas" name="kelas" required placeholder="Contoh: Kelas A / Kelas B" class="form-input" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEKSI 3: Rincian Permasalahan Nilai -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              3. Permasalahan Nilai
+            </h3>
+
+            <div>
+              <label class="form-label">Jenis Kendala Nilai yang Dialami *</label>
+              <div class="mt-2 space-y-2.5 text-xs text-[var(--ink)]">
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                  <input type="radio" name="jenis_kendala" value="Nilai di SIAKAD Tidak Muncul (Kosong / K)" required class="accent-[var(--leaf)]" />
+                  <span>Nilai di SIAKAD Tidak Muncul (Kosong / Nilai K)</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                  <input type="radio" name="jenis_kendala" value="Nilai Berbeda dari Pengumuman Resmi Dosen" class="accent-[var(--leaf)]" />
+                  <span>Nilai di SIAKAD Berbeda dengan yang Diumumkan Dosen Pengampu</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                  <input type="radio" name="jenis_kendala" value="Nilai Ujian Susulan / Remidi Belum Masuk" class="accent-[var(--leaf)]" />
+                  <span>Nilai Hasil Ujian Susulan / Ujian Remidi Belum Ter-update</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                  <input type="radio" name="jenis_kendala" value="Nilai Praktikum / Tugas Akhir Belum Digabung" class="accent-[var(--leaf)]" />
+                  <span>Komponen Nilai Praktikum atau Tugas Terlambat Masuk</span>
+                </label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                  <input type="radio" name="jenis_kendala" value="Lainnya" class="accent-[var(--leaf)]" />
+                  <span>Lainnya</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label for="nilai_siakad" class="form-label">Nilai Saat Ini di SIAKAD *</label>
+                <input type="text" id="nilai_siakad" name="nilai_siakad" required placeholder="Contoh: E / D / K / Belum Ada" class="form-input" />
+              </div>
+              <div>
+                <label for="nilai_harapan" class="form-label">Nilai Seharusnya (Berdasarkan Bukti) *</label>
+                <input type="text" id="nilai_harapan" name="nilai_harapan" required placeholder="Contoh: B+ / A" class="form-input" />
+              </div>
+            </div>
+
+            <div>
+              <label for="uraian" class="form-label">Kronologi / Penjelasan Tambahan *</label>
+              <textarea id="uraian" name="uraian" rows="4" required placeholder="Jelaskan secara runtut kronologi, tanggal pelaksanaan ujian/tugas, dan hasil komunikasi Anda dengan dosen pengampu..." class="form-textarea"></textarea>
+            </div>
+
+            <div>
+              <label for="link_bukti" class="form-label">Tautan / Link Bukti Pendukung (Google Drive / SIAKAD Screenshot)</label>
+              <input type="url" id="link_bukti" name="link_bukti" placeholder="https://drive.google.com/..." class="form-input" />
+              <p class="mt-1 text-[11px] text-[var(--muted)]">Pastikan tautan Google Drive dapat diakses publik/viewer oleh admin.</p>
+            </div>
+          </div>
+
+          <!-- SEKSI 4: Persetujuan & Tombol Kirim -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="persetujuan" required class="mt-1 h-4 w-4 rounded accent-[var(--leaf)]" />
+              <span class="text-xs leading-relaxed text-[var(--ink)]">
+                Saya menyatakan bahwa data komplain yang saya sampaikan adalah jujur dan dapat dipertanggungjawabkan sesuai tata tertib akademik FAPERTA INSTIPER.
+              </span>
+            </label>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[var(--line)]">
+              <button type="submit" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
+                Kirim Pengaduan Nilai →
+              </button>
+              <button type="reset" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)]">
+                Kosongkan Formulir
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUCCESS CONTAINER (Google Form Thank-You Screen) -->
+      <div id="success-wrapper" class="hidden rounded-3xl border border-[var(--line)] bg-white p-8 sm:p-12 shadow-sm border-t-8 border-t-[var(--leaf)] animate-fade-in text-center">
+        <div class="inline-grid h-16 w-16 place-items-center rounded-full bg-[#e8f5e9] text-3xl text-[var(--leaf)] font-bold mb-4">
+          ✓
+        </div>
+        <span class="badge-online text-xs mb-2">Pengaduan Tersimpan di Sistem</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-[var(--leaf)] mt-2">
+          Tanggapan Anda Telah Direkam.
+        </h2>
+        <p class="mt-2 text-sm text-[var(--muted)] max-w-lg mx-auto leading-relaxed">
+          Laporan komplain nilai Anda telah masuk ke antrean verifikasi Bagian Akademik FAPERTA INSTIPER.
+        </p>
+
+        <!-- Ticket Box -->
+        <div class="mt-8 max-w-md mx-auto rounded-2xl bg-[var(--leaf-soft)] p-6 border border-[var(--leaf)]/20 text-left">
+          <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-wider">Nomor Tiket Komplain:</p>
+          <div class="flex items-center justify-between gap-3 mt-1">
+            <span id="ticket-number" class="text-2xl font-black text-[var(--leaf)] font-mono">
+              KMP-2026-XXXX
+            </span>
+            <button id="btn-copy-ticket" type="button" class="btn-secondary text-xs px-3 py-1.5 bg-white">
+              📋 Salin
+            </button>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[var(--leaf)]/20 text-xs space-y-1 text-[var(--ink)]">
+            <p><strong>Mata Kuliah:</strong> <span id="res-mk">-</span></p>
+            <p><strong>NIM:</strong> <span id="res-nim">-</span></p>
+            <p><strong>Status Awal:</strong> <span class="badge-hybrid text-[10px]">Menunggu Verifikasi Admin/Prodi</span></p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button id="btn-print-receipt" type="button" class="btn-cta text-xs px-6 py-3 w-full sm:w-auto">
+            🖨️ Cetak Bukti Aduan
+          </button>
+          <a href="/layanan/cek-status" class="btn-secondary text-xs px-6 py-3 w-full sm:w-auto">
+            🔍 Lacak Status Tiket
+          </a>
+          <button id="btn-reset-form" type="button" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)] hover:underline">
+            Kirim Tanggapan Lain
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Client-side Logic Script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const formWrapper = document.getElementById('form-wrapper');
+      const successWrapper = document.getElementById('success-wrapper');
+      const komplainForm = document.getElementById('komplain-form');
+      const btnReset = document.getElementById('btn-reset-form');
+      const btnCopy = document.getElementById('btn-copy-ticket');
+      const btnPrint = document.getElementById('btn-print-receipt');
+
+      komplainForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(komplainForm);
+        const nama = formData.get('nama');
+        const nim = formData.get('nim');
+        const prodi = formData.get('prodi');
+        const mk = formData.get('mata_kuliah');
+        const dosen = formData.get('dosen');
+        const kendala = formData.get('jenis_kendala');
+
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        const ticketCode = `KMP-2026-${randomNum}`;
+        const tanggal = new Date().toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const newTicket = {
+          kode: ticketCode,
+          nama,
+          nim,
+          prodi,
+          keperluan: `Komplain Nilai: ${mk}`,
+          detailTambahan: `Dosen: ${dosen} | Kendala: ${kendala}`,
+          format: 'Dokumen Digital (Verifikasi Hasil)',
+          status: 'Menunggu Verifikasi Admin / Dosen Pengampu',
+          tanggal
+        };
+
+        // Simpan ke localStorage
+        try {
+          const existing = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
+          existing.unshift(newTicket);
+          localStorage.setItem('portal_khs_tickets', JSON.stringify(existing));
+        } catch (err) {
+          console.error(err);
+        }
+
+        document.getElementById('ticket-number').textContent = ticketCode;
+        document.getElementById('res-mk').textContent = mk;
+        document.getElementById('res-nim').textContent = nim;
+
+        formWrapper?.classList.add('hidden');
+        successWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: successWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+
+      btnCopy?.addEventListener('click', () => {
+        const ticketCode = document.getElementById('ticket-number')?.textContent || '';
+        navigator.clipboard.writeText(ticketCode).then(() => {
+          btnCopy.textContent = '✓ Disalin!';
+          setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
+        });
+      });
+
+      btnPrint?.addEventListener('click', () => {
+        window.print();
+      });
+
+      btnReset?.addEventListener('click', () => {
+        komplainForm?.reset();
+        successWrapper?.classList.add('hidden');
+        formWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+    });
+  </script>
+</BaseLayout>

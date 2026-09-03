@@ -1,0 +1,404 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const semesterAkhirList = [
+  "Semester 8",
+  "Semester 9",
+  "Semester 10",
+  "Semester 11",
+  "Semester 12",
+  "Semester 13",
+  "Semester 14"
+];
+---
+<BaseLayout title="Formulir Pengajuan Ujian Khusus" description="Formulir pendaftaran resmi Ujian Khusus tingkat akhir bagi mahasiswa Fakultas Pertanian INSTIPER Yogyakarta.">
+  <!-- Header Banner -->
+  <section class="grid-paper border-b border-[var(--line)]">
+    <div class="container-shell py-8 sm:py-12">
+      <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-4" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--leaf)]">Beranda</a>
+        <span>/</span>
+        <a href="/layanan" class="hover:text-[var(--leaf)]">Layanan Akademik</a>
+        <span>/</span>
+        <span class="text-[var(--leaf)] font-bold">Pengajuan Ujian Khusus (Poin 3)</span>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+            <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+            Layanan Akademik Tingkat Akhir
+          </div>
+          <h1 class="display-title mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+            Pengajuan Ujian Khusus
+          </h1>
+          <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+            Fasilitas ujian perbaikan khusus bagi mahasiswa tingkat akhir yang telah menyelesaikan seluruh SKS teori dan sedang menyusun tugas akhir/skripsi (maksimal 2 mata kuliah dengan nilai D atau E).
+          </p>
+        </div>
+
+        <!-- Shortcut Unduh Blangko & Cek Status -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <a href="/unduhan" class="btn-secondary text-xs px-4 py-3 flex items-center justify-center gap-1.5 bg-white">
+            <span>📥</span> Unduh Blangko Fisik (DOCX)
+          </a>
+          <a href="/layanan/cek-status" class="btn-cta text-xs px-5 py-3 flex items-center justify-center gap-1.5">
+            <span>🔍</span> Lacak Tiket Ujian
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notice Prasyarat KHS -->
+  <div class="bg-[#fff9ea] border-b border-[var(--gold)]/30 py-3">
+    <div class="container-shell flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#855d00]">
+      <p>
+        📌 <strong>Prasyarat Wajib:</strong> Pengajuan Ujian Khusus membutuhkan lampiran salinan <strong>Kartu Hasil Studi (KHS)</strong> atau transkrip nilai sementara.
+      </p>
+      <a href="/layanan/permohonan-khs" class="font-bold text-[var(--leaf)] hover:underline shrink-0">
+        Belum Punya KHS? Ajukan KHS Terlebih Dahulu →
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Form Section -->
+  <section class="container-shell py-12">
+    <div class="max-w-3xl mx-auto">
+      
+      <!-- FORM CONTAINER (Google Form Style) -->
+      <div id="form-wrapper" class="space-y-6">
+        
+        <!-- Header Card Google Form -->
+        <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs border-t-8 border-t-[var(--leaf)]">
+          <h2 class="text-2xl font-black text-[var(--leaf)]">
+            Formulir Pendaftaran Ujian Khusus (Tingkat Akhir)
+          </h2>
+          <p class="mt-2 text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
+            Sesuai Buku Pedoman Akademik FAPERTA Bab Ketentuan Ujian Khusus: Mahasiswa berhak mendaftar apabila telah menyelesaikan seluruh SKS teori dan menyisakan maksimal 2 mata kuliah dengan nilai belum memenuhi syarat kelulusan.
+          </p>
+          <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between text-xs text-[var(--coral)] font-bold">
+            <span>* Menunjukkan pertanyaan yang wajib diisi</span>
+            <span class="text-[var(--muted)] font-normal">FAPERTA INSTIPER</span>
+          </div>
+        </div>
+
+        <form id="ujian-khusus-form" class="space-y-6">
+          
+          <!-- SEKSI 1: Identitas Mahasiswa Pemohon -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              1. Identitas Mahasiswa Tingkat Akhir
+            </h3>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label for="nama" class="form-label">Nama Lengkap Mahasiswa *</label>
+                <input type="text" id="nama" name="nama" required placeholder="Contoh: Budi Santoso" class="form-input" />
+              </div>
+
+              <div>
+                <label for="nim" class="form-label">Nomor Induk Mahasiswa (NIM) *</label>
+                <input type="text" id="nim" name="nim" required placeholder="Contoh: 21/23456/SP/12345" class="form-input" />
+              </div>
+
+              <div>
+                <label for="prodi" class="form-label">Program Studi *</label>
+                <select id="prodi" name="prodi" required class="form-select">
+                  <option value="">-- Pilih Program Studi --</option>
+                  <option value="S1 Agroteknologi">S1 Agroteknologi</option>
+                  <option value="S1 Agribisnis">S1 Agribisnis</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="semester" class="form-label">Semester Saat Ini (Tingkat Akhir) *</label>
+                <select id="semester" name="semester" required class="form-select">
+                  <option value="">-- Pilih Semester (8 - 14) --</option>
+                  {semesterAkhirList.map((smt) => (
+                    <option value={smt}>{smt}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label for="whatsapp" class="form-label">Nomor WhatsApp Aktif *</label>
+                <input type="tel" id="whatsapp" name="whatsapp" required placeholder="0812xxxxxxxx" class="form-input" />
+              </div>
+
+              <div>
+                <label for="email" class="form-label">Alamat Email *</label>
+                <input type="email" id="email" name="email" required placeholder="nama@instiperjogja.ac.id" class="form-input" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SEKSI 2: Data Tugas Akhir / Skripsi -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              2. Data Pembimbing Akademik & Skripsi
+            </h3>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label for="dpa" class="form-label">Nama Dosen Pembimbing Akademik (DPA) *</label>
+                <input type="text" id="dpa" name="dpa" required placeholder="Nama Lengkap DPA Beserta Gelar" class="form-input" />
+              </div>
+
+              <div>
+                <label for="status_skripsi" class="form-label">Status Progres Skripsi *</label>
+                <select id="status_skripsi" name="status_skripsi" required class="form-select">
+                  <option value="Sedang Bimbingan Proposal/Penelitian">Sedang Bimbingan Proposal / Penelitian</option>
+                  <option value="Sudah Seminar Proposal">Sudah Seminar Proposal</option>
+                  <option value="Naskah Selesai (Siap Pendadaran)">Naskah Selesai (Siap Pendadaran)</option>
+                </select>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="judul_skripsi" class="form-label">Judul Skripsi / Topik Penelitian *</label>
+                <input type="text" id="judul_skripsi" name="judul_skripsi" required placeholder="Tuliskan judul atau topik penelitian skripsi Anda..." class="form-input" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SEKSI 3: Mata Kuliah yang Diujikan (Maksimal 2 Matkul) -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
+            <div class="flex items-center justify-between border-b border-[var(--line)] pb-3">
+              <h3 class="text-base font-black text-[var(--leaf)]">
+                3. Mata Kuliah Ujian Khusus (Maks. 2 Matkul)
+              </h3>
+              <span class="badge-online text-[10px]">Nilai: D / E</span>
+            </div>
+
+            <!-- Mata Kuliah 1 -->
+            <div class="rounded-2xl bg-[var(--paper)] p-5 border border-[var(--line)] space-y-4">
+              <p class="text-xs font-black text-[var(--leaf)] uppercase tracking-wider">Mata Kuliah 1 (Wajib)</p>
+              <div class="grid sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-2">
+                  <label for="mk1_nama" class="form-label text-xs">Nama Mata Kuliah 1 *</label>
+                  <input type="text" id="mk1_nama" name="mk1_nama" required placeholder="Contoh: Rancangan Percobaan" class="form-input text-sm" />
+                </div>
+                <div>
+                  <label for="mk1_sks" class="form-label text-xs">Jumlah SKS *</label>
+                  <input type="number" id="mk1_sks" name="mk1_sks" required min="1" max="6" placeholder="Contoh: 3" class="form-input text-sm" />
+                </div>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="mk1_nilai" class="form-label text-xs">Nilai Terakhir di SIAKAD *</label>
+                  <select id="mk1_nilai" name="mk1_nilai" required class="form-select text-sm">
+                    <option value="D">D (Kurang)</option>
+                    <option value="E">E (Tidak Lulus)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="mk1_dosen" class="form-label text-xs">Dosen Penguji / Pengampu MK 1 *</label>
+                  <input type="text" id="mk1_dosen" name="mk1_dosen" required placeholder="Nama Dosen Penguji" class="form-input text-sm" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Mata Kuliah 2 (Opsional) -->
+            <div class="rounded-2xl bg-[var(--paper)] p-5 border border-[var(--line)] space-y-4">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-black text-[var(--muted)] uppercase tracking-wider">Mata Kuliah 2 (Opsional)</p>
+                <span class="text-[11px] text-[var(--muted)]">Kosongkan jika hanya 1 matkul</span>
+              </div>
+              <div class="grid sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-2">
+                  <label for="mk2_nama" class="form-label text-xs">Nama Mata Kuliah 2</label>
+                  <input type="text" id="mk2_nama" name="mk2_nama" placeholder="Contoh: Bioteknologi Pertanian" class="form-input text-sm" />
+                </div>
+                <div>
+                  <label for="mk2_sks" class="form-label text-xs">Jumlah SKS</label>
+                  <input type="number" id="mk2_sks" name="mk2_sks" min="1" max="6" placeholder="Contoh: 2" class="form-input text-sm" />
+                </div>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="mk2_nilai" class="form-label text-xs">Nilai Terakhir di SIAKAD</label>
+                  <select id="mk2_nilai" name="mk2_nilai" class="form-select text-sm">
+                    <option value="-">- Tidak Ada Mata Kuliah ke-2 -</option>
+                    <option value="D">D (Kurang)</option>
+                    <option value="E">E (Tidak Lulus)</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="mk2_dosen" class="form-label text-xs">Dosen Penguji / Pengampu MK 2</label>
+                  <input type="text" id="mk2_dosen" name="mk2_dosen" placeholder="Nama Dosen Penguji" class="form-input text-sm" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEKSI 4: Lampiran Dokumen KHS -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-4">
+            <h3 class="text-base font-black text-[var(--leaf)] border-b border-[var(--line)] pb-3">
+              4. Lampiran Dokumen KHS Pendukung
+            </h3>
+
+            <div>
+              <label for="tiket_khs" class="form-label">Nomor Tiket Permohonan KHS atau Tautan Dokumen KHS *</label>
+              <input type="text" id="tiket_khs" name="tiket_khs" required placeholder="Contoh: KHS-2026-8945 atau link Google Drive file KHS" class="form-input" />
+              <p class="mt-1.5 text-[11px] text-[var(--muted)]">
+                Jika Anda telah mengajukan KHS di website ini, cukup ketikkan nomor tiketnya (misal: <code>KHS-2026-XXXX</code>). Jika belum, silakan <a href="/layanan/permohonan-khs" target="_blank" class="font-bold text-[var(--leaf)] underline">buat permohonan KHS di sini</a>.
+              </p>
+            </div>
+          </div>
+
+          <!-- SEKSI 5: Persetujuan & Tombol Submit -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="persetujuan" required class="mt-1 h-4 w-4 rounded accent-[var(--leaf)]" />
+              <span class="text-xs leading-relaxed text-[var(--ink)]">
+                Saya menyatakan bahwa seluruh SKS teori saya telah diselesaikan, sedang dalam tahap penyusunan skripsi, dan data yang saya sampaikan adalah benar sesuai ketentuan akademik FAPERTA INSTIPER.
+              </span>
+            </label>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[var(--line)]">
+              <button type="submit" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
+                Daftarkan Ujian Khusus Sekarang →
+              </button>
+              <button type="reset" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)]">
+                Kosongkan Formulir
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUCCESS CONTAINER (Google Form Receipt Style) -->
+      <div id="success-wrapper" class="hidden rounded-3xl border border-[var(--line)] bg-white p-8 sm:p-12 shadow-sm border-t-8 border-t-[var(--leaf)] animate-fade-in text-center">
+        <div class="inline-grid h-16 w-16 place-items-center rounded-full bg-[#e8f5e9] text-3xl text-[var(--leaf)] font-bold mb-4">
+          ✓
+        </div>
+        <span class="badge-online text-xs mb-2">Pendaftaran Telah Direkam</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-[var(--leaf)] mt-2">
+          Pendaftaran Ujian Khusus Berhasil!
+        </h2>
+        <p class="mt-2 text-sm text-[var(--muted)] max-w-lg mx-auto leading-relaxed">
+          Pengajuan ujian khusus Anda telah tersimpan di sistem administrasi akademik. Berkas akan diverifikasi oleh Kaprodi dan Dosen Penguji.
+        </p>
+
+        <!-- Ticket Box -->
+        <div class="mt-8 max-w-md mx-auto rounded-2xl bg-[var(--leaf-soft)] p-6 border border-[var(--leaf)]/20 text-left">
+          <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-wider">Nomor Tiket Ujian Khusus:</p>
+          <div class="flex items-center justify-between gap-3 mt-1">
+            <span id="ticket-number" class="text-2xl font-black text-[var(--leaf)] font-mono">
+              UKH-2026-XXXX
+            </span>
+            <button id="btn-copy-ticket" type="button" class="btn-secondary text-xs px-3 py-1.5 bg-white">
+              📋 Salin
+            </button>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[var(--leaf)]/20 text-xs space-y-1 text-[var(--ink)]">
+            <p><strong>Nama Mahasiswa:</strong> <span id="res-nama">-</span></p>
+            <p><strong>NIM:</strong> <span id="res-nim">-</span></p>
+            <p><strong>Mata Kuliah:</strong> <span id="res-matkul" class="text-[var(--leaf)] font-bold">-</span></p>
+            <p><strong>Status Tiket:</strong> <span class="badge-hybrid text-[10px]">Menunggu Verifikasi Kaprodi & Dosen</span></p>
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button id="btn-print-receipt" type="button" class="btn-cta text-xs px-6 py-3 w-full sm:w-auto">
+            🖨️ Cetak Bukti Pendaftaran
+          </button>
+          <a href="/layanan/cek-status" class="btn-secondary text-xs px-6 py-3 w-full sm:w-auto">
+            🔍 Lacak Status Tiket
+          </a>
+          <button id="btn-reset-form" type="button" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)] hover:underline">
+            Kirim Tanggapan Lain
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Client-side Logic Script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const formWrapper = document.getElementById('form-wrapper');
+      const successWrapper = document.getElementById('success-wrapper');
+      const ujianForm = document.getElementById('ujian-khusus-form');
+      const btnReset = document.getElementById('btn-reset-form');
+      const btnCopy = document.getElementById('btn-copy-ticket');
+      const btnPrint = document.getElementById('btn-print-receipt');
+
+      ujianForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(ujianForm);
+        const nama = formData.get('nama');
+        const nim = formData.get('nim');
+        const prodi = formData.get('prodi');
+        const semester = formData.get('semester');
+        const dpa = formData.get('dpa');
+        const mk1 = formData.get('mk1_nama');
+        const mk2 = formData.get('mk2_nama');
+        const matkulSummary = mk2 ? `${mk1} & ${mk2}` : mk1;
+
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        const ticketCode = `UKH-2026-${randomNum}`;
+        const tanggal = new Date().toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const newTicket = {
+          kode: ticketCode,
+          nama,
+          nim,
+          prodi,
+          semester,
+          keperluan: `Ujian Khusus: ${matkulSummary}`,
+          detailTambahan: `DPA: ${dpa} | Matkul: ${matkulSummary}`,
+          format: 'Dokumen Verifikasi Hybrid',
+          status: 'Menunggu Verifikasi Kaprodi & Penjadwalan Dosen',
+          tanggal
+        };
+
+        // Simpan ke localStorage
+        try {
+          const existing = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
+          existing.unshift(newTicket);
+          localStorage.setItem('portal_khs_tickets', JSON.stringify(existing));
+        } catch (err) {
+          console.error(err);
+        }
+
+        document.getElementById('ticket-number').textContent = ticketCode;
+        document.getElementById('res-nama').textContent = nama;
+        document.getElementById('res-nim').textContent = nim;
+        document.getElementById('res-matkul').textContent = matkulSummary;
+
+        formWrapper?.classList.add('hidden');
+        successWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: successWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+
+      btnCopy?.addEventListener('click', () => {
+        const ticketCode = document.getElementById('ticket-number')?.textContent || '';
+        navigator.clipboard.writeText(ticketCode).then(() => {
+          btnCopy.textContent = '✓ Disalin!';
+          setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
+        });
+      });
+
+      btnPrint?.addEventListener('click', () => {
+        window.print();
+      });
+
+      btnReset?.addEventListener('click', () => {
+        ujianForm?.reset();
+        successWrapper?.classList.add('hidden');
+        formWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+    });
+  </script>
+</BaseLayout>

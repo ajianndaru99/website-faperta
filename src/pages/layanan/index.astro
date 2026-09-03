@@ -1,0 +1,288 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const services = [
+  {
+    id: "khs",
+    number: "02",
+    title: "Permohonan KHS (Kartu Hasil Studi)",
+    subtitle: "Semester 1 - 14",
+    category: "Mahasiswa",
+    type: "online",
+    typeLabel: "Layanan Mandiri",
+    badgeClass: "badge-online",
+    desc: "Permohonan penerbitan salinan KHS resmi / transkrip nilai sementara untuk prasyarat pendaftaran Ujian Khusus, beasiswa, maupun pengaktifan kembali status mahasiswa pasca cuti.",
+    actionUrl: "/layanan/permohonan-khs",
+    actionLabel: "Isi Formulir KHS Online",
+    isPrimary: true,
+    steps: ["Isi Form KHS", "Verifikasi SIAKAD", "Penerbitan KHS Digital"]
+  },
+  {
+    id: "komplain-nilai",
+    number: "01",
+    title: "Komplain atau Cek Nilai",
+    subtitle: "Verifikasi Admin & Prodi",
+    category: "Mahasiswa",
+    type: "hybrid",
+    typeLabel: "Formulir & Verifikasi",
+    badgeClass: "badge-hybrid",
+    desc: "Fasilitas pelaporan ketidaksesuaian nilai akhir mata kuliah. Mengalir melalui verifikasi berkas oleh admin akademik, konfirmasi ke dosen pengampu, dan status hasil.",
+    actionUrl: "/layanan/komplain-nilai",
+    actionLabel: "Isi Formulir Komplain Nilai",
+    isPrimary: false,
+    steps: ["Formulir Pengaduan", "Verifikasi Dosen/Prodi", "Hasil & Rekonsiliasi Nilai"]
+  },
+  {
+    id: "ujian-khusus",
+    number: "03",
+    title: "Pengajuan Ujian Khusus",
+    subtitle: "Tingkat Akhir (Maks. 2 Matkul)",
+    category: "Mahasiswa",
+    type: "hybrid",
+    typeLabel: "Formulir Mandiri",
+    badgeClass: "badge-hybrid",
+    desc: "Pendaftaran ujian khusus bagi mahasiswa tingkat akhir yang telah menempuh seluruh SKS teori dan sedang menyusun skripsi (sisa maksimal 2 mata kuliah). Melampirkan KHS dan persetujuan DPA.",
+    actionUrl: "/layanan/ujian-khusus",
+    actionLabel: "Isi Formulir Ujian Khusus",
+    isPrimary: false,
+    steps: ["Ambil KHS (Poin 2)", "Isi Form Ujian Khusus", "Verifikasi Kaprodi & Penguji"]
+  },
+  {
+    id: "judul-penelitian",
+    number: "04",
+    title: "Pengajuan Judul Penelitian",
+    subtitle: "Tugas Akhir Mahasiswa",
+    category: "Mahasiswa",
+    type: "online",
+    typeLabel: "Sistem Online",
+    badgeClass: "badge-online",
+    desc: "Pendaftaran usulan judul proposal skripsi dan penelitian bidang Agroteknologi & Agribisnis ke program studi. Sistem terintegrasi dengan batasan karakter judul.",
+    actionUrl: "https://siakad.instiperjogja.ac.id",
+    actionLabel: "Buka Portal Judul SIAKAD",
+    isPrimary: false,
+    steps: ["Input Judul & Ringkasan", "Review Komisi Pembimbing", "Penetapan Dosen Pembimbing"]
+  },
+  {
+    id: "izin-penelitian",
+    number: "05",
+    title: "Izin Penelitian & Pengambilan Data",
+    subtitle: "Surat Pengantar Instansi / Lab",
+    category: "Mahasiswa",
+    type: "online",
+    typeLabel: "Surat Pengantar",
+    badgeClass: "badge-online",
+    desc: "Permohonan penerbitan surat pengantar izin penelitian dari Dekanat FAPERTA yang ditujukan ke perkebunan, instansi pemerintah, perusahaan mitra, atau laboratorium.",
+    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Surat%20Izin%20Penelitian",
+    actionLabel: "Ajukan Izin Penelitian",
+    isPrimary: false,
+    steps: ["Unggah Proposal Disetujui", "Verifikasi Dekanat", "Terbit Surat Izin Resmi"]
+  },
+  {
+    id: "ujian-susulan",
+    number: "06",
+    title: "Ujian Susulan UTS / UAS",
+    subtitle: "Form Online, Pelaksanaan Offline",
+    category: "Mahasiswa",
+    type: "hybrid",
+    typeLabel: "Hybrid",
+    badgeClass: "badge-hybrid",
+    desc: "Pengajuan permohonan ujian susulan bagi mahasiswa berhalangan karena alasan sah (sakit rawat inap, duka cita keluarga inti, tugas dinas resmi kampus).",
+    actionUrl: "/faq#tanya-jawab",
+    actionLabel: "Baca Aturan & Prosedur",
+    isPrimary: false,
+    steps: ["Kirim Bukti Sah (Maks 3 Hari)", "Verifikasi Persetujuan Prodi", "Jadwal Ujian Offline"]
+  },
+  {
+    id: "mahasiswa-mengulang",
+    number: "07",
+    title: "Pendataan Mahasiswa Mengulang",
+    subtitle: "Perbaikan Nilai & Remediasi",
+    category: "Mahasiswa",
+    type: "hybrid",
+    typeLabel: "Pendataan Hybrid",
+    badgeClass: "badge-hybrid",
+    desc: "Layanan inventarisasi dan verifikasi beban SKS mahasiswa yang mengulang mata kuliah wajib maupun pilihan untuk optimalisasi penjadwalan kelas dan kuota KRS.",
+    actionUrl: "/faq#tanya-jawab",
+    actionLabel: "Cek Ketentuan Mengulang",
+    isPrimary: false,
+    steps: ["Konsultasi DPA", "Input KRS Ulang", "Validasi Kuota Kelas"]
+  },
+  {
+    id: "surat-tugas-dosen",
+    number: "08",
+    title: "Surat Tugas Dosen (Tri Dharma)",
+    subtitle: "Penelitian, Publikasi & Pengabdian",
+    category: "Dosen",
+    type: "digital",
+    typeLabel: "Dokumen Digital",
+    badgeClass: "badge-digital",
+    desc: "Pengajuan dan penerbitan surat tugas digital bagi dosen FAPERTA untuk: (a) Penelitian & Publikasi Ilmiah, serta (b) Pengabdian kepada Masyarakat (PkM).",
+    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Pengajuan%20Surat%20Tugas%20Dosen",
+    actionLabel: "Ajukan Dokumen Surat Tugas",
+    isPrimary: false,
+    steps: ["Pengajuan Berkas Digital", "Persetujuan Dekan", "E-Sign & Nomor Surat Resmi"]
+  }
+];
+---
+<BaseLayout title="Pusat Layanan Akademik" description="Direktori layanan akademik mandiri FAPERTA INSTIPER Yogyakarta: Permohonan KHS, Ujian Khusus, Nilai, dan Administrasi.">
+  <!-- Banner Header -->
+  <section class="grid-paper border-b border-[var(--line)]">
+    <div class="container-shell py-12 sm:py-16">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+            <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+            Pelayanan Administrasi Terpadu FAPERTA
+          </div>
+          <h1 class="display-title mt-4 text-4xl sm:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+            Layanan Akademik <br /><em class="font-extrabold text-[var(--gold)] not-italic underline decoration-[var(--leaf)] decoration-wavy decoration-from-font">Cepat & Terstruktur.</em>
+          </h1>
+          <p class="mt-4 text-base leading-relaxed text-[var(--ink)]">
+            Satu pintu permohonan administrasi perkuliahan untuk mahasiswa dan dosen FAPERTA INSTIPER Yogyakarta. Bebas antrean fisik dengan sistem digital dan terverifikasi.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a href="/layanan/permohonan-khs" class="btn-cta text-sm">
+            ✦ Permohonan KHS Online (Poin 2) →
+          </a>
+          <a href="/layanan/cek-status" class="btn-secondary text-sm">
+            🔍 Lacak Status Tiket
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Service: Bagian 2 (KHS Online) Spotlight Card -->
+  <section class="container-shell -mt-6 sm:-mt-8 z-20 relative">
+    <div class="rounded-3xl bg-[var(--leaf)] p-6 sm:p-9 text-white shadow-xl relative overflow-hidden border-2 border-[var(--gold)]/40">
+      <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-[var(--leaf-dark)] opacity-40"></div>
+      
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-2.5">
+            <span class="inline-block rounded-full bg-[var(--gold)] text-[var(--leaf)] font-black text-xs px-3 py-1">
+              LAYANAN PRIORITAS ONLINE
+            </span>
+            <span class="text-xs font-semibold text-white/80">Bagian 2</span>
+          </div>
+          <h2 class="display-title mt-4 text-2xl sm:text-3xl lg:text-4xl font-extrabold !text-white leading-tight">
+            Permohonan KHS Online (Semester 1 - 14)
+          </h2>
+          <p class="mt-3 text-sm sm:text-base leading-relaxed !text-white/90">
+            Kini Anda tidak perlu lagi datang langsung ke loket akademik hanya untuk meminta salinan lembar KHS atau transkrip nilai sementara. Ajukan secara mandiri, dapatkan nomor tiket pelacakan, dan berkas siap diproses oleh tim akademik.
+          </p>
+          
+          <div class="mt-6 flex flex-wrap gap-4 text-xs font-semibold !text-white/90">
+            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
+              <span class="text-[var(--gold)] font-bold">✔</span> Cakupan Fleksibel Semester 1 s/d 14
+            </div>
+            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
+              <span class="text-[var(--gold)] font-bold">✔</span> Prasyarat Ujian Khusus & Aktif Kembali
+            </div>
+            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
+              <span class="text-[var(--gold)] font-bold">✔</span> Kode Tiket & Notifikasi Pelacakan
+            </div>
+          </div>
+        </div>
+
+        <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+          <a href="/layanan/permohonan-khs" class="btn-cta text-sm text-center">
+            Buka Formulir KHS Online Sekarang →
+          </a>
+          <a href="/layanan/cek-status" class="rounded-full border-2 border-white/40 bg-white/10 px-6 py-3 text-center text-sm font-bold text-white hover:bg-white/20 transition">
+            Cek Status Tiket Pengajuan
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Directory Grid (8 Layanan) -->
+  <section class="container-shell py-16 sm:py-20">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--line)] pb-6">
+      <div>
+        <p class="eyebrow">Direktori Lengkap</p>
+        <h2 class="section-title text-[var(--ink)]">8 Alur Layanan Akademik FAPERTA</h2>
+      </div>
+      <p class="text-xs sm:text-sm text-[var(--muted)] max-w-sm">
+        Pilih jenis layanan di bawah ini untuk melihat persyaratan berkas dan panduan pengajuan resminya.
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((item) => (
+        <div class={`rounded-3xl border ${item.isPrimary ? 'border-[var(--leaf)] bg-[var(--leaf-soft)]/30 ring-2 ring-[var(--leaf)]/20 shadow-md' : 'border-[var(--line)] bg-white shadow-xs hover:border-[var(--leaf)]'} p-6 sm:p-7 flex flex-col justify-between transition duration-200 hover:-translate-y-1`}>
+          <div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-black text-xs text-[var(--muted)] tracking-wider">
+                POIN {item.number}
+              </span>
+              <span class={item.badgeClass}>
+                <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+                {item.typeLabel}
+              </span>
+            </div>
+
+            <h3 class="mt-4 text-xl font-black text-[var(--leaf)]">
+              {item.title}
+            </h3>
+            <p class="text-xs font-bold text-[var(--gold)] uppercase tracking-wider mt-1">
+              {item.subtitle}
+            </p>
+
+            <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+              {item.desc}
+            </p>
+
+            <!-- Alur 3 Langkah -->
+            <div class="mt-5 border-t border-[var(--line)] pt-4">
+              <p class="text-[11px] font-bold text-[var(--leaf)] uppercase tracking-wider">Alur Proses:</p>
+              <ol class="mt-2 space-y-1.5 text-xs text-[var(--ink)]">
+                {item.steps.map((step, idx) => (
+                  <li class="flex items-center gap-2">
+                    <span class="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[var(--leaf-soft)] text-[10px] font-bold text-[var(--leaf)]">
+                      {idx + 1}
+                    </span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[var(--line)]">
+            <a 
+              href={item.actionUrl} 
+              class={`w-full text-center py-2.5 px-4 rounded-xl text-xs font-bold transition inline-flex items-center justify-center gap-1.5 ${item.isPrimary ? 'bg-[var(--leaf)] text-white hover:bg-[var(--leaf-dark)] shadow-sm' : 'bg-white border-2 border-[var(--leaf)]/20 text-[var(--leaf)] hover:bg-[var(--leaf-soft)]'}`}
+            >
+              <span>{item.actionLabel}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bantuan Langsung Section -->
+    <div class="mt-14 rounded-3xl bg-[#ecf3e8] border border-[var(--leaf)]/20 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="max-w-xl">
+        <h3 class="text-xl font-black text-[var(--leaf)]">
+          Butuh Bantuan Administrasi Khusus?
+        </h3>
+        <p class="mt-2 text-sm text-[var(--ink)] leading-relaxed">
+          Jika layanan akademik yang Anda butuhkan belum tercantum atau mengalami kendala sinkronisasi data dengan SIAKAD, silakan hubungi tim Front Desk Bagian Akademik FAPERTA.
+        </p>
+      </div>
+      <div class="shrink-0 flex flex-col sm:flex-row gap-3">
+        <a href="mailto:akademik@instiperjogja.ac.id" class="btn-secondary text-xs">
+          ✉ Email: akademik@instiperjogja.ac.id
+        </a>
+        <a href="/faq" class="btn-cta text-xs">
+          Baca Tanya Jawab (FAQ) →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

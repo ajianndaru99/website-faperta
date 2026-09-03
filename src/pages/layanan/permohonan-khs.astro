@@ -1,0 +1,462 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
+---
+<BaseLayout title="Formulir Permohonan KHS" description="Layanan pengajuan penerbitan salinan Kartu Hasil Studi (KHS) dan transkrip nilai resmi FAPERTA INSTIPER Yogyakarta.">
+  <!-- Header Banner -->
+  <section class="grid-paper border-b border-[var(--line)]">
+    <div class="container-shell py-8 sm:py-12">
+      <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-4" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--leaf)]">Beranda</a>
+        <span>/</span>
+        <a href="/layanan" class="hover:text-[var(--leaf)]">Layanan Akademik</a>
+        <span>/</span>
+        <span class="text-[var(--leaf)] font-bold">Permohonan KHS (Poin 2)</span>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+            <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+            Layanan Mandiri Mahasiswa
+          </div>
+          <h1 class="display-title mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+            Permohonan Salinan KHS
+          </h1>
+          <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+            Pengajuan resmi penerbitan salinan <strong>Kartu Hasil Studi (KHS)</strong> atau transkrip nilai akademik sementara untuk keperluan Ujian Khusus, Aktif Kembali, beasiswa, maupun arsip kedinasan.
+          </p>
+        </div>
+
+        <!-- Shortcut Status -->
+        <div class="rounded-2xl border border-[var(--line)] bg-white p-4 shadow-xs flex items-center gap-4">
+          <div class="grid h-10 w-10 place-items-center rounded-xl bg-[var(--leaf-soft)] text-lg text-[var(--leaf)] font-bold">
+            🔍
+          </div>
+          <div>
+            <p class="text-xs font-bold text-[var(--ink)]">Sudah pernah mengajukan?</p>
+            <a href="/layanan/cek-status" class="text-xs font-black text-[var(--leaf)] hover:underline inline-flex items-center gap-1">
+              Cek Status Tiket Anda →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notice Banner: Pemisahan KHS & Ujian Khusus -->
+  <div class="bg-[var(--leaf-soft)]/50 border-b border-[var(--leaf)]/20 py-3">
+    <div class="container-shell flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+      <p class="text-[var(--ink)]">
+        💡 <strong>Catatan Akademik:</strong> Formulir ini murni untuk menerbitkan dokumen <strong>KHS</strong>. Jika KHS sudah Anda miliki dan ingin mendaftar Ujian Khusus, silakan buka:
+      </p>
+      <a href="/layanan/ujian-khusus" class="font-black text-[var(--leaf)] hover:underline shrink-0">
+        Formulir Pengajuan Ujian Khusus →
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content Form Section -->
+  <section class="container-shell py-12">
+    <div class="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
+      
+      <!-- Kolom Kiri: Formulir Interaktif Gaya Google Form -->
+      <div>
+        <div id="form-wrapper" class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-9 shadow-sm border-t-8 border-t-[var(--leaf)]">
+          <form id="khs-form" class="space-y-8">
+            
+            <!-- BLOK 1: Data Mahasiswa -->
+            <div>
+              <div class="flex items-center gap-2 border-b border-[var(--line)] pb-3">
+                <span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--leaf)] text-xs font-black text-white">1</span>
+                <h2 class="text-lg font-black text-[var(--leaf)]">Identitas Mahasiswa Pemohon</h2>
+              </div>
+
+              <div class="mt-5 grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="nama_lengkap" class="form-label">Nama Lengkap Mahasiswa *</label>
+                  <input type="text" id="nama_lengkap" name="nama_lengkap" required placeholder="Contoh: Budi Santoso" class="form-input" />
+                </div>
+
+                <div>
+                  <label for="nim" class="form-label">Nomor Induk Mahasiswa (NIM) *</label>
+                  <input type="text" id="nim" name="nim" required placeholder="Contoh: 21/23456/SP/12345" class="form-input" />
+                </div>
+
+                <div>
+                  <label for="prodi" class="form-label">Program Studi *</label>
+                  <select id="prodi" name="prodi" required class="form-select">
+                    <option value="">-- Pilih Program Studi --</option>
+                    <option value="S1 Agroteknologi">S1 Agroteknologi</option>
+                    <option value="S1 Agribisnis">S1 Agribisnis</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="semester" class="form-label">Semester Mahasiswa Saat Ini *</label>
+                  <select id="semester" name="semester" required class="form-select">
+                    <option value="">-- Pilih Semester (1 - 14) --</option>
+                    {semesterList.map((smt) => (
+                      <option value={smt}>{smt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label for="whatsapp" class="form-label">Nomor WhatsApp *</label>
+                  <input type="tel" id="whatsapp" name="whatsapp" required placeholder="0812xxxxxxxx" class="form-input" />
+                </div>
+
+                <div>
+                  <label for="email" class="form-label">Alamat Email *</label>
+                  <input type="email" id="email" name="email" required placeholder="nama@instiperjogja.ac.id" class="form-input" />
+                </div>
+              </div>
+            </div>
+
+            <!-- BLOK 2: Rincian Dokumen KHS yang Dimohonkan -->
+            <div>
+              <div class="flex items-center gap-2 border-b border-[var(--line)] pb-3">
+                <span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--leaf)] text-xs font-black text-white">2</span>
+                <h2 class="text-lg font-black text-[var(--leaf)]">Cakupan KHS & Keperluan</h2>
+              </div>
+
+              <div class="mt-5 space-y-4">
+                <div>
+                  <label for="semester_dimohon" class="form-label">Semester KHS yang Dimohonkan *</label>
+                  <select id="semester_dimohon" name="semester_dimohon" required class="form-select">
+                    <option value="Seluruh Semester (Transkrip KHS Kumulatif)">Seluruh Semester (Transkrip KHS Kumulatif Lengkap)</option>
+                    {semesterList.map((smt) => (
+                      <option value={`KHS ${smt}`}>Hanya KHS {smt}</option>
+                    ))}
+                  </select>
+                  <p class="mt-1 text-[11px] text-[var(--muted)]">Pilih semester spesifik atau transkrip kumulatif seluruh semester.</p>
+                </div>
+
+                <div>
+                  <label class="form-label">Tujuan / Keperluan Permohonan KHS *</label>
+                  <div class="mt-2 space-y-2 text-xs text-[var(--ink)]">
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                      <input type="radio" name="keperluan" value="Prasyarat Pendaftaran Ujian Khusus" checked class="accent-[var(--leaf)]" />
+                      <div>
+                        <strong>a. Prasyarat Pendaftaran Ujian Khusus</strong>
+                        <span class="block text-[11px] text-[var(--muted)]">Dilampirkan saat mendaftar Ujian Khusus tingkat akhir (maksimal 2 matkul).</span>
+                      </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                      <input type="radio" name="keperluan" value="Prasyarat Aktif Kembali Pasca Cuti / Non-Aktif" class="accent-[var(--leaf)]" />
+                      <div>
+                        <strong>b. Prasyarat Aktif Kembali</strong>
+                        <span class="block text-[11px] text-[var(--muted)]">Validasi sisa masa studi (maksimal 14 semester) setelah masa cuti akademik.</span>
+                      </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                      <input type="radio" name="keperluan" value="Pendaftaran Beasiswa" class="accent-[var(--leaf)]" />
+                      <div>
+                        <strong>c. Pendaftaran Beasiswa</strong>
+                        <span class="block text-[11px] text-[var(--muted)]">Persyaratan administrasi beasiswa internal atau eksternal.</span>
+                      </div>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-[var(--line)] hover:bg-[var(--leaf-soft)]/50 cursor-pointer">
+                      <input type="radio" name="keperluan" value="Keperluan Lainnya / Arsip Kedinasan" class="accent-[var(--leaf)]" />
+                      <div>
+                        <strong>d. Keperluan Lainnya / Arsip Kedinasan</strong>
+                        <span class="block text-[11px] text-[var(--muted)]">Tunjangan instansi orang tua, magang, atau arsip pribadi.</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="catatan_tambahan" class="form-label">Catatan Tambahan (Opsional)</label>
+                  <input type="text" id="catatan_tambahan" name="catatan_tambahan" placeholder="Contoh: Butuh legalisir basah 2 lembar" class="form-input" />
+                </div>
+              </div>
+            </div>
+
+            <!-- BLOK 3: Format Dokumen KHS -->
+            <div>
+              <div class="flex items-center gap-2 border-b border-[var(--line)] pb-3">
+                <span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--leaf)] text-xs font-black text-white">3</span>
+                <h2 class="text-lg font-black text-[var(--leaf)]">Format Dokumen</h2>
+              </div>
+
+              <div class="mt-5 grid sm:grid-cols-2 gap-4">
+                <label class="flex items-start gap-3 rounded-2xl border border-[var(--line)] p-4 cursor-pointer hover:border-[var(--leaf)]">
+                  <input type="radio" name="format_output" value="digital" checked class="mt-1 accent-[var(--leaf)]" />
+                  <div>
+                    <strong class="text-xs font-black text-[var(--leaf)]">PDF Digital Berstempel Elektronik</strong>
+                    <p class="text-[11px] text-[var(--muted)] mt-0.5">Dikirimkan langsung ke sistem tiket dan email resmi Anda.</p>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-3 rounded-2xl border border-[var(--line)] p-4 cursor-pointer hover:border-[var(--leaf)]">
+                  <input type="radio" name="format_output" value="cetak_loket" class="mt-1 accent-[var(--leaf)]" />
+                  <div>
+                    <strong class="text-xs font-black text-[var(--ink)]">Cetak Fisik Berstempel Basah</strong>
+                    <p class="text-[11px] text-[var(--muted)] mt-0.5">Diambil di Front Desk Bagian Akademik FAPERTA setelah tiket selesai.</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Checkbox Persetujuan & Tombol Submit -->
+            <div class="pt-4 border-t border-[var(--line)]">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="persetujuan" required class="mt-1 h-4 w-4 rounded accent-[var(--leaf)]" />
+                <span class="text-xs leading-relaxed text-[var(--ink)]">
+                  Saya menyatakan bahwa data yang saya isikan adalah benar sesuai data akademik saya di Fakultas Pertanian INSTIPER Yogyakarta.
+                </span>
+              </label>
+
+              <div class="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                <button type="submit" id="btn-submit" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
+                  Kirim Permohonan KHS Sekarang →
+                </button>
+                <span class="text-xs text-[var(--muted)]">Proses penerbitan berkas: 1-2 hari kerja</span>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- SUCCESS CONTAINER (Gaya Google Form Receipt Tanpa WhatsApp) -->
+        <div id="success-wrapper" class="hidden rounded-3xl border border-[var(--line)] bg-white p-7 sm:p-10 shadow-lg border-t-8 border-t-[var(--leaf)] animate-fade-in">
+          <div class="flex items-center gap-3">
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-[#e8f5e9] text-2xl text-[var(--leaf)] font-bold">
+              ✓
+            </span>
+            <div>
+              <span class="badge-online text-xs">Tanggapan Anda Telah Direkam</span>
+              <h3 class="text-2xl font-black text-[var(--leaf)] mt-1">
+                Tiket Permohonan KHS Diterbitkan!
+              </h3>
+            </div>
+          </div>
+
+          <!-- Ticket Box -->
+          <div class="mt-6 rounded-2xl bg-[var(--leaf-soft)] p-6 border border-[var(--leaf)]/30">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--leaf)]/20 pb-4">
+              <div>
+                <p class="text-xs font-bold text-[var(--muted)] uppercase tracking-wider">Nomor Tiket Anda:</p>
+                <p id="ticket-number" class="text-2xl sm:text-3xl font-black text-[var(--leaf)] font-mono tracking-wide mt-1">
+                  KHS-2026-XXXX
+                </p>
+              </div>
+              <button id="btn-copy-ticket" type="button" class="btn-secondary text-xs px-4 py-2 bg-white">
+                📋 Salin Kode Tiket
+              </button>
+            </div>
+
+            <div class="mt-4 grid sm:grid-cols-2 gap-3 text-xs text-[var(--ink)]">
+              <div>
+                <span class="text-[var(--muted)]">Nama Pemohon:</span>
+                <p id="summary-nama" class="font-bold">-</p>
+              </div>
+              <div>
+                <span class="text-[var(--muted)]">NIM:</span>
+                <p id="summary-nim" class="font-bold">-</p>
+              </div>
+              <div>
+                <span class="text-[var(--muted)]">Semester Mahasiswa:</span>
+                <p id="summary-semester" class="font-bold">-</p>
+              </div>
+              <div>
+                <span class="text-[var(--muted)]">Cakupan Dokumen:</span>
+                <p id="summary-cakupan" class="font-bold text-[var(--leaf)]">-</p>
+              </div>
+              <div>
+                <span class="text-[var(--muted)]">Keperluan:</span>
+                <p id="summary-keperluan" class="font-bold">-</p>
+              </div>
+              <div>
+                <span class="text-[var(--muted)]">Format Dokumen:</span>
+                <p id="summary-format" class="font-bold">-</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tindak Lanjut -->
+          <div class="mt-6 space-y-3">
+            <h4 class="text-sm font-black text-[var(--ink)]">Tindak Lanjut Permohonan:</h4>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <button id="btn-print-receipt" type="button" class="rounded-2xl bg-[var(--leaf)] text-white p-4 font-bold text-xs flex items-center justify-center gap-2 hover:bg-[var(--leaf-dark)] transition shadow-sm">
+                <span>🖨️</span> Cetak / Simpan Bukti Pengajuan
+              </button>
+              <a href="/layanan/cek-status" class="rounded-2xl border-2 border-[var(--leaf)] bg-white text-[var(--leaf)] p-4 font-bold text-xs flex items-center justify-center gap-2 hover:bg-[var(--leaf-soft)] transition">
+                <span>🔍</span> Pantau Status Verifikasi Berkas
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-[var(--line)] flex items-center justify-between">
+            <button id="btn-reset-form" type="button" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)] hover:underline">
+              ← Isi Formulir Baru
+            </button>
+            <a href="/layanan" class="text-xs font-bold text-[var(--leaf)] hover:underline">
+              Kembali ke Hub Layanan →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Sidebar Informasi KHS -->
+      <aside class="space-y-6">
+        <!-- Card Info Ujian Khusus -->
+        <div class="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-xs border-l-4 border-l-[var(--gold)]">
+          <div class="flex items-center gap-2">
+            <span class="grid h-8 w-8 place-items-center rounded-xl bg-[#fff8e1] text-[var(--gold)] font-black text-sm">
+              ★
+            </span>
+            <h4 class="text-sm font-black text-[var(--leaf)]">Untuk Syarat Ujian Khusus?</h4>
+          </div>
+          <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
+            KHS yang diterbitkan dari form ini akan menjadi berkas lampiran utama saat Anda mendaftar Ujian Khusus.
+          </p>
+          <div class="mt-4 pt-3 border-t border-[var(--line)]">
+            <a href="/layanan/ujian-khusus" class="text-xs font-bold text-[var(--leaf)] hover:underline inline-flex items-center gap-1">
+              Buka Form Pengajuan Ujian Khusus →
+            </a>
+          </div>
+        </div>
+
+        <!-- Card Prasyarat Aktif Kembali -->
+        <div class="rounded-3xl border border-[var(--line)] bg-white p-6 shadow-xs">
+          <div class="flex items-center gap-2">
+            <span class="grid h-8 w-8 place-items-center rounded-xl bg-[var(--leaf-soft)] text-[var(--leaf)] font-black text-sm">
+              🔄
+            </span>
+            <h4 class="text-sm font-black text-[var(--leaf)]">Ketentuan Masa Studi (1 - 14 Semester)</h4>
+          </div>
+          <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
+            Mengacu pada Buku Pedoman Akademik INSTIPER:
+          </p>
+          <ul class="mt-3 space-y-2 text-xs text-[var(--ink)]">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--leaf)] font-bold">•</span>
+              <span>Beban normal sarjana S1 ditempuh dalam <strong>8 semester</strong> (minimal 144 SKS).</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--leaf)] font-bold">•</span>
+              <span>Batas maksimal masa studi yang diizinkan adalah <strong>Semester 14</strong>.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card Kontak Layanan Akademik -->
+        <div class="rounded-3xl bg-[var(--leaf-dark)] p-6 text-white shadow-md">
+          <h4 class="text-sm font-black !text-white flex items-center gap-2">
+            <span>☎</span> Front Desk FAPERTA
+          </h4>
+          <p class="mt-2 text-xs leading-relaxed !text-white/80">
+            Jam operasional loket layanan:
+            <br />Senin - Jumat: 08.00 - 15.30 WIB
+            <br />Gedung Fakultas Pertanian INSTIPER Lt. 1
+          </p>
+          <div class="mt-4 pt-3 border-t border-white/20">
+            <span class="text-[11px] !text-white/70 block">Email Resmi:</span>
+            <a href="mailto:akademik@instiperjogja.ac.id" class="text-xs font-bold !text-[var(--gold)] hover:underline">
+              akademik@instiperjogja.ac.id
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Client-side Logic Script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const khsForm = document.getElementById('khs-form');
+      const formWrapper = document.getElementById('form-wrapper');
+      const successWrapper = document.getElementById('success-wrapper');
+      const btnCopyTicket = document.getElementById('btn-copy-ticket');
+      const btnReset = document.getElementById('btn-reset-form');
+      const btnPrint = document.getElementById('btn-print-receipt');
+
+      khsForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(khsForm);
+        const nama = formData.get('nama_lengkap');
+        const nim = formData.get('nim');
+        const prodi = formData.get('prodi');
+        const semester = formData.get('semester');
+        const semesterDimohon = formData.get('semester_dimohon');
+        const keperluan = formData.get('keperluan');
+        const formatOutput = formData.get('format_output');
+        const catatan = formData.get('catatan_tambahan') || '-';
+
+        const randomNum = Math.floor(1000 + Math.random() * 9000);
+        const ticketCode = `KHS-2026-${randomNum}`;
+        const tanggalPengajuan = new Date().toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        const newTicket = {
+          kode: ticketCode,
+          nama,
+          nim,
+          prodi,
+          semester,
+          keperluan: `Permohonan KHS (${semesterDimohon})`,
+          detailTambahan: `Tujuan: ${keperluan} | Catatan: ${catatan}`,
+          format: formatOutput === 'digital' ? 'PDF Digital Berstempel Elektronik' : 'Cetak Fisik Berstempel Basah',
+          status: 'Diajukan (Menunggu Verifikasi SIAKAD)',
+          statusStep: 1,
+          tanggal: tanggalPengajuan
+        };
+
+        // Simpan ke localStorage
+        try {
+          const existingTickets = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
+          existingTickets.unshift(newTicket);
+          localStorage.setItem('portal_khs_tickets', JSON.stringify(existingTickets));
+          localStorage.setItem('portal_khs_last_ticket', JSON.stringify(newTicket));
+        } catch (err) {
+          console.error(err);
+        }
+
+        // Tampilkan Ringkasan di Halaman Sukses
+        document.getElementById('ticket-number').textContent = ticketCode;
+        document.getElementById('summary-nama').textContent = nama;
+        document.getElementById('summary-nim').textContent = nim;
+        document.getElementById('summary-semester').textContent = semester;
+        document.getElementById('summary-cakupan').textContent = semesterDimohon;
+        document.getElementById('summary-keperluan').textContent = keperluan;
+        document.getElementById('summary-format').textContent = newTicket.format;
+
+        // Switch View
+        formWrapper?.classList.add('hidden');
+        successWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: successWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+
+      btnPrint?.addEventListener('click', () => {
+        window.print();
+      });
+
+      btnCopyTicket?.addEventListener('click', () => {
+        const ticketCode = document.getElementById('ticket-number')?.textContent || '';
+        navigator.clipboard.writeText(ticketCode).then(() => {
+          btnCopyTicket.textContent = '✓ Kode Disalin!';
+          setTimeout(() => { btnCopyTicket.textContent = '📋 Salin Kode Tiket'; }, 2000);
+        });
+      });
+
+      btnReset?.addEventListener('click', () => {
+        khsForm?.reset();
+        successWrapper?.classList.add('hidden');
+        formWrapper?.classList.remove('hidden');
+        window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
+      });
+    });
+  </script>
+</BaseLayout>

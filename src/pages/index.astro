@@ -16,12 +16,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 				<p class="mt-6 max-w-lg text-base sm:text-lg leading-relaxed text-[var(--ink)]">
 					Temukan buku panduan, kalender perkuliahan, kurikulum prodi, template skripsi, dan regulasi akademik FAPERTA INSTIPER dalam satu ruang yang tertata rapi.
 				</p>
-				<div class="mt-8 flex flex-col sm:flex-row gap-3.5">
-					<a href="/unduhan" class="btn-cta text-base">
-						Jelajahi Dokumen <span aria-hidden="true" class="ml-1 font-bold">→</span>
+				<div class="mt-8 flex flex-wrap gap-3">
+					<a href="/layanan/permohonan-khs" class="btn-cta text-base">
+						✦ Permohonan KHS Online <span aria-hidden="true" class="ml-1 font-bold">→</span>
 					</a>
-					<a href="/faq" class="btn-secondary text-base">
-						Baca FAQ & Aturan
+					<a href="/unduhan" class="btn-secondary text-base bg-white">
+						Unduhan Dokumen
+					</a>
+					<a href="/faq" class="btn-secondary text-base bg-white">
+						FAQ & Aturan
 					</a>
 				</div>
 			</div>
@@ -68,15 +71,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 	<section class="container-shell py-16 sm:py-20">
 		<div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
 			<div>
-				<p class="eyebrow">Pusat Sumber Daya</p>
-				<h2 class="section-title text-[var(--ink)]">Cari tahu lebih cepat.</h2>
+				<p class="eyebrow">Pusat Sumber Daya & Layanan</p>
+				<h2 class="section-title text-[var(--ink)]">Cari tahu & ajukan lebih cepat.</h2>
 			</div>
 			<p class="max-w-md text-sm leading-relaxed text-[var(--muted)]">
-				Akses panduan studi, format laporan skripsi, dan informasi aturan akademik tanpa kebingungan.
+				Akses panduan studi, format laporan skripsi, dan layanan permohonan administrasi akademik resmi FAPERTA.
 			</p>
 		</div>
 
 		<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+			<a href="/layanan" class="group rounded-3xl border-2 border-[var(--leaf)] bg-[var(--leaf-soft)]/40 p-7 shadow-xs transition duration-200 hover:-translate-y-1 hover:shadow-md flex flex-col justify-between">
+				<div>
+					<div class="flex items-center justify-between">
+						<span class="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--leaf)] text-xl text-white font-bold">
+							⚡
+						</span>
+						<span class="badge-online">Baru</span>
+					</div>
+					<h3 class="mt-6 text-xl font-black text-[var(--leaf)] transition">
+						Layanan Akademik Mandiri
+					</h3>
+					<p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+						Permohonan salinan KHS (Semester 1 - 14), pengajuan ujian khusus, komplain nilai, dan surat izin resmi dalam satu pintu.
+					</p>
+				</div>
+				<span class="mt-6 inline-flex items-center text-sm font-bold text-[var(--leaf)] group-hover:gap-1.5 transition-all">
+					Buka 8 Layanan Akademik →
+				</span>
+			</a>
+
 			<a href="/unduhan" class="group rounded-3xl border border-[var(--line)] bg-white p-7 shadow-xs transition duration-200 hover:-translate-y-1 hover:border-[var(--leaf)] hover:shadow-md flex flex-col justify-between">
 				<div>
 					<span class="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--leaf-soft)] text-xl text-[var(--leaf)] font-bold">
@@ -110,26 +133,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 					Buka pusat bantuan FAQ →
 				</span>
 			</a>
-
-			<div class="sm:col-span-2 lg:col-span-1 rounded-3xl bg-[var(--leaf-dark)] p-7 text-white shadow-md flex flex-col justify-between">
-				<div>
-					<span class="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-xl text-[var(--gold)] font-bold">
-						✦
-					</span>
-					<h3 class="mt-6 text-xl font-black !text-white">
-						Butuh Konfirmasi?
-					</h3>
-					<p class="mt-2 text-sm leading-relaxed !text-white/90">
-						Pertanyaan seputar KRS, transkrip, atau administrasi langsung dapat dikonsultasikan ke Bagian Akademik FAPERTA.
-					</p>
-				</div>
-				<div class="mt-6 pt-4 border-t border-white/15">
-					<p class="text-xs !text-white/70">Email Layanan:</p>
-					<a href="mailto:akademik@instiperjogja.ac.id" class="mt-1 inline-flex items-center font-bold text-sm text-[var(--gold)] hover:underline">
-						akademik@instiperjogja.ac.id ↗
-					</a>
-				</div>
-			</div>
 		</div>
 	</section>
 </BaseLayout>

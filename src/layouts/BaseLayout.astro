@@ -16,51 +16,50 @@ const currentPath = Astro.url.pathname;
     <title>{title} — FAPERTA INSTIPER</title>
   </head>
   <body class="min-h-screen flex flex-col">
-    <header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[#f7faf5]/95 backdrop-blur-md transition-all shadow-xs">
+    <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[#f7faf5]/95 backdrop-blur-md transition-all shadow-xs">
       <div class="container-shell flex min-h-[74px] items-center justify-between gap-4">
-        <a href="/" class="flex items-center gap-3 group" aria-label="FAPERTA INSTIPER, Beranda">
-          <div class="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--leaf)] text-white shadow-sm ring-2 ring-[var(--gold)]/30 group-hover:ring-[var(--gold)] transition">
-            <span class="text-base font-black tracking-tighter">FI</span>
-            <span class="absolute -bottom-1 -right-1 h-3.5 w-3.5 rounded-full bg-[var(--gold)] border-2 border-white"></span>
-          </div>
-          <div class="leading-tight">
-            <div class="flex items-center gap-1.5">
-              <strong class="block text-sm font-black tracking-[.14em] text-[var(--leaf)]">FAPERTA</strong>
-              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[var(--leaf-soft)] text-[var(--leaf)]">S1</span>
+        
+        <!-- Sisi Kiri: Tombol Hamburger Mobile + Brand Logo + Desktop Nav -->
+        <div class="flex items-center gap-3 md:gap-8">
+          <!-- Tombol Hamburger Mobile di Sebelah Kiri -->
+          <button 
+            id="menu-toggle" 
+            class="touch-target inline-flex items-center justify-center rounded-xl border border-[var(--line)] bg-white p-2.5 text-sm font-bold text-[var(--ink)] shadow-xs transition hover:bg-[var(--leaf-soft)] hover:border-[var(--leaf)] md:hidden active:scale-95" 
+            aria-expanded="false" 
+            aria-controls="mobile-drawer"
+            aria-label="Buka navigasi menu di sebelah kiri"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Brand Logo -->
+          <a href="/" class="flex items-center gap-3 group" aria-label="FAPERTA INSTIPER, Beranda">
+            <img 
+              src="/logo-instiper.webp" 
+              alt="Logo INSTIPER Yogyakarta" 
+              width="42" 
+              height="42" 
+              fetchpriority="high"
+              loading="eager"
+              decoding="async" 
+              class="h-10 w-10 sm:h-11 sm:w-11 shrink-0 object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+            />
+            <div class="flex flex-col justify-center">
+              <span class="text-[15px] sm:text-base font-black tracking-[.14em] text-[var(--leaf)] leading-none">FAPERTA</span>
+              <span class="text-[10px] sm:text-[11px] font-semibold text-[var(--muted)] tracking-[.15em] uppercase leading-none mt-1">INSTIPER YOGYAKARTA</span>
             </div>
-            <span class="text-[11px] font-semibold text-[var(--muted)] tracking-wider">INSTIPER YOGYAKARTA</span>
-          </div>
-        </a>
+          </a>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button 
-          id="menu-toggle" 
-          class="touch-target inline-flex items-center justify-center rounded-xl border border-[var(--line)] bg-white p-2.5 text-sm font-bold text-[var(--ink)] shadow-xs transition hover:bg-[var(--leaf-soft)] hover:border-[var(--leaf)] md:hidden active:scale-95" 
-          aria-expanded="false" 
-          aria-controls="main-nav"
-          aria-label="Buka navigasi menu"
-        >
-          <svg id="menu-icon-open" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg id="menu-icon-close" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        <!-- Navigation Links -->
-        <nav 
-          id="main-nav" 
-          class="hidden absolute left-0 right-0 top-[74px] border-b border-[var(--line)] bg-white/98 p-5 shadow-xl backdrop-blur-md md:static md:flex md:items-center md:gap-7 md:border-0 md:bg-transparent md:p-0 md:shadow-none transition-all duration-200" 
-          aria-label="Navigasi utama"
-        >
-          <div class="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+          <!-- Desktop Navigation (Rata Kiri Bersebelahan dengan Logo) -->
+          <nav class="hidden md:flex md:items-center md:gap-5" aria-label="Navigasi utama">
             <a 
               class:list={[
                 "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
                 currentPath === "/" 
-                  ? "bg-[var(--leaf-soft)] text-[var(--leaf)] md:bg-transparent md:text-[var(--leaf)] md:border-b-2 md:border-[var(--leaf)] md:rounded-none" 
-                  : "text-[var(--muted)] hover:text-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 md:hover:bg-transparent"
+                  ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
+                  : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/"
             >
@@ -68,10 +67,22 @@ const currentPath = Astro.url.pathname;
             </a>
             <a 
               class:list={[
+                "touch-target px-3 py-2 text-sm font-bold rounded-lg transition flex items-center gap-1.5",
+                currentPath.startsWith("/layanan") 
+                  ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
+                  : "text-[var(--muted)] hover:text-[var(--leaf)]"
+              ]} 
+              href="/layanan"
+            >
+              <span>Layanan Akademik</span>
+              <span class="inline-block rounded-full bg-[var(--gold)]/25 text-[var(--leaf)] text-[10px] font-extrabold px-1.5 py-0.5">Online</span>
+            </a>
+            <a 
+              class:list={[
                 "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
                 currentPath.startsWith("/unduhan") 
-                  ? "bg-[var(--leaf-soft)] text-[var(--leaf)] md:bg-transparent md:text-[var(--leaf)] md:border-b-2 md:border-[var(--leaf)] md:rounded-none" 
-                  : "text-[var(--muted)] hover:text-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 md:hover:bg-transparent"
+                  ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
+                  : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/unduhan"
             >
@@ -81,17 +92,145 @@ const currentPath = Astro.url.pathname;
               class:list={[
                 "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
                 currentPath.startsWith("/faq") 
-                  ? "bg-[var(--leaf-soft)] text-[var(--leaf)] md:bg-transparent md:text-[var(--leaf)] md:border-b-2 md:border-[var(--leaf)] md:rounded-none" 
-                  : "text-[var(--muted)] hover:text-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 md:hover:bg-transparent"
+                  ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
+                  : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/faq"
             >
               FAQ & Regulasi
             </a>
-          </div>
-        </nav>
+          </nav>
+        </div>
+
+        <!-- Sisi Kanan: Shortcut Cepat Status Tiket -->
+        <div class="flex items-center gap-2.5">
+          <a 
+            href="/layanan/cek-status" 
+            class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-white px-3.5 py-1.5 text-xs font-bold text-[var(--leaf)] shadow-xs hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)] transition"
+          >
+            <span>🔍</span>
+            <span class="hidden sm:inline">Lacak Tiket</span>
+          </a>
+        </div>
       </div>
     </header>
+
+    <!-- Drawer Mobile di Sebelah Kiri (Slide-in Left Drawer) -->
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300 opacity-0 md:hidden" aria-hidden="true"></div>
+    <aside 
+      id="mobile-drawer" 
+      class="fixed inset-y-0 left-0 w-72 sm:w-80 bg-white z-50 shadow-2xl flex flex-col justify-between transform -translate-x-full transition-transform duration-300 ease-out md:hidden"
+      aria-label="Menu navigasi samping kiri"
+    >
+      <div class="p-6 overflow-y-auto">
+        <!-- Header Drawer: Logo & Tombol Tutup -->
+        <div class="flex items-center justify-between border-b border-[var(--line)] pb-5">
+          <div class="flex items-center gap-2.5">
+            <img 
+              src="/logo-instiper.webp" 
+              alt="Logo INSTIPER" 
+              width="36" 
+              height="36" 
+              loading="eager" 
+              decoding="async" 
+              class="h-9 w-9 shrink-0 object-contain drop-shadow-xs" 
+            />
+            <div class="flex flex-col justify-center">
+              <span class="text-sm font-black tracking-[.14em] text-[var(--leaf)] leading-none">FAPERTA</span>
+              <span class="text-[10px] font-semibold text-[var(--muted)] tracking-[.15em] uppercase leading-none mt-1">INSTIPER YOGYAKARTA</span>
+            </div>
+          </div>
+          <button id="drawer-close" class="rounded-lg p-2 text-gray-400 hover:text-[var(--leaf)] hover:bg-[var(--leaf-soft)] transition" aria-label="Tutup menu">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Menu Utama -->
+        <nav class="mt-6 space-y-1.5" aria-label="Tautan drawer navigasi">
+          <a 
+            class:list={[
+              "flex items-center gap-3 px-3.5 py-3 text-sm font-bold rounded-xl transition",
+              currentPath === "/" 
+                ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
+                : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
+            ]} 
+            href="/"
+          >
+            <span class="text-base">🏠</span>
+            <span>Beranda</span>
+          </a>
+
+          <a 
+            class:list={[
+              "flex items-center justify-between px-3.5 py-3 text-sm font-bold rounded-xl transition",
+              currentPath.startsWith("/layanan") 
+                ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
+                : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
+            ]} 
+            href="/layanan"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-base">📋</span>
+              <span>Layanan Akademik</span>
+            </div>
+            <span class="badge-online text-[9px] py-0.5 px-1.5">Online</span>
+          </a>
+
+          <a 
+            class:list={[
+              "flex items-center gap-3 px-3.5 py-3 text-sm font-bold rounded-xl transition",
+              currentPath.startsWith("/unduhan") 
+                ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
+                : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
+            ]} 
+            href="/unduhan"
+          >
+            <span class="text-base">📥</span>
+            <span>Unduhan Dokumen</span>
+          </a>
+
+          <a 
+            class:list={[
+              "flex items-center gap-3 px-3.5 py-3 text-sm font-bold rounded-xl transition",
+              currentPath.startsWith("/faq") 
+                ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
+                : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
+            ]} 
+            href="/faq"
+          >
+            <span class="text-base">💡</span>
+            <span>FAQ & Regulasi</span>
+          </a>
+        </nav>
+
+        <!-- Formulir Cepat Section di Drawer -->
+        <div class="mt-8 pt-5 border-t border-[var(--line)]">
+          <p class="text-[11px] font-black uppercase tracking-wider text-[var(--leaf)] mb-2">Formulir Mandiri:</p>
+          <div class="space-y-1.5">
+            <a href="/layanan/permohonan-khs" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
+              <span class="text-[var(--gold)]">✦</span> Permohonan KHS Online
+            </a>
+            <a href="/layanan/ujian-khusus" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
+              <span class="text-[var(--gold)]">✦</span> Pengajuan Ujian Khusus
+            </a>
+            <a href="/layanan/komplain-nilai" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
+              <span class="text-[var(--gold)]">✦</span> Komplain / Cek Nilai
+            </a>
+            <a href="/layanan/cek-status" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
+              <span>🔍</span> Cek Status Pengajuan
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Drawer -->
+      <div class="p-6 border-t border-[var(--line)] bg-[#f7faf5]">
+        <p class="text-[11px] font-bold text-[var(--leaf)]">Fakultas Pertanian INSTIPER</p>
+        <p class="text-[10px] text-[var(--muted)] mt-0.5">Satu pintu informasi akademik.</p>
+      </div>
+    </aside>
 
     <main class="flex-1">
       <slot />
@@ -99,32 +238,50 @@ const currentPath = Astro.url.pathname;
 
     <footer class="mt-20 border-t border-[var(--line)] bg-[#ecf3e8]">
       <div class="container-shell py-12">
-        <div class="grid gap-8 md:grid-cols-3">
+        <div class="grid gap-8 md:grid-cols-4">
           <div>
             <div class="flex items-center gap-2.5">
-              <span class="grid h-9 w-9 place-items-center rounded-lg bg-[var(--leaf)] text-xs font-black text-white">FI</span>
-              <div>
-                <p class="text-sm font-black tracking-wider text-[var(--ink)]">FAPERTA INSTIPER</p>
-                <p class="text-[11px] text-[var(--muted)]">Fakultas Pertanian</p>
+              <img 
+                src="/logo-instiper.webp" 
+                alt="Logo INSTIPER" 
+                width="36" 
+                height="36" 
+                loading="lazy" 
+                decoding="async" 
+                class="h-9 w-9 shrink-0 object-contain drop-shadow-xs" 
+              />
+              <div class="flex flex-col justify-center">
+                <span class="text-sm font-black tracking-[.12em] text-[var(--ink)] leading-none">FAPERTA INSTIPER</span>
+                <span class="text-[10px] font-semibold text-[var(--muted)] tracking-[.14em] uppercase leading-none mt-1">FAKULTAS PERTANIAN</span>
               </div>
             </div>
             <p class="mt-3 max-w-sm text-xs leading-relaxed text-[var(--muted)]">
-              Portal informasi akademik resmi Fakultas Pertanian INSTIPER Yogyakarta. Memudahkan akses panduan, kurikulum, kalender, dan regulasi akademik.
+              Portal informasi akademik dan layanan mandiri resmi Fakultas Pertanian INSTIPER Yogyakarta.
             </p>
           </div>
           
           <div>
-            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Program Studi</p>
-            <ul class="mt-3 space-y-2 text-xs font-bold text-[var(--ink)]">
-              <li>• S1 Agroteknologi (Minat Agronomi, Ilmu Tanah, HPT)</li>
-              <li>• S1 Agribisnis (Manajemen & Bisnis Pertanian)</li>
+            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Layanan Online</p>
+            <ul class="mt-3 space-y-2 text-xs font-medium text-[var(--ink)]">
+              <li><a href="/layanan/permohonan-khs" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Permohonan KHS Online (Baru)</a></li>
+              <li><a href="/layanan" class="hover:text-[var(--leaf)] hover:underline">• Cek & Komplain Nilai</a></li>
+              <li><a href="/layanan" class="hover:text-[var(--leaf)] hover:underline">• Pengajuan Ujian Khusus</a></li>
+              <li><a href="/layanan/cek-status" class="hover:text-[var(--leaf)] hover:underline">• Cek Status Pengajuan Tiket</a></li>
             </ul>
           </div>
 
           <div>
-            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Kampus INSTIPER Yogyakarta</p>
+            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Program Studi</p>
+            <ul class="mt-3 space-y-2 text-xs font-bold text-[var(--ink)]">
+              <li>• S1 Agroteknologi</li>
+              <li>• S1 Agribisnis</li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Kampus INSTIPER</p>
             <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
-              Jl. Nanggulan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, D.I. Yogyakarta 55282
+              Jl. Nanggulan, Maguwoharjo, Kec. Depok, Sleman, D.I. Yogyakarta 55282
             </p>
             <a href="mailto:akademik@instiperjogja.ac.id" class="mt-2 inline-block text-xs font-bold text-[var(--leaf)] hover:underline">
               akademik@instiperjogja.ac.id ↗
@@ -141,28 +298,35 @@ const currentPath = Astro.url.pathname;
 
     <script>
       const toggle = document.querySelector('#menu-toggle');
-      const nav = document.querySelector('#main-nav');
-      const iconOpen = document.querySelector('#menu-icon-open');
-      const iconClose = document.querySelector('#menu-icon-close');
+      const drawer = document.querySelector('#mobile-drawer');
+      const backdrop = document.querySelector('#drawer-backdrop');
+      const closeBtn = document.querySelector('#drawer-close');
 
-      toggle?.addEventListener('click', () => {
-        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!isOpen));
-        nav?.classList.toggle('hidden', isOpen);
-        iconOpen?.classList.toggle('hidden', !isOpen);
-        iconClose?.classList.toggle('hidden', isOpen);
-      });
-
-      // Tutup menu otomatis saat link navigasi di-klik di mobile
-      nav?.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          if (window.innerWidth < 768) {
-            toggle?.setAttribute('aria-expanded', 'false');
-            nav?.classList.add('hidden');
-            iconOpen?.classList.remove('hidden');
-            iconClose?.classList.add('hidden');
-          }
+      function openDrawer() {
+        backdrop?.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          backdrop?.classList.remove('opacity-0');
+          drawer?.classList.remove('-translate-x-full');
         });
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        backdrop?.classList.add('opacity-0');
+        drawer?.classList.add('-translate-x-full');
+        setTimeout(() => {
+          backdrop?.classList.add('hidden');
+          document.body.style.overflow = '';
+        }, 300);
+      }
+
+      toggle?.addEventListener('click', openDrawer);
+      closeBtn?.addEventListener('click', closeDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+
+      // Tutup drawer otomatis saat link di-klik
+      drawer?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeDrawer);
       });
     </script>
   </body>

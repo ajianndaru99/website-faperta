@@ -177,6 +177,79 @@ button, a { -webkit-tap-highlight-color: transparent; }
   min-height: 44px;
 }
 
+/* Badges & Status Indikator Layanan */
+.badge-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #c8e6c9;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.badge-hybrid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #fff8e1;
+  color: #b78103;
+  border: 1px solid #ffe082;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.badge-digital {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Form Styles */
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  background-color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.85rem;
+  font-size: 0.925rem;
+  color: var(--ink);
+  font-family: var(--font-body);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 3px rgba(30, 70, 32, 0.12);
+  background-color: #ffffff;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--leaf);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
 @media (min-width: 768px) {
   #menu-toggle {
     display: none !important;
@@ -193,3 +266,4 @@ button, a { -webkit-tap-highlight-color: transparent; }
     background-position: center 85%; 
   }
 }
+
