@@ -562,7 +562,19 @@ const semesterAkhirList = [
       });
 
       btnPrint?.addEventListener('click', () => {
-        window.print();
+        const ticketCode = document.getElementById('ticket-number')?.textContent || '';
+        if (typeof (window as any).printOfficialTicket === 'function') {
+          try {
+            const raw = localStorage.getItem('portal_faperta_tickets');
+            const list = raw ? JSON.parse(raw) : [];
+            const t = list.find((item: any) => item.kode === ticketCode);
+            (window as any).printOfficialTicket(t || ticketCode);
+          } catch (e) {
+            (window as any).printOfficialTicket(ticketCode);
+          }
+        } else {
+          window.print();
+        }
       });
 
       btnReset?.addEventListener('click', () => {

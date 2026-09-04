@@ -151,8 +151,11 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         if (!ticketsList || ticketsList.length === 0) {
           profileCard?.classList.add('hidden');
           notFoundCard?.classList.remove('hidden');
+          window.getActiveTicketForPrint = () => null;
           return;
         }
+
+        window.getActiveTicketForPrint = () => ticketsList && ticketsList.length > 0 ? ticketsList[0] : null;
 
         // Tampilkan profil jika pencarian berbasis NIM
         if (searchedNim && ticketsList.length > 0) {
@@ -324,8 +327,8 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               <span>Keperluan: <strong class="text-slate-900">${ticket.detailTambahan || ticket.keperluan}</strong></span>
               <button 
                 type="button" 
-                onclick="window.print()" 
-                class="px-4 py-2.5 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs sm:text-sm transition flex items-center gap-2 cursor-pointer shadow-2xs"
+                onclick="window.printOfficialTicket('${ticket.kode}')" 
+                class="no-print px-4 py-2.5 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs sm:text-sm transition flex items-center gap-2 cursor-pointer shadow-2xs"
               >
                 <span>🖨️</span>
                 <span>Cetak Tanda Terima Mahasiswa</span>
