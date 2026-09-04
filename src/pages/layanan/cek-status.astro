@@ -28,14 +28,14 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           </p>
         </div>
 
-        <!-- Info SLA -->
+        <!-- Jam Pelayanan Loket -->
         <div class="rounded-2xl border border-[var(--line)] bg-white p-4 shadow-xs flex items-center gap-4 text-xs">
-          <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-50 text-amber-800 text-lg font-bold border border-amber-200">
-            ⏱️
+          <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-800 text-lg font-bold border border-emerald-200">
+            🏛️
           </div>
           <div>
-            <p class="font-bold text-[var(--ink)]">Estimasi Proses Berkas (SLA)</p>
-            <p class="text-[var(--muted)] mt-0.5">KHS: 1-2 Hari | Komplain: 2-3 Hari | Ujian: 3-5 Hari</p>
+            <p class="font-bold text-[var(--ink)]">Loket Pelayanan Administrasi</p>
+            <p class="text-[var(--muted)] mt-0.5">Senin – Jumat | 08.00 – 15.00 WIB (Loket Gedung A)</p>
           </div>
         </div>
       </div>
@@ -187,7 +187,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
                   statusStep: 1,
                   posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
                   estimasiSelesai: '1–2 Hari Kerja',
-                  slaDays: 2,
                   catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu pemeriksaan petugas.',
                   tanggal: item.tanggal || 'Hari Ini',
                   isNewForAdmin: true
@@ -269,7 +268,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
                 </div>
               </div>
 
-              <!-- Posisi Berkas & Estimasi Jadi (SLA) Banner -->
+              <!-- Posisi Berkas & Estimasi Jadi Banner -->
               <div class="mt-6 grid sm:grid-cols-2 gap-3 p-4 rounded-2xl ${isRejected ? 'bg-rose-50 border border-rose-200' : 'bg-amber-50/70 border border-amber-200'} text-xs">
                 <div class="flex items-start gap-2.5">
                   <span class="text-base shrink-0">${isRejected ? '❌' : '📍'}</span>
@@ -281,7 +280,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
                 <div class="flex items-start gap-2.5">
                   <span class="text-base shrink-0">${isRejected ? '⚠️' : '⏱️'}</span>
                   <div>
-                    <span class="font-bold ${isRejected ? 'text-rose-900' : 'text-amber-900'}">Estimasi Selesai (SLA):</span>
+                    <span class="font-bold ${isRejected ? 'text-rose-900' : 'text-amber-900'}">Estimasi Selesai:</span>
                     <p class="${isRejected ? 'text-rose-800' : 'text-emerald-800'} font-extrabold mt-0.5">${ticket.estimasiSelesai || '1–2 Hari Kerja'}</p>
                   </div>
                 </div>

@@ -299,7 +299,6 @@ const currentPath = Astro.url.pathname;
               <span class="text-base">🔍</span>
               <span>Lacak Progres NIM</span>
             </div>
-            <span class="inline-block rounded-full bg-[var(--gold)]/30 text-[var(--leaf)] text-[9px] font-black px-1.5 py-0.5">SLA</span>
           </a>
 
           <a 
@@ -370,7 +369,7 @@ const currentPath = Astro.url.pathname;
           <div>
             <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Layanan Pokok</p>
             <ul class="mt-3 space-y-2 text-xs font-medium text-[var(--ink)]">
-              <li><a href="/layanan/permohonan-khs" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Permohonan KHS Online (SLA 1-2 Hari)</a></li>
+              <li><a href="/layanan/permohonan-khs" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Permohonan KHS Online</a></li>
               <li><a href="/layanan/komplain-nilai" class="hover:text-[var(--leaf)] hover:underline">• Verifikasi & Komplain Nilai</a></li>
               <li><a href="/layanan/ujian-khusus" class="hover:text-[var(--leaf)] hover:underline">• Pengajuan Ujian Khusus</a></li>
               <li><a href="/layanan/cek-status" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Pendeteksi NIM & Cek Status Tiket</a></li>
@@ -652,7 +651,7 @@ const currentPath = Astro.url.pathname;
                   badge: s.badgeClass,
                   badgeLabel: s.typeLabel,
                   title: s.title,
-                  subtitle: `${s.category} · SLA: ${s.sla}`,
+                  subtitle: `${s.category}`,
                   desc: s.desc,
                   url: s.actionUrl
                 });

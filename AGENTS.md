@@ -20,3 +20,11 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+.agents/
+└── agents/
+    ├── qa-smoke.md
+    ├── qa-e2e.md
+    ├── qa-security.md
+    ├── qa-ui.md
+    └── qa-regression.md

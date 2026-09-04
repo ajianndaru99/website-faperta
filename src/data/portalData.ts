@@ -1,5 +1,5 @@
 // Master data portal akademik FAPERTA INSTIPER Yogyakarta
-// Berdasarkan blueprint dari GAS.txt & integrasi portal layanan modern
+// Terintegrasi dengan Sistem Administrasi Utama & Database Master Kampus
 
 export interface ServiceItem {
   id: string;
@@ -10,7 +10,6 @@ export interface ServiceItem {
   type: 'online' | 'hybrid';
   typeLabel: string;
   badgeClass: string;
-  sla: string;
   desc: string;
   actionUrl: string;
   actionLabel: string;
@@ -49,14 +48,81 @@ export interface TicketItem {
   status: TicketStatus;
   statusStep: number;
   posisiBerkas: string;
-  estimasiSelesai: string;
-  slaDays: number;
+  estimasiSelesai?: string;
   catatanAdmin?: string;
   tanggal: string;
   isNewForAdmin?: boolean;
 }
 
-// 12 Layanan Pokok Berdasarkan dari GAS.txt
+// ============================================================
+// DATABASE UTAMA ADMINISTRASI (DATA MASTER)
+// ============================================================
+
+export interface MasterMahasiswaItem {
+  nim: string;
+  nama: string;
+  prodi: string;
+  minat: string;
+  angkatan: number;
+  semester: string;
+  statusAkademik: 'Aktif' | 'Cuti' | 'Lulus';
+  dpa: string;
+}
+
+export interface MasterDosenItem {
+  id: string;
+  kodeDosen: string;
+  nama: string;
+  nidn: string;
+  prodi: string;
+  jabatan: string;
+  email: string;
+}
+
+export interface MasterMataKuliahItem {
+  kode: string;
+  nama: string;
+  sks: number;
+  semester: number;
+  prodi: string;
+  dosenPengampu: string;
+}
+
+export const MASTER_MAHASISWA: MasterMahasiswaItem[] = [
+  { nim: "21/12345/SP", nama: "Budi Santoso", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P." },
+  { nim: "22/67890/SP", nama: "Siti Rahmawati", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S." },
+  { nim: "20/45678/SP", nama: "Ahmad Fauzi", prodi: "S1 Agroteknologi", minat: "ANTAN (Tanaman Pangan)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Prof. Dr. Ir. H. Bambang, M.P." },
+  { nim: "23/11223/SP", nama: "Dewi Lestari", prodi: "S1 Agribisnis", minat: "SEA (Ekonomi Agribisnis)", angkatan: 2023, semester: "Semester 4", statusAkademik: "Aktif", dpa: "Ir. FX. Supriyadi, M.P." },
+  { nim: "22/33445/SP", nama: "Rian Pratama", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Eko Widodo, S.P., M.Sc." },
+  { nim: "20/55667/SP", nama: "Bagus Saputra", prodi: "S1 Agribisnis", minat: "SPA (Pengolahan Agribisnis)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Ir. Endang Sulastri, M.M." },
+  { nim: "21/44556/SP", nama: "Fajar Nugraha", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P." },
+  { nim: "22/77889/SP", nama: "Putri Anggraini", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S." }
+];
+
+export const MASTER_DOSEN: MasterDosenItem[] = [
+  { id: "DSN01", kodeDosen: "SDR", nama: "Ir. H. Sudirman, M.P.", nidn: "0512036401", prodi: "S1 Agroteknologi", jabatan: "Kaprodi Agroteknologi", email: "sudirman@instiperjogja.ac.id" },
+  { id: "DSN02", kodeDosen: "NRH", nama: "Dr. Ir. Hj. Nurhidayah, M.S.", nidn: "0524086802", prodi: "S1 Agribisnis", jabatan: "Kaprodi Agribisnis", email: "nurhidayah@instiperjogja.ac.id" },
+  { id: "DSN03", kodeDosen: "BMG", nama: "Prof. Dr. Ir. H. Bambang, M.P.", nidn: "0511015801", prodi: "S1 Agroteknologi", jabatan: "Dekan Fakultas Pertanian", email: "bambang@instiperjogja.ac.id" },
+  { id: "DSN04", kodeDosen: "SPR", nama: "Ir. FX. Supriyadi, M.P.", nidn: "0515096201", prodi: "S1 Agribisnis", jabatan: "Wakil Dekan I Akademik", email: "supriyadi@instiperjogja.ac.id" },
+  { id: "DSN05", kodeDosen: "EKW", nama: "Dr. Eko Widodo, S.P., M.Sc.", nidn: "0503047501", prodi: "S1 Agroteknologi", jabatan: "Dosen Pengampu / Peneliti", email: "ekowidodo@instiperjogja.ac.id" },
+  { id: "DSN06", kodeDosen: "EDS", nama: "Ir. Endang Sulastri, M.M.", nidn: "0518066701", prodi: "S1 Agribisnis", jabatan: "Dosen Pembimbing Skripsi", email: "endangs@instiperjogja.ac.id" }
+];
+
+export const MASTER_MATAKULIAH: MasterMataKuliahItem[] = [
+  { kode: "AGT-401", nama: "Rancangan Percobaan Pertanian", sks: 3, semester: 4, prodi: "S1 Agroteknologi", dosenPengampu: "Prof. Dr. Ir. H. Bambang, M.P." },
+  { kode: "AGT-402", nama: "Bioteknologi Tanaman Perkebunan", sks: 3, semester: 6, prodi: "S1 Agroteknologi", dosenPengampu: "Dr. Eko Widodo, S.P., M.Sc." },
+  { kode: "AGT-403", nama: "Budidaya Kelapa Sawit Berkelanjutan", sks: 3, semester: 5, prodi: "S1 Agroteknologi", dosenPengampu: "Ir. H. Sudirman, M.P." },
+  { kode: "AGB-301", nama: "Manajemen Agribisnis Perkebunan", sks: 3, semester: 4, prodi: "S1 Agribisnis", dosenPengampu: "Dr. Ir. Hj. Nurhidayah, M.S." },
+  { kode: "AGB-302", nama: "Manajemen Mutu & Rantai Pasok Pertanian", sks: 3, semester: 6, prodi: "S1 Agribisnis", dosenPengampu: "Ir. Endang Sulastri, M.M." },
+  { kode: "AGB-303", nama: "Kewirausahaan Sosial & Bisnis Digital", sks: 2, semester: 5, prodi: "S1 Agribisnis", dosenPengampu: "Ir. FX. Supriyadi, M.P." },
+  { kode: "FAP-500", nama: "Metodologi Penelitian & Seminar Proposal", sks: 2, semester: 7, prodi: "FAPERTA Bersama", dosenPengampu: "Tim Dosen FAPERTA" },
+  { kode: "FAP-501", nama: "Skripsi & Ujian Pendadaran Sarjana", sks: 6, semester: 8, prodi: "FAPERTA Bersama", dosenPengampu: "Dosen Pembimbing Utama" }
+];
+
+// ============================================================
+// 12 LAYANAN POKOK FAPERTA
+// ============================================================
+
 export const PORTAL_SERVICES: ServiceItem[] = [
   {
     id: "khs",
@@ -67,7 +133,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Ambil di Loket",
     badgeClass: "badge-hybrid",
-    sla: "1 – 2 Hari Kerja",
     desc: "Permohonan penerbitan salinan resmi Kartu Hasil Studi (KHS) berstempel basah untuk prasyarat ujian khusus, beasiswa, maupun arsip dinas. Berkas fisik diambil di Loket FAPERTA.",
     actionUrl: "/layanan/permohonan-khs",
     actionLabel: "Isi Formulir Permohonan KHS",
@@ -84,7 +149,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Formulir & Verifikasi",
     badgeClass: "badge-hybrid",
-    sla: "2 – 3 Hari Kerja",
     desc: "Pengajuan verifikasi nilai yang belum tercantum, tidak sesuai, atau memerlukan klarifikasi administratif dari dosen pengampu mata kuliah.",
     actionUrl: "/layanan/komplain-nilai",
     actionLabel: "Isi Formulir Komplain Nilai",
@@ -101,7 +165,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Formulir Mandiri",
     badgeClass: "badge-hybrid",
-    sla: "3 – 5 Hari Kerja",
     desc: "Pengajuan ujian khusus bagi mahasiswa tingkat akhir yang memenuhi persyaratan akademik (telah menyelesaikan SKS teori dan sedang menyusun skripsi).",
     actionUrl: "/layanan/ujian-khusus",
     actionLabel: "Isi Formulir Ujian Khusus",
@@ -118,7 +181,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
-    sla: "2 – 3 Hari Kerja",
     desc: "Pengajuan ujian susulan sesuai ketentuan akademik dan bukti pendukung yang sah (sakit rawat inap, duka cita keluarga inti, tugas dinas resmi).",
     actionUrl: "/dalam-proses?item=Ujian+Susulan+(UTS%2FUAS)&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -134,7 +196,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "online",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
-    sla: "1 Hari Kerja",
     desc: "Permohonan surat pengantar izin penelitian atau pengambilan data ke kebun percobaan, instansi pemerintah, BUMN, perusahaan, atau laboratorium mitra.",
     actionUrl: "/dalam-proses?item=Surat+Izin+Penelitian+%26+Data&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -150,7 +211,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "online",
     typeLabel: "SIAKAD Online",
     badgeClass: "badge-online",
-    sla: "1 – 2 Hari Kerja",
     desc: "Pendataan dan pengajuan mahasiswa yang akan mengulang mata kuliah pada semester berjalan untuk perbaikan indeks prestasi kumulatif.",
     actionUrl: "https://siakad.instiperjogja.ac.id",
     actionLabel: "Buka KRS SIAKAD",
@@ -166,7 +226,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
-    sla: "2 – 3 Hari Kerja",
     desc: "Pengajuan pencatatan perubahan judul skripsi/penelitian yang telah disetujui secara tertulis oleh dosen pembimbing utama.",
     actionUrl: "/dalam-proses?item=Perubahan+Judul+Penelitian&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -182,7 +241,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
-    sla: "3 – 5 Hari Kerja",
     desc: "Informasi dan verifikasi persyaratan pendaftaran seminar hasil penelitian skripsi mahasiswa tingkat akhir.",
     actionUrl: "/dalam-proses?item=Seminar+Hasil+Skripsi&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -198,7 +256,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "hybrid",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
-    sla: "3 – 5 Hari Kerja",
     desc: "Pendaftaran dan verifikasi kelengkapan berkas pra-ujian pendadaran skripsi mahasiswa program sarjana (S1).",
     actionUrl: "/dalam-proses?item=Ujian+Pendadaran+%2F+Skripsi&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -214,7 +271,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "online",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
-    sla: "1 Hari Kerja",
     desc: "Permohonan penerbitan surat keterangan masih aktif kuliah, surat keterangan kelakuan baik, rekomendasi beasiswa, dan dokumen sejenis.",
     actionUrl: "/dalam-proses?item=Surat+Keterangan+Akademik&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -230,7 +286,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "online",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
-    sla: "1 Hari Kerja",
     desc: "Permohonan penggunaan ruang kelas, aula, atau laboratorium untuk kegiatan akademik resmi dan organisasi kemahasiswaan.",
     actionUrl: "/dalam-proses?item=Peminjaman+Ruang+%26+Fasilitas&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -246,7 +301,6 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     type: "online",
     typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
-    sla: "1 Hari Kerja",
     desc: "Pengajuan surat tugas resmi bagi dosen FAPERTA untuk keperluan penelitian, publikasi jurnal, narasumber, atau pengabdian kepada masyarakat.",
     actionUrl: "/dalam-proses?item=Surat+Tugas+%26+Kegiatan+Dosen&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
@@ -255,7 +309,10 @@ export const PORTAL_SERVICES: ServiceItem[] = [
   }
 ];
 
-// 8 Dokumen Pokok Berdasarkan dari GAS.txt & Berkas Resmi Kampus
+// ============================================================
+// 8 DOKUMEN POKOK FAPERTA
+// ============================================================
+
 export const PORTAL_DOCUMENTS: DocumentItem[] = [
   {
     id: "buku-panduan",
@@ -371,8 +428,7 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     status: "Proses Verifikasi",
     statusStep: 2,
     posisiBerkas: "Meja Verifikasi Administrasi Akademik (Gedung A, Lt. 1)",
-    estimasiSelesai: "1 Hari Kerja (Besok, Pukul 14.00 WIB)",
-    slaDays: 2,
+    estimasiSelesai: "Besok, Pukul 14.00 WIB",
     catatanAdmin: "Petugas sedang mencocokkan data nilai SIAKAD untuk dicetak dan dimintakan stempel basah.",
     tanggal: "04 September 2026, 07:30 WIB",
     isNewForAdmin: true
@@ -391,8 +447,7 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     status: "Belum Diproses",
     statusStep: 1,
     posisiBerkas: "Antrean Masuk Loket Administrasi",
-    estimasiSelesai: "3 Hari Kerja (Senin, 07 September 2026)",
-    slaDays: 5,
+    estimasiSelesai: "Senin, 07 September 2026",
     catatanAdmin: "Permohonan baru masuk antrean. Menunggu verifikasi KHS fisik sebelum diteruskan ke Kaprodi.",
     tanggal: "04 September 2026, 08:00 WIB",
     isNewForAdmin: true
@@ -411,8 +466,7 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     status: "Selesai (Siap Diambil)",
     statusStep: 3,
     posisiBerkas: "Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)",
-    estimasiSelesai: "Selesai (Silakan Ambil di Loket)",
-    slaDays: 3,
+    estimasiSelesai: "Siap Diambil di Loket 1",
     catatanAdmin: "Dosen pengampu telah mengesahkan nilai A-. Berkas surat perubahan nilai fisik sudah siap diambil di Loket 1. Harap membawa KTM.",
     tanggal: "03 September 2026, 11:20 WIB",
     isNewForAdmin: false
@@ -432,7 +486,6 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     statusStep: -1,
     posisiBerkas: "Ditolak Administrasi",
     estimasiSelesai: "-",
-    slaDays: 1,
     catatanAdmin: "DITOLAK: Berkas proposal belum disetujui Dosen Pembimbing Utama. Silakan minta tanda tangan pembimbing terlebih dahulu.",
     tanggal: "02 September 2026, 09:15 WIB",
     isNewForAdmin: false

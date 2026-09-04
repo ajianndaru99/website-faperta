@@ -12,7 +12,7 @@ const categories = [
   "Fasilitas & Dosen"
 ];
 ---
-<BaseLayout title="12 Layanan Akademik" description="Portal resmi 12 layanan akademik mandiri Fakultas Pertanian INSTIPER Yogyakarta dengan estimasi SLA proses berkas.">
+<BaseLayout title="12 Layanan Akademik" description="Portal resmi 12 layanan akademik mandiri Fakultas Pertanian INSTIPER Yogyakarta.">
   <!-- Header Banner -->
   <section class="grid-paper border-b border-[var(--line)]">
     <div class="container-shell py-10 sm:py-14">
@@ -32,7 +32,7 @@ const categories = [
             Layanan Akademik & Berkas Mahasiswa
           </h1>
           <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
-            Akses permohonan salinan KHS online, pengajuan ujian khusus, verifikasi nilai, hingga surat izin penelitian dengan kepastian tahapan dan <strong>estimasi waktu proses (SLA)</strong> yang transparan.
+            Akses permohonan salinan KHS online, pengajuan ujian khusus, verifikasi nilai, hingga surat izin penelitian secara transparan.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ const categories = [
               </span>
             </div>
 
-            <!-- Title & SLA -->
+            <!-- Title -->
             <div class="mt-4">
               <h2 class="text-lg font-black text-[var(--ink)] leading-snug group-hover:text-[var(--leaf)] transition">
                 {item.title}
@@ -141,12 +141,6 @@ const categories = [
               <p class="text-xs font-semibold text-[var(--leaf)] mt-0.5">
                 {item.subtitle}
               </p>
-
-              <!-- SLA Process Time Badge -->
-              <div class="mt-2.5 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-900">
-                <span>⏱️ Estimasi Jadi:</span>
-                <span class="text-emerald-800 font-extrabold">{item.sla}</span>
-              </div>
 
               <!-- Description -->
               <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">

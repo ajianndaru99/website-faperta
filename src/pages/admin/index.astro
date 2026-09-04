@@ -1,73 +1,91 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
+import { 
+  INITIAL_DEMO_TICKETS, 
+  MASTER_MAHASISWA, 
+  MASTER_DOSEN, 
+  MASTER_MATAKULIAH 
+} from "../../data/portalData";
 ---
-<BaseLayout title="Portal Admin & Dashboard Loket" description="Dashboard petugas administrasi FAPERTA INSTIPER untuk memproses surat masuk mahasiswa dan memantau SLA permohonan berkas.">
+
+<BaseLayout 
+  title="Portal Admin & Database Administrasi" 
+  description="Dashboard petugas loket dan sistem database utama administrasi Fakultas Pertanian INSTIPER Yogyakarta."
+>
   
-  <!-- 1. TAMPILAN LOGIN KHUSUS ADMIN (Jika Belum Login) -->
+  <!-- ============================================================
+       1. TAMPILAN LOGIN KHUSUS ADMIN (Konsep & Tema Portal Ujian)
+       ============================================================ -->
   <section id="admin-login-view" class="container-shell py-16 sm:py-24 max-w-md mx-auto">
-    <div class="rounded-3xl border-2 border-[var(--leaf)]/30 bg-white p-8 sm:p-10 shadow-xl">
+    <div class="rounded-3xl border border-slate-200/90 bg-white p-8 sm:p-10 shadow-xl relative overflow-hidden">
+      <!-- Decorative top emerald strip -->
+      <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700"></div>
+
       <div class="text-center">
-        <img 
-          src="/logo-instiper.webp" 
-          alt="Logo INSTIPER" 
-          width="54" 
-          height="54" 
-          class="h-14 w-14 mx-auto object-contain drop-shadow-xs" 
-        />
-        <span class="mt-4 inline-block rounded-full bg-[var(--leaf-soft)] px-3 py-1 text-[11px] font-bold text-[var(--leaf)]">
-          🔒 Portal Staf Administrasi Loket
-        </span>
-        <h1 class="display-title mt-2 text-2xl font-extrabold text-[var(--leaf)]">
+        <div class="mx-auto h-16 w-16 rounded-2xl bg-emerald-50 border border-emerald-200 p-2.5 flex items-center justify-center shadow-xs">
+          <img 
+            src="/logo-instiper.webp" 
+            alt="Logo INSTIPER" 
+            width="50" 
+            height="50" 
+            class="h-full w-full object-contain drop-shadow-xs" 
+          />
+        </div>
+        <div class="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Portal Administrasi Terpadu</span>
+        </div>
+        <h1 class="mt-2.5 text-2xl font-black text-slate-900 tracking-tight">
           FAPERTA INSTIPER
         </h1>
-        <p class="text-xs text-[var(--muted)] mt-1">
-          Masuk untuk memverifikasi surat masuk mahasiswa dan memperbarui posisi berkas loket.
+        <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+          Pusat kontrol loket berkas akademik dan database administrasi terpadu Fakultas Pertanian.
         </p>
       </div>
 
       <!-- Form Login Admin -->
       <form id="admin-login-form" class="mt-8 space-y-4">
         <!-- Error Alert -->
-        <div id="login-error-alert" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-medium">
-          ⚠️ <strong>ID atau Kata Sandi salah!</strong> Silakan periksa kembali kredensial Anda.
+        <div id="login-error-alert" class="hidden p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-medium flex items-center gap-2">
+          <span>⚠️</span>
+          <span><strong>ID atau Kata Sandi salah!</strong> Silakan gunakan kredensial staf loket.</span>
         </div>
 
         <div>
-          <label for="admin-user-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
-            ID Petugas / Username:
+          <label for="admin-user-input" class="block text-xs font-bold text-slate-700 mb-1.5">
+            ID Petugas Administrasi:
           </label>
-          <div class="flex items-center rounded-xl border-2 border-[var(--line)] bg-white px-3.5 py-2.5 focus-within:border-[var(--leaf)] focus-within:ring-2 focus-within:ring-[var(--leaf)]/20 transition">
-            <span class="text-gray-400 mr-2 text-sm">👤</span>
+          <div class="flex items-center rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-600/20 transition">
+            <span class="text-slate-400 mr-2.5 text-sm">👤</span>
             <input 
               type="text" 
               id="admin-user-input" 
               required
               placeholder="Contoh: agrotek" 
-              class="w-full bg-transparent text-sm text-[var(--ink)] placeholder:text-gray-400 outline-none border-none font-medium"
+              class="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none border-none font-medium"
               autocomplete="username"
             />
           </div>
         </div>
 
         <div>
-          <label for="admin-pass-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
-            Kata Sandi / Password:
+          <label for="admin-pass-input" class="block text-xs font-bold text-slate-700 mb-1.5">
+            Kata Sandi:
           </label>
-          <div class="flex items-center rounded-xl border-2 border-[var(--line)] bg-white px-3.5 py-2.5 focus-within:border-[var(--leaf)] focus-within:ring-2 focus-within:ring-[var(--leaf)]/20 transition">
-            <span class="text-gray-400 mr-2 text-sm">🔑</span>
+          <div class="flex items-center rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-600/20 transition">
+            <span class="text-slate-400 mr-2.5 text-sm">🔑</span>
             <input 
               type="password" 
               id="admin-pass-input" 
               required
               placeholder="••••••••" 
-              class="w-full bg-transparent text-sm text-[var(--ink)] placeholder:text-gray-400 outline-none border-none font-medium"
+              class="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none border-none font-medium"
               autocomplete="current-password"
             />
             <button 
               type="button" 
               id="btn-toggle-pass" 
-              class="text-xs text-gray-400 hover:text-[var(--leaf)] font-bold ml-2 select-none cursor-pointer"
+              class="text-xs text-slate-400 hover:text-emerald-700 font-bold ml-2 select-none cursor-pointer"
             >
               Lihat
             </button>
@@ -76,60 +94,328 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
         <button 
           type="submit" 
-          class="w-full btn-cta text-sm py-3 flex items-center justify-center gap-2 mt-4 shadow-sm cursor-pointer"
+          class="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-sm py-3 flex items-center justify-center gap-2 mt-4 shadow-md shadow-emerald-900/15 transition cursor-pointer"
         >
-          <span>Masuk Portal Admin</span>
+          <span>Masuk Sistem Administrasi</span>
           <span>→</span>
         </button>
       </form>
 
-      <!-- Informasi Akun Demo untuk Admin -->
-      <div class="mt-6 pt-5 border-t border-[var(--line)] bg-gray-50/70 p-3.5 rounded-2xl text-[11px] text-[var(--muted)]">
-        <p class="font-bold text-[var(--leaf)] mb-1">💡 Kredensial Khusus Staf Loket:</p>
-        <p>• <strong>ID:</strong> <code class="font-mono text-[var(--ink)] bg-white px-1.5 py-0.5 rounded border border-gray-200">agrotek</code></p>
-        <p class="mt-0.5">• <strong>Kata Sandi:</strong> <code class="font-mono text-[var(--ink)] bg-white px-1.5 py-0.5 rounded border border-gray-200">agr001</code></p>
+      <!-- Informasi Akun Demo Staf -->
+      <div class="mt-6 pt-5 border-t border-slate-100 bg-slate-50/80 p-3.5 rounded-2xl text-[11px] text-slate-600 space-y-1">
+        <p class="font-bold text-emerald-800 flex items-center gap-1.5">
+          <span>💡</span>
+          <span>Kredensial Akses Staf Loket:</span>
+        </p>
+        <p>• <strong>ID Petugas:</strong> <code class="font-mono text-slate-900 bg-white px-1.5 py-0.5 rounded border border-slate-200">agrotek</code></p>
+        <p>• <strong>Kata Sandi:</strong> <code class="font-mono text-slate-900 bg-white px-1.5 py-0.5 rounded border border-slate-200">agr001</code></p>
+        <button 
+          type="button" 
+          id="btn-quick-login" 
+          class="mt-2.5 w-full py-2 px-3 rounded-xl bg-emerald-100/90 hover:bg-emerald-200 text-emerald-900 font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
+        >
+          <span>⚡</span>
+          <span>Masuk Otomatis (Demo Staf Loket)</span>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- 2. TAMPILAN DASHBOARD ADMIN (Aktif Setelah Login) -->
-  <div id="admin-dashboard-view" class="hidden flex-1 bg-[#f7faf5] border-b border-[var(--line)]">
+  <!-- ============================================================
+       2. TAMPILAN DASHBOARD & DATABASE ADMIN (Tema Portal Ujian)
+       ============================================================ -->
+  <div id="admin-dashboard-view" class="hidden flex-1 bg-slate-50 min-h-screen border-b border-slate-200">
+    
+    <!-- Top System Header Bar (Live Clock, Status Server & Quick Actions) -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
+      <div class="container-shell py-3 flex flex-wrap items-center justify-between gap-3">
+        
+        <!-- Left: Branding & Section -->
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
+            FP
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-sm sm:text-base font-black text-slate-900 leading-none">
+                Sistem Administrasi FAPERTA
+              </h1>
+              <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                Loket Online
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              Fakultas Pertanian INSTIPER • Gedung A Lantai 1
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Live Clock & Date + Quick Actions -->
+        <div class="flex items-center gap-2.5">
+          <!-- Digital Clock Widget (portal-ujian style) -->
+          <div class="hidden md:flex items-center gap-2 bg-slate-100/80 px-3 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+            <span class="text-slate-400">📅</span>
+            <span id="live-calendar" class="font-medium">Jumat, 4 September 2026</span>
+            <span class="text-slate-300">|</span>
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span id="live-clock" class="font-mono font-bold text-emerald-700">--:--:-- WIB</span>
+          </div>
+
+          <!-- Tombol Tambah / Simulasi Berkas Baru -->
+          <div class="relative">
+            <button 
+              id="btn-simulate-dropdown" 
+              type="button" 
+              class="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            >
+              <span>➕</span>
+              <span class="hidden sm:inline">Simulasi Berkas</span>
+              <span class="text-[9px]">▼</span>
+            </button>
+            <div id="simulate-dropdown-menu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-40 space-y-1 text-xs">
+              <div class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Tambah Antrean Demo:
+              </div>
+              <button type="button" data-sim-case="khs" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
+                <span>📄 Permohonan KHS Baru</span>
+                <span class="text-[10px] text-slate-400">Loket</span>
+              </button>
+              <button type="button" data-sim-case="komplain" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
+                <span>⚖️ Komplain Nilai Baru</span>
+                <span class="text-[10px] text-slate-400">SIAKAD</span>
+              </button>
+              <button type="button" data-sim-case="ujian" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
+                <span>🎓 Ujian Khusus Baru</span>
+                <span class="text-[10px] text-slate-400">Dekanat</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tombol Ekspor CSV Rekap -->
+          <button 
+            id="btn-export-csv" 
+            type="button" 
+            class="px-3 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            title="Unduh data seluruh berkas format CSV"
+          >
+            <span>📥</span>
+            <span class="hidden sm:inline">Unduh CSV</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
     <div class="container-shell py-6">
       
-      <!-- Top Alert Ribbon: SOP Loket Fisik -->
-      <div class="mb-6 rounded-2xl bg-amber-50/90 border border-amber-200 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-amber-950 shadow-2xs">
-        <div class="flex items-center gap-2.5">
-          <span class="text-base shrink-0">📌</span>
-          <span>
-            <strong>SOP Loket FAPERTA:</strong> Mahasiswa mengambil berkas fisik di <strong>Loket 1 Gedung A Lantai 1</strong> membawa KTM asli. Petugas memperbarui status berkas agar terbaca saat mahasiswa mengecek NIM.
-          </span>
-        </div>
-        <button id="btn-mark-all-read" type="button" class="text-xs font-bold text-amber-900 hover:text-[var(--leaf)] hover:underline shrink-0 cursor-pointer">
-          ✓ Tandai Semua Terbaca
-        </button>
-      </div>
-
-      <!-- Main Layout: Sidebar Kiri + Workspace Kanan -->
-      <div class="grid lg:grid-cols-[280px_1fr] gap-6 items-start">
+      <div class="grid lg:grid-cols-[270px_1fr] gap-6 items-start">
         
-        <!-- SIDEBAR KIRI: Navigasi Kategori Berkas & Filter Status -->
-        <aside class="rounded-3xl border border-[var(--line)] bg-white p-5 shadow-xs lg:sticky lg:top-24 space-y-6">
+        <!-- ============================================================
+             SIDEBAR KIRI (Tema & Konsep portal-ujian-faperta)
+             ============================================================ -->
+        <aside class="space-y-5 lg:sticky lg:top-20">
           
-          <!-- Header Profil Petugas -->
-          <div class="border-b border-[var(--line)] pb-4 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <div class="grid h-10 w-10 place-items-center rounded-xl bg-[var(--leaf-soft)] text-lg text-[var(--leaf)] font-bold">
-                🛡️
+          <!-- Box Navigasi Utama -->
+          <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-xs space-y-5">
+            
+            <!-- SECTION 1: MENU UTAMA -->
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2 px-2">
+                Menu Utama
+              </span>
+              <nav class="space-y-1" aria-label="Menu Utama Admin">
+                <!-- 1. Berkas Masuk / Dashboard -->
+                <button 
+                  type="button" 
+                  id="tab-btn-berkas" 
+                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md shadow-emerald-900/15"
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-sm">📥</span>
+                    <span>Daftar Berkas Masuk</span>
+                  </div>
+                  <span id="badge-count-all" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-black">0</span>
+                </button>
+
+                <!-- 2. Database Utama Administrasi (NEW MASTER DB) -->
+                <button 
+                  type="button" 
+                  id="tab-btn-database" 
+                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800"
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-sm">🗄️</span>
+                    <span>Database Administrasi</span>
+                  </div>
+                  <span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-800">MASTER</span>
+                </button>
+
+                <!-- 3. Rekap & Laporan -->
+                <button 
+                  type="button" 
+                  id="tab-btn-rekap" 
+                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800"
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-sm">📊</span>
+                    <span>Rekap & Laporan</span>
+                  </div>
+                  <span class="text-slate-400 text-xs">→</span>
+                </button>
+              </nav>
+            </div>
+
+            <!-- SECTION 2: FILTER STATUS BERKAS (Aktif pada View Berkas) -->
+            <div id="sidebar-filter-status-box" class="border-t border-slate-100 pt-4">
+              <div class="flex items-center justify-between mb-2 px-2">
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                  Filter Status
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">Real-time</span>
+              </div>
+              <div class="space-y-1">
+                <button 
+                  type="button" 
+                  data-status="all" 
+                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-emerald-50 text-emerald-800"
+                >
+                  <span>Semua Status</span>
+                  <span id="stat-filter-all" class="font-mono text-[10px]">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-status="Belum Diproses" 
+                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-amber-50 hover:text-amber-900"
+                >
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                    <span>Belum Diproses</span>
+                  </span>
+                  <span id="stat-filter-pending" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-amber-100 text-amber-900 font-black">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-status="Proses Verifikasi" 
+                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-blue-50 hover:text-blue-900"
+                >
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                    <span>Proses Verifikasi</span>
+                  </span>
+                  <span id="stat-filter-process" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-blue-100 text-blue-900 font-black">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-status="Selesai (Siap Diambil)" 
+                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-emerald-50 hover:text-emerald-900"
+                >
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                    <span>Siap Diambil</span>
+                  </span>
+                  <span id="stat-filter-done" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-emerald-100 text-emerald-900 font-black">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-status="Ditolak" 
+                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-rose-50 hover:text-rose-900"
+                >
+                  <span class="flex items-center gap-1.5">
+                    <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+                    <span>Ditolak</span>
+                  </span>
+                  <span id="stat-filter-rejected" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-rose-100 text-rose-900 font-black">0</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SECTION 3: FILTER KATEGORI LAYANAN BERKAS -->
+            <div id="sidebar-filter-category-box" class="border-t border-slate-100 pt-4">
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2 px-2">
+                Kategori Berkas
+              </span>
+              <div class="space-y-1">
+                <button 
+                  type="button" 
+                  data-case="all" 
+                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900"
+                >
+                  <span>📋 Seluruh Dokumen</span>
+                  <span id="badge-cat-all" class="font-mono text-[10px]">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-case="khs" 
+                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                >
+                  <span>📄 Permohonan KHS</span>
+                  <span id="badge-count-khs" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-case="komplain" 
+                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                >
+                  <span>⚖️ Komplain Nilai</span>
+                  <span id="badge-count-komplain" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-case="ujian" 
+                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                >
+                  <span>🎓 Ujian Khusus</span>
+                  <span id="badge-count-ujian" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                </button>
+                <button 
+                  type="button" 
+                  data-case="lainnya" 
+                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                >
+                  <span>📑 Surat Izin / Lainnya</span>
+                  <span id="badge-count-lainnya" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- SECTION 4: SYSTEM CONTROLS -->
+            <div class="border-t border-slate-100 pt-4 space-y-1.5">
+              <button 
+                id="btn-mark-all-read" 
+                type="button" 
+                class="w-full text-left px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 hover:bg-slate-100 hover:text-emerald-800 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>✓</span>
+                <span>Tandai Semua Berkas Terbaca</span>
+              </button>
+              <button 
+                id="btn-reset-demo" 
+                type="button" 
+                class="w-full text-left px-3 py-1.5 rounded-xl text-[11px] font-bold text-rose-600 hover:bg-rose-50 transition flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>🔄</span>
+                <span>Reset Data Awal Demo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Profil Petugas Box (Bawah Sidebar) -->
+          <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-xs flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                A
               </div>
               <div>
-                <span class="text-[10px] font-bold uppercase tracking-wider text-[var(--muted)] block">Portal Loket</span>
-                <strong id="active-user-badge" class="text-xs font-bold text-[var(--ink)]">Petugas: agrotek</strong>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block leading-none">Petugas Loket</span>
+                <strong class="text-xs font-black text-slate-900 block mt-0.5">agrotek</strong>
+                <span class="text-[10px] text-emerald-700 font-bold block">Super Admin</span>
               </div>
             </div>
             <button 
               id="btn-admin-logout" 
               type="button" 
-              class="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer"
+              class="p-2.5 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
               title="Keluar dari Portal Admin"
             >
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -137,303 +423,378 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               </svg>
             </button>
           </div>
-
-          <!-- Grup 1: Navigasi Kategori Berkas Mahasiswa (dengan Notifikasi) -->
-          <div>
-            <span class="text-[10px] font-black uppercase tracking-wider text-[var(--muted)] block mb-2 px-1">
-              Kategori Berkas
-            </span>
-            <nav class="space-y-1" aria-label="Kategori Berkas">
-              <!-- Semua Berkas -->
-              <button 
-                type="button" 
-                data-case="all" 
-                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf)] text-white shadow-2xs"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="text-sm">📋</span>
-                  <span>Semua Berkas</span>
-                </div>
-                <span id="badge-count-all" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-black">0</span>
-              </button>
-
-              <!-- Permohonan KHS -->
-              <button 
-                type="button" 
-                data-case="khs" 
-                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="text-sm">📄</span>
-                  <span>Permohonan KHS</span>
-                </div>
-                <span id="badge-count-khs" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
-              </button>
-
-              <!-- Komplain Nilai -->
-              <button 
-                type="button" 
-                data-case="komplain" 
-                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="text-sm">⚖️</span>
-                  <span>Komplain Nilai</span>
-                </div>
-                <span id="badge-count-komplain" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
-              </button>
-
-              <!-- Ujian Khusus -->
-              <button 
-                type="button" 
-                data-case="ujian" 
-                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="text-sm">🎓</span>
-                  <span>Ujian Khusus</span>
-                </div>
-                <span id="badge-count-ujian" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
-              </button>
-
-              <!-- Surat Izin & Lainnya -->
-              <button 
-                type="button" 
-                data-case="lainnya" 
-                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="text-sm">📑</span>
-                  <span>Surat Izin & Lainnya</span>
-                </div>
-                <span id="badge-count-lainnya" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
-              </button>
-            </nav>
-          </div>
-
-          <!-- Grup 2: Filter Berdasarkan Status Pemrosesan -->
-          <div class="border-t border-[var(--line)] pt-4">
-            <span class="text-[10px] font-black uppercase tracking-wider text-[var(--muted)] block mb-2 px-1">
-              Filter Status
-            </span>
-            <div class="space-y-1">
-              <button 
-                type="button" 
-                data-status="all" 
-                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf-soft)] text-[var(--leaf)]"
-              >
-                <span>Semua Status</span>
-                <span id="stat-filter-all" class="font-mono text-[10px]">0</span>
-              </button>
-              <button 
-                type="button" 
-                data-status="Belum Diproses" 
-                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-amber-50"
-              >
-                <span class="flex items-center gap-1.5">
-                  <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                  <span>Belum Diproses</span>
-                </span>
-                <span id="stat-filter-pending" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-amber-100 text-amber-900 font-black">0</span>
-              </button>
-              <button 
-                type="button" 
-                data-status="Proses Verifikasi" 
-                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-blue-50"
-              >
-                <span class="flex items-center gap-1.5">
-                  <span class="h-2 w-2 rounded-full bg-blue-500"></span>
-                  <span>Proses Verifikasi</span>
-                </span>
-                <span id="stat-filter-process" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-blue-100 text-blue-900 font-black">0</span>
-              </button>
-              <button 
-                type="button" 
-                data-status="Selesai (Siap Diambil)" 
-                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-emerald-50"
-              >
-                <span class="flex items-center gap-1.5">
-                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                  <span>Siap Diambil di Loket</span>
-                </span>
-                <span id="stat-filter-done" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-emerald-100 text-emerald-900 font-black">0</span>
-              </button>
-              <button 
-                type="button" 
-                data-status="Ditolak" 
-                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-rose-50"
-              >
-                <span class="flex items-center gap-1.5">
-                  <span class="h-2 w-2 rounded-full bg-rose-500"></span>
-                  <span>Ditolak</span>
-                </span>
-                <span id="stat-filter-rejected" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-rose-100 text-rose-900 font-black">0</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Grup 3: Aksi Petugas Cepat -->
-          <div class="border-t border-[var(--line)] pt-4 space-y-2">
-            <!-- Tombol Simulasi Surat Baru -->
-            <div class="relative">
-              <button 
-                id="btn-simulate-dropdown" 
-                type="button" 
-                class="w-full btn-secondary text-xs py-2 px-3 flex items-center justify-center gap-1.5 bg-gray-50 hover:bg-[var(--leaf-soft)] font-bold cursor-pointer"
-              >
-                <span>➕</span>
-                <span>Simulasi Surat Masuk</span>
-                <span class="text-[10px]">▼</span>
-              </button>
-              <div id="simulate-dropdown-menu" class="hidden absolute left-0 right-0 bottom-full mb-2 bg-white rounded-2xl shadow-xl border border-[var(--line)] p-2 z-30 space-y-1 text-xs">
-                <button type="button" data-sim-case="khs" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] font-bold flex items-center justify-between cursor-pointer">
-                  <span>📄 Surat KHS Baru</span>
-                  <span class="text-[10px] text-gray-400">SLA 1-2H</span>
-                </button>
-                <button type="button" data-sim-case="komplain" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-amber-50 hover:text-amber-900 font-bold flex items-center justify-between cursor-pointer">
-                  <span>⚖️ Komplain Nilai Baru</span>
-                  <span class="text-[10px] text-gray-400">SLA 2-3H</span>
-                </button>
-                <button type="button" data-sim-case="ujian" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-blue-50 hover:text-blue-900 font-bold flex items-center justify-between cursor-pointer">
-                  <span>🎓 Ujian Khusus Baru</span>
-                  <span class="text-[10px] text-gray-400">SLA 3-5H</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Tombol Ekspor CSV -->
-            <button 
-              id="btn-export-csv" 
-              type="button" 
-              class="w-full btn-secondary text-xs py-2 px-3 flex items-center justify-center gap-1.5 bg-white font-bold cursor-pointer"
-            >
-              <span>📥</span>
-              <span>Ekspor Data (CSV)</span>
-            </button>
-
-            <!-- Reset Data Demo -->
-            <button 
-              id="btn-reset-demo" 
-              type="button" 
-              class="w-full text-center text-[10px] text-gray-400 hover:text-red-600 transition pt-1 cursor-pointer"
-            >
-              Reset Data Awal Demo
-            </button>
-          </div>
         </aside>
 
-        <!-- WORKSPACE UTAMA: Header Bersih, Pencarian, & Daftar Berkas -->
+        <!-- ============================================================
+             WORKSPACE UTAMA (KANAN)
+             ============================================================ -->
         <main class="space-y-6">
           
-          <!-- Workspace Header Bar -->
-          <div class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-[var(--leaf)]">
-                  Semua Berkas Masuk
-                </h2>
-                <span id="filtered-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-[var(--leaf-soft)] text-[var(--leaf)]">
-                  0 Berkas
-                </span>
+          <!-- ========================================================
+               VIEW 1: DAFTAR BERKAS MASUK (DASHBOARD PEMROSESAN)
+               ======================================================== -->
+          <div id="view-berkas-container" class="space-y-6">
+            
+            <!-- Workspace Header Bar -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2.5">
+                  <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    Semua Berkas Masuk
+                  </h2>
+                  <span id="filtered-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    0 Berkas
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">
+                  Pusat verifikasi dan disposisi posisi berkas fisik loket administrasi FAPERTA INSTIPER.
+                </p>
               </div>
-              <p class="text-xs text-[var(--muted)] mt-1">
-                Pusat verifikasi dan disposisi posisi berkas fisik loket administrasi FAPERTA INSTIPER.
+
+              <!-- Quick Search Input -->
+              <div class="sm:w-80">
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
+                    🔍
+                  </span>
+                  <input 
+                    type="text" 
+                    id="admin-search-input" 
+                    placeholder="Cari NIM, Nama, atau Kode..." 
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Compact KPI Stats Strip (portal-ujian clean aesthetic) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs flex items-center gap-3.5">
+                <div class="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg">
+                  📋
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Berkas</p>
+                  <p id="stat-total" class="text-xl font-black text-slate-900">0</p>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-4 shadow-2xs flex items-center gap-3.5">
+                <div class="h-10 w-10 rounded-xl bg-amber-100 flex items-center justify-center text-lg">
+                  ⏳
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Belum Diproses</p>
+                  <p id="stat-pending" class="text-xl font-black text-amber-900">0</p>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-blue-200 bg-blue-50/60 p-4 shadow-2xs flex items-center gap-3.5">
+                <div class="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center text-lg">
+                  🔍
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Verifikasi</p>
+                  <p id="stat-process" class="text-xl font-black text-blue-900">0</p>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-2xs flex items-center gap-3.5">
+                <div class="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center text-lg">
+                  ✅
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Siap Diambil</p>
+                  <p id="stat-done" class="text-xl font-black text-emerald-900">0</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notice: Cetak Struk Hanya di Mahasiswa -->
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-3.5 flex items-center justify-between gap-3 text-xs text-emerald-900">
+              <div class="flex items-center gap-2">
+                <span class="text-base">ℹ️</span>
+                <span><strong>Catatan Kebijakan:</strong> Fitur cetak struk fisik tanda terima resmi dikhususkan untuk dicetak langsung oleh <strong>Mahasiswa</strong> pada menu Cek Status & Konfirmasi Permohonan.</span>
+              </div>
+            </div>
+
+            <!-- Daftar Berkas / Tickets Cards Container -->
+            <div id="admin-tickets-container" class="space-y-4">
+              <!-- Rendered by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="admin-empty-state" class="hidden rounded-3xl border-2 border-dashed border-slate-200 bg-white p-12 text-center">
+              <span class="text-4xl">📂</span>
+              <h3 class="mt-3 text-base font-bold text-slate-800">Tidak Ada Berkas Ditemukan</h3>
+              <p class="mt-1 text-xs text-slate-500">
+                Tidak ada permohonan berkas yang cocok dengan filter atau kata kunci pencarian Anda.
               </p>
             </div>
+          </div>
 
-            <!-- Quick Search Input -->
-            <div class="sm:w-80">
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-xs">
-                  🔍
+          <!-- ========================================================
+               VIEW 2: DATABASE UTAMA ADMINISTRASI (Requirement #2)
+               ======================================================== -->
+          <div id="view-database-container" class="hidden space-y-6">
+            
+            <!-- Database Header -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">🗄️</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                      Database Utama Administrasi
+                    </h2>
+                  </div>
+                  <p class="text-xs text-slate-500 mt-1">
+                    Master data induk Fakultas Pertanian INSTIPER untuk validasi mahasiswa, dosen, mata kuliah, dan rekap administrasi loket.
+                  </p>
+                </div>
+                
+                <!-- Database Tabs Pills -->
+                <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl">
+                  <button 
+                    type="button" 
+                    data-db-tab="mahasiswa" 
+                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
+                  >
+                    🎓 Mahasiswa ({MASTER_MAHASISWA.length})
+                  </button>
+                  <button 
+                    type="button" 
+                    data-db-tab="dosen" 
+                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    👨‍🏫 Dosen & Kaprodi ({MASTER_DOSEN.length})
+                  </button>
+                  <button 
+                    type="button" 
+                    data-db-tab="matkul" 
+                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    📚 Mata Kuliah ({MASTER_MATAKULIAH.length})
+                  </button>
+                  <button 
+                    type="button" 
+                    data-db-tab="arsip" 
+                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    📋 Buku Besar Berkas
+                  </button>
+                </div>
+              </div>
+
+              <!-- Master Search Input -->
+              <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                <div class="relative flex-1 max-w-md">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
+                    🔍
+                  </span>
+                  <input 
+                    type="text" 
+                    id="db-search-input" 
+                    placeholder="Cari dalam database..." 
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition"
+                  />
+                </div>
+                <div id="db-active-count" class="text-xs font-bold text-slate-500">
+                  Menampilkan data master
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE 1: MASTER MAHASISWA -->
+            <div id="pane-mahasiswa" class="db-pane space-y-4">
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4">NIM</th>
+                        <th class="py-3.5 px-4">Nama Mahasiswa</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Minat Studi</th>
+                        <th class="py-3.5 px-4">Angkatan</th>
+                        <th class="py-3.5 px-4">Semester</th>
+                        <th class="py-3.5 px-4">DPA (Dosen Pembimbing)</th>
+                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th class="py-3.5 px-4 text-right">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-mahasiswa-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE 2: MASTER DOSEN & KAPRODI -->
+            <div id="pane-dosen" class="db-pane hidden space-y-4">
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4">NIDN</th>
+                        <th class="py-3.5 px-4">Kode</th>
+                        <th class="py-3.5 px-4">Nama Lengkap & Gelar</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Jabatan Akademik</th>
+                        <th class="py-3.5 px-4">Email Resmi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-dosen-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE 3: MASTER MATA KULIAH -->
+            <div id="pane-matkul" class="db-pane hidden space-y-4">
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4">Kode MK</th>
+                        <th class="py-3.5 px-4">Nama Mata Kuliah</th>
+                        <th class="py-3.5 px-4 text-center">SKS</th>
+                        <th class="py-3.5 px-4 text-center">Semester</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Dosen Pengampu Utama</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-matkul-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE 4: BUKU BESAR BERKAS (ARSIP SELURUH PERMOHONAN) -->
+            <div id="pane-arsip" class="db-pane hidden space-y-4">
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4">Kode Tiket</th>
+                        <th class="py-3.5 px-4">NIM & Mahasiswa</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Layanan</th>
+                        <th class="py-3.5 px-4">Tanggal Pengajuan</th>
+                        <th class="py-3.5 px-4">Posisi Berkas Fisik</th>
+                        <th class="py-3.5 px-4 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-arsip-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               VIEW 3: REKAP & LAPORAN ADMINISTRASI (CSV DOWNLOAD)
+               ======================================================== -->
+          <div id="view-rekap-container" class="hidden space-y-6">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div class="max-w-2xl">
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                  📑 Modul Rekapitulasi Loket
                 </span>
-                <input 
-                  type="text" 
-                  id="admin-search-input" 
-                  placeholder="Cari NIM, Nama, atau Kode..." 
-                  class="w-full rounded-xl border border-[var(--line)] bg-[#fbfdfa] pl-8 pr-3 py-2 text-xs text-[var(--ink)] placeholder:text-gray-400 focus:border-[var(--leaf)] focus:bg-white outline-none font-medium transition"
-                />
-              </div>
-            </div>
-          </div>
+                <h2 class="text-2xl font-black text-slate-900 mt-3">
+                  Rekapitulasi Administrasi & Ekspor Data
+                </h2>
+                <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+                  Unduh ringkasan transaksi surat masuk, permohonan KHS, komplain nilai, dan ujian khusus dalam format spreadsheet CSV untuk arsip dinas atau laporan berkala fakultas.
+                </p>
 
-          <!-- Compact Stats Strip (Clean & Professional) -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div class="rounded-2xl border border-[var(--line)] bg-white p-3.5 shadow-2xs flex items-center gap-3">
-              <span class="text-xl">📋</span>
-              <div>
-                <p class="text-[10px] font-bold text-[var(--muted)] uppercase">Total Berkas</p>
-                <p id="stat-total" class="text-lg font-black text-[var(--ink)]">0</p>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-3.5 shadow-2xs flex items-center gap-3">
-              <span class="text-xl">⏳</span>
-              <div>
-                <p class="text-[10px] font-bold text-amber-800 uppercase">Belum Diproses</p>
-                <p id="stat-pending" class="text-lg font-black text-amber-900">0</p>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-blue-200 bg-blue-50/70 p-3.5 shadow-2xs flex items-center gap-3">
-              <span class="text-xl">🔍</span>
-              <div>
-                <p class="text-[10px] font-bold text-blue-800 uppercase">Verifikasi</p>
-                <p id="stat-process" class="text-lg font-black text-blue-900">0</p>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-3.5 shadow-2xs flex items-center gap-3">
-              <span class="text-xl">📦</span>
-              <div>
-                <p class="text-[10px] font-bold text-emerald-800 uppercase">Siap Diambil</p>
-                <p id="stat-done" class="text-lg font-black text-emerald-900">0</p>
-              </div>
-            </div>
-          </div>
+                <div class="mt-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <h4 class="text-xs font-bold text-slate-800">Ringkasan Berkas Tercatat:</h4>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="p-3 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-slate-400">Total Pengajuan</p>
+                      <p id="rekap-total" class="text-base font-black text-slate-900 mt-0.5">0</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-amber-700 font-bold">Belum Diproses</p>
+                      <p id="rekap-pending" class="text-base font-black text-amber-900 mt-0.5">0</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-blue-700 font-bold">Verifikasi</p>
+                      <p id="rekap-process" class="text-base font-black text-blue-900 mt-0.5">0</p>
+                    </div>
+                    <div class="p-3 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-emerald-700 font-bold">Siap Diambil</p>
+                      <p id="rekap-done" class="text-base font-black text-emerald-900 mt-0.5">0</p>
+                    </div>
+                  </div>
+                </div>
 
-          <!-- Daftar Berkas / Tickets List Container -->
-          <div id="admin-tickets-container" class="space-y-4">
-            <!-- Rendered by JavaScript -->
-          </div>
-
-          <!-- Empty State -->
-          <div id="admin-empty-state" class="hidden rounded-3xl border-2 border-dashed border-[var(--line)] bg-white p-12 text-center">
-            <span class="text-4xl">📂</span>
-            <h3 class="mt-3 text-base font-bold text-[var(--ink)]">Tidak Ada Berkas Ditemukan</h3>
-            <p class="mt-1 text-xs text-[var(--muted)]">
-              Tidak ada permohonan surat yang cocok dengan filter atau kata kunci pencarian Anda.
-            </p>
+                <div class="mt-6 flex flex-wrap items-center gap-3">
+                  <button 
+                    id="btn-rekap-download-csv" 
+                    type="button" 
+                    class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold px-5 py-3 shadow-md shadow-emerald-900/15 flex items-center gap-2 cursor-pointer"
+                  >
+                    <span>📥</span>
+                    <span>Download Rekap Lengkap (.CSV)</span>
+                  </button>
+                  <button 
+                    id="btn-back-to-berkas" 
+                    type="button" 
+                    class="rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-3 cursor-pointer"
+                  >
+                    Kembali ke Berkas Masuk
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
     </div>
   </div>
 
-  <!-- 3. MODAL EDIT & UPDATE DISPOSISI BERKAS (Modern Dialog) -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden transition-opacity opacity-0" aria-hidden="true"></div>
+  <!-- ============================================================
+       3. MODAL EDIT & UPDATE DISPOSISI STATUS BERKAS (Modern Dialog)
+       ============================================================ -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden transition-opacity opacity-0" aria-hidden="true"></div>
   <div 
     id="edit-ticket-modal" 
-    class="fixed inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-xl bg-white z-50 rounded-3xl shadow-2xl border border-[var(--line)] hidden transform scale-95 transition-all duration-200 overflow-hidden"
+    class="fixed inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-xl bg-white z-50 rounded-3xl shadow-2xl border border-slate-200 hidden transform scale-95 transition-all duration-200 overflow-hidden"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-ticket-title"
   >
-    <div class="p-5 sm:p-6 border-b border-[var(--line)] bg-[#fbfdfa] flex items-center justify-between">
+    <!-- Modal Header -->
+    <div class="p-5 sm:p-6 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
       <div>
-        <span class="text-[10px] font-black uppercase tracking-wider text-[var(--leaf)] block">Disposisi Berkas Loket</span>
-        <h3 id="modal-ticket-title" class="text-base sm:text-lg font-black text-[var(--ink)]">
+        <span class="text-[10px] font-black uppercase tracking-wider text-emerald-700 block">
+          Disposisi & Update Status Loket
+        </span>
+        <h3 id="modal-ticket-title" class="text-base sm:text-lg font-black text-slate-900">
           KHS-2026-XXXX — Budi Santoso
         </h3>
       </div>
-      <button id="btn-close-modal" type="button" class="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition cursor-pointer">
+      <button id="btn-close-modal" type="button" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer">
         ✕
       </button>
     </div>
 
+    <!-- Modal Form -->
     <form id="modal-edit-form" class="p-5 sm:p-6 space-y-5">
       <input type="hidden" id="modal-ticket-code" />
 
       <!-- Pilihan Status Baru -->
       <div>
-        <label class="block text-xs font-bold text-[var(--ink)] mb-2">
+        <label class="block text-xs font-bold text-slate-700 mb-2">
           Pilih Status Terkini Permohonan:
         </label>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -448,7 +809,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           <button 
             type="button" 
             data-target-status="Proses Verifikasi" 
-            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
           >
             <span>🔍</span>
             <span>Verifikasi</span>
@@ -456,7 +817,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           <button 
             type="button" 
             data-target-status="Selesai (Siap Diambil)" 
-            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
           >
             <span>📦</span>
             <span>Siap Diambil</span>
@@ -464,7 +825,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           <button 
             type="button" 
             data-target-status="Ditolak" 
-            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
           >
             <span>❌</span>
             <span>Ditolak</span>
@@ -473,53 +834,59 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
       </div>
 
-      <!-- Posisi Berkas Fisik -->
+      <!-- Posisi Berkas Fisik Terkini -->
       <div>
-        <label for="modal-posisi-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
-          Posisi Fisik Berkas Saat Ini di Kampus:
+        <label for="modal-posisi-input" class="block text-xs font-bold text-slate-700 mb-1">
+          Posisi Berkas Fisik Saat Ini (Muncul di Cek Status Mahasiswa):
         </label>
         <input 
           type="text" 
           id="modal-posisi-input" 
           required 
-          class="w-full rounded-xl border border-[var(--line)] bg-white px-3.5 py-2.5 text-xs text-[var(--ink)] focus:border-[var(--leaf)] outline-none font-medium"
+          class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-900 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
           placeholder="Contoh: Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)"
         />
-        <!-- Quick Preset Badges -->
+        
+        <!-- Preset Posisi Cepat -->
         <div class="mt-2 flex flex-wrap gap-1.5 text-[10px]">
-          <span class="text-gray-400 font-semibold self-center">Preset:</span>
-          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Antrean Masuk Loket Administrasi FAPERTA">Antrean Loket</button>
-          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Meja Verifikasi Petugas (Gedung A, Lt. 1)">Meja Verifikasi</button>
-          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil">Loket 1 Siap Diambil</button>
-          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Ruang Kaprodi (Pemeriksaan Naskah/KHS)">Ruang Kaprodi</button>
+          <span class="text-slate-400 self-center">Pilihan cepat:</span>
+          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)">
+            Loket 1 Gedung A
+          </button>
+          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Berkas">
+            Meja Verifikasi
+          </button>
+          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi / Dekanat">
+            Ruang Kaprodi
+          </button>
         </div>
       </div>
 
-      <!-- Catatan / Disposisi Petugas -->
+      <!-- Catatan Admin untuk Mahasiswa -->
       <div>
-        <label for="modal-catatan-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
+        <label for="modal-catatan-input" class="block text-xs font-bold text-slate-700 mb-1">
           Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
         </label>
         <textarea 
           id="modal-catatan-input" 
           rows="3" 
-          class="w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] focus:border-[var(--leaf)] outline-none font-medium"
-          placeholder="Tuliskan petunjuk pengambilan, waktu jadi, atau alasan penolakan jika ditolak..."
+          class="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-900 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
+          placeholder="Tuliskan petunjuk pengambilan atau alasan perbaikan jika berkas ditolak..."
         ></textarea>
       </div>
 
       <!-- Action Buttons -->
-      <div class="pt-3 border-t border-[var(--line)] flex items-center justify-end gap-2.5">
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
         <button 
           type="button" 
           id="btn-cancel-modal" 
-          class="btn-secondary text-xs py-2.5 px-4 bg-white font-bold cursor-pointer"
+          class="rounded-xl border border-slate-200 text-xs py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold cursor-pointer transition"
         >
           Batal
         </button>
         <button 
           type="submit" 
-          class="btn-cta text-xs py-2.5 px-6 shadow-xs font-bold cursor-pointer"
+          class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-6 font-bold shadow-sm transition cursor-pointer"
         >
           💾 Simpan Perubahan
         </button>
@@ -527,26 +894,15 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
     </form>
   </div>
 
-  <!-- 4. MODAL PRINT STRUK LOKET -->
-  <div id="print-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[var(--line)] space-y-4">
-      <div class="flex items-center justify-between border-b border-[var(--line)] pb-3">
-        <h4 class="text-sm font-bold text-[var(--leaf)]">🖨️ Struk Tanda Terima Loket</h4>
-        <button id="btn-close-print" type="button" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
-      </div>
-      <div id="print-content" class="p-4 border border-dashed border-gray-300 rounded-2xl bg-[#fafdf9] text-xs space-y-2 font-mono">
-        <!-- Rendered by JS -->
-      </div>
-      <div class="flex justify-end gap-2 pt-2">
-        <button id="btn-do-print" type="button" class="btn-cta text-xs py-2 px-4 font-bold shadow-xs cursor-pointer">
-          Cetak Dokumen Sekarang 🖨️
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Script Dashboard Admin Terpadu -->
-  <script is:inline define:vars={{ initialDemoTickets: INITIAL_DEMO_TICKETS }}>
+  <!-- ============================================================
+       SCRIPT DASHBOARD ADMIN TERPADU & DATABASE UTAMA
+       ============================================================ -->
+  <script is:inline define:vars={{ 
+    initialDemoTickets: INITIAL_DEMO_TICKETS,
+    masterMahasiswa: MASTER_MAHASISWA,
+    masterDosen: MASTER_DOSEN,
+    masterMatkul: MASTER_MATAKULIAH
+  }}>
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Autentikasi Admin State
       const loginView = document.getElementById('admin-login-view');
@@ -562,7 +918,9 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         if (isAuth) {
           loginView?.classList.add('hidden');
           dashboardView?.classList.remove('hidden');
-          renderAll();
+          initLiveClock();
+          renderTicketsList();
+          renderDatabaseTables();
         } else {
           loginView?.classList.remove('hidden');
           dashboardView?.classList.add('hidden');
@@ -582,10 +940,10 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
       loginForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const u = document.getElementById('admin-user-input')?.value.trim();
-        const p = adminPassInput?.value.trim();
+        const u = (document.getElementById('admin-user-input')?.value || '').trim().toLowerCase();
+        const p = (adminPassInput?.value || '').trim();
 
-        if (u === 'agrotek' && p === 'agr001') {
+        if ((u === 'agrotek' || u === 'admin') && (p === 'agr001' || p === 'admin123')) {
           sessionStorage.setItem('portal_admin_auth', 'true');
           loginErrorAlert?.classList.add('hidden');
           checkAuth();
@@ -594,12 +952,36 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         }
       });
 
+      document.getElementById('btn-quick-login')?.addEventListener('click', () => {
+        sessionStorage.setItem('portal_admin_auth', 'true');
+        loginErrorAlert?.classList.add('hidden');
+        checkAuth();
+      });
+
       btnLogout?.addEventListener('click', () => {
         sessionStorage.removeItem('portal_admin_auth');
         checkAuth();
       });
 
-      // 2. Data Management (localStorage)
+      // 2. Realtime Clock & Indonesian Date (portal-ujian style)
+      function initLiveClock() {
+        const clockEl = document.getElementById('live-clock');
+        const calEl = document.getElementById('live-calendar');
+        
+        function tick() {
+          const now = new Date();
+          if (clockEl) {
+            clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+          }
+          if (calEl) {
+            calEl.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      }
+
+      // 3. Storage Data Management
       function loadTickets() {
         try {
           const raw = localStorage.getItem('portal_faperta_tickets');
@@ -617,7 +999,61 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         } catch (e) {}
       }
 
-      // 3. State Filter
+      // 4. Main Navigation Tabs (Berkas vs Database vs Rekap)
+      let currentMainView = 'berkas'; // berkas, database, rekap
+      const tabBtnBerkas = document.getElementById('tab-btn-berkas');
+      const tabBtnDatabase = document.getElementById('tab-btn-database');
+      const tabBtnRekap = document.getElementById('tab-btn-rekap');
+
+      const viewBerkas = document.getElementById('view-berkas-container');
+      const viewDatabase = document.getElementById('view-database-container');
+      const viewRekap = document.getElementById('view-rekap-container');
+
+      const statusFilterBox = document.getElementById('sidebar-filter-status-box');
+      const categoryFilterBox = document.getElementById('sidebar-filter-category-box');
+
+      function setMainView(view) {
+        currentMainView = view;
+        const allMainBtns = [tabBtnBerkas, tabBtnDatabase, tabBtnRekap];
+        allMainBtns.forEach(btn => {
+          btn?.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md');
+          btn?.classList.add('text-slate-700', 'hover:bg-slate-100');
+        });
+
+        viewBerkas?.classList.add('hidden');
+        viewDatabase?.classList.add('hidden');
+        viewRekap?.classList.add('hidden');
+
+        if (view === 'berkas') {
+          tabBtnBerkas?.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md');
+          tabBtnBerkas?.classList.remove('text-slate-700', 'hover:bg-slate-100');
+          viewBerkas?.classList.remove('hidden');
+          statusFilterBox?.classList.remove('hidden');
+          categoryFilterBox?.classList.remove('hidden');
+          renderTicketsList();
+        } else if (view === 'database') {
+          tabBtnDatabase?.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md');
+          tabBtnDatabase?.classList.remove('text-slate-700', 'hover:bg-slate-100');
+          viewDatabase?.classList.remove('hidden');
+          statusFilterBox?.classList.add('hidden');
+          categoryFilterBox?.classList.add('hidden');
+          renderDatabaseTables();
+        } else if (view === 'rekap') {
+          tabBtnRekap?.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md');
+          tabBtnRekap?.classList.remove('text-slate-700', 'hover:bg-slate-100');
+          viewRekap?.classList.remove('hidden');
+          statusFilterBox?.classList.add('hidden');
+          categoryFilterBox?.classList.add('hidden');
+          updateRekapStats();
+        }
+      }
+
+      tabBtnBerkas?.addEventListener('click', () => setMainView('berkas'));
+      tabBtnDatabase?.addEventListener('click', () => setMainView('database'));
+      tabBtnRekap?.addEventListener('click', () => setMainView('rekap'));
+      document.getElementById('btn-back-to-berkas')?.addEventListener('click', () => setMainView('berkas'));
+
+      // 5. State Filter Berkas
       let currentCase = 'all'; // all, khs, komplain, ujian, lainnya
       let currentStatus = 'all'; // all, Belum Diproses, Proses Verifikasi, Selesai (Siap Diambil), Ditolak
       let searchQuery = '';
@@ -630,9 +1066,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         'lainnya': 'Surat Izin & Lainnya'
       };
 
-      // 4. Update Badge Notifikasi di Sidebar Kiri
       function updateSidebarBadges(tickets) {
-        // Hitung per kategori berkas
         const countAll = tickets.length;
         const countKhs = tickets.filter(t => (t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS')).length;
         const countKomplain = tickets.filter(t => (t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP')).length;
@@ -643,30 +1077,30 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH');
         }).length;
 
-        // Pending counts
         const pendingKhs = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS'))).length;
         const pendingKomplain = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP'))).length;
         const pendingUjian = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH'))).length;
 
-        // Update DOM badges
         const bAll = document.getElementById('badge-count-all');
+        const bCatAll = document.getElementById('badge-cat-all');
         const bKhs = document.getElementById('badge-count-khs');
         const bKomplain = document.getElementById('badge-count-komplain');
         const bUjian = document.getElementById('badge-count-ujian');
         const bLainnya = document.getElementById('badge-count-lainnya');
 
         if (bAll) bAll.textContent = countAll;
+        if (bCatAll) bCatAll.textContent = countAll;
         if (bKhs) {
           bKhs.textContent = pendingKhs > 0 ? `${pendingKhs} Baru` : countKhs;
-          bKhs.className = pendingKhs > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+          bKhs.className = pendingKhs > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bKomplain) {
           bKomplain.textContent = pendingKomplain > 0 ? `${pendingKomplain} Baru` : countKomplain;
-          bKomplain.className = pendingKomplain > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+          bKomplain.className = pendingKomplain > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bUjian) {
           bUjian.textContent = pendingUjian > 0 ? `${pendingUjian} Baru` : countUjian;
-          bUjian.className = pendingUjian > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+          bUjian.className = pendingUjian > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bLainnya) bLainnya.textContent = countLainnya;
 
@@ -700,12 +1134,11 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         if (kpiDone) kpiDone.textContent = cntDone;
       }
 
-      // 5. Render Daftar Berkas
+      // 6. Render Daftar Berkas Masuk
       function renderTicketsList() {
         const all = loadTickets();
         updateSidebarBadges(all);
 
-        // Filter kategori
         let filtered = all.filter(t => {
           const id = (t.layananId || '').toLowerCase();
           const code = (t.kode || '').toUpperCase();
@@ -717,12 +1150,10 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           return true;
         });
 
-        // Filter status
         if (currentStatus !== 'all') {
           filtered = filtered.filter(t => t.status === currentStatus);
         }
 
-        // Filter pencarian
         if (searchQuery) {
           filtered = filtered.filter(t => 
             (t.kode || '').toLowerCase().includes(searchQuery) ||
@@ -732,7 +1163,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           );
         }
 
-        // Update Title & Counter
         const titleEl = document.getElementById('active-category-title');
         const countBadge = document.getElementById('filtered-count-badge');
         if (titleEl) titleEl.textContent = categoryTitleMap[currentCase] || 'Berkas Masuk';
@@ -749,88 +1179,78 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         }
         emptyState?.classList.add('hidden');
 
-        // Status visual map
         const statusConfig = {
-          'Belum Diproses': { bg: 'bg-amber-100', text: 'text-amber-900', border: 'border-amber-300', icon: '⏳' },
-          'Proses Verifikasi': { bg: 'bg-blue-100', text: 'text-blue-900', border: 'border-blue-300', icon: '🔍' },
-          'Selesai (Siap Diambil)': { bg: 'bg-emerald-100', text: 'text-emerald-900', border: 'border-emerald-300', icon: '📦' },
-          'Ditolak': { bg: 'bg-rose-100', text: 'text-rose-900', border: 'border-rose-300', icon: '❌' }
+          'Belum Diproses': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: '⏳' },
+          'Proses Verifikasi': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
+          'Selesai (Siap Diambil)': { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', icon: '📦' },
+          'Ditolak': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: '❌' }
         };
 
         filtered.forEach(t => {
           const cfg = statusConfig[t.status] || statusConfig['Belum Diproses'];
           const card = document.createElement('div');
-          card.className = `rounded-3xl border ${t.isNewForAdmin ? 'border-amber-400 ring-2 ring-amber-300/40' : 'border-[var(--line)]'} bg-white p-5 sm:p-6 shadow-xs hover:border-[var(--leaf)] transition`;
+          card.className = `rounded-3xl border ${t.isNewForAdmin ? 'border-emerald-400 ring-2 ring-emerald-300/30' : 'border-slate-200'} bg-white p-5 sm:p-6 shadow-xs hover:border-emerald-600/60 transition`;
 
           card.innerHTML = `
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--line)] pb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
               <div class="flex flex-wrap items-center gap-2.5">
-                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#143516] text-white">
+                <span class="px-3 py-1 rounded-xl text-xs font-mono font-bold bg-slate-900 text-white">
                   ${t.kode}
                 </span>
-                <span class="px-3 py-1 rounded-full text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5">
+                <span class="px-3 py-1 rounded-xl text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5">
                   <span>${cfg.icon}</span>
                   <span>${t.status}</span>
                 </span>
-                ${t.isNewForAdmin ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white animate-pulse">BARU</span>' : ''}
+                ${t.isNewForAdmin ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-600 text-white animate-pulse">BARU</span>' : ''}
               </div>
-              <div class="text-xs text-[var(--muted)] flex items-center gap-2">
+              <div class="text-xs text-slate-500 flex items-center gap-2">
                 <span>🗓️ ${t.tanggal || 'Hari Ini'}</span>
-                <span>·</span>
-                <span class="font-bold text-emerald-700">⏱️ SLA ${t.slaDays || 2} Hari</span>
               </div>
             </div>
 
             <div class="mt-4 grid md:grid-cols-[1.2fr_1fr] gap-5 items-start">
               <div>
                 <div class="flex items-start gap-3">
-                  <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--leaf-soft)] text-lg text-[var(--leaf)] font-bold">
+                  <div class="h-10 w-10 shrink-0 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-base border border-emerald-200">
                     🎓
-                  </span>
+                  </div>
                   <div>
-                    <h3 class="text-base font-extrabold text-[var(--ink)] leading-snug">${t.nama}</h3>
-                    <p class="text-xs text-[var(--muted)] font-mono mt-0.5">
-                      NIM: <strong class="text-[var(--leaf)] font-bold">${t.nim}</strong> · ${t.prodi} ${t.semester ? `(${t.semester})` : ''}
+                    <h3 class="text-base font-extrabold text-slate-900 leading-snug">${t.nama}</h3>
+                    <p class="text-xs text-slate-500 font-mono mt-0.5">
+                      NIM: <strong class="text-emerald-800 font-bold">${t.nim}</strong> · ${t.prodi} ${t.semester ? `(${t.semester})` : ''}
                     </p>
                   </div>
                 </div>
 
-                <div class="mt-3.5 bg-gray-50/80 rounded-2xl p-3 border border-[var(--line)] text-xs space-y-1">
-                  <p class="font-bold text-[var(--leaf)]">${t.layananNama || 'Layanan Mahasiswa'}</p>
-                  <p class="text-[var(--ink)] leading-relaxed">${t.detailTambahan || t.keperluan}</p>
+                <div class="mt-3.5 bg-slate-50 rounded-2xl p-3 border border-slate-200/80 text-xs space-y-1">
+                  <p class="font-bold text-emerald-800">${t.layananNama || 'Layanan Mahasiswa'}</p>
+                  <p class="text-slate-700 leading-relaxed">${t.detailTambahan || t.keperluan}</p>
                 </div>
               </div>
 
-              <div class="space-y-2.5 text-xs bg-[#fdfefc] rounded-2xl p-3.5 border border-[var(--line)]">
+              <div class="space-y-2.5 text-xs bg-slate-50/50 rounded-2xl p-4 border border-slate-200/80">
                 <div>
-                  <span class="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block">Posisi Berkas Fisik:</span>
-                  <p class="font-bold text-[var(--ink)] mt-0.5 flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Posisi Berkas Fisik:</span>
+                  <p class="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
                     <span>📍</span>
                     <span>${t.posisiBerkas || 'Antrean Masuk Loket FAPERTA'}</span>
                   </p>
                 </div>
 
                 ${t.catatanAdmin ? `
-                  <div class="pt-2 border-t border-[var(--line)]">
-                    <span class="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block">Catatan Petugas:</span>
-                    <p class="text-[var(--ink)] italic mt-0.5">${t.catatanAdmin}</p>
+                  <div class="pt-2 border-t border-slate-200/60">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Catatan Petugas Loket:</span>
+                    <p class="text-slate-700 italic mt-0.5">${t.catatanAdmin}</p>
                   </div>
                 ` : ''}
 
-                <div class="pt-3 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
+                <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between gap-2">
                   <button 
                     type="button" 
-                    class="btn-open-edit btn-cta text-xs py-2 px-4 shadow-xs font-bold cursor-pointer inline-flex items-center gap-1.5"
+                    class="btn-open-edit w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-4 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1.5 transition"
                     data-kode="${t.kode}"
                   >
-                    <span>✏️ Disposisi / Ubah Status</span>
-                  </button>
-                  <button 
-                    type="button" 
-                    class="btn-open-print btn-secondary text-xs py-2 px-3 bg-white font-bold cursor-pointer inline-flex items-center gap-1"
-                    data-kode="${t.kode}"
-                  >
-                    <span>🖨️ Struk</span>
+                    <span>✏️ Disposisi / Update Status</span>
                   </button>
                 </div>
               </div>
@@ -840,15 +1260,19 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           container.appendChild(card);
         });
 
-        // Attach listeners for Edit Modal & Print
         attachCardListeners();
       }
 
-      function renderAll() {
-        renderTicketsList();
+      function attachCardListeners() {
+        document.querySelectorAll('.btn-open-edit').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            if (kode) openEditModal(kode);
+          });
+        });
       }
 
-      // 6. Modal Disposisi / Edit Status
+      // 7. Modal Disposisi / Edit Status
       const modal = document.getElementById('edit-ticket-modal');
       const backdrop = document.getElementById('modal-backdrop');
       const btnCloseModal = document.getElementById('btn-close-modal');
@@ -901,7 +1325,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             else if (s === 'Selesai (Siap Diambil)') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300';
             else if (s === 'Ditolak') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300';
           } else {
-            btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+            btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100';
           }
         });
       }
@@ -912,7 +1336,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           if (modalSelectedStatus) modalSelectedStatus.value = s;
           updateModalStatusChoiceUI(s);
 
-          // Auto update preset position
           if (modalPosisi) {
             if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Administrasi FAPERTA';
             else if (s === 'Proses Verifikasi') modalPosisi.value = 'Meja Petugas Loket (Pemeriksaan SIAKAD & Dokumen Fisik)';
@@ -932,7 +1355,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         });
       });
 
-      // Preset buttons for position
       document.querySelectorAll('.preset-posisi').forEach(btn => {
         btn.addEventListener('click', () => {
           if (modalPosisi) modalPosisi.value = btn.getAttribute('data-pos') || '';
@@ -972,103 +1394,209 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           saveTickets(all);
           closeEditModal();
           renderTicketsList();
+          renderDatabaseTables(); // sync arsip table
         }
       });
 
-      // 7. Print Struk
-      const printModal = document.getElementById('print-modal');
-      const btnClosePrint = document.getElementById('btn-close-print');
-      const btnDoPrint = document.getElementById('btn-do-print');
-      const printContent = document.getElementById('print-content');
+      // 8. DATABASE UTAMA ADMINISTRASI (Requirement #2)
+      let activeDbTab = 'mahasiswa';
+      let dbSearchQuery = '';
 
-      function openPrintModal(kode) {
-        const all = loadTickets();
-        const t = all.find(x => x.kode === kode);
-        if (!t) return;
+      const dbSubTabs = document.querySelectorAll('.db-sub-tab');
+      const dbPanes = document.querySelectorAll('.db-pane');
+      const dbSearchInput = document.getElementById('db-search-input');
 
-        if (printContent) {
-          printContent.innerHTML = `
-            <div class="text-center pb-2 border-b border-gray-300 font-bold">
-              <p class="text-sm">FAKULTAS PERTANIAN INSTIPER</p>
-              <p class="text-[10px] text-gray-500">TANDA TERIMA BERKAS LOKET 1</p>
-            </div>
-            <div class="pt-2 space-y-1">
-              <p>NO TIKET  : <strong>${t.kode}</strong></p>
-              <p>TANGGAL   : ${t.tanggal || 'Hari Ini'}</p>
-              <p>NAMA      : ${t.nama}</p>
-              <p>NIM       : ${t.nim}</p>
-              <p>PRODI     : ${t.prodi}</p>
-              <p>LAYANAN   : ${t.layananNama}</p>
-              <p>STATUS    : <strong>${t.status}</strong></p>
-              <p>POSISI    : ${t.posisiBerkas}</p>
-            </div>
-            <div class="pt-3 border-t border-gray-300 text-center text-[10px] text-gray-500">
-              *Tunjukkan struk/NIM ini saat pengambilan fisik di Loket 1
-            </div>
-          `;
+      dbSubTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-db-tab');
+          activeDbTab = target;
+          
+          dbSubTabs.forEach(t => {
+            t.className = 'db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
+          });
+          tab.className = 'db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
+
+          dbPanes.forEach(p => p.classList.add('hidden'));
+          document.getElementById(`pane-${target}`)?.classList.remove('hidden');
+          renderDatabaseTables();
+        });
+      });
+
+      dbSearchInput?.addEventListener('input', (e) => {
+        dbSearchQuery = e.target.value.trim().toLowerCase();
+        renderDatabaseTables();
+      });
+
+      function renderDatabaseTables() {
+        const query = dbSearchQuery;
+
+        // 1. Table Mahasiswa
+        const mhsBody = document.getElementById('table-mahasiswa-body');
+        if (mhsBody) {
+          let mhsList = masterMahasiswa.filter(m => 
+            !query ||
+            m.nim.toLowerCase().includes(query) ||
+            m.nama.toLowerCase().includes(query) ||
+            m.prodi.toLowerCase().includes(query) ||
+            (m.dpa && m.dpa.toLowerCase().includes(query))
+          );
+          
+          mhsBody.innerHTML = mhsList.map(m => `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.nim}</td>
+              <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
+              <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
+              <td class="py-3 px-4 text-slate-500">${m.minat || '-'}</td>
+              <td class="py-3 px-4 font-mono text-slate-600">${m.angkatan}</td>
+              <td class="py-3 px-4 text-slate-600">${m.semester}</td>
+              <td class="py-3 px-4 text-slate-700 font-medium">${m.dpa || '-'}</td>
+              <td class="py-3 px-4 text-center">
+                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                  ${m.statusAkademik}
+                </span>
+              </td>
+              <td class="py-3 px-4 text-right">
+                <button type="button" class="btn-check-mhs text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline cursor-pointer" data-nim="${m.nim}">
+                  Cek Berkas
+                </button>
+              </td>
+            </tr>
+          `).join('');
+
+          // Bind cek berkas button
+          mhsBody.querySelectorAll('.btn-check-mhs').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const nim = btn.getAttribute('data-nim');
+              setMainView('berkas');
+              const searchInp = document.getElementById('admin-search-input');
+              if (searchInp) searchInp.value = nim;
+              searchQuery = nim.toLowerCase();
+              renderTicketsList();
+            });
+          });
         }
-        printModal?.classList.remove('hidden');
+
+        // 2. Table Dosen
+        const dsnBody = document.getElementById('table-dosen-body');
+        if (dsnBody) {
+          let dsnList = masterDosen.filter(d => 
+            !query ||
+            d.nidn.toLowerCase().includes(query) ||
+            d.nama.toLowerCase().includes(query) ||
+            d.prodi.toLowerCase().includes(query) ||
+            d.jabatan.toLowerCase().includes(query)
+          );
+
+          dsnBody.innerHTML = dsnList.map(d => `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-3 px-4 font-mono font-bold text-slate-700">${d.nidn}</td>
+              <td class="py-3 px-4 font-mono font-bold text-emerald-700">${d.kodeDosen}</td>
+              <td class="py-3 px-4 font-bold text-slate-900">${d.nama}</td>
+              <td class="py-3 px-4 text-slate-600">${d.prodi}</td>
+              <td class="py-3 px-4">
+                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-200">
+                  ${d.jabatan}
+                </span>
+              </td>
+              <td class="py-3 px-4 font-mono text-[11px] text-slate-500">${d.email}</td>
+            </tr>
+          `).join('');
+        }
+
+        // 3. Table Matkul
+        const mkBody = document.getElementById('table-matkul-body');
+        if (mkBody) {
+          let mkList = masterMatkul.filter(m => 
+            !query ||
+            m.kode.toLowerCase().includes(query) ||
+            m.nama.toLowerCase().includes(query) ||
+            m.prodi.toLowerCase().includes(query) ||
+            m.dosenPengampu.toLowerCase().includes(query)
+          );
+
+          mkBody.innerHTML = mkList.map(m => `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.kode}</td>
+              <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
+              <td class="py-3 px-4 text-center font-mono font-bold">${m.sks} SKS</td>
+              <td class="py-3 px-4 text-center font-mono text-slate-600">Sem ${m.semester}</td>
+              <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
+              <td class="py-3 px-4 text-slate-700 font-medium">${m.dosenPengampu}</td>
+            </tr>
+          `).join('');
+        }
+
+        // 4. Table Arsip Seluruh Berkas
+        const arsipBody = document.getElementById('table-arsip-body');
+        if (arsipBody) {
+          const allTickets = loadTickets();
+          let arsipList = allTickets.filter(t => 
+            !query ||
+            t.kode.toLowerCase().includes(query) ||
+            t.nim.toLowerCase().includes(query) ||
+            t.nama.toLowerCase().includes(query) ||
+            (t.layananNama && t.layananNama.toLowerCase().includes(query)) ||
+            (t.posisiBerkas && t.posisiBerkas.toLowerCase().includes(query))
+          );
+
+          arsipBody.innerHTML = arsipList.map(t => `
+            <tr class="hover:bg-slate-50/80 transition">
+              <td class="py-3 px-4 font-mono font-bold text-slate-900">${t.kode}</td>
+              <td class="py-3 px-4">
+                <strong class="text-slate-900 block">${t.nama}</strong>
+                <span class="font-mono text-[11px] text-emerald-800">${t.nim}</span>
+              </td>
+              <td class="py-3 px-4 text-slate-600">${t.prodi || '-'}</td>
+              <td class="py-3 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
+              <td class="py-3 px-4 text-[11px] text-slate-500">${t.tanggal || '-'}</td>
+              <td class="py-3 px-4 text-slate-700">${t.posisiBerkas || '-'}</td>
+              <td class="py-3 px-4 text-center">
+                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                  t.status === 'Selesai (Siap Diambil)' ? 'bg-emerald-100 text-emerald-800' :
+                  t.status === 'Proses Verifikasi' ? 'bg-blue-100 text-blue-800' :
+                  t.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-900'
+                }">
+                  ${t.status}
+                </span>
+              </td>
+            </tr>
+          `).join('');
+        }
       }
 
-      btnClosePrint?.addEventListener('click', () => {
-        printModal?.classList.add('hidden');
-      });
-      btnDoPrint?.addEventListener('click', () => {
-        window.print();
-      });
-
-      function attachCardListeners() {
-        document.querySelectorAll('.btn-open-edit').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const kode = btn.getAttribute('data-kode');
-            if (kode) openEditModal(kode);
-          });
-        });
-
-        document.querySelectorAll('.btn-open-print').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const kode = btn.getAttribute('data-kode');
-            if (kode) openPrintModal(kode);
-          });
-        });
-      }
-
-      // 8. Event Listeners Sidebar Kiri Kategori
+      // 9. Event Listeners Sidebar Filter Status & Kategori
       const caseTabs = document.querySelectorAll('.admin-case-tab');
       caseTabs.forEach(tab => {
         tab.addEventListener('click', () => {
           caseTabs.forEach(x => {
-            x.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]';
+            x.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50';
           });
-          tab.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf)] text-white shadow-2xs';
+          tab.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900 font-black';
 
           currentCase = tab.getAttribute('data-case') || 'all';
           renderTicketsList();
         });
       });
 
-      // Filter status click
       const statusFilters = document.querySelectorAll('.admin-status-filter');
       statusFilters.forEach(btn => {
         btn.addEventListener('click', () => {
           statusFilters.forEach(x => {
-            x.classList.remove('bg-[var(--leaf-soft)]', 'text-[var(--leaf)]');
+            x.classList.remove('bg-emerald-50', 'text-emerald-800');
           });
-          btn.classList.add('bg-[var(--leaf-soft)]', 'text-[var(--leaf)]');
+          btn.classList.add('bg-emerald-50', 'text-emerald-800');
 
           currentStatus = btn.getAttribute('data-status') || 'all';
           renderTicketsList();
         });
       });
 
-      // Search input event
       const searchInput = document.getElementById('admin-search-input');
       searchInput?.addEventListener('input', (e) => {
         searchQuery = e.target.value.trim().toLowerCase();
         renderTicketsList();
       });
 
-      // Mark all read
       const btnMarkAll = document.getElementById('btn-mark-all-read');
       btnMarkAll?.addEventListener('click', () => {
         const all = loadTickets();
@@ -1077,7 +1605,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         renderTicketsList();
       });
 
-      // Simulasi Dropdown
+      // 10. Simulasi Surat Masuk Dropdown
       const btnSimulate = document.getElementById('btn-simulate-dropdown');
       const simMenu = document.getElementById('simulate-dropdown-menu');
       btnSimulate?.addEventListener('click', (e) => {
@@ -1114,7 +1642,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               statusStep: 1,
               posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
               estimasiSelesai: '2–3 Hari Kerja',
-              slaDays: 3,
               catatanAdmin: 'Permohonan baru masuk antrean verifikasi petugas.',
               tanggal: nowStr,
               isNewForAdmin: true
@@ -1135,7 +1662,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               statusStep: 1,
               posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
               estimasiSelesai: '3–5 Hari Kerja',
-              slaDays: 5,
               catatanAdmin: 'Menunggu pemeriksaan KHS kumulatif dan konfirmasi penguji.',
               tanggal: nowStr,
               isNewForAdmin: true
@@ -1156,7 +1682,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               statusStep: 1,
               posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
               estimasiSelesai: '1–2 Hari Kerja',
-              slaDays: 2,
               catatanAdmin: 'Permohonan baru masuk antrean loket.',
               tanggal: nowStr,
               isNewForAdmin: true
@@ -1165,15 +1690,16 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
           all.unshift(item);
           saveTickets(all);
+          setMainView('berkas');
           renderTicketsList();
+          renderDatabaseTables();
         });
       });
 
-      // Export CSV
-      const btnExport = document.getElementById('btn-export-csv');
-      btnExport?.addEventListener('click', () => {
+      // 11. Ekspor CSV Rekap Data
+      function triggerExportCSV() {
         const all = loadTickets();
-        const headers = ['Kode Tiket', 'NIM', 'Nama Mahasiswa', 'Program Studi', 'Layanan', 'Status', 'Posisi Berkas', 'Tanggal Pengajuan'];
+        const headers = ['Kode Tiket', 'NIM', 'Nama Mahasiswa', 'Program Studi', 'Layanan', 'Status', 'Posisi Berkas Fisik', 'Tanggal Pengajuan'];
         const rows = all.map(t => [
           `"${t.kode}"`,
           `"${t.nim}"`,
@@ -1188,22 +1714,43 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', `rekap-berkas-faperta-${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute('download', `rekap-administrasi-faperta-${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      });
+      }
 
-      // Reset Demo Data
+      document.getElementById('btn-export-csv')?.addEventListener('click', triggerExportCSV);
+      document.getElementById('btn-rekap-download-csv')?.addEventListener('click', triggerExportCSV);
+
+      function updateRekapStats() {
+        const all = loadTickets();
+        const cntPending = all.filter(t => t.status === 'Belum Diproses').length;
+        const cntProcess = all.filter(t => t.status === 'Proses Verifikasi').length;
+        const cntDone = all.filter(t => t.status === 'Selesai (Siap Diambil)').length;
+
+        const elTot = document.getElementById('rekap-total');
+        const elPen = document.getElementById('rekap-pending');
+        const elPro = document.getElementById('rekap-process');
+        const elDon = document.getElementById('rekap-done');
+
+        if (elTot) elTot.textContent = all.length;
+        if (elPen) elPen.textContent = cntPending;
+        if (elPro) elPro.textContent = cntProcess;
+        if (elDon) elDon.textContent = cntDone;
+      }
+
+      // 12. Reset Demo Data
       const btnReset = document.getElementById('btn-reset-demo');
       btnReset?.addEventListener('click', () => {
-        if (confirm('Kembalikan data ke daftar contoh demo awal?')) {
+        if (confirm('Kembalikan data permohonan ke daftar contoh demo awal?')) {
           localStorage.removeItem('portal_faperta_tickets');
           renderTicketsList();
+          renderDatabaseTables();
         }
       });
 
-      // Initial run
+      // Jalankan cek status auth awal
       checkAuth();
     });
   </script>
