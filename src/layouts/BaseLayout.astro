@@ -104,7 +104,7 @@ const currentPath = Astro.url.pathname;
           </nav>
         </div>
 
-        <!-- Sisi Kanan: Search + Lacak NIM + Notifikasi Admin -->
+        <!-- Sisi Kanan: Search + Lacak NIM -->
         <div class="flex items-center gap-2 sm:gap-2.5">
           <!-- Tombol Global Live Search -->
           <button 
@@ -125,7 +125,7 @@ const currentPath = Astro.url.pathname;
           <a 
             href="/layanan/cek-status" 
             class:list={[
-              "touch-target inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold shadow-xs transition",
+              "touch-target inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-bold shadow-xs transition",
               currentPath.startsWith("/layanan/cek-status")
                 ? "border-[var(--leaf)] bg-[var(--leaf-soft)] text-[var(--leaf)]"
                 : "border-[var(--line)] bg-white text-[var(--leaf)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]"
@@ -133,30 +133,7 @@ const currentPath = Astro.url.pathname;
             title="Lacak Progres Surat Berdasarkan NIM atau Nomor Tiket"
           >
             <span class="text-sm">📑</span>
-            <span class="hidden md:inline">Lacak NIM</span>
-          </a>
-
-          <!-- Shortcut Portal Admin dengan Lonceng Notifikasi Masuk -->
-          <a 
-            href="/admin" 
-            id="header-admin-link"
-            class:list={[
-              "relative touch-target inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold shadow-xs transition",
-              currentPath.startsWith("/admin")
-                ? "bg-[var(--leaf-dark)] text-white ring-2 ring-[var(--gold)]"
-                : "bg-[var(--leaf)] text-white hover:bg-[var(--leaf-dark)]"
-            ]}
-            title="Portal Administrasi Akademik & Notifikasi Surat Masuk"
-          >
-            <span class="text-sm">🔔</span>
-            <span class="hidden lg:inline">Admin</span>
-            <!-- Badge Counter Surat Masuk -->
-            <span 
-              id="admin-unread-badge" 
-              class="hidden h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-red-600 text-[10px] font-black text-white ring-2 ring-white animate-pulse"
-            >
-              0
-            </span>
+            <span class="hidden sm:inline">Lacak NIM</span>
           </a>
         </div>
       </div>
@@ -350,20 +327,6 @@ const currentPath = Astro.url.pathname;
             <span class="text-base">💡</span>
             <span>FAQ & Regulasi</span>
           </a>
-
-          <a 
-            class:list={[
-              "flex items-center justify-between px-3.5 py-3 text-sm font-bold rounded-xl transition border border-[var(--leaf)]/30 bg-[var(--leaf)] text-white mt-4",
-              currentPath.startsWith("/admin") ? "ring-2 ring-[var(--gold)]" : ""
-            ]} 
-            href="/admin"
-          >
-            <div class="flex items-center gap-3">
-              <span class="text-base">🔔</span>
-              <span>Portal Admin FAPERTA</span>
-            </div>
-            <span id="drawer-admin-badge" class="hidden h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-red-600 text-[10px] font-black text-white">0</span>
-          </a>
         </nav>
       </div>
 
@@ -402,11 +365,6 @@ const currentPath = Astro.url.pathname;
             <p class="mt-3 max-w-sm text-xs leading-relaxed text-[var(--muted)]">
               Portal informasi akademik dan layanan mandiri resmi Fakultas Pertanian INSTIPER Yogyakarta.
             </p>
-            <div class="mt-4">
-              <a href="/admin" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--leaf)] hover:underline bg-white border border-[var(--line)] px-3 py-1.5 rounded-lg shadow-2xs">
-                <span>🔔</span> Portal Petugas Admin FAPERTA →
-              </a>
-            </div>
           </div>
           
           <div>
@@ -440,7 +398,13 @@ const currentPath = Astro.url.pathname;
 
         <div class="mt-10 border-t border-[var(--line)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--muted)]">
           <p>© 2026 Fakultas Pertanian INSTIPER Yogyakarta. Hak Cipta Dilindungi.</p>
-          <p class="text-[11px]">Satu pintu informasi akademik sivitas akademika.</p>
+          <div class="flex items-center gap-3 text-[11px]">
+            <span>Satu pintu informasi akademik sivitas akademika.</span>
+            <span>·</span>
+            <a href="/admin" class="text-gray-400 hover:text-[var(--leaf)] transition hover:underline flex items-center gap-1" title="Akses Masuk Staf Administrasi">
+              <span>🔒</span> Akses Staf
+            </a>
+          </div>
         </div>
       </div>
     </footer>
@@ -517,7 +481,7 @@ const currentPath = Astro.url.pathname;
         searchClose?.addEventListener('click', closeSearch);
         searchBackdrop?.addEventListener('click', closeSearch);
 
-        // Keyboard Shortcut: Ctrl + K atau "/"
+        // Keyboard Shortcut: Ctrl + K (Search) & Secret Ctrl + Shift + A (Admin)
         window.addEventListener('keydown', (e) => {
           if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
@@ -526,6 +490,11 @@ const currentPath = Astro.url.pathname;
             } else {
               closeSearch();
             }
+          }
+          // Secret admin shortcut: Ctrl + Shift + A
+          if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+            e.preventDefault();
+            window.location.href = '/admin';
           }
           if (e.key === 'Escape' && !searchModal?.classList.contains('hidden')) {
             closeSearch();
