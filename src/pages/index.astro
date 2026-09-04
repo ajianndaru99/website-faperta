@@ -31,24 +31,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 			<!-- Quick Highlights Grid -->
 			<div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-3.5 md:rotate-1">
-				<div class="sm:col-span-2 rounded-3xl bg-[var(--leaf)] p-7 text-white shadow-xl relative overflow-hidden">
-					<div class="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-[var(--leaf-dark)] opacity-40"></div>
-					<div class="flex items-center justify-between">
+				<a 
+					href="/dokumen/buku-panduan-akademik.pdf" 
+					target="_blank" 
+					download="Buku-Panduan-Akademik-FAPERTA-2026-2027.pdf"
+					class="group sm:col-span-2 rounded-3xl bg-[var(--leaf)] p-7 text-white shadow-xl relative overflow-hidden block transition duration-200 hover:-translate-y-1 hover:shadow-2xl cursor-pointer border-2 border-transparent hover:border-[var(--gold)]"
+					aria-label="Unduh Buku Panduan Akademik 2026-2027 Resmi FAPERTA INSTIPER (PDF 20.1 MB)"
+				>
+					<div class="pointer-events-none absolute -right-6 -bottom-6 w-40 h-40 rounded-full bg-[var(--leaf-dark)] opacity-40 transition group-hover:scale-110"></div>
+					<div class="relative z-10 flex items-center justify-between">
 						<span class="inline-block rounded-full bg-white/15 px-3 py-1 text-xs font-bold tracking-wider text-[var(--gold)] uppercase">
 							Mulai Dari Sini
 						</span>
 						<span class="text-xs font-semibold text-white/80">TA 2026 / 2027</span>
 					</div>
-					<h2 class="display-title mt-8 text-3xl sm:text-4xl font-extrabold !text-white leading-tight">
+					<h2 class="relative z-10 display-title mt-6 text-3xl sm:text-4xl font-extrabold !text-white leading-tight group-hover:text-[var(--gold)] transition">
 						Buku Panduan<br />Akademik 2026-2027
 					</h2>
-					<div class="mt-8 flex items-center justify-between gap-4 border-t border-white/20 pt-4">
+					<div class="relative z-10 mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-white/20 pt-4">
 						<span class="text-xs font-medium !text-white/90">Dokumen pegangan mahasiswa baru & lama</span>
-						<a class="touch-target inline-flex items-center gap-1.5 font-bold text-sm text-[var(--gold)] hover:text-white transition" href="/dokumen/buku-panduan-akademik.pdf" download>
-							Unduh PDF ↗
-						</a>
+						<span class="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-4 py-2 text-xs sm:text-sm font-black text-[var(--leaf-dark)] shadow-md group-hover:bg-white group-hover:text-[var(--leaf)] transition">
+							<span>📥 Unduh PDF (20.1 MB)</span>
+							<span aria-hidden="true">↗</span>
+						</span>
 					</div>
-				</div>
+				</a>
 
 				<div class="rounded-3xl bg-white border-2 border-[var(--gold)]/40 p-6 shadow-sm">
 					<p class="text-4xl sm:text-5xl font-black text-[var(--gold)]">75%</p>
@@ -92,13 +99,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 						Layanan Akademik Mandiri
 					</h3>
 					<p class="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-						Permohonan salinan KHS (Semester 1 - 14), pengajuan ujian khusus, komplain nilai, dan surat izin resmi dalam satu pintu.
+						Permohonan salinan KHS (Semester 1 - 12), pengajuan ujian khusus, komplain nilai, dan surat izin resmi dalam satu pintu.
 					</p>
 				</div>
 				<span class="mt-6 inline-flex items-center text-sm font-bold text-[var(--leaf)] group-hover:gap-1.5 transition-all">
 					Buka 12 Layanan Akademik & SLA →
 				</span>
 			</a>
+
 
 			<a href="/unduhan" class="group rounded-3xl border border-[var(--line)] bg-white p-7 shadow-xs transition duration-200 hover:-translate-y-1 hover:border-[var(--leaf)] hover:shadow-md flex flex-col justify-between">
 				<div>

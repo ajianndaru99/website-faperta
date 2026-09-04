@@ -6,9 +6,7 @@ const semesterAkhirList = [
   "Semester 9",
   "Semester 10",
   "Semester 11",
-  "Semester 12",
-  "Semester 13",
-  "Semester 14"
+  "Semester 12"
 ];
 ---
 <BaseLayout title="Formulir Pengajuan Ujian Khusus" description="Formulir pendaftaran resmi Ujian Khusus tingkat akhir bagi mahasiswa Fakultas Pertanian INSTIPER Yogyakarta.">
@@ -114,7 +112,7 @@ const semesterAkhirList = [
               <div>
                 <label for="semester" class="form-label">Semester Saat Ini (Tingkat Akhir) *</label>
                 <select id="semester" name="semester" required class="form-select">
-                  <option value="">-- Pilih Semester (8 - 14) --</option>
+                  <option value="">-- Pilih Semester (8 - 12) --</option>
                   {semesterAkhirList.map((smt) => (
                     <option value={smt}>{smt}</option>
                   ))}

@@ -28,6 +28,7 @@ export interface DocumentItem {
   format: string;
   icon: string;
   isExternal?: boolean;
+  isPending?: boolean;
 }
 
 export type TicketStatus = 'Belum Diproses' | 'Proses Verifikasi' | 'Selesai (Siap Diambil)' | 'Ditolak';
@@ -44,7 +45,7 @@ export interface TicketItem {
   detailTambahan?: string;
   format?: string;
   status: TicketStatus;
-  statusStep: 1 | 2 | 3 | -1; // 1: Belum Diproses, 2: Proses Verifikasi, 3: Selesai (Siap Diambil), -1: Ditolak
+  statusStep: number;
   posisiBerkas: string;
   estimasiSelesai: string;
   slaDays: number;
@@ -59,7 +60,7 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     id: "khs",
     number: "01",
     title: "Permohonan KHS (Kartu Hasil Studi)",
-    subtitle: "Semester 1 - 14",
+    subtitle: "Semester 1 - 12",
     category: "Dokumen Akademik",
     type: "hybrid",
     typeLabel: "Ambil di Loket",
@@ -110,12 +111,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Alasan Sah & Dispensasi",
     category: "Ujian",
     type: "hybrid",
-    typeLabel: "Hybrid",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
     sla: "2 – 3 Hari Kerja",
     desc: "Pengajuan ujian susulan sesuai ketentuan akademik dan bukti pendukung yang sah (sakit rawat inap, duka cita keluarga inti, tugas dinas resmi).",
-    actionUrl: "/faq#tanya-jawab",
-    actionLabel: "Baca Ketentuan & Prosedur",
+    actionUrl: "/dalam-proses?item=Ujian+Susulan+(UTS%2FUAS)&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Kirim Bukti Sah", "Verifikasi Prodi", "Jadwal Ujian Offline"]
   },
   {
@@ -125,12 +126,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Pengantar Instansi & Laboratorium",
     category: "Penelitian & Skripsi",
     type: "online",
-    typeLabel: "Surat Pengantar",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
     sla: "1 Hari Kerja",
     desc: "Permohonan surat pengantar izin penelitian atau pengambilan data ke kebun percobaan, instansi pemerintah, BUMN, perusahaan, atau laboratorium mitra.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Surat%20Izin%20Penelitian",
-    actionLabel: "Ajukan Izin Penelitian",
+    actionUrl: "/dalam-proses?item=Surat+Izin+Penelitian+%26+Data&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Unggah Proposal Disetujui", "Verifikasi Dekanat", "Terbit Surat Izin"]
   },
   {
@@ -155,12 +156,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Persetujuan Dosen Pembimbing",
     category: "Penelitian & Skripsi",
     type: "hybrid",
-    typeLabel: "Hybrid",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
     sla: "2 – 3 Hari Kerja",
     desc: "Pengajuan pencatatan perubahan judul skripsi/penelitian yang telah disetujui secara tertulis oleh dosen pembimbing utama.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Pengajuan%20Perubahan%20Judul%20Skripsi",
-    actionLabel: "Ajukan Perubahan Judul",
+    actionUrl: "/dalam-proses?item=Perubahan+Judul+Penelitian&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Form Persetujuan Pembimbing", "Verifikasi Kaprodi", "Pencatatan Berita Acara"]
   },
   {
@@ -170,12 +171,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Pendaftaran & Verifikasi Berkas",
     category: "Penelitian & Skripsi",
     type: "hybrid",
-    typeLabel: "Hybrid",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
     sla: "3 – 5 Hari Kerja",
     desc: "Informasi dan verifikasi persyaratan pendaftaran seminar hasil penelitian skripsi mahasiswa tingkat akhir.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Pendaftaran%20Seminar%20Skripsi",
-    actionLabel: "Daftar Seminar Skripsi",
+    actionUrl: "/dalam-proses?item=Seminar+Hasil+Skripsi&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Naskah Disetujui Pembimbing", "Penetapan Penguji", "Jadwal Seminar"]
   },
   {
@@ -185,12 +186,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Sidang Akhir Sarjana",
     category: "Penelitian & Skripsi",
     type: "hybrid",
-    typeLabel: "Hybrid",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-hybrid",
     sla: "3 – 5 Hari Kerja",
     desc: "Pendaftaran dan verifikasi kelengkapan berkas pra-ujian pendadaran skripsi mahasiswa program sarjana (S1).",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Pendaftaran%20Ujian%20Pendadaran%20Skripsi",
-    actionLabel: "Daftar Ujian Skripsi",
+    actionUrl: "/dalam-proses?item=Ujian+Pendadaran+%2F+Skripsi&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Bebas Pustaka & SPP", "Verifikasi Naskah", "Sidang Pendadaran"]
   },
   {
@@ -200,12 +201,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Aktif Kuliah / Beasiswa",
     category: "Surat & Dokumen",
     type: "online",
-    typeLabel: "Layanan Mandiri",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
     sla: "1 Hari Kerja",
     desc: "Permohonan penerbitan surat keterangan masih aktif kuliah, surat keterangan kelakuan baik, rekomendasi beasiswa, dan dokumen sejenis.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Surat%20Keterangan%20Akademik",
-    actionLabel: "Ajukan Surat Keterangan",
+    actionUrl: "/dalam-proses?item=Surat+Keterangan+Akademik&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket 1"]
   },
   {
@@ -215,12 +216,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Kegiatan Akademik & Ormawa",
     category: "Fasilitas",
     type: "online",
-    typeLabel: "Reservasi",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
     sla: "1 Hari Kerja",
     desc: "Permohonan penggunaan ruang kelas, aula, atau laboratorium untuk kegiatan akademik resmi dan organisasi kemahasiswaan.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Peminjaman%20Ruang",
-    actionLabel: "Reservasi Ruang",
+    actionUrl: "/dalam-proses?item=Peminjaman+Ruang+%26+Fasilitas&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Cek Ketersediaan", "Persetujuan WD II / Dekanat", "Konfirmasi Penjagaan"]
   },
   {
@@ -230,12 +231,12 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     subtitle: "Penelitian, Publikasi & Pengabdian",
     category: "Layanan Dosen",
     type: "online",
-    typeLabel: "Khusus Dosen",
+    typeLabel: "Dalam Proses",
     badgeClass: "badge-online",
     sla: "1 Hari Kerja",
     desc: "Pengajuan surat tugas resmi bagi dosen FAPERTA untuk keperluan penelitian, publikasi jurnal, narasumber, atau pengabdian kepada masyarakat.",
-    actionUrl: "mailto:dekanatfaperta@instiperjogja.ac.id?subject=Pengajuan%20Surat%20Tugas%20Dosen",
-    actionLabel: "Ajukan Surat Tugas",
+    actionUrl: "/dalam-proses?item=Surat+Tugas+%26+Kegiatan+Dosen&tipe=layanan",
+    actionLabel: "Lihat Info & Alur Loket",
     steps: ["Kirim Kerangka Acuan", "Persetujuan Dekan", "Terbit Surat Tugas Resmi"]
   }
 ];
@@ -302,33 +303,33 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     category: "Program Studi",
     title: "Kurikulum Prodi Agroteknologi",
     desc: "Struktur sebaran mata kuliah, silabus, praktikum, dan peminatan konsentrasi Agroteknologi.",
-    meta: "PDF · Kurikulum Berjalan",
-    file: "/dokumen/panduan-agroteknologi.pdf",
-    format: "PDF",
+    meta: "Tahap Sinkronisasi Kurikulum FAPERTA",
+    file: "/dalam-proses?item=Kurikulum+Prodi+Agroteknologi&tipe=unduhan",
+    format: "Dalam Proses",
     icon: "◒",
-    isExternal: false
+    isPending: true
   },
   {
     id: "kurikulum-agribisnis",
     category: "Program Studi",
     title: "Kurikulum Prodi Agribisnis",
     desc: "Peta kurikulum mata kuliah, manajemen agribisnis, studi kelayakan, dan kewirausahaan pertanian.",
-    meta: "PDF · Kurikulum Berjalan",
-    file: "/dokumen/panduan-agribisnis.pdf",
-    format: "PDF",
+    meta: "Tahap Sinkronisasi Kurikulum FAPERTA",
+    file: "/dalam-proses?item=Kurikulum+Prodi+Agribisnis&tipe=unduhan",
+    format: "Dalam Proses",
     icon: "◒",
-    isExternal: false
+    isPending: true
   },
   {
     id: "template-skripsi-agri",
     category: "Template",
     title: "Template Skripsi Agribisnis",
     desc: "Format baku naskah skripsi penelitian sosial-ekonomi pertanian, studi kasus, dan permodelan bisnis.",
-    meta: "DOCX · Format Baku Agribisnis",
-    file: "/dokumen/template-skripsi-agribisnis.docx",
-    format: "DOCX",
+    meta: "Tahap Finalisasi Naskah Format Dekanat",
+    file: "/dalam-proses?item=Template+Skripsi+Agribisnis&tipe=unduhan",
+    format: "Dalam Proses",
     icon: "▤",
-    isExternal: false
+    isPending: true
   }
 ];
 

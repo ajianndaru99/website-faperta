@@ -62,7 +62,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
     <div class="max-w-4xl mx-auto">
       <!-- Search Box Card -->
       <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-6 sm:p-8 shadow-sm">
-        <form id="search-form" class="flex flex-col sm:flex-row gap-3">
+        <form id="search-form" class="flex flex-col sm:flex-row gap-2.5">
           <div class="flex-1 flex items-center rounded-2xl border-2 border-[var(--line)] bg-white px-4 py-2 focus-within:border-[var(--leaf)] focus-within:ring-3 focus-within:ring-[var(--leaf)]/15 transition shadow-xs">
             <span class="text-gray-400 text-lg shrink-0 select-none mr-3" aria-hidden="true">🔍</span>
             <input 
@@ -73,9 +73,18 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               class="w-full bg-transparent py-1.5 text-base sm:text-lg text-[var(--ink)] placeholder:text-gray-400 outline-none border-none font-medium"
             />
           </div>
-          <button type="submit" class="btn-cta text-sm px-8 py-3.5 shrink-0 flex items-center justify-center gap-2 shadow-sm">
+          <button type="submit" class="btn-cta text-sm px-6 py-3.5 shrink-0 flex items-center justify-center gap-2 shadow-sm">
             <span>Deteksi Berkas</span>
             <span>→</span>
+          </button>
+          <button 
+            type="button" 
+            id="btn-refresh-status" 
+            class="btn-secondary text-sm px-4 py-3.5 bg-white border-2 border-[var(--line)] hover:border-[var(--leaf)] flex items-center justify-center gap-2 font-bold shadow-xs transition group shrink-0"
+            title="Segarkan data untuk melihat perubahan terbaru dari petugas loket"
+          >
+            <span id="refresh-icon" class="text-base inline-block transition-transform duration-500 group-hover:rotate-180">🔄</span>
+            <span>Refresh</span>
           </button>
         </form>
 
@@ -95,10 +104,28 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             </button>
             <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 font-bold transition flex items-center gap-1.5" data-query="20/45678/SP">
               <span>👤 20/45678/SP</span>
-              <span class="text-[10px] opacity-75">(Ahmad - Selesai)</span>
+              <span class="text-[10px] opacity-75">(Ahmad - Ditolak)</span>
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Live Sync / Refresh Status Bar -->
+      <div id="refresh-status-bar" class="hidden mt-6 flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-[var(--line)] text-xs text-[var(--muted)] shadow-xs">
+        <div class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Status diperiksa pada: <strong id="last-checked-time" class="text-[var(--ink)] font-mono">-</strong></span>
+        </div>
+        <button type="button" id="btn-refresh-inline" class="text-[var(--leaf)] font-bold hover:underline flex items-center gap-1.5 cursor-pointer">
+          <span class="inline-block">🔄</span>
+          <span>Cek Perubahan Terkini Petugas</span>
+        </button>
+      </div>
+
+      <!-- Toast Notifikasi Refresh -->
+      <div id="refresh-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none rounded-2xl bg-[#1b3d2b] text-white px-5 py-3.5 shadow-2xl flex items-center gap-3 text-xs font-bold border border-white/20">
+        <span class="text-base">✅</span>
+        <span id="toast-message">Data status berkas berhasil diperbarui!</span>
       </div>
 
       <!-- Applicant Profile Card (Appears on NIM Search) -->
@@ -451,12 +478,61 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         });
       });
 
+      // 5. Fitur Tombol Refresh / Segarkan Cek Perubahan
+      const btnRefresh = document.getElementById('btn-refresh-status');
+      const btnRefreshInline = document.getElementById('btn-refresh-inline');
+      const refreshIcon = document.getElementById('refresh-icon');
+      const refreshStatusBar = document.getElementById('refresh-status-bar');
+      const lastCheckedTime = document.getElementById('last-checked-time');
+      const refreshToast = document.getElementById('refresh-toast');
+      const toastMessage = document.getElementById('toast-message');
+
+      function showToast(msg) {
+        if (!refreshToast) return;
+        if (toastMessage) toastMessage.textContent = msg;
+        refreshToast.classList.remove('translate-y-24', 'opacity-0');
+        refreshToast.classList.add('translate-y-0', 'opacity-100');
+        setTimeout(() => {
+          refreshToast.classList.remove('translate-y-0', 'opacity-100');
+          refreshToast.classList.add('translate-y-24', 'opacity-0');
+        }, 2200);
+      }
+
+      function triggerRefresh() {
+        if (refreshIcon) {
+          refreshIcon.style.transform = 'rotate(360deg)';
+          setTimeout(() => { refreshIcon.style.transform = 'none'; }, 600);
+        }
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+        if (lastCheckedTime) lastCheckedTime.textContent = timeString;
+        if (refreshStatusBar) refreshStatusBar.classList.remove('hidden');
+
+        const currentQuery = (searchInput?.value || '').trim().toUpperCase();
+        if (currentQuery) {
+          executeSearch(currentQuery);
+          showToast(`✓ Data status berkas untuk "${currentQuery}" berhasil disegarkan!`);
+        } else {
+          // Hanya refresh database & tampilkan notifikasi
+          getAllTickets();
+          showToast('✓ Basis data status loket berhasil disegarkan!');
+        }
+      }
+
+      btnRefresh?.addEventListener('click', triggerRefresh);
+      btnRefreshInline?.addEventListener('click', triggerRefresh);
+
       // Auto check url param ?q=
       const urlParams = new URLSearchParams(window.location.search);
       const urlQuery = urlParams.get('q');
       if (urlQuery && searchInput) {
         searchInput.value = urlQuery;
         executeSearch(urlQuery.toUpperCase());
+        if (lastCheckedTime) {
+          lastCheckedTime.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+        }
+        if (refreshStatusBar) refreshStatusBar.classList.remove('hidden');
       }
     });
   </script>

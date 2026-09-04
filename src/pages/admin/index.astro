@@ -207,7 +207,71 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
     <!-- Admin Controls & Filter -->
     <section class="container-shell pb-16">
       <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-5 sm:p-7 shadow-sm">
-        <!-- Toolbar Filter & Search -->
+        <!-- 1. Case Categories Separator Tabs (Pemisahan Kasus Mahasiswa) -->
+        <div class="mb-6 pb-5 border-b border-[var(--line)]">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3.5">
+            <div class="flex items-center gap-2">
+              <span class="grid h-6 w-6 place-items-center rounded-lg bg-[var(--leaf-soft)] text-xs text-[var(--leaf)] font-bold">
+                📁
+              </span>
+              <span class="text-xs font-black uppercase tracking-wider text-[var(--leaf)]">
+                Pemisahan Case Mahasiswa:
+              </span>
+            </div>
+            <span class="text-[11px] text-[var(--muted)]">
+              Klik tab di bawah untuk memproses berkas per kasus secara terpisah
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none text-xs">
+            <button 
+              type="button" 
+              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-[var(--leaf)] text-white shadow-2xs" 
+              data-case="all"
+            >
+              <span>📂 Semua Case</span>
+              <span id="badge-case-all" class="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-black">0</span>
+            </button>
+
+            <button 
+              type="button" 
+              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
+              data-case="khs"
+            >
+              <span>📜 Permohonan KHS</span>
+              <span id="badge-case-khs" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
+            </button>
+
+            <button 
+              type="button" 
+              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
+              data-case="komplain"
+            >
+              <span>⚖️ Keluhan / Komplain Nilai</span>
+              <span id="badge-case-komplain" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
+            </button>
+
+            <button 
+              type="button" 
+              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
+              data-case="ujian"
+            >
+              <span>📝 Ujian Khusus</span>
+              <span id="badge-case-ujian" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
+            </button>
+
+            <button 
+              type="button" 
+              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
+              data-case="lainnya"
+            >
+              <span>📑 Surat & Lainnya</span>
+              <span id="badge-case-lainnya" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Toolbar Filter & Search -->
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
           <div class="flex-1 max-w-md relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-sm">
@@ -229,9 +293,27 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Selesai (Siap Diambil)">Siap Diambil</button>
             <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Ditolak">Ditolak</button>
             
-            <button id="btn-simulate-ticket" type="button" class="ml-auto btn-cta text-[11px] py-1.5 px-3 bg-[var(--gold)] !text-[var(--leaf)] hover:bg-[var(--gold-dark)] shadow-xs">
-              + Simulasi Surat Masuk
-            </button>
+            <div class="relative ml-auto">
+              <button id="btn-simulate-ticket" type="button" class="btn-cta text-[11px] py-1.5 px-3 bg-[var(--gold)] !text-[var(--leaf)] hover:bg-[var(--gold-dark)] shadow-xs flex items-center gap-1">
+                <span>+ Simulasi Surat Masuk</span>
+                <span class="text-[10px]">▼</span>
+              </button>
+              <!-- Dropdown Simulasi Case -->
+              <div id="simulate-dropdown" class="hidden absolute right-0 mt-1 w-52 rounded-2xl bg-white border border-[var(--line)] shadow-xl p-1.5 z-30 text-xs font-medium">
+                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="khs">
+                  <span>📜</span>
+                  <span>Simulasi Case KHS</span>
+                </button>
+                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="komplain">
+                  <span>⚖️</span>
+                  <span>Simulasi Case Keluhan Nilai</span>
+                </button>
+                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="ujian">
+                  <span>📝</span>
+                  <span>Simulasi Case Ujian Khusus</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -330,17 +412,46 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         }
       });
 
-      // 2. Logika Dashboard Berkas Admin
+      // 2. Logika Dashboard Berkas Admin & Pemisahan Case
       const container = document.getElementById('admin-tickets-list');
       const emptyState = document.getElementById('admin-empty-state');
       const searchInput = document.getElementById('admin-search-input');
       const filterBtns = document.querySelectorAll('.admin-filter-btn');
+      const caseTabs = document.querySelectorAll('.admin-case-tab');
       const btnMarkAll = document.getElementById('btn-mark-all-read');
       const btnSimulate = document.getElementById('btn-simulate-ticket');
+      const simDropdown = document.getElementById('simulate-dropdown');
       const btnReset = document.getElementById('btn-reset-demo');
 
+      let currentCaseFilter = 'all';
       let currentStatusFilter = 'all';
       let searchQuery = '';
+
+      // Helper Klasifikasi Case Mahasiswa
+      function getCaseType(t) {
+        const id = (t.layananId || '').toLowerCase();
+        const code = (t.kode || '').toUpperCase();
+        const name = (t.layananNama || '').toLowerCase();
+
+        if (id === 'khs' || code.startsWith('KHS') || name.includes('khs')) return 'khs';
+        if (id === 'komplain-nilai' || code.startsWith('KMP') || name.includes('komplain') || name.includes('nilai')) return 'komplain';
+        if (id === 'ujian-khusus' || code.startsWith('UKH') || code.startsWith('UJK') || name.includes('ujian khusus')) return 'ujian';
+        return 'lainnya';
+      }
+
+      function getCaseInfo(t) {
+        const type = getCaseType(t);
+        switch (type) {
+          case 'khs':
+            return { title: 'Case KHS', icon: '📜', badge: 'bg-emerald-50 text-emerald-900 border-emerald-300' };
+          case 'komplain':
+            return { title: 'Case Keluhan Nilai', icon: '⚖️', badge: 'bg-amber-50 text-amber-900 border-amber-300' };
+          case 'ujian':
+            return { title: 'Case Ujian Khusus', icon: '📝', badge: 'bg-blue-50 text-blue-900 border-blue-300' };
+          default:
+            return { title: 'Case Surat/Lainnya', icon: '📑', badge: 'bg-purple-50 text-purple-900 border-purple-300' };
+        }
+      }
 
       function loadTickets() {
         try {
@@ -385,6 +496,25 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         if (elProcess) elProcess.textContent = inProcess;
         if (elDone) elDone.textContent = done;
         if (elRejected) elRejected.textContent = rejected;
+
+        // Hitung Per Case Mahasiswa
+        const countAll = tickets.length;
+        const countKhs = tickets.filter(t => getCaseType(t) === 'khs').length;
+        const countKomplain = tickets.filter(t => getCaseType(t) === 'komplain').length;
+        const countUjian = tickets.filter(t => getCaseType(t) === 'ujian').length;
+        const countLainnya = tickets.filter(t => getCaseType(t) === 'lainnya').length;
+
+        const bAll = document.getElementById('badge-case-all');
+        const bKhs = document.getElementById('badge-case-khs');
+        const bKomplain = document.getElementById('badge-case-komplain');
+        const bUjian = document.getElementById('badge-case-ujian');
+        const bLainnya = document.getElementById('badge-case-lainnya');
+
+        if (bAll) bAll.textContent = countAll;
+        if (bKhs) bKhs.textContent = countKhs;
+        if (bKomplain) bKomplain.textContent = countKomplain;
+        if (bUjian) bUjian.textContent = countUjian;
+        if (bLainnya) bLainnya.textContent = countLainnya;
       }
 
       function renderList() {
@@ -392,13 +522,14 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         saveTickets(tickets);
 
         const filtered = tickets.filter(t => {
+          const matchCase = currentCaseFilter === 'all' || getCaseType(t) === currentCaseFilter;
           const matchStatus = currentStatusFilter === 'all' || t.status === currentStatusFilter;
           const matchQuery = !searchQuery || 
                              (t.nim && t.nim.toLowerCase().includes(searchQuery)) ||
                              (t.nama && t.nama.toLowerCase().includes(searchQuery)) ||
                              (t.kode && t.kode.toLowerCase().includes(searchQuery)) ||
                              (t.layananNama && t.layananNama.toLowerCase().includes(searchQuery));
-          return matchStatus && matchQuery;
+          return matchCase && matchStatus && matchQuery;
         });
 
         if (!container) return;
@@ -414,6 +545,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         filtered.forEach((t) => {
           const isNew = t.isNewForAdmin;
           const currentStatus = t.status || 'Belum Diproses';
+          const caseInfo = getCaseInfo(t);
 
           const card = document.createElement('div');
           card.className = `p-5 rounded-2xl border-2 transition ${
@@ -429,12 +561,17 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           card.innerHTML = `
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-4">
               <div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                   <span class="font-mono text-sm font-black text-[var(--leaf)]">${t.kode}</span>
+                  <!-- Case Tag Badge -->
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black border ${caseInfo.badge}">
+                    <span>${caseInfo.icon}</span>
+                    <span>${caseInfo.title}</span>
+                  </span>
                   ${isNew ? '<span class="inline-block px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold animate-pulse">BARU</span>' : ''}
                   <span class="text-xs font-semibold text-[var(--muted)]">· Diajukan: ${t.tanggal}</span>
                 </div>
-                <h4 class="text-base font-extrabold text-[var(--ink)] mt-1">${t.layananNama}</h4>
+                <h4 class="text-base font-extrabold text-[var(--ink)] mt-1.5">${t.layananNama}</h4>
                 <p class="text-xs text-[var(--muted)] mt-0.5">
                   Pemohon: <strong class="text-[var(--ink)]">${t.nama}</strong> (NIM: <span class="font-mono font-bold text-[var(--leaf)]">${t.nim}</span>) · ${t.prodi}
                 </p>
@@ -673,34 +810,101 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         renderList();
       });
 
-      // Simulasi surat baru
-      btnSimulate?.addEventListener('click', () => {
+      // Toggle dropdown simulasi case
+      btnSimulate?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        simDropdown?.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', () => {
+        simDropdown?.classList.add('hidden');
+      });
+
+      // Handler Simulasi Per Case
+      function simulateCase(caseType) {
         const all = loadTickets();
         const rand = Math.floor(1000 + Math.random() * 9000);
-        const newSim = {
-          kode: `KHS-2026-${rand}`,
-          nim: '23/11223/SP',
-          nama: 'Dewi Lestari',
-          prodi: 'S1 Agribisnis',
-          semester: 'Semester 4',
-          layananId: 'khs',
-          layananNama: 'Permohonan KHS (Semester 1 - 3)',
-          keperluan: 'Pendaftaran Beasiswa Unggulan',
-          detailTambahan: 'Mohon stempel basah fakultas untuk lampiran beasiswa fisik',
-          format: 'Cetak Fisik Berstempel Basah',
-          status: 'Belum Diproses',
-          statusStep: 1,
-          posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-          estimasiSelesai: '1–2 Hari Kerja',
-          slaDays: 2,
-          catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu verifikasi petugas.',
-          tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
-          isNewForAdmin: true
-        };
+        let newSim;
+
+        if (caseType === 'komplain') {
+          newSim = {
+            kode: `KMP-2026-${rand}`,
+            nim: '22/33445/SP',
+            nama: 'Rian Pratama',
+            prodi: 'S1 Agroteknologi',
+            semester: 'Semester 6',
+            layananId: 'komplain-nilai',
+            layananNama: 'Verifikasi / Komplain Nilai',
+            keperluan: 'Komplain Nilai: Bioteknologi Pertanian (Nilai UAS Belum Masuk SIAKAD)',
+            detailTambahan: 'Dosen: Prof. Dr. Ir. H. Bambang, M.P. | Presensi 100%',
+            format: 'Surat Rekonsiliasi Nilai',
+            status: 'Belum Diproses',
+            statusStep: 1,
+            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+            estimasiSelesai: '2–3 Hari Kerja',
+            slaDays: 3,
+            catatanAdmin: 'Permohonan komplain nilai masuk antrean verifikasi dengan dosen pengampu.',
+            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
+            isNewForAdmin: true
+          };
+        } else if (caseType === 'ujian') {
+          newSim = {
+            kode: `UKH-2026-${rand}`,
+            nim: '20/55667/SP',
+            nama: 'Bagus Saputra',
+            prodi: 'S1 Agribisnis',
+            semester: 'Semester 10',
+            layananId: 'ujian-khusus',
+            layananNama: 'Pengajuan Ujian Khusus',
+            keperluan: 'Ujian Khusus: Manajemen Mutu Pertanian (2 SKS)',
+            detailTambahan: 'Sisa 1 mata kuliah teori terakhir sebelum pendadaran',
+            format: 'Berkas Fisik Loket',
+            status: 'Belum Diproses',
+            statusStep: 1,
+            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+            estimasiSelesai: '3–5 Hari Kerja',
+            slaDays: 5,
+            catatanAdmin: 'Menunggu pemeriksaan KHS kumulatif dan konfirmasi penguji.',
+            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
+            isNewForAdmin: true
+          };
+        } else {
+          // Default: case KHS
+          newSim = {
+            kode: `KHS-2026-${rand}`,
+            nim: '23/11223/SP',
+            nama: 'Dewi Lestari',
+            prodi: 'S1 Agribisnis',
+            semester: 'Semester 4',
+            layananId: 'khs',
+            layananNama: 'Permohonan KHS (Semester 2 s/d 4)',
+            keperluan: 'Pendaftaran Beasiswa Unggulan',
+            detailTambahan: 'Mohon salinan fisik resmi berstempel basah untuk lampiran beasiswa',
+            format: 'Cetak Fisik Berstempel Basah',
+            status: 'Belum Diproses',
+            statusStep: 1,
+            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+            estimasiSelesai: '1–2 Hari Kerja',
+            slaDays: 2,
+            catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu verifikasi petugas.',
+            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
+            isNewForAdmin: true
+          };
+        }
+
         all.unshift(newSim);
         saveTickets(all);
         renderList();
-        alert('🔔 Surat masuk baru dari Dewi Lestari (NIM: 23/11223/SP) masuk ke antrean Belum Diproses!');
+        alert(`🔔 Surat baru [${newSim.kode}] ${newSim.layananNama} dari ${newSim.nama} berhasil ditambahkan ke antrean!`);
+      }
+
+      document.querySelectorAll('.sim-case-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const caseType = btn.getAttribute('data-sim-case');
+          simDropdown?.classList.add('hidden');
+          simulateCase(caseType);
+        });
       });
 
       // Reset data
@@ -711,7 +915,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         }
       });
 
-      // Filter events
+      // Filter events status
       filterBtns.forEach(b => {
         b.addEventListener('click', () => {
           filterBtns.forEach(x => {
@@ -722,6 +926,19 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           b.classList.remove('bg-gray-100', 'text-[var(--muted)]');
 
           currentStatusFilter = b.getAttribute('data-status') || 'all';
+          renderList();
+        });
+      });
+
+      // Filter events case tabs
+      caseTabs.forEach(t => {
+        t.addEventListener('click', () => {
+          caseTabs.forEach(x => {
+            x.className = 'admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]';
+          });
+          t.className = 'admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-[var(--leaf)] text-white shadow-2xs';
+
+          currentCaseFilter = t.getAttribute('data-case') || 'all';
           renderList();
         });
       });

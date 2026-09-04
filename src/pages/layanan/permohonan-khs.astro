@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
+const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
 ---
 <BaseLayout title="Formulir Permohonan KHS" description="Layanan pengajuan penerbitan salinan Kartu Hasil Studi (KHS) dan transkrip nilai resmi FAPERTA INSTIPER Yogyakarta.">
   <!-- Header Banner -->
@@ -96,7 +96,7 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
                 <div>
                   <label for="semester" class="form-label">Semester Mahasiswa Saat Ini *</label>
                   <select id="semester" name="semester" required class="form-select">
-                    <option value="">-- Pilih Semester (1 - 14) --</option>
+                    <option value="">-- Pilih Semester (1 - 12) --</option>
                     {semesterList.map((smt) => (
                       <option value={smt}>{smt}</option>
                     ))}
@@ -180,6 +180,9 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
                       </button>
                       <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="8">
                         Semester 1 – 8
+                      </button>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="12">
+                        Semester 1 – 12
                       </button>
                     </div>
 
@@ -425,7 +428,7 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
             <span class="grid h-8 w-8 place-items-center rounded-xl bg-[var(--leaf-soft)] text-[var(--leaf)] font-black text-sm">
               🔄
             </span>
-            <h4 class="text-sm font-black text-[var(--leaf)]">Ketentuan Masa Studi (1 - 14 Semester)</h4>
+            <h4 class="text-sm font-black text-[var(--leaf)]">Ketentuan Masa Studi (1 - 12 Semester)</h4>
           </div>
           <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
             Mengacu pada Buku Pedoman Akademik INSTIPER:
@@ -437,7 +440,7 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[var(--leaf)] font-bold">•</span>
-              <span>Batas maksimal masa studi yang diizinkan adalah <strong>Semester 14</strong>.</span>
+              <span>Batas maksimal masa studi berjalan yang diakomodir sistem adalah <strong>Semester 12</strong>.</span>
             </li>
           </ul>
         </div>
