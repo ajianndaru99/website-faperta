@@ -1,0 +1,390 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
+---
+<BaseLayout title="Portal Admin & Notifikasi Surat Masuk" description="Dashboard petugas administrasi FAPERTA INSTIPER untuk memproses surat masuk mahasiswa dan memantau SLA permohonan berkas.">
+  <!-- Admin Header Banner -->
+  <section class="border-b border-[var(--line)] bg-[#1b3d2b] text-white">
+    <div class="container-shell py-8 sm:py-10">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[var(--gold)]">
+            <span>🛡️</span>
+            Portal Staf Administrasi & Dekanat FAPERTA
+          </div>
+          <h1 class="display-title mt-3 text-3xl sm:text-4xl font-extrabold !text-white leading-tight">
+            Manajemen Surat Masuk & Verifikasi
+          </h1>
+          <p class="mt-2 text-sm text-white/80 max-w-2xl leading-relaxed">
+            Pantau surat permohonan KHS, ujian khusus, dan komplain nilai yang masuk. Ubah status pemrosesan berkas, perbarui posisi dokumen, dan berikan catatan langsung ke mahasiswa.
+          </p>
+        </div>
+
+        <!-- Notification Bell Widget -->
+        <div class="rounded-3xl bg-white/10 border border-white/20 p-5 backdrop-blur-md flex items-center gap-4">
+          <div class="relative">
+            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--gold)] text-2xl text-[var(--leaf)] font-bold shadow-md">
+              🔔
+            </span>
+            <span id="panel-unread-badge" class="absolute -top-1.5 -right-1.5 h-6 min-w-6 px-1.5 inline-flex items-center justify-center rounded-full bg-red-600 text-xs font-black text-white ring-2 ring-white animate-bounce">
+              2
+            </span>
+          </div>
+          <div>
+            <p class="text-xs text-white/80">Notifikasi Surat Masuk:</p>
+            <h3 id="panel-unread-text" class="text-base font-extrabold text-white">2 Surat Baru Perlu Ditinjau</h3>
+            <button id="btn-mark-all-read" type="button" class="text-[11px] font-bold text-[var(--gold)] hover:underline mt-0.5">
+              ✓ Tandai Semua Sudah Ditinjau
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Metrics Section -->
+  <section class="container-shell py-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-2xl border border-[var(--line)] bg-white p-5 shadow-xs">
+        <p class="text-xs font-bold text-[var(--muted)]">Total Pengajuan Surat</p>
+        <p id="stat-total" class="text-3xl font-black text-[var(--ink)] mt-2">0</p>
+        <span class="text-[10px] text-[var(--muted)] mt-1 block">Semua berkas di sistem</span>
+      </div>
+
+      <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 shadow-xs">
+        <p class="text-xs font-bold text-amber-900">Perlu Verifikasi</p>
+        <p id="stat-pending" class="text-3xl font-black text-amber-900 mt-2">0</p>
+        <span class="text-[10px] text-amber-800/80 mt-1 block">Surat baru masuk / antrean</span>
+      </div>
+
+      <div class="rounded-2xl border border-blue-200 bg-blue-50/60 p-5 shadow-xs">
+        <p class="text-xs font-bold text-blue-900">Sedang Diproses</p>
+        <p id="stat-process" class="text-3xl font-black text-blue-900 mt-2">0</p>
+        <span class="text-[10px] text-blue-800/80 mt-1 block">Di Meja SIAKAD / Prodi</span>
+      </div>
+
+      <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5 shadow-xs">
+        <p class="text-xs font-bold text-emerald-900">Selesai / Terbit</p>
+        <p id="stat-done" class="text-3xl font-black text-emerald-900 mt-2">0</p>
+        <span class="text-[10px] text-emerald-800/80 mt-1 block">Siap diambil mahasiswa</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Controls & Filter -->
+  <section class="container-shell pb-16">
+    <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-6 shadow-sm">
+      <!-- Toolbar Filter & Search -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
+        <div class="flex-1 max-w-md relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-sm">
+            🔍
+          </span>
+          <input 
+            type="text" 
+            id="admin-search-input" 
+            placeholder="Cari berdasarkan NIM, Nama Mahasiswa, atau Kode Tiket..." 
+            class="w-full rounded-xl border border-[var(--line)] bg-gray-50 pl-9 pr-3 py-2 text-xs font-medium text-[var(--ink)] focus:border-[var(--leaf)] focus:bg-white focus:outline-none transition"
+          />
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="text-[var(--muted)] font-bold">Filter Status:</span>
+          <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-[var(--leaf)] text-white font-bold" data-status="all">Semua</button>
+          <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Diajukan">Diajukan</button>
+          <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Verifikasi Berkas">Verifikasi</button>
+          <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Selesai">Selesai</button>
+          
+          <button id="btn-simulate-ticket" type="button" class="ml-auto btn-cta text-[11px] py-1.5 px-3 bg-[var(--gold)] !text-[var(--leaf)] hover:bg-[var(--gold-dark)] shadow-xs">
+            + Simulasi Surat Masuk
+          </button>
+        </div>
+      </div>
+
+      <!-- Tickets List for Admin -->
+      <div id="admin-tickets-list" class="mt-6 space-y-4"></div>
+
+      <!-- Empty State -->
+      <div id="admin-empty-state" class="hidden py-12 text-center text-xs text-[var(--muted)]">
+        <span class="text-3xl">📭</span>
+        <p class="mt-2 text-sm font-bold text-[var(--ink)]">Tidak ada surat masuk yang sesuai filter</p>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="mt-8 pt-4 border-t border-[var(--line)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+        <p class="text-[var(--muted)]">Perubahan status yang Anda simpan akan langsung terlihat saat mahasiswa mengecek NIM di <a href="/layanan/cek-status" class="text-[var(--leaf)] font-bold underline">Halaman Cek Status</a>.</p>
+        <button id="btn-reset-demo" type="button" class="text-gray-400 hover:text-red-600 transition underline">
+          Reset Basis Data ke Kondisi Awal
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client-side Script for Admin Dashboard -->
+  <script is:inline define:vars={{ initialDemoTickets: INITIAL_DEMO_TICKETS }}>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('admin-tickets-list');
+      const emptyState = document.getElementById('admin-empty-state');
+      const searchInput = document.getElementById('admin-search-input');
+      const filterBtns = document.querySelectorAll('.admin-filter-btn');
+      const btnMarkAll = document.getElementById('btn-mark-all-read');
+      const btnSimulate = document.getElementById('btn-simulate-ticket');
+      const btnReset = document.getElementById('btn-reset-demo');
+
+      let currentStatusFilter = 'all';
+      let searchQuery = '';
+
+      function loadTickets() {
+        try {
+          const stored = localStorage.getItem('portal_faperta_tickets');
+          if (stored) {
+            return JSON.parse(stored);
+          }
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(initialDemoTickets));
+          return initialDemoTickets;
+        } catch (e) {
+          return initialDemoTickets;
+        }
+      }
+
+      function saveTickets(tickets) {
+        localStorage.setItem('portal_faperta_tickets', JSON.stringify(tickets));
+        // Update global unread badge
+        const unread = tickets.filter(t => t.isNewForAdmin).length;
+        const panelBadge = document.getElementById('panel-unread-badge');
+        const panelText = document.getElementById('panel-unread-text');
+        const headerBadge = document.getElementById('admin-unread-badge');
+
+        if (panelBadge) panelBadge.textContent = unread;
+        if (panelText) panelText.textContent = `${unread} Surat Baru Perlu Ditinjau`;
+        if (headerBadge) {
+          headerBadge.textContent = unread;
+          if (unread > 0) headerBadge.classList.remove('hidden');
+          else headerBadge.classList.add('hidden');
+        }
+
+        renderMetrics(tickets);
+      }
+
+      function renderMetrics(tickets) {
+        const total = tickets.length;
+        const pending = tickets.filter(t => t.status === 'Diajukan').length;
+        const inProcess = tickets.filter(t => t.status === 'Verifikasi Berkas' || t.status === 'Persetujuan').length;
+        const done = tickets.filter(t => t.status === 'Selesai').length;
+
+        document.getElementById('stat-total').textContent = total;
+        document.getElementById('stat-pending').textContent = pending;
+        document.getElementById('stat-process').textContent = inProcess;
+        document.getElementById('stat-done').textContent = done;
+      }
+
+      function renderList() {
+        const tickets = loadTickets();
+        saveTickets(tickets); // refresh badges & stats
+
+        const filtered = tickets.filter(t => {
+          const matchStatus = currentStatusFilter === 'all' || t.status === currentStatusFilter;
+          const matchQuery = !searchQuery || 
+                             (t.nim && t.nim.toLowerCase().includes(searchQuery)) ||
+                             (t.nama && t.nama.toLowerCase().includes(searchQuery)) ||
+                             (t.kode && t.kode.toLowerCase().includes(searchQuery)) ||
+                             (t.layananNama && t.layananNama.toLowerCase().includes(searchQuery));
+          return matchStatus && matchQuery;
+        });
+
+        container.innerHTML = '';
+
+        if (filtered.length === 0) {
+          emptyState?.classList.remove('hidden');
+          return;
+        } else {
+          emptyState?.classList.add('hidden');
+        }
+
+        filtered.forEach((t) => {
+          const isNew = t.isNewForAdmin;
+          const statusOptions = ['Diajukan', 'Verifikasi Berkas', 'Persetujuan', 'Selesai', 'Perlu Revisi'];
+
+          const card = document.createElement('div');
+          card.className = `p-5 rounded-2xl border-2 transition ${isNew ? 'border-[var(--leaf)] bg-[#f7faf5]' : 'border-[var(--line)] bg-white'}`;
+          card.innerHTML = `
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-sm font-black text-[var(--leaf)]">${t.kode}</span>
+                  ${isNew ? '<span class="inline-block px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold animate-pulse">BARU</span>' : ''}
+                  <span class="text-xs font-semibold text-[var(--muted)]">· ${t.tanggal}</span>
+                </div>
+                <h4 class="text-base font-extrabold text-[var(--ink)] mt-1">${t.layananNama}</h4>
+                <p class="text-xs text-[var(--muted)] mt-0.5">
+                  Pemohon: <strong class="text-[var(--ink)]">${t.nama}</strong> (NIM: <span class="font-mono font-bold text-[var(--leaf)]">${t.nim}</span>) · ${t.prodi}
+                </p>
+              </div>
+
+              <!-- Quick Status Selector -->
+              <div class="flex flex-wrap items-center gap-2">
+                <label class="text-xs font-bold text-[var(--muted)]">Status Berkas:</label>
+                <select class="status-select rounded-xl border border-[var(--line)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--ink)] focus:border-[var(--leaf)] outline-none" data-kode="${t.kode}">
+                  ${statusOptions.map(opt => `<option value="${opt}" ${t.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+
+            <!-- Details & Admin Update Section -->
+            <div class="mt-4 grid sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <p class="text-[var(--muted)] font-bold">Keperluan / Keterangan Mahasiswa:</p>
+                <p class="text-[var(--ink)] mt-1 bg-white p-2.5 rounded-xl border border-[var(--line)]">${t.detailTambahan || t.keperluan}</p>
+                
+                <div class="mt-3 flex items-center gap-2 text-[11px] text-[var(--muted)]">
+                  <span>Format: <strong>${t.format || 'Digital'}</strong></span>
+                  <span>·</span>
+                  <span>SLA: <strong class="text-emerald-700">${t.estimasiSelesai || '1–2 Hari'}</strong></span>
+                </div>
+              </div>
+
+              <div>
+                <p class="text-[var(--muted)] font-bold">Posisi Berkas Saat Ini:</p>
+                <input 
+                  type="text" 
+                  class="posisi-input w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none"
+                  value="${t.posisiBerkas || 'Pemeriksaan Administrasi Akademik'}"
+                  data-kode="${t.kode}"
+                />
+
+                <p class="text-[var(--muted)] font-bold mt-3">Catatan Petugas (Dilihat Mahasiswa):</p>
+                <textarea 
+                  rows="2"
+                  class="catatan-input w-full rounded-xl border border-[var(--line)] bg-white p-2 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none"
+                  data-kode="${t.kode}"
+                  placeholder="Contoh: Berkas sudah diverifikasi, silakan ambil di loket loket..."
+                >${t.catatanAdmin || ''}</textarea>
+              </div>
+            </div>
+
+            <!-- Save Action Button -->
+            <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between">
+              <span class="save-indicator text-xs text-emerald-700 font-bold hidden" id="saved-${t.kode}">
+                ✓ Tersimpan & Tersinkronisasi ke Mahasiswa!
+              </span>
+              <button 
+                type="button" 
+                class="btn-save-ticket ml-auto btn-cta text-xs py-1.5 px-4 shadow-xs"
+                data-kode="${t.kode}"
+              >
+                💾 Simpan Pembaruan
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // Attach event listeners for Save buttons
+        document.querySelectorAll('.btn-save-ticket').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            const statusSel = document.querySelector(`.status-select[data-kode="${kode}"]`);
+            const posisiInp = document.querySelector(`.posisi-input[data-kode="${kode}"]`);
+            const catatanInp = document.querySelector(`.catatan-input[data-kode="${kode}"]`);
+            const savedMsg = document.getElementById(`saved-${kode}`);
+
+            const all = loadTickets();
+            const target = all.find(t => t.kode === kode);
+            if (target) {
+              target.status = statusSel.value;
+              target.posisiBerkas = posisiInp.value;
+              target.catatanAdmin = catatanInp.value;
+              target.isNewForAdmin = false; // Mark reviewed
+
+              // Map step number
+              const stepMap = {
+                'Diajukan': 1,
+                'Verifikasi Berkas': 2,
+                'Persetujuan': 3,
+                'Selesai': 4,
+                'Perlu Revisi': 2
+              };
+              target.statusStep = stepMap[target.status] || 1;
+
+              saveTickets(all);
+
+              if (savedMsg) {
+                savedMsg.classList.remove('hidden');
+                setTimeout(() => { savedMsg.classList.add('hidden'); }, 3000);
+              }
+            }
+          });
+        });
+      }
+
+      // Mark all read
+      btnMarkAll?.addEventListener('click', () => {
+        const all = loadTickets();
+        all.forEach(t => { t.isNewForAdmin = false; });
+        saveTickets(all);
+        renderList();
+      });
+
+      // Simulate new incoming ticket
+      btnSimulate?.addEventListener('click', () => {
+        const all = loadTickets();
+        const rand = Math.floor(1000 + Math.random() * 9000);
+        const newSim = {
+          kode: `KHS-2026-${rand}`,
+          nim: '23/11223/SP',
+          nama: 'Dewi Lestari',
+          prodi: 'S1 Agribisnis',
+          semester: 'Semester 4',
+          layananId: 'khs',
+          layananNama: 'Permohonan KHS (Semester 1 - 3)',
+          keperluan: 'Pendaftaran Beasiswa Unggulan',
+          detailTambahan: 'Mohon stempel basah fakultas untuk lampiran beasiswa',
+          format: 'Cetak Fisik Berstempel Basah',
+          status: 'Diajukan',
+          statusStep: 1,
+          posisiBerkas: 'Antrean Surat Masuk Baru',
+          estimasiSelesai: '1 Hari Kerja (Besok)',
+          slaDays: 2,
+          catatanAdmin: 'Surat baru diterima sistem. Menunggu pemeriksaan staf administrasi.',
+          tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
+          isNewForAdmin: true
+        };
+        all.unshift(newSim);
+        saveTickets(all);
+        renderList();
+        alert('🔔 Surat masuk baru dari Dewi Lestari (NIM: 23/11223/SP) berhasil disimulasikan! Notifikasi lonceng diperbarui.');
+      });
+
+      // Reset demo
+      btnReset?.addEventListener('click', () => {
+        if (confirm('Kembalikan data ke daftar contoh demo awal?')) {
+          localStorage.removeItem('portal_faperta_tickets');
+          renderList();
+        }
+      });
+
+      // Filter events
+      filterBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          filterBtns.forEach(x => {
+            x.classList.remove('bg-[var(--leaf)]', 'text-white', 'font-bold');
+            x.classList.add('bg-gray-100', 'text-[var(--muted)]');
+          });
+          b.classList.add('bg-[var(--leaf)]', 'text-white', 'font-bold');
+          b.classList.remove('bg-gray-100', 'text-[var(--muted)]');
+
+          currentStatusFilter = b.getAttribute('data-status') || 'all';
+          renderList();
+        });
+      });
+
+      // Search event
+      searchInput?.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        renderList();
+      });
+
+      renderList();
+    });
+  </script>
+</BaseLayout>

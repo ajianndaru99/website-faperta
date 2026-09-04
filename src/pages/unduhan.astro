@@ -1,209 +1,145 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const documents = [
-  {
-    category: "Panduan Umum",
-    title: "Buku Panduan Akademik",
-    desc: "Panduan induk ketentuan studi, hak & kewajiban, kurikulum, dan etika mahasiswa FAPERTA.",
-    meta: "PDF · Tahun 2025 / 2026",
-    file: "/dokumen/buku-panduan-akademik.pdf",
-    format: "PDF",
-    icon: "▣"
-  },
-  {
-    category: "Program Studi & Kurikulum",
-    title: "Panduan Kurikulum Prodi Agroteknologi",
-    desc: "Struktur sebaran mata kuliah, silabus, praktikum, dan peminatan konsentrasi Agroteknologi.",
-    meta: "PDF · Kurikulum 2025",
-    file: "/dokumen/panduan-agroteknologi.pdf",
-    format: "PDF",
-    icon: "◒"
-  },
-  {
-    category: "Program Studi & Kurikulum",
-    title: "Panduan Kurikulum Prodi Agribisnis",
-    desc: "Peta kurikulum mata kuliah, manajemen agribisnis, studi kelayakan, dan kewirausahaan pertanian.",
-    meta: "PDF · Kurikulum 2025",
-    file: "/dokumen/panduan-agribisnis.pdf",
-    format: "PDF",
-    icon: "◒"
-  },
-  {
-    category: "Kalender Akademik",
-    title: "Kalender Akademik FAPERTA",
-    desc: "Jadwal penting semester gasal & genap, KRS-an, perkuliahan, UTS, UAS, dan batas yudisium.",
-    meta: "PDF · Tahun Akademik 2025 / 2026",
-    file: "/dokumen/kalender-akademik.pdf",
-    format: "PDF",
-    icon: "▦"
-  },
-  {
-    category: "Fasilitas & Lokasi",
-    title: "Denah Kampus INSTIPER Yogyakarta",
-    desc: "Peta lokasi gedung rektorat, dekanat FAPERTA, laboratorium, ruang kelas, dan kebun percobaan.",
-    meta: "SVG · Peta Area Kampus",
-    file: "/campus-map.svg",
-    format: "SVG",
-    icon: "⌖"
-  },
-  {
-    category: "Tugas Akhir & Skripsi",
-    title: "Template Skripsi Agroteknologi",
-    desc: "Format baku penulisan laporan skripsi, tata letak bab, tabel, grafik percobaan, dan daftar pustaka.",
-    meta: "DOCX · Format Resmi FAPERTA",
-    file: "/dokumen/template-skripsi-agroteknologi.docx",
-    format: "DOCX",
-    icon: "▤"
-  },
-  {
-    category: "Tugas Akhir & Skripsi",
-    title: "Template Skripsi Agribisnis",
-    desc: "Format baku naskah skripsi penelitian sosial-ekonomi pertanian, studi kasus, dan permodelan bisnis.",
-    meta: "DOCX · Format Resmi FAPERTA",
-    file: "/dokumen/template-skripsi-agribisnis.docx",
-    format: "DOCX",
-    icon: "▤"
-  },
-  {
-    category: "Tugas Akhir & Skripsi",
-    title: "Template Proposal Skripsi",
-    desc: "Format standar penyusunan proposal penelitian tugas akhir untuk kedua program studi.",
-    meta: "DOCX · Agroteknologi & Agribisnis",
-    file: "/dokumen/template-proposal.docx",
-    format: "DOCX",
-    icon: "▤"
-  }
-];
+import { PORTAL_DOCUMENTS } from "../data/portalData";
 ---
-<BaseLayout title="Unduhan Dokumen Resmi" description="Koleksi buku panduan, kalender akademik, denah kampus, dan template skripsi FAPERTA INSTIPER.">
+<BaseLayout title="Unduhan Dokumen Resmi" description="Koleksi buku panduan, kalender akademik, denah kampus, dan template skripsi FAPERTA INSTIPER Yogyakarta.">
   <!-- Banner Header -->
   <section class="grid-paper border-b border-[var(--line)]">
-    <div class="container-shell py-12 sm:py-16 md:py-20">
-      <div class="max-w-2xl">
+    <div class="container-shell py-12 sm:py-16">
+      <div class="max-w-3xl">
         <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
           <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
           Perpustakaan Berkas Digital FAPERTA
         </div>
-        <h1 class="display-title mt-5 text-4xl sm:text-5xl md:text-6xl font-extrabold text-[var(--leaf)] leading-tight">
-          Dokumen resmi yang<br /><em class="font-extrabold text-[var(--gold)] not-italic underline decoration-[var(--leaf)] decoration-wavy decoration-from-font">siap digunakan.</em>
+        <h1 class="display-title mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+          Dokumen & Template Akademik Resmi
         </h1>
-        <p class="mt-4 text-base sm:text-lg leading-relaxed text-[var(--ink)]">
-          Unduh buku panduan akademik, kurikulum program studi, kalender perkuliahan, denah kampus, serta template naskah proposal & skripsi.
+        <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+          Unduh buku panduan akademik, kurikulum program studi, kalender perkuliahan, denah kampus, serta format baku naskah proposal & skripsi untuk mahasiswa FAPERTA.
         </p>
       </div>
 
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a href="#koleksi-berkas" class="btn-cta text-sm">
-          ↓ 8 Berkas Dokumen Pokok
-        </a>
-        <a href="#surat-edaran" class="btn-secondary text-sm">
-          ↓ Repositori Regulasi SK & SE
-        </a>
+      <!-- Quick Search Bar -->
+      <div class="mt-8 max-w-lg">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400 text-sm">
+            🔍
+          </span>
+          <input 
+            type="text" 
+            id="doc-search-input" 
+            placeholder="Cari berkas (misal: panduan, skripsi, kurikulum, denah)..." 
+            class="w-full rounded-2xl border-2 border-[var(--line)] bg-white pl-10 pr-4 py-3 text-xs sm:text-sm font-medium text-[var(--ink)] placeholder:text-gray-400 focus:border-[var(--leaf)] focus:outline-none transition shadow-xs"
+          />
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Document List Section -->
-  <section id="koleksi-berkas" class="container-shell py-14 sm:py-20">
-    <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[var(--line)]">
+  <!-- Documents Grid Section -->
+  <section id="koleksi-berkas" class="container-shell py-12">
+    <div class="flex items-center justify-between mb-8 pb-3 border-b border-[var(--line)] text-xs text-[var(--muted)]">
       <div>
-        <p class="eyebrow">Koleksi Berkas Akademik</p>
-        <h2 class="mt-1 text-2xl sm:text-3xl font-extrabold text-[var(--leaf)]">Dokumen Panduan & Template</h2>
+        Menampilkan <strong id="doc-counter" class="text-[var(--leaf)]">{PORTAL_DOCUMENTS.length}</strong> dokumen resmi
       </div>
-      <div class="flex items-center gap-2">
-        <span class="rounded-full bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)] border border-[var(--leaf)]/20">
-          {documents.length} Dokumen Tersedia
-        </span>
+      <div class="text-right">
+        Format: PDF · DOCX · SVG
       </div>
     </div>
 
-    <!-- Responsive Document Grid -->
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
-      {documents.map((doc, index) => (
-        <article class="group relative flex flex-col justify-between rounded-3xl border border-[var(--line)] bg-white p-6 shadow-xs transition duration-200 hover:border-[var(--leaf)] hover:shadow-lg">
+    <div id="documents-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {PORTAL_DOCUMENTS.map((doc) => (
+        <div 
+          class="doc-card rounded-3xl border-2 border-[var(--line)] bg-white p-6 shadow-xs hover:border-[var(--leaf)] hover:shadow-md transition flex flex-col justify-between"
+          data-title={doc.title.toLowerCase()}
+          data-category={doc.category.toLowerCase()}
+          data-desc={doc.desc.toLowerCase()}
+        >
           <div>
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <span class="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--leaf-soft)] text-xl text-[var(--leaf)] font-bold">
-                  {doc.icon}
-                </span>
-                <div>
-                  <span class="inline-block rounded bg-[#fef8ea] px-2 py-0.5 text-[10px] font-bold text-[var(--gold)] border border-[var(--gold)]/30 uppercase tracking-wider">
-                    {doc.category}
-                  </span>
-                  <p class="text-[11px] font-semibold text-[var(--muted)] mt-0.5">{doc.meta}</p>
-                </div>
-              </div>
-              <span class="text-xs font-black text-[var(--muted)]/50">
-                0{index + 1}
+            <div class="flex items-center justify-between gap-2 border-b border-[var(--line)] pb-4">
+              <span class="text-xs font-bold text-[var(--muted)] uppercase tracking-wider">
+                {doc.category}
+              </span>
+              <span class="inline-block rounded-md bg-[var(--leaf-soft)] px-2 py-0.5 text-[10px] font-black text-[var(--leaf)]">
+                {doc.format}
               </span>
             </div>
 
-            <h3 class="mt-5 text-lg font-bold text-[var(--leaf)] group-hover:text-[var(--leaf-dark)] transition">
-              {doc.title}
-            </h3>
-            <p class="mt-2 text-xs leading-relaxed text-[var(--ink)]">
+            <div class="mt-4 flex items-start gap-3.5">
+              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[var(--paper)] text-lg text-[var(--leaf)] border border-[var(--line)]">
+                {doc.icon}
+              </span>
+              <div>
+                <h2 class="text-base font-black text-[var(--ink)] leading-snug">
+                  {doc.title}
+                </h2>
+                <p class="text-[11px] font-semibold text-[var(--leaf)] mt-0.5">
+                  {doc.meta}
+                </p>
+              </div>
+            </div>
+
+            <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
               {doc.desc}
             </p>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-[var(--line)] flex items-center justify-between gap-3">
-            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--muted)]">
-              <span class="h-2 w-2 rounded-full bg-[var(--leaf)]"></span>
-              Format {doc.format}
-            </span>
+          <div class="mt-6 pt-4 border-t border-[var(--line)]">
             <a 
               href={doc.file} 
               download 
-              class="touch-target inline-flex items-center gap-1.5 rounded-full bg-[var(--gold)] px-4 py-2 text-xs font-bold text-[#1E4620] shadow-xs hover:bg-[var(--gold-hover)] hover:shadow-sm transition active:scale-95"
+              class="w-full btn-secondary text-xs py-2.5 px-4 bg-white hover:bg-[var(--leaf-soft)] hover:border-[var(--leaf)] flex items-center justify-center gap-2 font-bold"
             >
               <span>Unduh Berkas</span>
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">↓</span>
             </a>
           </div>
-        </article>
+        </div>
       ))}
     </div>
-  </section>
 
-  <!-- Regulation Section Banner -->
-  <section id="surat-edaran" class="bg-[var(--leaf-dark)] text-white py-16 sm:py-20">
-    <div class="container-shell grid gap-8 md:grid-cols-[1fr_1.2fr] md:items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1 text-xs font-bold !text-[var(--gold)] border border-[var(--gold)]/40">
-          <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
-          Regulasi & Ketetapan Hukum
-        </div>
-        <h2 class="display-title mt-4 text-3xl sm:text-4xl font-extrabold leading-tight !text-white">
-          Surat Keputusan (SK) dan Surat Edaran (SE)
-        </h2>
-        <p class="mt-3 text-sm leading-relaxed !text-white/90">
-          Landasan hukum pelaksanaan pendidikan tinggi di Fakultas Pertanian INSTIPER untuk memastikan kepatuhan standar mutu akademik.
-        </p>
-      </div>
-
-      <div class="rounded-3xl bg-white/10 border border-white/20 p-6 sm:p-8 backdrop-blur-xs">
-        <p class="text-xs font-bold !text-[var(--gold)] uppercase tracking-wider">Akses Langsung</p>
-        <p class="mt-2 text-sm leading-relaxed !text-white/95">
-          Uraian regulasi pedoman akademik, ketentuan penulisan skripsi, serta etika penggunaan kecerdasan buatan (AI) dapat diakses dan diunduh di pusat regulasi.
-        </p>
-        <div class="mt-6 flex flex-col sm:flex-row gap-3">
-          <a 
-            href="/faq#regulasi-sk" 
-            class="btn-cta text-xs py-2.5 px-5"
-          >
-            Buka Halaman Regulasi & SK →
-          </a>
-          <a 
-            href="/dokumen/sk-pedoman-akademik.pdf" 
-            download
-            class="touch-target inline-flex items-center justify-center rounded-full border-2 border-white/40 px-5 py-2.5 text-xs font-bold !text-white hover:bg-white/15 transition text-center"
-          >
-            Unduh SK Pedoman Akademik ↗
-          </a>
-        </div>
-      </div>
+    <!-- Empty State -->
+    <div id="empty-doc-alert" class="hidden rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center my-8">
+      <span class="text-3xl">📂</span>
+      <h3 class="mt-3 text-base font-bold text-[var(--ink)]">Dokumen Tidak Ditemukan</h3>
+      <p class="mt-1 text-xs text-[var(--muted)]">
+        Tidak ada berkas yang sesuai dengan kata kunci Anda.
+      </p>
     </div>
   </section>
+
+  <!-- Client Script for Live Filtering -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('doc-search-input');
+      const cards = document.querySelectorAll('.doc-card');
+      const counter = document.getElementById('doc-counter');
+      const emptyAlert = document.getElementById('empty-doc-alert');
+
+      searchInput?.addEventListener('input', (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        let count = 0;
+
+        cards.forEach(card => {
+          const title = card.getAttribute('data-title') || '';
+          const category = card.getAttribute('data-category') || '';
+          const desc = card.getAttribute('data-desc') || '';
+
+          if (!q || title.includes(q) || category.includes(q) || desc.includes(q)) {
+            card.classList.remove('hidden');
+            count++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        if (counter) counter.textContent = count;
+        if (count === 0) {
+          emptyAlert?.classList.remove('hidden');
+        } else {
+          emptyAlert?.classList.add('hidden');
+        }
+      });
+    });
+  </script>
 </BaseLayout>

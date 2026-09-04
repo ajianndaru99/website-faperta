@@ -281,15 +281,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           nama,
           nim,
           prodi,
+          layananId: 'komplain-nilai',
+          layananNama: `Komplain Nilai: ${mk}`,
           keperluan: `Komplain Nilai: ${mk}`,
           detailTambahan: `Dosen: ${dosen} | Kendala: ${kendala}`,
           format: 'Dokumen Digital (Verifikasi Hasil)',
-          status: 'Menunggu Verifikasi Admin / Dosen Pengampu',
-          tanggal
+          status: 'Diajukan',
+          statusStep: 1,
+          posisiBerkas: 'Meja Staf Nilai & Konfirmasi Dosen',
+          estimasiSelesai: '2–3 Hari Kerja',
+          slaDays: 3,
+          catatanAdmin: 'Laporan diterima, menunggu verifikasi berkas nilai dari dosen pengampu.',
+          tanggal,
+          isNewForAdmin: true
         };
 
-        // Simpan ke localStorage
+        // Simpan ke localStorage (terpadu portal_faperta_tickets & portal_khs_tickets)
         try {
+          const mainStore = JSON.parse(localStorage.getItem('portal_faperta_tickets') || '[]');
+          mainStore.unshift(newTicket);
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(mainStore));
+
           const existing = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
           existing.unshift(newTicket);
           localStorage.setItem('portal_khs_tickets', JSON.stringify(existing));

@@ -406,19 +406,30 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
           nim,
           prodi,
           semester,
+          layananId: 'khs',
+          layananNama: `Permohonan KHS (${semesterDimohon})`,
           keperluan: `Permohonan KHS (${semesterDimohon})`,
           detailTambahan: `Tujuan: ${keperluan} | Catatan: ${catatan}`,
           format: formatOutput === 'digital' ? 'PDF Digital Berstempel Elektronik' : 'Cetak Fisik Berstempel Basah',
-          status: 'Diajukan (Menunggu Verifikasi SIAKAD)',
+          status: 'Diajukan',
           statusStep: 1,
-          tanggal: tanggalPengajuan
+          posisiBerkas: 'Meja Administrasi Akademik (Menunggu Verifikasi)',
+          estimasiSelesai: '1–2 Hari Kerja',
+          slaDays: 2,
+          catatanAdmin: 'Pengajuan baru diterima sistem, menunggu verifikasi staf.',
+          tanggal: tanggalPengajuan,
+          isNewForAdmin: true
         };
 
-        // Simpan ke localStorage
+        // Simpan ke localStorage (terpadu portal_faperta_tickets & portal_khs_tickets)
         try {
-          const existingTickets = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
-          existingTickets.unshift(newTicket);
-          localStorage.setItem('portal_khs_tickets', JSON.stringify(existingTickets));
+          const mainStore = JSON.parse(localStorage.getItem('portal_faperta_tickets') || '[]');
+          mainStore.unshift(newTicket);
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(mainStore));
+
+          const legacyTickets = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
+          legacyTickets.unshift(newTicket);
+          localStorage.setItem('portal_khs_tickets', JSON.stringify(legacyTickets));
           localStorage.setItem('portal_khs_last_ticket', JSON.stringify(newTicket));
         } catch (err) {
           console.error(err);

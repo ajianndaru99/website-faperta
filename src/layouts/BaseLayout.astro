@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { PORTAL_SERVICES, PORTAL_DOCUMENTS } from "../data/portalData";
 const { title = "Pusat Informasi Akademik", description = "Pusat informasi akademik FAPERTA INSTIPER Yogyakarta." } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
@@ -15,19 +16,20 @@ const currentPath = Astro.url.pathname;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&family=Poppins:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <title>{title} — FAPERTA INSTIPER</title>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col bg-[#fafcf8] text-[var(--ink)]">
+    <!-- Header Navbar -->
     <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[#f7faf5]/95 backdrop-blur-md transition-all shadow-xs">
-      <div class="container-shell flex min-h-[74px] items-center justify-between gap-4">
+      <div class="container-shell flex min-h-[74px] items-center justify-between gap-3">
         
         <!-- Sisi Kiri: Tombol Hamburger Mobile + Brand Logo + Desktop Nav -->
-        <div class="flex items-center gap-3 md:gap-8">
-          <!-- Tombol Hamburger Mobile di Sebelah Kiri -->
+        <div class="flex items-center gap-3 md:gap-7">
+          <!-- Tombol Hamburger Mobile -->
           <button 
             id="menu-toggle" 
             class="touch-target inline-flex items-center justify-center rounded-xl border border-[var(--line)] bg-white p-2.5 text-sm font-bold text-[var(--ink)] shadow-xs transition hover:bg-[var(--leaf-soft)] hover:border-[var(--leaf)] md:hidden active:scale-95" 
             aria-expanded="false" 
             aria-controls="mobile-drawer"
-            aria-label="Buka navigasi menu di sebelah kiri"
+            aria-label="Buka navigasi menu"
           >
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -35,7 +37,7 @@ const currentPath = Astro.url.pathname;
           </button>
 
           <!-- Brand Logo -->
-          <a href="/" class="flex items-center gap-3 group" aria-label="FAPERTA INSTIPER, Beranda">
+          <a href="/" class="flex items-center gap-2.5 sm:gap-3 group" aria-label="FAPERTA INSTIPER, Beranda">
             <img 
               src="/logo-instiper.webp" 
               alt="Logo INSTIPER Yogyakarta" 
@@ -47,16 +49,16 @@ const currentPath = Astro.url.pathname;
               class="h-10 w-10 sm:h-11 sm:w-11 shrink-0 object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
             />
             <div class="flex flex-col justify-center">
-              <span class="text-[15px] sm:text-base font-black tracking-[.14em] text-[var(--leaf)] leading-none">FAPERTA</span>
+              <span class="text-[14px] sm:text-base font-black tracking-[.14em] text-[var(--leaf)] leading-none">FAPERTA</span>
               <span class="text-[10px] sm:text-[11px] font-semibold text-[var(--muted)] tracking-[.15em] uppercase leading-none mt-1">INSTIPER YOGYAKARTA</span>
             </div>
           </a>
 
-          <!-- Desktop Navigation (Rata Kiri Bersebelahan dengan Logo) -->
-          <nav class="hidden md:flex md:items-center md:gap-5" aria-label="Navigasi utama">
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex md:items-center md:gap-4 lg:gap-5" aria-label="Navigasi utama">
             <a 
               class:list={[
-                "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
+                "touch-target px-2.5 py-2 text-sm font-bold rounded-lg transition",
                 currentPath === "/" 
                   ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
                   : "text-[var(--muted)] hover:text-[var(--leaf)]"
@@ -67,55 +69,184 @@ const currentPath = Astro.url.pathname;
             </a>
             <a 
               class:list={[
-                "touch-target px-3 py-2 text-sm font-bold rounded-lg transition flex items-center gap-1.5",
-                currentPath.startsWith("/layanan") 
+                "touch-target px-2.5 py-2 text-sm font-bold rounded-lg transition flex items-center gap-1.5",
+                currentPath.startsWith("/layanan") && !currentPath.includes("cek-status")
                   ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
                   : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/layanan"
             >
-              <span>Layanan Akademik</span>
-              <span class="inline-block rounded-full bg-[var(--gold)]/25 text-[var(--leaf)] text-[10px] font-extrabold px-1.5 py-0.5">Online</span>
+              <span>Layanan</span>
+              <span class="inline-block rounded-full bg-[var(--gold)]/25 text-[var(--leaf)] text-[10px] font-extrabold px-1.5 py-0.5">12 Menu</span>
             </a>
             <a 
               class:list={[
-                "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
+                "touch-target px-2.5 py-2 text-sm font-bold rounded-lg transition",
                 currentPath.startsWith("/unduhan") 
                   ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
                   : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/unduhan"
             >
-              Unduhan Dokumen
+              Unduhan
             </a>
             <a 
               class:list={[
-                "touch-target px-3 py-2 text-sm font-bold rounded-lg transition",
+                "touch-target px-2.5 py-2 text-sm font-bold rounded-lg transition",
                 currentPath.startsWith("/faq") 
                   ? "text-[var(--leaf)] border-b-2 border-[var(--leaf)] rounded-none" 
                   : "text-[var(--muted)] hover:text-[var(--leaf)]"
               ]} 
               href="/faq"
             >
-              FAQ & Regulasi
+              FAQ
             </a>
           </nav>
         </div>
 
-        <!-- Sisi Kanan: Shortcut Cepat Status Tiket -->
-        <div class="flex items-center gap-2.5">
+        <!-- Sisi Kanan: Search + Lacak NIM + Notifikasi Admin -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+          <!-- Tombol Global Live Search -->
+          <button 
+            id="global-search-btn" 
+            type="button"
+            class="touch-target inline-flex items-center gap-2 rounded-xl border border-[var(--line)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--muted)] shadow-xs hover:border-[var(--leaf)] hover:text-[var(--leaf)] transition active:scale-95"
+            aria-label="Cari layanan, dokumen, aturan"
+            title="Cari Cepat (Tekan Ctrl + K)"
+          >
+            <svg class="h-4 w-4 text-[var(--leaf)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span class="hidden sm:inline">Cari...</span>
+            <kbd class="hidden md:inline-block rounded bg-[var(--paper)] px-1.5 py-0.5 text-[10px] font-mono text-[var(--muted)] border border-[var(--line)]">Ctrl K</kbd>
+          </button>
+
+          <!-- Shortcut Deteksi NIM / Cek Status -->
           <a 
             href="/layanan/cek-status" 
-            class="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-white px-3.5 py-1.5 text-xs font-bold text-[var(--leaf)] shadow-xs hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)] transition"
+            class:list={[
+              "touch-target inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold shadow-xs transition",
+              currentPath.startsWith("/layanan/cek-status")
+                ? "border-[var(--leaf)] bg-[var(--leaf-soft)] text-[var(--leaf)]"
+                : "border-[var(--line)] bg-white text-[var(--leaf)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]"
+            ]}
+            title="Lacak Progres Surat Berdasarkan NIM atau Nomor Tiket"
           >
-            <span>🔍</span>
-            <span class="hidden sm:inline">Lacak Tiket</span>
+            <span class="text-sm">📑</span>
+            <span class="hidden md:inline">Lacak NIM</span>
+          </a>
+
+          <!-- Shortcut Portal Admin dengan Lonceng Notifikasi Masuk -->
+          <a 
+            href="/admin" 
+            id="header-admin-link"
+            class:list={[
+              "relative touch-target inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold shadow-xs transition",
+              currentPath.startsWith("/admin")
+                ? "bg-[var(--leaf-dark)] text-white ring-2 ring-[var(--gold)]"
+                : "bg-[var(--leaf)] text-white hover:bg-[var(--leaf-dark)]"
+            ]}
+            title="Portal Administrasi Akademik & Notifikasi Surat Masuk"
+          >
+            <span class="text-sm">🔔</span>
+            <span class="hidden lg:inline">Admin</span>
+            <!-- Badge Counter Surat Masuk -->
+            <span 
+              id="admin-unread-badge" 
+              class="hidden h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-red-600 text-[10px] font-black text-white ring-2 ring-white animate-pulse"
+            >
+              0
+            </span>
           </a>
         </div>
       </div>
     </header>
 
-    <!-- Drawer Mobile di Sebelah Kiri (Slide-in Left Drawer) -->
+    <!-- Global Live Search Modal (Command Palette) -->
+    <div id="search-modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden transition-opacity duration-200 opacity-0" aria-hidden="true"></div>
+    <div 
+      id="search-modal" 
+      class="fixed inset-x-4 top-16 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-2xl bg-white z-50 rounded-3xl shadow-2xl border border-[var(--line)] hidden transform scale-95 transition-all duration-200 overflow-hidden"
+      role="dialog" 
+      aria-modal="true"
+      aria-label="Pencarian Cepat Portal FAPERTA"
+    >
+      <!-- Input Search Box -->
+      <div class="p-4 sm:p-5 border-b border-[var(--line)] flex items-center gap-3 bg-[#fbfdfa]">
+        <svg class="h-5 w-5 text-[var(--leaf)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input 
+          type="text" 
+          id="global-search-input" 
+          placeholder="Ketik kata kunci (misal: KHS, Skripsi, Ujian Khusus, Kurikulum, Presensi)..." 
+          class="w-full bg-transparent text-base sm:text-lg font-medium text-[var(--ink)] placeholder:text-gray-400 outline-none border-none"
+          autocomplete="off"
+        />
+        <button id="search-modal-close" class="rounded-lg p-1.5 text-gray-400 hover:text-[var(--ink)] hover:bg-gray-100 transition" aria-label="Tutup pencarian">
+          <kbd class="text-xs font-mono bg-gray-100 border border-gray-200 px-1.5 py-0.5 rounded">ESC</kbd>
+        </button>
+      </div>
+
+      <!-- Quick Filter Chips -->
+      <div class="px-5 py-2.5 bg-gray-50 border-b border-[var(--line)] flex items-center gap-2 overflow-x-auto text-xs">
+        <span class="text-[var(--muted)] font-semibold shrink-0">Filter Cepat:</span>
+        <button type="button" data-filter="all" class="search-chip px-2.5 py-1 rounded-lg bg-[var(--leaf)] text-white font-bold shrink-0">Semua</button>
+        <button type="button" data-filter="layanan" class="search-chip px-2.5 py-1 rounded-lg bg-white border border-[var(--line)] text-[var(--ink)] hover:border-[var(--leaf)] shrink-0 font-medium">📋 Layanan</button>
+        <button type="button" data-filter="dokumen" class="search-chip px-2.5 py-1 rounded-lg bg-white border border-[var(--line)] text-[var(--ink)] hover:border-[var(--leaf)] shrink-0 font-medium">📥 Unduhan</button>
+        <button type="button" data-filter="faq" class="search-chip px-2.5 py-1 rounded-lg bg-white border border-[var(--line)] text-[var(--ink)] hover:border-[var(--leaf)] shrink-0 font-medium">💡 FAQ</button>
+      </div>
+
+      <!-- Search Results Area -->
+      <div id="search-results-list" class="max-h-[60vh] overflow-y-auto p-4 sm:p-5 space-y-2">
+        <!-- Default State / Rekomendasi -->
+        <div id="search-default-hint" class="text-xs text-[var(--muted)] py-2">
+          <p class="font-bold text-[var(--leaf)] mb-2 uppercase tracking-wider text-[11px]">Paling Sering Dicari:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <a href="/layanan/permohonan-khs" class="p-3 rounded-2xl border border-[var(--line)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 transition flex items-center gap-3">
+              <span class="text-lg">📄</span>
+              <div>
+                <p class="font-bold text-[var(--ink)]">Permohonan KHS Online</p>
+                <p class="text-[11px] text-[var(--muted)]">Estimasi 1–2 hari kerja</p>
+              </div>
+            </a>
+            <a href="/layanan/ujian-khusus" class="p-3 rounded-2xl border border-[var(--line)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 transition flex items-center gap-3">
+              <span class="text-lg">📝</span>
+              <div>
+                <p class="font-bold text-[var(--ink)]">Pengajuan Ujian Khusus</p>
+                <p class="text-[11px] text-[var(--muted)]">Khusus mahasiswa tingkat akhir</p>
+              </div>
+            </a>
+            <a href="/layanan/cek-status" class="p-3 rounded-2xl border border-[var(--line)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 transition flex items-center gap-3">
+              <span class="text-lg">🔍</span>
+              <div>
+                <p class="font-bold text-[var(--ink)]">Pendeteksi & Lacak NIM</p>
+                <p class="text-[11px] text-[var(--muted)]">Cek progres semua surat Anda</p>
+              </div>
+            </a>
+            <a href="/unduhan" class="p-3 rounded-2xl border border-[var(--line)] hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/50 transition flex items-center gap-3">
+              <span class="text-lg">📥</span>
+              <div>
+                <p class="font-bold text-[var(--ink)]">Buku Panduan & Template</p>
+                <p class="text-[11px] text-[var(--muted)]">Format skripsi & kurikulum</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Dynamic Results Container -->
+        <div id="search-dynamic-results" class="space-y-2 hidden"></div>
+
+        <!-- No Results -->
+        <div id="search-empty-state" class="hidden py-8 text-center text-xs text-[var(--muted)]">
+          <span class="text-3xl">🔎</span>
+          <p class="mt-2 text-sm font-bold text-[var(--ink)]">Tidak ada hasil yang cocok</p>
+          <p class="mt-1">Coba gunakan kata kunci lain atau pilih dari menu layanan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer Mobile -->
     <div id="drawer-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300 opacity-0 md:hidden" aria-hidden="true"></div>
     <aside 
       id="mobile-drawer" 
@@ -123,7 +254,7 @@ const currentPath = Astro.url.pathname;
       aria-label="Menu navigasi samping kiri"
     >
       <div class="p-6 overflow-y-auto">
-        <!-- Header Drawer: Logo & Tombol Tutup -->
+        <!-- Header Drawer -->
         <div class="flex items-center justify-between border-b border-[var(--line)] pb-5">
           <div class="flex items-center gap-2.5">
             <img 
@@ -165,7 +296,7 @@ const currentPath = Astro.url.pathname;
           <a 
             class:list={[
               "flex items-center justify-between px-3.5 py-3 text-sm font-bold rounded-xl transition",
-              currentPath.startsWith("/layanan") 
+              currentPath.startsWith("/layanan") && !currentPath.includes("cek-status")
                 ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
                 : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
             ]} 
@@ -173,9 +304,25 @@ const currentPath = Astro.url.pathname;
           >
             <div class="flex items-center gap-3">
               <span class="text-base">📋</span>
-              <span>Layanan Akademik</span>
+              <span>12 Layanan Akademik</span>
             </div>
-            <span class="badge-online text-[9px] py-0.5 px-1.5">Online</span>
+            <span class="badge-online text-[9px] py-0.5 px-1.5">Lengkap</span>
+          </a>
+
+          <a 
+            class:list={[
+              "flex items-center justify-between px-3.5 py-3 text-sm font-bold rounded-xl transition",
+              currentPath.startsWith("/layanan/cek-status")
+                ? "bg-[var(--leaf-soft)] text-[var(--leaf)] font-black" 
+                : "text-[var(--ink)] hover:bg-[var(--leaf-soft)]/60 hover:text-[var(--leaf)]"
+            ]} 
+            href="/layanan/cek-status"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-base">🔍</span>
+              <span>Lacak Progres NIM</span>
+            </div>
+            <span class="inline-block rounded-full bg-[var(--gold)]/30 text-[var(--leaf)] text-[9px] font-black px-1.5 py-0.5">SLA</span>
           </a>
 
           <a 
@@ -203,32 +350,27 @@ const currentPath = Astro.url.pathname;
             <span class="text-base">💡</span>
             <span>FAQ & Regulasi</span>
           </a>
-        </nav>
 
-        <!-- Formulir Cepat Section di Drawer -->
-        <div class="mt-8 pt-5 border-t border-[var(--line)]">
-          <p class="text-[11px] font-black uppercase tracking-wider text-[var(--leaf)] mb-2">Formulir Mandiri:</p>
-          <div class="space-y-1.5">
-            <a href="/layanan/permohonan-khs" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
-              <span class="text-[var(--gold)]">✦</span> Permohonan KHS Online
-            </a>
-            <a href="/layanan/ujian-khusus" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
-              <span class="text-[var(--gold)]">✦</span> Pengajuan Ujian Khusus
-            </a>
-            <a href="/layanan/komplain-nilai" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
-              <span class="text-[var(--gold)]">✦</span> Komplain / Cek Nilai
-            </a>
-            <a href="/layanan/cek-status" class="flex items-center gap-2 p-2 rounded-lg text-xs font-bold text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]">
-              <span>🔍</span> Cek Status Pengajuan
-            </a>
-          </div>
-        </div>
+          <a 
+            class:list={[
+              "flex items-center justify-between px-3.5 py-3 text-sm font-bold rounded-xl transition border border-[var(--leaf)]/30 bg-[var(--leaf)] text-white mt-4",
+              currentPath.startsWith("/admin") ? "ring-2 ring-[var(--gold)]" : ""
+            ]} 
+            href="/admin"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-base">🔔</span>
+              <span>Portal Admin FAPERTA</span>
+            </div>
+            <span id="drawer-admin-badge" class="hidden h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-red-600 text-[10px] font-black text-white">0</span>
+          </a>
+        </nav>
       </div>
 
       <!-- Footer Drawer -->
       <div class="p-6 border-t border-[var(--line)] bg-[#f7faf5]">
         <p class="text-[11px] font-bold text-[var(--leaf)]">Fakultas Pertanian INSTIPER</p>
-        <p class="text-[10px] text-[var(--muted)] mt-0.5">Satu pintu informasi akademik.</p>
+        <p class="text-[10px] text-[var(--muted)] mt-0.5">YOGYAKARTA</p>
       </div>
     </aside>
 
@@ -236,9 +378,11 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
 
+    <!-- Footer Website -->
     <footer class="mt-20 border-t border-[var(--line)] bg-[#ecf3e8]">
       <div class="container-shell py-12">
         <div class="grid gap-8 md:grid-cols-4">
+          <!-- Kolom 1: Logo & Teks Footer Sesuai Permintaan (FAPERTA INSTIPER / YOGYAKARTA) -->
           <div>
             <div class="flex items-center gap-2.5">
               <img 
@@ -252,21 +396,26 @@ const currentPath = Astro.url.pathname;
               />
               <div class="flex flex-col justify-center">
                 <span class="text-sm font-black tracking-[.12em] text-[var(--ink)] leading-none">FAPERTA INSTIPER</span>
-                <span class="text-[10px] font-semibold text-[var(--muted)] tracking-[.14em] uppercase leading-none mt-1">FAKULTAS PERTANIAN</span>
+                <span class="text-[10px] font-semibold text-[var(--muted)] tracking-[.14em] uppercase leading-none mt-1">YOGYAKARTA</span>
               </div>
             </div>
             <p class="mt-3 max-w-sm text-xs leading-relaxed text-[var(--muted)]">
               Portal informasi akademik dan layanan mandiri resmi Fakultas Pertanian INSTIPER Yogyakarta.
             </p>
+            <div class="mt-4">
+              <a href="/admin" class="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--leaf)] hover:underline bg-white border border-[var(--line)] px-3 py-1.5 rounded-lg shadow-2xs">
+                <span>🔔</span> Portal Petugas Admin FAPERTA →
+              </a>
+            </div>
           </div>
           
           <div>
-            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Layanan Online</p>
+            <p class="eyebrow text-xs font-bold text-[var(--leaf)]">Layanan Pokok</p>
             <ul class="mt-3 space-y-2 text-xs font-medium text-[var(--ink)]">
-              <li><a href="/layanan/permohonan-khs" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Permohonan KHS Online (Baru)</a></li>
-              <li><a href="/layanan" class="hover:text-[var(--leaf)] hover:underline">• Cek & Komplain Nilai</a></li>
-              <li><a href="/layanan" class="hover:text-[var(--leaf)] hover:underline">• Pengajuan Ujian Khusus</a></li>
-              <li><a href="/layanan/cek-status" class="hover:text-[var(--leaf)] hover:underline">• Cek Status Pengajuan Tiket</a></li>
+              <li><a href="/layanan/permohonan-khs" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Permohonan KHS Online (SLA 1-2 Hari)</a></li>
+              <li><a href="/layanan/komplain-nilai" class="hover:text-[var(--leaf)] hover:underline">• Verifikasi & Komplain Nilai</a></li>
+              <li><a href="/layanan/ujian-khusus" class="hover:text-[var(--leaf)] hover:underline">• Pengajuan Ujian Khusus</a></li>
+              <li><a href="/layanan/cek-status" class="hover:text-[var(--leaf)] hover:underline font-bold text-[var(--leaf)]">• Pendeteksi NIM & Cek Status Tiket</a></li>
             </ul>
           </div>
 
@@ -296,37 +445,242 @@ const currentPath = Astro.url.pathname;
       </div>
     </footer>
 
-    <script>
-      const toggle = document.querySelector('#menu-toggle');
-      const drawer = document.querySelector('#mobile-drawer');
-      const backdrop = document.querySelector('#drawer-backdrop');
-      const closeBtn = document.querySelector('#drawer-close');
+    <!-- Global Client Script (Search Palette + Unread Admin Counter + Drawer) -->
+    <script is:inline define:vars={{ searchServices: PORTAL_SERVICES, searchDocuments: PORTAL_DOCUMENTS }}>
+      document.addEventListener('DOMContentLoaded', () => {
+        // 1. Drawer Logic
+        const toggle = document.querySelector('#menu-toggle');
+        const drawer = document.querySelector('#mobile-drawer');
+        const backdrop = document.querySelector('#drawer-backdrop');
+        const closeBtn = document.querySelector('#drawer-close');
 
-      function openDrawer() {
-        backdrop?.classList.remove('hidden');
-        requestAnimationFrame(() => {
-          backdrop?.classList.remove('opacity-0');
-          drawer?.classList.remove('-translate-x-full');
+        function openDrawer() {
+          backdrop?.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            backdrop?.classList.remove('opacity-0');
+            drawer?.classList.remove('-translate-x-full');
+          });
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+          backdrop?.classList.add('opacity-0');
+          drawer?.classList.add('-translate-x-full');
+          setTimeout(() => {
+            backdrop?.classList.add('hidden');
+            document.body.style.overflow = '';
+          }, 300);
+        }
+
+        toggle?.addEventListener('click', openDrawer);
+        closeBtn?.addEventListener('click', closeDrawer);
+        backdrop?.addEventListener('click', closeDrawer);
+        drawer?.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', closeDrawer);
         });
-        document.body.style.overflow = 'hidden';
-      }
 
-      function closeDrawer() {
-        backdrop?.classList.add('opacity-0');
-        drawer?.classList.add('-translate-x-full');
-        setTimeout(() => {
-          backdrop?.classList.add('hidden');
-          document.body.style.overflow = '';
-        }, 300);
-      }
+        // 2. Global Live Search Modal (Command Palette)
+        const searchBtn = document.getElementById('global-search-btn');
+        const searchModal = document.getElementById('search-modal');
+        const searchBackdrop = document.getElementById('search-modal-backdrop');
+        const searchClose = document.getElementById('search-modal-close');
+        const searchInput = document.getElementById('global-search-input');
+        const defaultHint = document.getElementById('search-default-hint');
+        const dynamicResults = document.getElementById('search-dynamic-results');
+        const emptyState = document.getElementById('search-empty-state');
+        const filterChips = document.querySelectorAll('.search-chip');
 
-      toggle?.addEventListener('click', openDrawer);
-      closeBtn?.addEventListener('click', closeDrawer);
-      backdrop?.addEventListener('click', closeDrawer);
+        let activeFilter = 'all';
 
-      // Tutup drawer otomatis saat link di-klik
-      drawer?.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeDrawer);
+        function openSearch() {
+          searchBackdrop?.classList.remove('hidden');
+          searchModal?.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            searchBackdrop?.classList.remove('opacity-0');
+            searchModal?.classList.remove('scale-95');
+          });
+          searchInput?.focus();
+          document.body.style.overflow = 'hidden';
+        }
+
+        function closeSearch() {
+          searchBackdrop?.classList.add('opacity-0');
+          searchModal?.classList.add('scale-95');
+          setTimeout(() => {
+            searchBackdrop?.classList.add('hidden');
+            searchModal?.classList.add('hidden');
+            document.body.style.overflow = '';
+          }, 200);
+        }
+
+        searchBtn?.addEventListener('click', openSearch);
+        searchClose?.addEventListener('click', closeSearch);
+        searchBackdrop?.addEventListener('click', closeSearch);
+
+        // Keyboard Shortcut: Ctrl + K atau "/"
+        window.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            if (searchModal?.classList.contains('hidden')) {
+              openSearch();
+            } else {
+              closeSearch();
+            }
+          }
+          if (e.key === 'Escape' && !searchModal?.classList.contains('hidden')) {
+            closeSearch();
+          }
+        });
+
+        // Filter Chips Event
+        filterChips.forEach(chip => {
+          chip.addEventListener('click', () => {
+            filterChips.forEach(c => {
+              c.classList.remove('bg-[var(--leaf)]', 'text-white', 'font-bold');
+              c.classList.add('bg-white', 'text-[var(--ink)]', 'border');
+            });
+            chip.classList.add('bg-[var(--leaf)]', 'text-white', 'font-bold');
+            chip.classList.remove('bg-white', 'border');
+            activeFilter = chip.getAttribute('data-filter') || 'all';
+            runSearch(searchInput?.value || '');
+          });
+        });
+
+        // Search Input Event
+        searchInput?.addEventListener('input', (e) => {
+          runSearch(e.target.value);
+        });
+
+        function runSearch(query) {
+          const q = (query || '').trim().toLowerCase();
+          if (!q) {
+            defaultHint?.classList.remove('hidden');
+            dynamicResults?.classList.add('hidden');
+            emptyState?.classList.add('hidden');
+            return;
+          }
+
+          defaultHint?.classList.add('hidden');
+
+          // Kumpulkan item pencarian
+          let results = [];
+
+          if (activeFilter === 'all' || activeFilter === 'layanan') {
+            searchServices.forEach(s => {
+              const match = s.title.toLowerCase().includes(q) || 
+                            s.category.toLowerCase().includes(q) || 
+                            s.desc.toLowerCase().includes(q) ||
+                            s.subtitle.toLowerCase().includes(q);
+              if (match) {
+                results.push({
+                  type: 'Layanan',
+                  badge: s.badgeClass,
+                  badgeLabel: s.typeLabel,
+                  title: s.title,
+                  subtitle: `${s.category} · SLA: ${s.sla}`,
+                  desc: s.desc,
+                  url: s.actionUrl
+                });
+              }
+            });
+          }
+
+          if (activeFilter === 'all' || activeFilter === 'dokumen') {
+            searchDocuments.forEach(d => {
+              const match = d.title.toLowerCase().includes(q) || 
+                            d.category.toLowerCase().includes(q) || 
+                            d.desc.toLowerCase().includes(q);
+              if (match) {
+                results.push({
+                  type: 'Dokumen',
+                  badge: 'badge-online',
+                  badgeLabel: d.format,
+                  title: d.title,
+                  subtitle: `${d.category} · ${d.meta}`,
+                  desc: d.desc,
+                  url: d.file
+                });
+              }
+            });
+          }
+
+          // Pencarian FAQ
+          if (activeFilter === 'all' || activeFilter === 'faq') {
+            const faqs = [
+              { q: 'Presensi minimal 75% syarat UAS', cat: 'Ujian', url: '/faq#tanya-jawab' },
+              { q: 'Prosedur Ujian Susulan', cat: 'Ujian', url: '/faq#tanya-jawab' },
+              { q: 'Syarat Pengajuan Skripsi & Pembimbing', cat: 'Skripsi', url: '/faq#tanya-jawab' },
+              { q: 'Persyaratan Yudisium Kelulusan', cat: 'Yudisium', url: '/faq#tanya-jawab' }
+            ];
+            faqs.forEach(f => {
+              if (f.q.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)) {
+                results.push({
+                  type: 'FAQ & Aturan',
+                  badge: 'badge-hybrid',
+                  badgeLabel: f.cat,
+                  title: f.q,
+                  subtitle: `Kategori: ${f.cat}`,
+                  desc: 'Ketentuan dan regulasi akademik resmi FAPERTA INSTIPER',
+                  url: f.url
+                });
+              }
+            });
+          }
+
+          if (results.length === 0) {
+            dynamicResults?.classList.add('hidden');
+            emptyState?.classList.remove('hidden');
+          } else {
+            emptyState?.classList.add('hidden');
+            dynamicResults?.classList.remove('hidden');
+            dynamicResults.innerHTML = results.slice(0, 10).map(r => `
+              <a href="${r.url}" class="block p-3.5 rounded-2xl border border-[var(--line)] bg-white hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/40 transition">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-xs font-bold text-[var(--leaf)]">${r.title}</span>
+                  <span class="${r.badge} text-[9px] py-0.5 px-1.5 uppercase">${r.badgeLabel}</span>
+                </div>
+                <p class="text-[11px] font-semibold text-[var(--muted)] mt-0.5">${r.subtitle}</p>
+                <p class="text-xs text-[var(--ink)] mt-1.5 line-clamp-1">${r.desc}</p>
+              </a>
+            `).join('');
+          }
+        }
+
+        // 3. Update Admin Unread Badge Real-Time
+        function updateAdminBadge() {
+          try {
+            const raw = localStorage.getItem('portal_faperta_tickets');
+            let tickets = raw ? JSON.parse(raw) : null;
+            if (!tickets) {
+              // Hitung dari demo awal (ada 2 unread)
+              tickets = [
+                { isNewForAdmin: true },
+                { isNewForAdmin: true },
+                { isNewForAdmin: false },
+                { isNewForAdmin: false }
+              ];
+            }
+            const unreadCount = tickets.filter(t => t.isNewForAdmin).length;
+            const headerBadge = document.getElementById('admin-unread-badge');
+            const drawerBadge = document.getElementById('drawer-admin-badge');
+
+            if (unreadCount > 0) {
+              if (headerBadge) {
+                headerBadge.textContent = unreadCount;
+                headerBadge.classList.remove('hidden');
+              }
+              if (drawerBadge) {
+                drawerBadge.textContent = unreadCount;
+                drawerBadge.classList.remove('hidden');
+              }
+            } else {
+              headerBadge?.classList.add('hidden');
+              drawerBadge?.classList.add('hidden');
+            }
+          } catch (e) {}
+        }
+
+        updateAdminBadge();
       });
     </script>
   </body>

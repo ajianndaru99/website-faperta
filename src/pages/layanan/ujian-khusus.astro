@@ -355,15 +355,27 @@ const semesterAkhirList = [
           nim,
           prodi,
           semester,
+          layananId: 'ujian-khusus',
+          layananNama: `Pengajuan Ujian Khusus (${matkulSummary})`,
           keperluan: `Ujian Khusus: ${matkulSummary}`,
           detailTambahan: `DPA: ${dpa} | Matkul: ${matkulSummary}`,
           format: 'Dokumen Verifikasi Hybrid',
-          status: 'Menunggu Verifikasi Kaprodi & Penjadwalan Dosen',
-          tanggal
+          status: 'Diajukan',
+          statusStep: 1,
+          posisiBerkas: 'Pemeriksaan Berkas KHS & Disposisi Kaprodi',
+          estimasiSelesai: '3–5 Hari Kerja',
+          slaDays: 5,
+          catatanAdmin: 'Berkas pengajuan ujian khusus diterima. Menunggu verifikasi KHS dan penetapan dosen penguji.',
+          tanggal,
+          isNewForAdmin: true
         };
 
-        // Simpan ke localStorage
+        // Simpan ke localStorage (terpadu portal_faperta_tickets & portal_khs_tickets)
         try {
+          const mainStore = JSON.parse(localStorage.getItem('portal_faperta_tickets') || '[]');
+          mainStore.unshift(newTicket);
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(mainStore));
+
           const existing = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
           existing.unshift(newTicket);
           localStorage.setItem('portal_khs_tickets', JSON.stringify(existing));

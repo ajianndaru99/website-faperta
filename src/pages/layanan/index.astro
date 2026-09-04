@@ -1,288 +1,309 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PORTAL_SERVICES } from "../../data/portalData";
 
-const services = [
-  {
-    id: "khs",
-    number: "02",
-    title: "Permohonan KHS (Kartu Hasil Studi)",
-    subtitle: "Semester 1 - 14",
-    category: "Mahasiswa",
-    type: "online",
-    typeLabel: "Layanan Mandiri",
-    badgeClass: "badge-online",
-    desc: "Permohonan penerbitan salinan KHS resmi / transkrip nilai sementara untuk prasyarat pendaftaran Ujian Khusus, beasiswa, maupun pengaktifan kembali status mahasiswa pasca cuti.",
-    actionUrl: "/layanan/permohonan-khs",
-    actionLabel: "Isi Formulir KHS Online",
-    isPrimary: true,
-    steps: ["Isi Form KHS", "Verifikasi SIAKAD", "Penerbitan KHS Digital"]
-  },
-  {
-    id: "komplain-nilai",
-    number: "01",
-    title: "Komplain atau Cek Nilai",
-    subtitle: "Verifikasi Admin & Prodi",
-    category: "Mahasiswa",
-    type: "hybrid",
-    typeLabel: "Formulir & Verifikasi",
-    badgeClass: "badge-hybrid",
-    desc: "Fasilitas pelaporan ketidaksesuaian nilai akhir mata kuliah. Mengalir melalui verifikasi berkas oleh admin akademik, konfirmasi ke dosen pengampu, dan status hasil.",
-    actionUrl: "/layanan/komplain-nilai",
-    actionLabel: "Isi Formulir Komplain Nilai",
-    isPrimary: false,
-    steps: ["Formulir Pengaduan", "Verifikasi Dosen/Prodi", "Hasil & Rekonsiliasi Nilai"]
-  },
-  {
-    id: "ujian-khusus",
-    number: "03",
-    title: "Pengajuan Ujian Khusus",
-    subtitle: "Tingkat Akhir (Maks. 2 Matkul)",
-    category: "Mahasiswa",
-    type: "hybrid",
-    typeLabel: "Formulir Mandiri",
-    badgeClass: "badge-hybrid",
-    desc: "Pendaftaran ujian khusus bagi mahasiswa tingkat akhir yang telah menempuh seluruh SKS teori dan sedang menyusun skripsi (sisa maksimal 2 mata kuliah). Melampirkan KHS dan persetujuan DPA.",
-    actionUrl: "/layanan/ujian-khusus",
-    actionLabel: "Isi Formulir Ujian Khusus",
-    isPrimary: false,
-    steps: ["Ambil KHS (Poin 2)", "Isi Form Ujian Khusus", "Verifikasi Kaprodi & Penguji"]
-  },
-  {
-    id: "judul-penelitian",
-    number: "04",
-    title: "Pengajuan Judul Penelitian",
-    subtitle: "Tugas Akhir Mahasiswa",
-    category: "Mahasiswa",
-    type: "online",
-    typeLabel: "Sistem Online",
-    badgeClass: "badge-online",
-    desc: "Pendaftaran usulan judul proposal skripsi dan penelitian bidang Agroteknologi & Agribisnis ke program studi. Sistem terintegrasi dengan batasan karakter judul.",
-    actionUrl: "https://siakad.instiperjogja.ac.id",
-    actionLabel: "Buka Portal Judul SIAKAD",
-    isPrimary: false,
-    steps: ["Input Judul & Ringkasan", "Review Komisi Pembimbing", "Penetapan Dosen Pembimbing"]
-  },
-  {
-    id: "izin-penelitian",
-    number: "05",
-    title: "Izin Penelitian & Pengambilan Data",
-    subtitle: "Surat Pengantar Instansi / Lab",
-    category: "Mahasiswa",
-    type: "online",
-    typeLabel: "Surat Pengantar",
-    badgeClass: "badge-online",
-    desc: "Permohonan penerbitan surat pengantar izin penelitian dari Dekanat FAPERTA yang ditujukan ke perkebunan, instansi pemerintah, perusahaan mitra, atau laboratorium.",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Surat%20Izin%20Penelitian",
-    actionLabel: "Ajukan Izin Penelitian",
-    isPrimary: false,
-    steps: ["Unggah Proposal Disetujui", "Verifikasi Dekanat", "Terbit Surat Izin Resmi"]
-  },
-  {
-    id: "ujian-susulan",
-    number: "06",
-    title: "Ujian Susulan UTS / UAS",
-    subtitle: "Form Online, Pelaksanaan Offline",
-    category: "Mahasiswa",
-    type: "hybrid",
-    typeLabel: "Hybrid",
-    badgeClass: "badge-hybrid",
-    desc: "Pengajuan permohonan ujian susulan bagi mahasiswa berhalangan karena alasan sah (sakit rawat inap, duka cita keluarga inti, tugas dinas resmi kampus).",
-    actionUrl: "/faq#tanya-jawab",
-    actionLabel: "Baca Aturan & Prosedur",
-    isPrimary: false,
-    steps: ["Kirim Bukti Sah (Maks 3 Hari)", "Verifikasi Persetujuan Prodi", "Jadwal Ujian Offline"]
-  },
-  {
-    id: "mahasiswa-mengulang",
-    number: "07",
-    title: "Pendataan Mahasiswa Mengulang",
-    subtitle: "Perbaikan Nilai & Remediasi",
-    category: "Mahasiswa",
-    type: "hybrid",
-    typeLabel: "Pendataan Hybrid",
-    badgeClass: "badge-hybrid",
-    desc: "Layanan inventarisasi dan verifikasi beban SKS mahasiswa yang mengulang mata kuliah wajib maupun pilihan untuk optimalisasi penjadwalan kelas dan kuota KRS.",
-    actionUrl: "/faq#tanya-jawab",
-    actionLabel: "Cek Ketentuan Mengulang",
-    isPrimary: false,
-    steps: ["Konsultasi DPA", "Input KRS Ulang", "Validasi Kuota Kelas"]
-  },
-  {
-    id: "surat-tugas-dosen",
-    number: "08",
-    title: "Surat Tugas Dosen (Tri Dharma)",
-    subtitle: "Penelitian, Publikasi & Pengabdian",
-    category: "Dosen",
-    type: "digital",
-    typeLabel: "Dokumen Digital",
-    badgeClass: "badge-digital",
-    desc: "Pengajuan dan penerbitan surat tugas digital bagi dosen FAPERTA untuk: (a) Penelitian & Publikasi Ilmiah, serta (b) Pengabdian kepada Masyarakat (PkM).",
-    actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Pengajuan%20Surat%20Tugas%20Dosen",
-    actionLabel: "Ajukan Dokumen Surat Tugas",
-    isPrimary: false,
-    steps: ["Pengajuan Berkas Digital", "Persetujuan Dekan", "E-Sign & Nomor Surat Resmi"]
-  }
+const categories = [
+  "Semua",
+  "Dokumen Akademik",
+  "Nilai & Perkuliahan",
+  "Ujian",
+  "Penelitian & Skripsi",
+  "Surat & Dokumen",
+  "Fasilitas & Dosen"
 ];
 ---
-<BaseLayout title="Pusat Layanan Akademik" description="Direktori layanan akademik mandiri FAPERTA INSTIPER Yogyakarta: Permohonan KHS, Ujian Khusus, Nilai, dan Administrasi.">
-  <!-- Banner Header -->
+<BaseLayout title="12 Layanan Akademik" description="Portal resmi 12 layanan akademik mandiri Fakultas Pertanian INSTIPER Yogyakarta dengan estimasi SLA proses berkas.">
+  <!-- Header Banner -->
   <section class="grid-paper border-b border-[var(--line)]">
-    <div class="container-shell py-12 sm:py-16">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div class="max-w-2xl">
+    <div class="container-shell py-10 sm:py-14">
+      <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-4" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--leaf)]">Beranda</a>
+        <span>/</span>
+        <span class="text-[var(--leaf)] font-bold">Layanan Akademik</span>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="max-w-3xl">
           <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
             <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
-            Pelayanan Administrasi Terpadu FAPERTA
+            12 Menu Layanan Resmi FAPERTA
           </div>
-          <h1 class="display-title mt-4 text-4xl sm:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
-            Layanan Akademik <br /><em class="font-extrabold text-[var(--gold)] not-italic underline decoration-[var(--leaf)] decoration-wavy decoration-from-font">Cepat & Terstruktur.</em>
+          <h1 class="display-title mt-4 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+            Layanan Akademik & Berkas Mahasiswa
           </h1>
-          <p class="mt-4 text-base leading-relaxed text-[var(--ink)]">
-            Satu pintu permohonan administrasi perkuliahan untuk mahasiswa dan dosen FAPERTA INSTIPER Yogyakarta. Bebas antrean fisik dengan sistem digital dan terverifikasi.
+          <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+            Akses permohonan salinan KHS online, pengajuan ujian khusus, verifikasi nilai, hingga surat izin penelitian dengan kepastian tahapan dan <strong>estimasi waktu proses (SLA)</strong> yang transparan.
           </p>
         </div>
 
-        <div class="flex flex-wrap gap-3">
-          <a href="/layanan/permohonan-khs" class="btn-cta text-sm">
-            ✦ Permohonan KHS Online (Poin 2) →
+        <!-- Quick Action Box -->
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <a href="/layanan/cek-status" class="btn-cta text-xs py-3 px-5 flex items-center gap-2 shadow-sm">
+            <span>🔍</span>
+            <span>Pendeteksi & Lacak NIM</span>
           </a>
-          <a href="/layanan/cek-status" class="btn-secondary text-sm">
-            🔍 Lacak Status Tiket
+          <a href="/layanan/permohonan-khs" class="btn-secondary text-xs py-3 px-5 bg-white border border-[var(--line)] flex items-center gap-1.5">
+            <span class="text-[var(--gold)]">✦</span>
+            <span>Formulir KHS Mandiri</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Service: Bagian 2 (KHS Online) Spotlight Card -->
-  <section class="container-shell -mt-6 sm:-mt-8 z-20 relative">
-    <div class="rounded-3xl bg-[var(--leaf)] p-6 sm:p-9 text-white shadow-xl relative overflow-hidden border-2 border-[var(--gold)]/40">
-      <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-[var(--leaf-dark)] opacity-40"></div>
-      
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
-        <div class="max-w-2xl">
-          <div class="flex items-center gap-2.5">
-            <span class="inline-block rounded-full bg-[var(--gold)] text-[var(--leaf)] font-black text-xs px-3 py-1">
-              LAYANAN PRIORITAS ONLINE
-            </span>
-            <span class="text-xs font-semibold text-white/80">Bagian 2</span>
-          </div>
-          <h2 class="display-title mt-4 text-2xl sm:text-3xl lg:text-4xl font-extrabold !text-white leading-tight">
-            Permohonan KHS Online (Semester 1 - 14)
-          </h2>
-          <p class="mt-3 text-sm sm:text-base leading-relaxed !text-white/90">
-            Kini Anda tidak perlu lagi datang langsung ke loket akademik hanya untuk meminta salinan lembar KHS atau transkrip nilai sementara. Ajukan secara mandiri, dapatkan nomor tiket pelacakan, dan berkas siap diproses oleh tim akademik.
-          </p>
-          
-          <div class="mt-6 flex flex-wrap gap-4 text-xs font-semibold !text-white/90">
-            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
-              <span class="text-[var(--gold)] font-bold">✔</span> Cakupan Fleksibel Semester 1 s/d 14
-            </div>
-            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
-              <span class="text-[var(--gold)] font-bold">✔</span> Prasyarat Ujian Khusus & Aktif Kembali
-            </div>
-            <div class="flex items-center gap-2 bg-white/10 rounded-xl px-3.5 py-2">
-              <span class="text-[var(--gold)] font-bold">✔</span> Kode Tiket & Notifikasi Pelacakan
-            </div>
-          </div>
-        </div>
+  <!-- Interactive Search & Category Filter Section -->
+  <section class="border-b border-[var(--line)] bg-white py-5 sticky top-[74px] z-30 shadow-2xs">
+    <div class="container-shell flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <!-- Live Search Input -->
+      <div class="relative flex-1 max-w-md">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-400 text-sm">
+          🔍
+        </span>
+        <input 
+          type="text" 
+          id="service-search-input" 
+          placeholder="Cari layanan (misal: KHS, nilai, skripsi, ujian, ruang)..." 
+          class="w-full rounded-2xl border-2 border-[var(--line)] bg-[#fafcf8] pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium text-[var(--ink)] placeholder:text-gray-400 focus:border-[var(--leaf)] focus:bg-white focus:outline-none transition shadow-2xs"
+        />
+        <button 
+          id="clear-service-search" 
+          type="button" 
+          class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-gray-400 hover:text-[var(--ink)]"
+        >
+          ✕
+        </button>
+      </div>
 
-        <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
-          <a href="/layanan/permohonan-khs" class="btn-cta text-sm text-center">
-            Buka Formulir KHS Online Sekarang →
-          </a>
-          <a href="/layanan/cek-status" class="rounded-full border-2 border-white/40 bg-white/10 px-6 py-3 text-center text-sm font-bold text-white hover:bg-white/20 transition">
-            Cek Status Tiket Pengajuan
-          </a>
-        </div>
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
+        {categories.map((cat, idx) => (
+          <button 
+            type="button"
+            data-category={cat}
+            class:list={[
+              "service-category-btn px-3 py-2 rounded-xl font-bold whitespace-nowrap transition",
+              idx === 0 
+                ? "bg-[var(--leaf)] text-white shadow-2xs" 
+                : "bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
+            ]}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Service Directory Grid (8 Layanan) -->
-  <section class="container-shell py-16 sm:py-20">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[var(--line)] pb-6">
+  <!-- Services Grid -->
+  <section class="container-shell py-12">
+    <!-- Search Status Counter -->
+    <div class="flex items-center justify-between mb-8 pb-3 border-b border-[var(--line)] text-xs text-[var(--muted)]">
       <div>
-        <p class="eyebrow">Direktori Lengkap</p>
-        <h2 class="section-title text-[var(--ink)]">8 Alur Layanan Akademik FAPERTA</h2>
+        Menampilkan <strong id="service-count" class="text-[var(--leaf)]">{PORTAL_SERVICES.length}</strong> layanan akademik FAPERTA
       </div>
-      <p class="text-xs sm:text-sm text-[var(--muted)] max-w-sm">
-        Pilih jenis layanan di bawah ini untuk melihat persyaratan berkas dan panduan pengajuan resminya.
-      </p>
+      <div class="flex items-center gap-3">
+        <span class="flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-emerald-500"></span> Online Penuh</span>
+        <span class="flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-amber-500"></span> Verifikasi Hybrid</span>
+      </div>
     </div>
 
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((item) => (
-        <div class={`rounded-3xl border ${item.isPrimary ? 'border-[var(--leaf)] bg-[var(--leaf-soft)]/30 ring-2 ring-[var(--leaf)]/20 shadow-md' : 'border-[var(--line)] bg-white shadow-xs hover:border-[var(--leaf)]'} p-6 sm:p-7 flex flex-col justify-between transition duration-200 hover:-translate-y-1`}>
+    <!-- The 12 Cards Grid -->
+    <div id="services-grid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {PORTAL_SERVICES.map((item) => (
+        <article 
+          class="service-card rounded-3xl border-2 border-[var(--line)] bg-white p-6 shadow-xs hover:border-[var(--leaf)] hover:shadow-md transition flex flex-col justify-between"
+          data-title={item.title.toLowerCase()}
+          data-category={item.category.toLowerCase()}
+          data-desc={item.desc.toLowerCase()}
+          data-type={item.type}
+        >
           <div>
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-black text-xs text-[var(--muted)] tracking-wider">
-                POIN {item.number}
-              </span>
-              <span class={item.badgeClass}>
-                <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+            <!-- Top Header Card -->
+            <div class="flex items-center justify-between gap-2 border-b border-[var(--line)] pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="grid h-8 w-8 place-items-center rounded-xl bg-[var(--leaf-soft)] font-mono text-xs font-black text-[var(--leaf)]">
+                  {item.number}
+                </span>
+                <span class="text-[11px] font-bold text-[var(--muted)] uppercase tracking-wider">
+                  {item.category}
+                </span>
+              </div>
+              <span class:list={[item.badgeClass, "text-[10px] px-2 py-0.5 font-bold uppercase"]}>
                 {item.typeLabel}
               </span>
             </div>
 
-            <h3 class="mt-4 text-xl font-black text-[var(--leaf)]">
-              {item.title}
-            </h3>
-            <p class="text-xs font-bold text-[var(--gold)] uppercase tracking-wider mt-1">
-              {item.subtitle}
-            </p>
+            <!-- Title & SLA -->
+            <div class="mt-4">
+              <h2 class="text-lg font-black text-[var(--ink)] leading-snug group-hover:text-[var(--leaf)] transition">
+                {item.title}
+              </h2>
+              <p class="text-xs font-semibold text-[var(--leaf)] mt-0.5">
+                {item.subtitle}
+              </p>
 
-            <p class="mt-3 text-sm leading-relaxed text-[var(--muted)]">
-              {item.desc}
-            </p>
+              <!-- SLA Process Time Badge -->
+              <div class="mt-2.5 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-900">
+                <span>⏱️ Estimasi Jadi:</span>
+                <span class="text-emerald-800 font-extrabold">{item.sla}</span>
+              </div>
 
-            <!-- Alur 3 Langkah -->
-            <div class="mt-5 border-t border-[var(--line)] pt-4">
-              <p class="text-[11px] font-bold text-[var(--leaf)] uppercase tracking-wider">Alur Proses:</p>
-              <ol class="mt-2 space-y-1.5 text-xs text-[var(--ink)]">
-                {item.steps.map((step, idx) => (
-                  <li class="flex items-center gap-2">
-                    <span class="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[var(--leaf-soft)] text-[10px] font-bold text-[var(--leaf)]">
-                      {idx + 1}
+              <!-- Description -->
+              <p class="mt-3 text-xs leading-relaxed text-[var(--muted)]">
+                {item.desc}
+              </p>
+            </div>
+
+            <!-- 3-Step Preview Flow -->
+            <div class="mt-5 rounded-2xl bg-[#fbfdf9] border border-[var(--line)] p-3.5">
+              <p class="text-[10px] font-black uppercase tracking-wider text-[var(--leaf)] mb-2">
+                Alur Pengajuan Berkas:
+              </p>
+              <ol class="space-y-1 text-[11px] text-[var(--ink)]">
+                {item.steps.map((st, sIdx) => (
+                  <li class="flex items-center gap-1.5">
+                    <span class="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[var(--leaf-soft)] text-[9px] font-bold text-[var(--leaf)]">
+                      {sIdx + 1}
                     </span>
-                    <span>{step}</span>
+                    <span class="truncate">{st}</span>
                   </li>
                 ))}
               </ol>
             </div>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-[var(--line)]">
+          <!-- Bottom Action Button -->
+          <div class="mt-6 pt-4 border-t border-[var(--line)] flex items-center justify-between gap-3">
             <a 
-              href={item.actionUrl} 
-              class={`w-full text-center py-2.5 px-4 rounded-xl text-xs font-bold transition inline-flex items-center justify-center gap-1.5 ${item.isPrimary ? 'bg-[var(--leaf)] text-white hover:bg-[var(--leaf-dark)] shadow-sm' : 'bg-white border-2 border-[var(--leaf)]/20 text-[var(--leaf)] hover:bg-[var(--leaf-soft)]'}`}
+              href={item.actionUrl}
+              class:list={[
+                "w-full text-center py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5",
+                item.isPrimary
+                  ? "btn-cta text-xs"
+                  : "bg-gray-100 text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] border border-[var(--line)]"
+              ]}
             >
               <span>{item.actionLabel}</span>
               <span aria-hidden="true">→</span>
             </a>
           </div>
-        </div>
+        </article>
       ))}
     </div>
 
-    <!-- Bantuan Langsung Section -->
-    <div class="mt-14 rounded-3xl bg-[#ecf3e8] border border-[var(--leaf)]/20 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="max-w-xl">
-        <h3 class="text-xl font-black text-[var(--leaf)]">
-          Butuh Bantuan Administrasi Khusus?
-        </h3>
-        <p class="mt-2 text-sm text-[var(--ink)] leading-relaxed">
-          Jika layanan akademik yang Anda butuhkan belum tercantum atau mengalami kendala sinkronisasi data dengan SIAKAD, silakan hubungi tim Front Desk Bagian Akademik FAPERTA.
-        </p>
-      </div>
-      <div class="shrink-0 flex flex-col sm:flex-row gap-3">
-        <a href="mailto:akademik@instiperjogja.ac.id" class="btn-secondary text-xs">
-          ✉ Email: akademik@instiperjogja.ac.id
-        </a>
-        <a href="/faq" class="btn-cta text-xs">
-          Baca Tanya Jawab (FAQ) →
-        </a>
-      </div>
+    <!-- Empty Filter State -->
+    <div id="empty-services-alert" class="hidden rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center my-8">
+      <span class="text-4xl">🔎</span>
+      <h3 class="mt-3 text-base font-bold text-[var(--ink)]">Tidak ada layanan yang sesuai</h3>
+      <p class="mt-1 text-xs text-[var(--muted)] max-w-md mx-auto">
+        Kueri pencarian Anda tidak cocok dengan layanan manapun. Coba gunakan kata kunci umum seperti "nilai", "skripsi", "khs", atau "surat".
+      </p>
+      <button id="btn-reset-filters" type="button" class="btn-secondary text-xs mt-4">
+        Reset Filter & Pencarian
+      </button>
     </div>
   </section>
+
+  <!-- Client-side Interactive Filter Script -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('service-search-input');
+      const clearBtn = document.getElementById('clear-service-search');
+      const categoryBtns = document.querySelectorAll('.service-category-btn');
+      const cards = document.querySelectorAll('.service-card');
+      const countEl = document.getElementById('service-count');
+      const emptyAlert = document.getElementById('empty-services-alert');
+      const resetBtn = document.getElementById('btn-reset-filters');
+
+      let currentCat = 'Semua';
+      let currentQuery = '';
+
+      function filterServices() {
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const title = card.getAttribute('data-title') || '';
+          const category = card.getAttribute('data-category') || '';
+          const desc = card.getAttribute('data-desc') || '';
+
+          const matchQuery = !currentQuery || 
+                             title.includes(currentQuery) || 
+                             category.includes(currentQuery) || 
+                             desc.includes(currentQuery);
+
+          let matchCategory = true;
+          if (currentCat !== 'Semua') {
+            if (currentCat === 'Fasilitas & Dosen') {
+              matchCategory = category.includes('fasilitas') || category.includes('dosen');
+            } else {
+              matchCategory = category.includes(currentCat.toLowerCase());
+            }
+          }
+
+          if (matchQuery && matchCategory) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        if (countEl) countEl.textContent = visibleCount;
+
+        if (visibleCount === 0) {
+          emptyAlert?.classList.remove('hidden');
+        } else {
+          emptyAlert?.classList.add('hidden');
+        }
+      }
+
+      searchInput?.addEventListener('input', (e) => {
+        currentQuery = e.target.value.trim().toLowerCase();
+        if (currentQuery) {
+          clearBtn?.classList.remove('hidden');
+        } else {
+          clearBtn?.classList.add('hidden');
+        }
+        filterServices();
+      });
+
+      clearBtn?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        currentQuery = '';
+        clearBtn?.classList.add('hidden');
+        filterServices();
+      });
+
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryBtns.forEach(b => {
+            b.classList.remove('bg-[var(--leaf)]', 'text-white', 'shadow-2xs');
+            b.classList.add('bg-gray-100', 'text-[var(--muted)]');
+          });
+          btn.classList.add('bg-[var(--leaf)]', 'text-white', 'shadow-2xs');
+          btn.classList.remove('bg-gray-100', 'text-[var(--muted)]');
+
+          currentCat = btn.getAttribute('data-category') || 'Semua';
+          filterServices();
+        });
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        currentQuery = '';
+        clearBtn?.classList.add('hidden');
+        currentCat = 'Semua';
+        categoryBtns.forEach((b, idx) => {
+          if (idx === 0) {
+            b.classList.add('bg-[var(--leaf)]', 'text-white', 'shadow-2xs');
+            b.classList.remove('bg-gray-100', 'text-[var(--muted)]');
+          } else {
+            b.classList.remove('bg-[var(--leaf)]', 'text-white', 'shadow-2xs');
+            b.classList.add('bg-gray-100', 'text-[var(--muted)]');
+          }
+        });
+        filterServices();
+      });
+    });
+  </script>
 </BaseLayout>

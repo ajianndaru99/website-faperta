@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 ---
-<BaseLayout title="Cek Status Tiket Layanan" description="Lacak progres permohonan KHS dan layanan akademik FAPERTA INSTIPER secara real-time.">
-  <!-- Header -->
+<BaseLayout title="Pendeteksi NIM & Lacak Status Surat" description="Deteksi riwayat pengajuan surat akademik mahasiswa FAPERTA INSTIPER, pantau tahapan proses dan estimasi tanggal selesai.">
+  <!-- Header Banner -->
   <section class="grid-paper border-b border-[var(--line)]">
     <div class="container-shell py-8 sm:py-12">
       <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-4" aria-label="Breadcrumb">
@@ -10,237 +11,384 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <span>/</span>
         <a href="/layanan" class="hover:text-[var(--leaf)]">Layanan Akademik</a>
         <span>/</span>
-        <span class="text-[var(--leaf)] font-bold">Lacak Status Pengajuan</span>
+        <span class="text-[var(--leaf)] font-bold">Pendeteksi NIM & Lacak Surat</span>
       </nav>
 
-      <div class="max-w-2xl">
-        <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
-          <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
-          Pelacakan Real-Time Berkas
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3 py-1 text-xs font-bold text-[var(--leaf)]">
+            <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
+            Pelacakan Real-Time Multi-Surat
+          </div>
+          <h1 class="display-title mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
+            Pendeteksi NIM & Status Surat
+          </h1>
+          <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
+            Masukkan <strong>NIM</strong> Anda untuk mendeteksi seluruh surat permohonan yang pernah diajukan, atau masukkan <strong>Nomor Tiket</strong> spesifik untuk melihat posisi berkas dan estimasi tanggal selesai.
+          </p>
         </div>
-        <h1 class="display-title mt-3 text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--leaf)] leading-tight">
-          Cek Status Pengajuan
-        </h1>
-        <p class="mt-3 text-sm sm:text-base leading-relaxed text-[var(--ink)]">
-          Masukkan Nomor Tiket (misal: <code>KHS-2026-1234</code>) atau NIM Anda untuk memantau tahapan verifikasi dan penyelesaian dokumen akademik Anda.
-        </p>
+
+        <!-- Info SLA -->
+        <div class="rounded-2xl border border-[var(--line)] bg-white p-4 shadow-xs flex items-center gap-4 text-xs">
+          <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-50 text-amber-800 text-lg font-bold border border-amber-200">
+            ⏱️
+          </div>
+          <div>
+            <p class="font-bold text-[var(--ink)]">Estimasi Proses Berkas (SLA)</p>
+            <p class="text-[var(--muted)] mt-0.5">KHS: 1-2 Hari | Komplain: 2-3 Hari | Ujian: 3-5 Hari</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Search & Tracking Section -->
-  <section class="container-shell py-12">
-    <div class="max-w-3xl mx-auto">
+  <section class="container-shell py-10">
+    <div class="max-w-4xl mx-auto">
       <!-- Search Box Card -->
-      <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-sm">
+      <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-6 sm:p-8 shadow-sm">
         <form id="search-form" class="flex flex-col sm:flex-row gap-3">
-          <div class="flex-1 flex items-center rounded-2xl border-2 border-[var(--line)] bg-white px-4 py-1.5 focus-within:border-[var(--leaf)] focus-within:ring-3 focus-within:ring-[var(--leaf)]/15 transition shadow-xs">
+          <div class="flex-1 flex items-center rounded-2xl border-2 border-[var(--line)] bg-white px-4 py-2 focus-within:border-[var(--leaf)] focus-within:ring-3 focus-within:ring-[var(--leaf)]/15 transition shadow-xs">
             <span class="text-gray-400 text-lg shrink-0 select-none mr-3" aria-hidden="true">🔍</span>
             <input 
               type="text" 
               id="search-input" 
               required
-              placeholder="Masukkan Nomor Tiket atau NIM Anda..." 
-              class="w-full bg-transparent py-2 text-base text-[var(--ink)] placeholder:text-gray-400 outline-none border-none"
+              placeholder="Masukkan NIM (misal: 21/12345/SP) atau Nomor Tiket..." 
+              class="w-full bg-transparent py-1.5 text-base sm:text-lg text-[var(--ink)] placeholder:text-gray-400 outline-none border-none font-medium"
             />
           </div>
-          <button type="submit" class="btn-cta text-sm px-7 py-3 shrink-0">
-            Lacak Berkas →
+          <button type="submit" class="btn-cta text-sm px-8 py-3.5 shrink-0 flex items-center justify-center gap-2 shadow-sm">
+            <span>Deteksi Berkas</span>
+            <span>→</span>
           </button>
         </form>
 
-        <!-- Shortcut Recent Local Ticket -->
-        <div id="quick-ticket-box" class="hidden mt-4 pt-4 border-t border-[var(--line)] flex items-center justify-between gap-3 text-xs">
-          <span class="text-[var(--muted)]">Tiket pengajuan terakhir Anda:</span>
-          <button id="btn-use-last-ticket" class="font-bold text-[var(--leaf)] hover:underline flex items-center gap-1 bg-[var(--leaf-soft)] px-2.5 py-1 rounded-lg">
-            <span id="last-ticket-code">-</span> ↗
-          </button>
-        </div>
-      </div>
-
-      <!-- Result Card Container -->
-      <div id="result-container" class="hidden mt-8 rounded-3xl border-2 border-[var(--leaf)] bg-white p-6 sm:p-9 shadow-md animate-fade-in">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
-          <div>
-            <span id="res-badge" class="badge-online text-xs">Sedang Diproses</span>
-            <h3 id="res-ticket" class="text-2xl font-black text-[var(--leaf)] font-mono mt-1">
-              KHS-2026-XXXX
-            </h3>
-            <p id="res-tanggal" class="text-xs text-[var(--muted)] mt-0.5">Diajukan pada: -</p>
+        <!-- Demo NIM Quick Buttons -->
+        <div class="mt-5 pt-4 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-1.5 text-[var(--muted)]">
+            <span class="font-bold text-[var(--leaf)]">Contoh Coba Langsung:</span>
           </div>
-          <div class="text-left sm:text-right">
-            <p class="text-xs text-[var(--muted)]">Pemohon:</p>
-            <p id="res-nama" class="font-bold text-sm text-[var(--ink)]">-</p>
-            <p id="res-nim" class="text-xs text-[var(--muted)] font-mono">-</p>
-          </div>
-        </div>
-
-        <!-- 3-Step Tracker Visualization -->
-        <div class="mt-8">
-          <p class="text-xs font-black text-[var(--leaf)] uppercase tracking-wider mb-4">
-            Tahapan Verifikasi & Proses Berkas:
-          </p>
-          
-          <div class="grid grid-cols-3 gap-2 relative">
-            <!-- Step 1 -->
-            <div class="flex flex-col items-center text-center">
-              <div id="step-node-1" class="grid h-10 w-10 place-items-center rounded-full bg-[var(--leaf)] text-white text-sm font-bold shadow-xs">
-                ✓
-              </div>
-              <span class="text-xs font-bold text-[var(--ink)] mt-2">1. Diajukan</span>
-              <span class="text-[10px] text-[var(--muted)] hidden sm:block">Data tersimpan</span>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="flex flex-col items-center text-center">
-              <div id="step-node-2" class="grid h-10 w-10 place-items-center rounded-full bg-[var(--gold)] text-[var(--leaf)] text-sm font-bold shadow-xs ring-4 ring-[var(--gold-soft)]">
-                2
-              </div>
-              <span class="text-xs font-bold text-[var(--leaf)] mt-2">2. Verifikasi SIAKAD</span>
-              <span class="text-[10px] text-[var(--muted)] hidden sm:block">Pemeriksaan staf</span>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="flex flex-col items-center text-center">
-              <div id="step-node-3" class="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-500 text-sm font-bold">
-                3
-              </div>
-              <span class="text-xs font-bold text-gray-400 mt-2">3. Selesai</span>
-              <span class="text-[10px] text-[var(--muted)] hidden sm:block">Siap unduh / ambil</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Detail Information Box -->
-        <div class="mt-8 rounded-2xl bg-[var(--paper)] border border-[var(--line)] p-5 grid sm:grid-cols-2 gap-3 text-xs">
-          <div>
-            <span class="text-[var(--muted)]">Program Studi:</span>
-            <p id="res-prodi" class="font-bold text-[var(--ink)] mt-0.5">-</p>
-          </div>
-          <div>
-            <span class="text-[var(--muted)]">Keperluan KHS:</span>
-            <p id="res-keperluan" class="font-bold text-[var(--leaf)] mt-0.5">-</p>
-          </div>
-          <div>
-            <span class="text-[var(--muted)]">Format Dokumen:</span>
-            <p id="res-format" class="font-bold text-[var(--ink)] mt-0.5">-</p>
-          </div>
-          <div>
-            <span class="text-[var(--muted)]">Detail Khusus:</span>
-            <p id="res-detail" class="font-bold text-[var(--ink)] mt-0.5">-</p>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="mt-8 pt-5 border-t border-[var(--line)] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <button id="btn-print-status" type="button" class="w-full sm:w-auto btn-cta text-xs py-2.5 px-5 flex items-center justify-center gap-1.5">
-            <span>🖨️</span> Cetak / Simpan Status Tiket
-          </button>
-          <div class="flex items-center gap-4 text-xs font-bold text-[var(--leaf)]">
-            <a href="/layanan/permohonan-khs" class="hover:underline">+ Permohonan KHS</a>
-            <span>•</span>
-            <a href="/layanan/komplain-nilai" class="hover:underline">+ Komplain Nilai</a>
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-[var(--leaf-soft)] text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white font-bold transition flex items-center gap-1.5" data-query="21/12345/SP">
+              <span>👤 21/12345/SP</span>
+              <span class="text-[10px] opacity-75">(Budi - 2 Surat)</span>
+            </button>
+            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 font-bold transition flex items-center gap-1.5" data-query="22/67890/SP">
+              <span>👤 22/67890/SP</span>
+              <span class="text-[10px] opacity-75">(Siti - 1 Surat)</span>
+            </button>
+            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 font-bold transition flex items-center gap-1.5" data-query="20/45678/SP">
+              <span>👤 20/45678/SP</span>
+              <span class="text-[10px] opacity-75">(Ahmad - Selesai)</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Empty State / Not Found -->
-      <div id="not-found-card" class="hidden mt-8 rounded-3xl border border-dashed border-gray-300 bg-white p-8 text-center">
-        <div class="text-3xl">🔎</div>
-        <h4 class="mt-3 text-base font-bold text-[var(--ink)]">Data Tiket Tidak Ditemukan</h4>
+      <!-- Applicant Profile Card (Appears on NIM Search) -->
+      <div id="applicant-profile-card" class="hidden mt-8 rounded-3xl border border-[var(--line)] bg-[#f7faf5] p-6 sm:p-7 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="grid h-14 w-14 place-items-center rounded-2xl bg-[var(--leaf)] text-white text-2xl font-bold shadow-xs">
+              🎓
+            </div>
+            <div>
+              <span class="badge-online text-[10px]">Data Mahasiswa Terverifikasi</span>
+              <h2 id="prof-nama" class="text-xl font-extrabold text-[var(--ink)] mt-0.5">-</h2>
+              <p class="text-xs text-[var(--muted)] font-mono">
+                NIM: <strong id="prof-nim" class="text-[var(--leaf)] font-bold">-</strong> · <span id="prof-prodi">-</span>
+              </p>
+            </div>
+          </div>
+          <div class="sm:text-right border-t sm:border-t-0 pt-3 sm:pt-0 border-[var(--line)]">
+            <p class="text-xs text-[var(--muted)]">Total Pengajuan Surat:</p>
+            <p id="prof-total" class="text-2xl font-black text-[var(--leaf)]">0 Berkas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-Ticket Cards Container -->
+      <div id="tickets-container" class="mt-8 space-y-6"></div>
+
+      <!-- Not Found Card -->
+      <div id="not-found-card" class="hidden mt-8 rounded-3xl border border-dashed border-gray-300 bg-white p-10 text-center">
+        <div class="text-4xl">🔎</div>
+        <h3 class="mt-3 text-lg font-bold text-[var(--ink)]">Tidak Ditemukan Berkas untuk Kata Kunci Tersebut</h3>
         <p class="mt-1 text-xs text-[var(--muted)] max-w-md mx-auto leading-relaxed">
-          Pastikan Nomor Tiket atau NIM yang Anda masukkan sudah benar. Jika Anda baru saja mengajukan di loket fisik, silakan konfirmasi langsung ke Bagian Akademik.
+          NIM atau Nomor Tiket tidak ditemukan dalam basis data sistem. Pastikan format penulisan NIM atau Tiket sudah benar, atau klik salah satu tombol contoh di atas.
         </p>
-        <div class="mt-5">
-          <a href="/layanan/permohonan-khs" class="btn-secondary text-xs">
-            Isi Formulir Permohonan KHS Online
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="/layanan/permohonan-khs" class="btn-cta text-xs py-2.5 px-5">
+            Ajukan Permohonan KHS Online
+          </a>
+          <a href="/layanan" class="btn-secondary text-xs py-2.5 px-5">
+            Buka Daftar Layanan
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Client Script for Ticket Lookup -->
-  <script is:inline>
+  <!-- Client Script for Unified NIM / Ticket Lookup -->
+  <script is:inline define:vars={{ initialDemoTickets: INITIAL_DEMO_TICKETS }}>
     document.addEventListener('DOMContentLoaded', () => {
       const searchForm = document.getElementById('search-form');
       const searchInput = document.getElementById('search-input');
-      const resultContainer = document.getElementById('result-container');
+      const profileCard = document.getElementById('applicant-profile-card');
+      const ticketsContainer = document.getElementById('tickets-container');
       const notFoundCard = document.getElementById('not-found-card');
-      const quickTicketBox = document.getElementById('quick-ticket-box');
-      const lastTicketCode = document.getElementById('last-ticket-code');
-      const btnUseLastTicket = document.getElementById('btn-use-last-ticket');
+      const demoBtns = document.querySelectorAll('.demo-nim-btn');
 
-      // Ambil tiket terakhir dari localStorage
-      let tickets = [];
-      try {
-        tickets = JSON.parse(localStorage.getItem('portal_khs_tickets') || '[]');
-      } catch (e) {}
-
-      if (tickets.length > 0) {
-        const last = tickets[0];
-        if (quickTicketBox && lastTicketCode) {
-          quickTicketBox.classList.remove('hidden');
-          lastTicketCode.textContent = `${last.kode} (${last.nama})`;
-          btnUseLastTicket?.addEventListener('click', () => {
-            searchInput.value = last.kode;
-            renderTicket(last);
-          });
+      // 1. Inisialisasi Database Tiket Terpadu (localStorage)
+      function getAllTickets() {
+        try {
+          const stored = localStorage.getItem('portal_faperta_tickets');
+          if (stored) {
+            return JSON.parse(stored);
+          }
+          // Ambil dari portal_khs_tickets jika ada
+          const legacy = localStorage.getItem('portal_khs_tickets');
+          let combined = [...initialDemoTickets];
+          if (legacy) {
+            const legacyItems = JSON.parse(legacy);
+            legacyItems.forEach(item => {
+              if (!combined.some(c => c.kode === item.kode)) {
+                combined.unshift({
+                  kode: item.kode,
+                  nim: item.nim,
+                  nama: item.nama,
+                  prodi: item.prodi || 'S1 Pertanian',
+                  layananNama: item.keperluan || 'Permohonan Dokumen',
+                  keperluan: item.keperluan || '-',
+                  detailTambahan: item.detailTambahan || '-',
+                  format: item.format || 'Dokumen Digital',
+                  status: 'Diajukan',
+                  statusStep: 1,
+                  posisiBerkas: 'Meja Administrasi Akademik',
+                  estimasiSelesai: '1–2 Hari Kerja',
+                  slaDays: 2,
+                  catatanAdmin: 'Pengajuan telah diterima sistem dan menunggu pemeriksaan petugas.',
+                  tanggal: item.tanggal || 'Hari Ini',
+                  isNewForAdmin: true
+                });
+              }
+            });
+          }
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(combined));
+          return combined;
+        } catch (e) {
+          return initialDemoTickets;
         }
       }
 
-      function renderTicket(ticket) {
+      // 2. Render Daftar Tiket & Tahapan Progress
+      function renderTickets(ticketsList, searchedNim = '') {
         notFoundCard?.classList.add('hidden');
-        resultContainer?.classList.remove('hidden');
+        ticketsContainer.innerHTML = '';
 
-        document.getElementById('res-ticket').textContent = ticket.kode;
-        document.getElementById('res-nama').textContent = ticket.nama;
-        document.getElementById('res-nim').textContent = `NIM: ${ticket.nim}`;
-        document.getElementById('res-tanggal').textContent = `Diajukan pada: ${ticket.tanggal || 'Hari ini'}`;
-        document.getElementById('res-prodi').textContent = ticket.prodi;
-        document.getElementById('res-keperluan').textContent = ticket.keperluan;
-        document.getElementById('res-format').textContent = ticket.format;
-        document.getElementById('res-detail').textContent = ticket.detailTambahan || '-';
+        if (!ticketsList || ticketsList.length === 0) {
+          profileCard?.classList.add('hidden');
+          notFoundCard?.classList.remove('hidden');
+          return;
+        }
 
-        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Tampilkan profil jika pencarian berbasis NIM
+        if (searchedNim && ticketsList.length > 0) {
+          const first = ticketsList[0];
+          document.getElementById('prof-nama').textContent = first.nama;
+          document.getElementById('prof-nim').textContent = first.nim;
+          document.getElementById('prof-prodi').textContent = first.prodi;
+          document.getElementById('prof-total').textContent = `${ticketsList.length} Berkas Surat`;
+          profileCard?.classList.remove('hidden');
+        } else {
+          profileCard?.classList.add('hidden');
+        }
+
+        // Render setiap kartu surat
+        ticketsList.forEach((ticket, idx) => {
+          const step = ticket.statusStep || 1;
+          const statusColors = {
+            'Diajukan': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+            'Verifikasi Berkas': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200' },
+            'Persetujuan': { bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200' },
+            'Selesai': { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200' },
+            'Perlu Revisi': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200' }
+          };
+          const badge = statusColors[ticket.status] || { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-200' };
+
+          const cardHtml = `
+            <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-6 sm:p-8 shadow-md transition hover:border-[var(--leaf)]">
+              <!-- Header Surat -->
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase ${badge.bg} ${badge.text} border ${badge.border}">
+                      <span class="h-2 w-2 rounded-full bg-current"></span>
+                      ${ticket.status}
+                    </span>
+                    <span class="text-xs font-semibold text-[var(--muted)]">Surat #${idx + 1}</span>
+                  </div>
+                  <h3 class="text-xl sm:text-2xl font-black text-[var(--leaf)] mt-2 font-mono">
+                    ${ticket.kode}
+                  </h3>
+                  <p class="text-sm font-bold text-[var(--ink)] mt-0.5">${ticket.layananNama}</p>
+                </div>
+                <div class="text-left sm:text-right">
+                  <p class="text-xs text-[var(--muted)]">Tanggal Pengajuan:</p>
+                  <p class="text-xs font-bold text-[var(--ink)] mt-0.5">${ticket.tanggal}</p>
+                  <p class="text-[11px] text-[var(--muted)] mt-1">Format: <strong>${ticket.format || 'Digital / Cetak'}</strong></p>
+                </div>
+              </div>
+
+              <!-- Posisi Berkas & Estimasi Jadi (SLA) Banner -->
+              <div class="mt-6 grid sm:grid-cols-2 gap-3 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs">
+                <div class="flex items-start gap-2.5">
+                  <span class="text-base shrink-0">📍</span>
+                  <div>
+                    <span class="font-bold text-amber-900">Posisi Berkas Terkini:</span>
+                    <p class="text-amber-950 font-semibold mt-0.5">${ticket.posisiBerkas || 'Pemeriksaan Administrasi Akademik'}</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <span class="text-base shrink-0">⏱️</span>
+                  <div>
+                    <span class="font-bold text-amber-900">Estimasi Selesai (SLA):</span>
+                    <p class="text-emerald-800 font-extrabold mt-0.5">${ticket.estimasiSelesai || '1–2 Hari Kerja'}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4-Step Visual Progress Bar -->
+              <div class="mt-8">
+                <p class="text-xs font-black uppercase tracking-wider text-[var(--leaf)] mb-4">
+                  Tahapan Progres Berkas:
+                </p>
+                <div class="grid grid-cols-4 gap-2 text-center relative">
+                  <!-- Step 1: Diajukan -->
+                  <div class="flex flex-col items-center">
+                    <div class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold shadow-xs ${step >= 1 ? 'bg-[var(--leaf)] text-white' : 'bg-gray-200 text-gray-400'}">
+                      ${step > 1 ? '✓' : '1'}
+                    </div>
+                    <span class="text-xs font-bold mt-2 ${step >= 1 ? 'text-[var(--leaf)]' : 'text-gray-400'}">1. Diajukan</span>
+                    <span class="text-[10px] text-[var(--muted)] hidden sm:block">Data tersimpan</span>
+                  </div>
+
+                  <!-- Step 2: Verifikasi Berkas -->
+                  <div class="flex flex-col items-center">
+                    <div class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold shadow-xs ${step > 2 ? 'bg-[var(--leaf)] text-white' : step === 2 ? 'bg-[var(--gold)] text-[var(--leaf)] ring-4 ring-[var(--gold)]/25' : 'bg-gray-200 text-gray-400'}">
+                      ${step > 2 ? '✓' : '2'}
+                    </div>
+                    <span class="text-xs font-bold mt-2 ${step >= 2 ? 'text-[var(--leaf)]' : 'text-gray-400'}">2. Verifikasi</span>
+                    <span class="text-[10px] text-[var(--muted)] hidden sm:block">Cek berkas & SIAKAD</span>
+                  </div>
+
+                  <!-- Step 3: Persetujuan / ACC -->
+                  <div class="flex flex-col items-center">
+                    <div class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold shadow-xs ${step > 3 ? 'bg-[var(--leaf)] text-white' : step === 3 ? 'bg-[var(--gold)] text-[var(--leaf)] ring-4 ring-[var(--gold)]/25' : 'bg-gray-200 text-gray-400'}">
+                      ${step > 3 ? '✓' : '3'}
+                    </div>
+                    <span class="text-xs font-bold mt-2 ${step >= 3 ? 'text-[var(--leaf)]' : 'text-gray-400'}">3. Persetujuan</span>
+                    <span class="text-[10px] text-[var(--muted)] hidden sm:block">Kaprodi / Dosen / Dekan</span>
+                  </div>
+
+                  <!-- Step 4: Selesai -->
+                  <div class="flex flex-col items-center">
+                    <div class="grid h-10 w-10 place-items-center rounded-full text-sm font-bold shadow-xs ${step === 4 ? 'bg-emerald-600 text-white ring-4 ring-emerald-200' : 'bg-gray-200 text-gray-400'}">
+                      ${step === 4 ? '✓' : '4'}
+                    </div>
+                    <span class="text-xs font-bold mt-2 ${step === 4 ? 'text-emerald-700 font-extrabold' : 'text-gray-400'}">4. Selesai</span>
+                    <span class="text-[10px] text-[var(--muted)] hidden sm:block">Siap diambil / diunduh</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Catatan Resmi Petugas Admin -->
+              ${ticket.catatanAdmin ? `
+                <div class="mt-6 rounded-2xl bg-gray-50 border border-[var(--line)] p-4 text-xs">
+                  <span class="font-bold text-[var(--leaf)] flex items-center gap-1">
+                    <span>💬 Catatan Petugas Administrasi:</span>
+                  </span>
+                  <p class="mt-1 text-[var(--ink)] leading-relaxed italic">
+                    "${ticket.catatanAdmin}"
+                  </p>
+                </div>
+              ` : ''}
+
+              <!-- Detail Tambahan -->
+              <div class="mt-5 text-xs text-[var(--muted)] flex flex-wrap items-center justify-between gap-2 border-t border-[var(--line)] pt-4">
+                <span>Keterangan: <strong class="text-[var(--ink)]">${ticket.detailTambahan || ticket.keperluan}</strong></span>
+                <button type="button" onclick="window.print()" class="text-[var(--leaf)] font-bold hover:underline flex items-center gap-1">
+                  <span>🖨️</span> Cetak Bukti Tiket
+                </button>
+              </div>
+            </div>
+          `;
+          ticketsContainer.insertAdjacentHTML('beforeend', cardHtml);
+        });
+
+        ticketsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
-      const btnPrintStatus = document.getElementById('btn-print-status');
-      btnPrintStatus?.addEventListener('click', () => {
-        window.print();
-      });
-
+      // 3. Form Search Handler (Deteksi NIM atau Tiket)
       searchForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const query = searchInput.value.trim().toUpperCase();
+        const query = (searchInput?.value || '').trim().toUpperCase();
         if (!query) return;
 
-        // Cari di local tickets
-        const found = tickets.find(t => 
-          (t.kode && t.kode.toUpperCase() === query) || 
-          (t.nim && t.nim.toUpperCase() === query)
+        executeSearch(query);
+      });
+
+      function executeSearch(query) {
+        const all = getAllTickets();
+
+        // Cek jika query cocok dengan NIM (bisa ada beberapa tiket)
+        const matchByNim = all.filter(t => t.nim && t.nim.toUpperCase().replace(/\s+/g, '') === query.replace(/\s+/g, ''));
+        
+        if (matchByNim.length > 0) {
+          renderTickets(matchByNim, query);
+          return;
+        }
+
+        // Cek jika query cocok dengan Kode Tiket
+        const matchByCode = all.filter(t => t.kode && t.kode.toUpperCase() === query);
+        if (matchByCode.length > 0) {
+          renderTickets(matchByCode, '');
+          return;
+        }
+
+        // Cek jika query sebagian (fuzzy NIM atau Nama)
+        const matchFuzzy = all.filter(t => 
+          (t.nim && t.nim.toUpperCase().includes(query)) ||
+          (t.nama && t.nama.toUpperCase().includes(query)) ||
+          (t.kode && t.kode.toUpperCase().includes(query))
         );
 
-        if (found) {
-          renderTicket(found);
-        } else if (query.startsWith('KHS-')) {
-          // Dummy demo ticket if code matches KHS pattern
-          const demoTicket = {
-            kode: query,
-            nama: 'Mahasiswa FAPERTA',
-            nim: '21/xxxxx/SP/xxxxx',
-            prodi: 'S1 Agroteknologi',
-            keperluan: 'Ujian Khusus (Tingkat Akhir)',
-            format: 'PDF Digital (WhatsApp & Email)',
-            detailTambahan: 'Rancangan Percobaan (3 SKS)',
-            tanggal: 'Hari ini'
-          };
-          renderTicket(demoTicket);
+        if (matchFuzzy.length > 0) {
+          renderTickets(matchFuzzy, query);
         } else {
-          resultContainer?.classList.add('hidden');
-          notFoundCard?.classList.remove('hidden');
+          renderTickets([], query);
         }
+      }
+
+      // 4. Demo NIM Click Handlers
+      demoBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const q = btn.getAttribute('data-query');
+          if (searchInput && q) {
+            searchInput.value = q;
+            executeSearch(q);
+          }
+        });
       });
+
+      // Auto check url param ?q=
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlQuery = urlParams.get('q');
+      if (urlQuery && searchInput) {
+        searchInput.value = urlQuery;
+        executeSearch(urlQuery.toUpperCase());
+      }
     });
   </script>
 </BaseLayout>
