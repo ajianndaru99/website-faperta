@@ -412,8 +412,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
   }
 ];
 
-// Data Awal Demo Permohonan Mahasiswa untuk Pendeteksi NIM & Admin Portal
-export const INITIAL_DEMO_TICKETS: TicketItem[] = [
+// Data Awal Berkas Permohonan Mahasiswa Resmi (Database Portal FAPERTA)
+export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
   {
     kode: "KHS-2026-7821",
     nim: "21/12345/SP",
@@ -491,3 +491,56 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     isNewForAdmin: false
   }
 ];
+
+export const INITIAL_DEMO_TICKETS = INITIAL_PORTAL_TICKETS;
+
+// Daftar Akun Administrator & Petugas Loket FAPERTA
+export interface AdminAccountItem {
+  id: string;
+  nama: string;
+  username: string;
+  role: string;
+  loket: string;
+  status: 'Aktif' | 'Nonaktif';
+  terakhirAkses: string;
+}
+
+export const MASTER_ADMINS: AdminAccountItem[] = [
+  {
+    id: "ADM-01",
+    nama: "Admin Utama Loket",
+    username: "admin",
+    role: "Super Admin",
+    loket: "Loket 1 & 2 Gedung A",
+    status: "Aktif",
+    terakhirAkses: "Hari Ini, 20:45 WIB"
+  },
+  {
+    id: "ADM-02",
+    nama: "Petugas Loket Agroteknologi",
+    username: "agrotek",
+    role: "Petugas Loket",
+    loket: "Loket 1 Gedung A",
+    status: "Aktif",
+    terakhirAkses: "04 Sep 2026, 14:10 WIB"
+  },
+  {
+    id: "ADM-03",
+    nama: "Petugas Loket Agribisnis",
+    username: "agribisnis",
+    role: "Petugas Loket",
+    loket: "Loket 2 Gedung A",
+    status: "Aktif",
+    terakhirAkses: "04 Sep 2026, 11:30 WIB"
+  },
+  {
+    id: "ADM-04",
+    nama: "Staf Verifikasi Tata Usaha",
+    username: "legalisir",
+    role: "Verifikator Dokumen",
+    loket: "Ruang Tata Usaha",
+    status: "Aktif",
+    terakhirAkses: "03 Sep 2026, 15:00 WIB"
+  }
+];
+

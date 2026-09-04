@@ -1021,7 +1021,7 @@ const currentPath = Astro.url.pathname;
             const raw = localStorage.getItem('portal_faperta_tickets');
             let tickets = raw ? JSON.parse(raw) : null;
             if (!tickets) {
-              // Hitung dari demo awal (ada 2 unread)
+              // Hitung dari data tiket awal (ada 2 unread)
               tickets = [
                 { isNewForAdmin: true },
                 { isNewForAdmin: true },

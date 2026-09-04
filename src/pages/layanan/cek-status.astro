@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
+import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
 ---
 
 <BaseLayout 
@@ -120,7 +120,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
   </section>
 
   <!-- Script Deteksi Berkas & Realtime URL State Handler -->
-  <script is:inline define:vars={{ initialDemoTickets: INITIAL_DEMO_TICKETS }}>
+  <script is:inline define:vars={{ initialPortalTickets: INITIAL_PORTAL_TICKETS }}>
     document.addEventListener('DOMContentLoaded', () => {
       const searchForm = document.getElementById('search-form');
       const searchInput = document.getElementById('search-input');
@@ -135,10 +135,10 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           if (raw) {
             return JSON.parse(raw);
           }
-          localStorage.setItem('portal_faperta_tickets', JSON.stringify(initialDemoTickets));
-          return initialDemoTickets;
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(initialPortalTickets));
+          return initialPortalTickets;
         } catch (e) {
-          return initialDemoTickets;
+          return initialPortalTickets;
         }
       }
 
