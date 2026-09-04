@@ -69,7 +69,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               type="text" 
               id="search-input" 
               required
-              placeholder="Masukkan NIM (misal: 21/12345/SP) atau Nomor Tiket..." 
+              placeholder="Masukkan Nomor Induk Mahasiswa (NIM) atau Kode Tiket..." 
               class="w-full bg-transparent py-1.5 text-base sm:text-lg text-[var(--ink)] placeholder:text-gray-400 outline-none border-none font-medium"
             />
           </div>
@@ -87,27 +87,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             <span>Refresh</span>
           </button>
         </form>
-
-        <!-- Demo NIM Quick Buttons -->
-        <div class="mt-5 pt-4 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div class="flex items-center gap-1.5 text-[var(--muted)]">
-            <span class="font-bold text-[var(--leaf)]">Contoh Coba Langsung:</span>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-[var(--leaf-soft)] text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white font-bold transition flex items-center gap-1.5" data-query="21/12345/SP">
-              <span>👤 21/12345/SP</span>
-              <span class="text-[10px] opacity-75">(Budi - 2 Surat)</span>
-            </button>
-            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 font-bold transition flex items-center gap-1.5" data-query="22/67890/SP">
-              <span>👤 22/67890/SP</span>
-              <span class="text-[10px] opacity-75">(Siti - 1 Surat)</span>
-            </button>
-            <button type="button" class="demo-nim-btn px-3 py-1.5 rounded-xl bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 font-bold transition flex items-center gap-1.5" data-query="20/45678/SP">
-              <span>👤 20/45678/SP</span>
-              <span class="text-[10px] opacity-75">(Ahmad - Ditolak)</span>
-            </button>
-          </div>
-        </div>
       </div>
 
       <!-- Live Sync / Refresh Status Bar -->
@@ -180,7 +159,6 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
       const profileCard = document.getElementById('applicant-profile-card');
       const ticketsContainer = document.getElementById('tickets-container');
       const notFoundCard = document.getElementById('not-found-card');
-      const demoBtns = document.querySelectorAll('.demo-nim-btn');
 
       // 1. Inisialisasi Database Tiket Terpadu (localStorage)
       function getAllTickets() {
@@ -467,18 +445,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         }
       }
 
-      // 4. Demo NIM Click Handlers
-      demoBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const q = btn.getAttribute('data-query');
-          if (searchInput && q) {
-            searchInput.value = q;
-            executeSearch(q);
-          }
-        });
-      });
-
-      // 5. Fitur Tombol Refresh / Segarkan Cek Perubahan
+      // 4. Fitur Tombol Refresh / Segarkan Cek Perubahan
       const btnRefresh = document.getElementById('btn-refresh-status');
       const btnRefreshInline = document.getElementById('btn-refresh-inline');
       const refreshIcon = document.getElementById('refresh-icon');

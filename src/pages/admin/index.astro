@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 ---
-<BaseLayout title="Portal Admin & Notifikasi Surat Masuk" description="Dashboard petugas administrasi FAPERTA INSTIPER untuk memproses surat masuk mahasiswa dan memantau SLA permohonan berkas.">
+<BaseLayout title="Portal Admin & Dashboard Loket" description="Dashboard petugas administrasi FAPERTA INSTIPER untuk memproses surat masuk mahasiswa dan memantau SLA permohonan berkas.">
   
   <!-- 1. TAMPILAN LOGIN KHUSUS ADMIN (Jika Belum Login) -->
   <section id="admin-login-view" class="container-shell py-16 sm:py-24 max-w-md mx-auto">
@@ -16,13 +16,13 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           class="h-14 w-14 mx-auto object-contain drop-shadow-xs" 
         />
         <span class="mt-4 inline-block rounded-full bg-[var(--leaf-soft)] px-3 py-1 text-[11px] font-bold text-[var(--leaf)]">
-          🔒 Portal Staf Administrasi
+          🔒 Portal Staf Administrasi Loket
         </span>
         <h1 class="display-title mt-2 text-2xl font-extrabold text-[var(--leaf)]">
           FAPERTA INSTIPER
         </h1>
         <p class="text-xs text-[var(--muted)] mt-1">
-          Masuk untuk memverifikasi surat masuk dan memantau SLA mahasiswa.
+          Masuk untuk memverifikasi surat masuk mahasiswa dan memperbarui posisi berkas loket.
         </p>
       </div>
 
@@ -67,7 +67,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             <button 
               type="button" 
               id="btn-toggle-pass" 
-              class="text-xs text-gray-400 hover:text-[var(--leaf)] font-bold ml-2 select-none"
+              class="text-xs text-gray-400 hover:text-[var(--leaf)] font-bold ml-2 select-none cursor-pointer"
             >
               Lihat
             </button>
@@ -76,7 +76,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
         <button 
           type="submit" 
-          class="w-full btn-cta text-sm py-3 flex items-center justify-center gap-2 mt-4 shadow-sm"
+          class="w-full btn-cta text-sm py-3 flex items-center justify-center gap-2 mt-4 shadow-sm cursor-pointer"
         >
           <span>Masuk Portal Admin</span>
           <span>→</span>
@@ -85,7 +85,7 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
       <!-- Informasi Akun Demo untuk Admin -->
       <div class="mt-6 pt-5 border-t border-[var(--line)] bg-gray-50/70 p-3.5 rounded-2xl text-[11px] text-[var(--muted)]">
-        <p class="font-bold text-[var(--leaf)] mb-1">💡 Kredensial Khusus Staf:</p>
+        <p class="font-bold text-[var(--leaf)] mb-1">💡 Kredensial Khusus Staf Loket:</p>
         <p>• <strong>ID:</strong> <code class="font-mono text-[var(--ink)] bg-white px-1.5 py-0.5 rounded border border-gray-200">agrotek</code></p>
         <p class="mt-0.5">• <strong>Kata Sandi:</strong> <code class="font-mono text-[var(--ink)] bg-white px-1.5 py-0.5 rounded border border-gray-200">agr001</code></p>
       </div>
@@ -93,863 +93,1117 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
   </section>
 
   <!-- 2. TAMPILAN DASHBOARD ADMIN (Aktif Setelah Login) -->
-  <div id="admin-dashboard-view" class="hidden">
-    <!-- Admin Header Banner -->
-    <section class="border-b border-[var(--line)] bg-[#1b3d2b] text-white">
-      <div class="container-shell py-8 sm:py-10">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[var(--gold)]">
-                <span>🛡️</span>
-                Portal Staf Administrasi & Dekanat
-              </span>
-              <span id="active-user-badge" class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 text-xs font-bold">
-                👤 Petugas: agrotek
-              </span>
-            </div>
-            <h1 class="display-title mt-3 text-3xl sm:text-4xl font-extrabold !text-white leading-tight">
-              Penandaan & Verifikasi Berkas Loket
-            </h1>
-            <p class="mt-2 text-sm text-white/80 max-w-2xl leading-relaxed">
-              Pusat penandaan status berkas fisik mahasiswa FAPERTA INSTIPER. Cukup centang/pilih status permohonan untuk mengabari mahasiswa kapan berkas fisik siap diambil di loket kampus atau perlu revisi.
-            </p>
-          </div>
+  <div id="admin-dashboard-view" class="hidden flex-1 bg-[#f7faf5] border-b border-[var(--line)]">
+    <div class="container-shell py-6">
+      
+      <!-- Top Alert Ribbon: SOP Loket Fisik -->
+      <div class="mb-6 rounded-2xl bg-amber-50/90 border border-amber-200 p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-amber-950 shadow-2xs">
+        <div class="flex items-center gap-2.5">
+          <span class="text-base shrink-0">📌</span>
+          <span>
+            <strong>SOP Loket FAPERTA:</strong> Mahasiswa mengambil berkas fisik di <strong>Loket 1 Gedung A Lantai 1</strong> membawa KTM asli. Petugas memperbarui status berkas agar terbaca saat mahasiswa mengecek NIM.
+          </span>
+        </div>
+        <button id="btn-mark-all-read" type="button" class="text-xs font-bold text-amber-900 hover:text-[var(--leaf)] hover:underline shrink-0 cursor-pointer">
+          ✓ Tandai Semua Terbaca
+        </button>
+      </div>
 
-          <!-- Notification Bell Widget & Logout -->
-          <div class="flex flex-wrap items-center gap-4">
-            <div class="rounded-3xl bg-white/10 border border-white/20 p-4 sm:p-5 backdrop-blur-md flex items-center gap-4">
-              <div class="relative">
-                <span class="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--gold)] text-2xl text-[var(--leaf)] font-bold shadow-md">
-                  🔔
-                </span>
-                <span id="panel-unread-badge" class="absolute -top-1.5 -right-1.5 h-6 min-w-6 px-1.5 inline-flex items-center justify-center rounded-full bg-red-600 text-xs font-black text-white ring-2 ring-white animate-bounce">
-                  0
-                </span>
+      <!-- Main Layout: Sidebar Kiri + Workspace Kanan -->
+      <div class="grid lg:grid-cols-[280px_1fr] gap-6 items-start">
+        
+        <!-- SIDEBAR KIRI: Navigasi Kategori Berkas & Filter Status -->
+        <aside class="rounded-3xl border border-[var(--line)] bg-white p-5 shadow-xs lg:sticky lg:top-24 space-y-6">
+          
+          <!-- Header Profil Petugas -->
+          <div class="border-b border-[var(--line)] pb-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="grid h-10 w-10 place-items-center rounded-xl bg-[var(--leaf-soft)] text-lg text-[var(--leaf)] font-bold">
+                🛡️
               </div>
               <div>
-                <p class="text-xs text-white/80">Notifikasi Surat Masuk:</p>
-                <h3 id="panel-unread-text" class="text-base font-extrabold text-white">0 Surat Baru Perlu Ditinjau</h3>
-                <button id="btn-mark-all-read" type="button" class="text-[11px] font-bold text-[var(--gold)] hover:underline mt-0.5">
-                  ✓ Tandai Semua Sudah Ditinjau
-                </button>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[var(--muted)] block">Portal Loket</span>
+                <strong id="active-user-badge" class="text-xs font-bold text-[var(--ink)]">Petugas: agrotek</strong>
               </div>
             </div>
-
-            <!-- Tombol Keluar / Logout -->
             <button 
               id="btn-admin-logout" 
               type="button" 
-              class="px-4 py-3 rounded-2xl bg-white/15 border border-white/20 text-xs font-bold text-white hover:bg-red-600/80 transition flex items-center gap-1.5"
+              class="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer"
+              title="Keluar dari Portal Admin"
             >
-              <span>🚪</span>
-              <span>Keluar</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
             </button>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Operational Workflow Notice Box -->
-    <section class="bg-amber-50/80 border-b border-amber-200 py-3.5 text-xs text-amber-950">
-      <div class="container-shell flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div class="flex items-start gap-2.5">
-          <span class="text-lg shrink-0">📌</span>
+          <!-- Grup 1: Navigasi Kategori Berkas Mahasiswa (dengan Notifikasi) -->
           <div>
-            <strong>Alur Kerja Loket FAPERTA:</strong>
-            <span class="text-amber-900">
-              Sistem ini tidak memproses upload/download file digital. Mahasiswa wajib datang langsung ke <strong>Loket 1 Administrasi FAPERTA (Gedung A Lantai 1)</strong> membawa KTM asli. Petugas di sini cukup melakukan centang / penandaan status:
-              <span class="font-bold text-amber-900">Belum Diproses</span>, 
-              <span class="font-bold text-blue-900">Proses Verifikasi</span>, 
-              <span class="font-bold text-emerald-900">Selesai (Siap Diambil di Loket)</span>, atau 
-              <span class="font-bold text-red-900">Ditolak</span>.
+            <span class="text-[10px] font-black uppercase tracking-wider text-[var(--muted)] block mb-2 px-1">
+              Kategori Berkas
             </span>
+            <nav class="space-y-1" aria-label="Kategori Berkas">
+              <!-- Semua Berkas -->
+              <button 
+                type="button" 
+                data-case="all" 
+                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf)] text-white shadow-2xs"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">📋</span>
+                  <span>Semua Berkas</span>
+                </div>
+                <span id="badge-count-all" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-black">0</span>
+              </button>
+
+              <!-- Permohonan KHS -->
+              <button 
+                type="button" 
+                data-case="khs" 
+                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">📄</span>
+                  <span>Permohonan KHS</span>
+                </div>
+                <span id="badge-count-khs" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
+              </button>
+
+              <!-- Komplain Nilai -->
+              <button 
+                type="button" 
+                data-case="komplain" 
+                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">⚖️</span>
+                  <span>Komplain Nilai</span>
+                </div>
+                <span id="badge-count-komplain" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
+              </button>
+
+              <!-- Ujian Khusus -->
+              <button 
+                type="button" 
+                data-case="ujian" 
+                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">🎓</span>
+                  <span>Ujian Khusus</span>
+                </div>
+                <span id="badge-count-ujian" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
+              </button>
+
+              <!-- Surat Izin & Lainnya -->
+              <button 
+                type="button" 
+                data-case="lainnya" 
+                class="admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">📑</span>
+                  <span>Surat Izin & Lainnya</span>
+                </div>
+                <span id="badge-count-lainnya" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold">0</span>
+              </button>
+            </nav>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Dashboard Metrics Section -->
-    <section class="container-shell py-8">
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div class="rounded-2xl border border-[var(--line)] bg-white p-4 sm:p-5 shadow-xs">
-          <p class="text-[11px] font-bold text-[var(--muted)]">Total Berkas</p>
-          <p id="stat-total" class="text-2xl sm:text-3xl font-black text-[var(--ink)] mt-1.5">0</p>
-          <span class="text-[10px] text-[var(--muted)] mt-1 block">Semua pengajuan</span>
-        </div>
-
-        <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 sm:p-5 shadow-xs">
-          <p class="text-[11px] font-bold text-amber-900">⏳ Belum Diproses</p>
-          <p id="stat-pending" class="text-2xl sm:text-3xl font-black text-amber-900 mt-1.5">0</p>
-          <span class="text-[10px] text-amber-800/80 mt-1 block">Antrean baru masuk</span>
-        </div>
-
-        <div class="rounded-2xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5 shadow-xs">
-          <p class="text-[11px] font-bold text-blue-900">🔍 Proses Verifikasi</p>
-          <p id="stat-process" class="text-2xl sm:text-3xl font-black text-blue-900 mt-1.5">0</p>
-          <span class="text-[10px] text-blue-800/80 mt-1 block">Pemeriksaan SIAKAD</span>
-        </div>
-
-        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 sm:p-5 shadow-xs">
-          <p class="text-[11px] font-bold text-emerald-900">📦 Siap Diambil</p>
-          <p id="stat-done" class="text-2xl sm:text-3xl font-black text-emerald-900 mt-1.5">0</p>
-          <span class="text-[10px] text-emerald-800/80 mt-1 block">Sudah di Loket 1</span>
-        </div>
-
-        <div class="rounded-2xl border border-rose-200 bg-rose-50/70 p-4 sm:p-5 shadow-xs col-span-2 sm:col-span-1">
-          <p class="text-[11px] font-bold text-rose-900">❌ Ditolak</p>
-          <p id="stat-rejected" class="text-2xl sm:text-3xl font-black text-rose-900 mt-1.5">0</p>
-          <span class="text-[10px] text-rose-800/80 mt-1 block">Perlu klarifikasi</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Admin Controls & Filter -->
-    <section class="container-shell pb-16">
-      <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-5 sm:p-7 shadow-sm">
-        <!-- 1. Case Categories Separator Tabs (Pemisahan Kasus Mahasiswa) -->
-        <div class="mb-6 pb-5 border-b border-[var(--line)]">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3.5">
-            <div class="flex items-center gap-2">
-              <span class="grid h-6 w-6 place-items-center rounded-lg bg-[var(--leaf-soft)] text-xs text-[var(--leaf)] font-bold">
-                📁
-              </span>
-              <span class="text-xs font-black uppercase tracking-wider text-[var(--leaf)]">
-                Pemisahan Case Mahasiswa:
-              </span>
+          <!-- Grup 2: Filter Berdasarkan Status Pemrosesan -->
+          <div class="border-t border-[var(--line)] pt-4">
+            <span class="text-[10px] font-black uppercase tracking-wider text-[var(--muted)] block mb-2 px-1">
+              Filter Status
+            </span>
+            <div class="space-y-1">
+              <button 
+                type="button" 
+                data-status="all" 
+                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf-soft)] text-[var(--leaf)]"
+              >
+                <span>Semua Status</span>
+                <span id="stat-filter-all" class="font-mono text-[10px]">0</span>
+              </button>
+              <button 
+                type="button" 
+                data-status="Belum Diproses" 
+                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-amber-50"
+              >
+                <span class="flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-amber-500"></span>
+                  <span>Belum Diproses</span>
+                </span>
+                <span id="stat-filter-pending" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-amber-100 text-amber-900 font-black">0</span>
+              </button>
+              <button 
+                type="button" 
+                data-status="Proses Verifikasi" 
+                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-blue-50"
+              >
+                <span class="flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+                  <span>Proses Verifikasi</span>
+                </span>
+                <span id="stat-filter-process" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-blue-100 text-blue-900 font-black">0</span>
+              </button>
+              <button 
+                type="button" 
+                data-status="Selesai (Siap Diambil)" 
+                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-emerald-50"
+              >
+                <span class="flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  <span>Siap Diambil di Loket</span>
+                </span>
+                <span id="stat-filter-done" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-emerald-100 text-emerald-900 font-black">0</span>
+              </button>
+              <button 
+                type="button" 
+                data-status="Ditolak" 
+                class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-rose-50"
+              >
+                <span class="flex items-center gap-1.5">
+                  <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+                  <span>Ditolak</span>
+                </span>
+                <span id="stat-filter-rejected" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-rose-100 text-rose-900 font-black">0</span>
+              </button>
             </div>
-            <span class="text-[11px] text-[var(--muted)]">
-              Klik tab di bawah untuk memproses berkas per kasus secara terpisah
-            </span>
           </div>
 
-          <div class="flex items-center gap-2 overflow-x-auto pb-1.5 scrollbar-none text-xs">
-            <button 
-              type="button" 
-              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-[var(--leaf)] text-white shadow-2xs" 
-              data-case="all"
-            >
-              <span>📂 Semua Case</span>
-              <span id="badge-case-all" class="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-black">0</span>
-            </button>
-
-            <button 
-              type="button" 
-              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
-              data-case="khs"
-            >
-              <span>📜 Permohonan KHS</span>
-              <span id="badge-case-khs" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
-            </button>
-
-            <button 
-              type="button" 
-              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
-              data-case="komplain"
-            >
-              <span>⚖️ Keluhan / Komplain Nilai</span>
-              <span id="badge-case-komplain" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
-            </button>
-
-            <button 
-              type="button" 
-              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
-              data-case="ujian"
-            >
-              <span>📝 Ujian Khusus</span>
-              <span id="badge-case-ujian" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
-            </button>
-
-            <button 
-              type="button" 
-              class="admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]" 
-              data-case="lainnya"
-            >
-              <span>📑 Surat & Lainnya</span>
-              <span id="badge-case-lainnya" class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-black">0</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. Toolbar Filter & Search -->
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
-          <div class="flex-1 max-w-md relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-sm">
-              🔍
-            </span>
-            <input 
-              type="text" 
-              id="admin-search-input" 
-              placeholder="Cari NIM, Nama Mahasiswa, atau Kode Tiket..." 
-              class="w-full rounded-xl border border-[var(--line)] bg-gray-50 pl-9 pr-3 py-2 text-xs font-medium text-[var(--ink)] focus:border-[var(--leaf)] focus:bg-white focus:outline-none transition"
-            />
-          </div>
-
-          <div class="flex flex-wrap items-center gap-1.5 text-xs">
-            <span class="text-[var(--muted)] font-bold mr-1">Filter Status:</span>
-            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-[var(--leaf)] text-white font-bold" data-status="all">Semua</button>
-            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Belum Diproses">Belum Diproses</button>
-            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Proses Verifikasi">Proses Verifikasi</button>
-            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Selesai (Siap Diambil)">Siap Diambil</button>
-            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Ditolak">Ditolak</button>
-            
-            <div class="relative ml-auto">
-              <button id="btn-simulate-ticket" type="button" class="btn-cta text-[11px] py-1.5 px-3 bg-[var(--gold)] !text-[var(--leaf)] hover:bg-[var(--gold-dark)] shadow-xs flex items-center gap-1">
-                <span>+ Simulasi Surat Masuk</span>
+          <!-- Grup 3: Aksi Petugas Cepat -->
+          <div class="border-t border-[var(--line)] pt-4 space-y-2">
+            <!-- Tombol Simulasi Surat Baru -->
+            <div class="relative">
+              <button 
+                id="btn-simulate-dropdown" 
+                type="button" 
+                class="w-full btn-secondary text-xs py-2 px-3 flex items-center justify-center gap-1.5 bg-gray-50 hover:bg-[var(--leaf-soft)] font-bold cursor-pointer"
+              >
+                <span>➕</span>
+                <span>Simulasi Surat Masuk</span>
                 <span class="text-[10px]">▼</span>
               </button>
-              <!-- Dropdown Simulasi Case -->
-              <div id="simulate-dropdown" class="hidden absolute right-0 mt-1 w-52 rounded-2xl bg-white border border-[var(--line)] shadow-xl p-1.5 z-30 text-xs font-medium">
-                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="khs">
-                  <span>📜</span>
-                  <span>Simulasi Case KHS</span>
+              <div id="simulate-dropdown-menu" class="hidden absolute left-0 right-0 bottom-full mb-2 bg-white rounded-2xl shadow-xl border border-[var(--line)] p-2 z-30 space-y-1 text-xs">
+                <button type="button" data-sim-case="khs" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] font-bold flex items-center justify-between cursor-pointer">
+                  <span>📄 Surat KHS Baru</span>
+                  <span class="text-[10px] text-gray-400">SLA 1-2H</span>
                 </button>
-                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="komplain">
-                  <span>⚖️</span>
-                  <span>Simulasi Case Keluhan Nilai</span>
+                <button type="button" data-sim-case="komplain" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-amber-50 hover:text-amber-900 font-bold flex items-center justify-between cursor-pointer">
+                  <span>⚖️ Komplain Nilai Baru</span>
+                  <span class="text-[10px] text-gray-400">SLA 2-3H</span>
                 </button>
-                <button type="button" class="w-full text-left px-3 py-2 rounded-xl hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)] flex items-center gap-2 sim-case-btn" data-sim-case="ujian">
-                  <span>📝</span>
-                  <span>Simulasi Case Ujian Khusus</span>
+                <button type="button" data-sim-case="ujian" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-blue-50 hover:text-blue-900 font-bold flex items-center justify-between cursor-pointer">
+                  <span>🎓 Ujian Khusus Baru</span>
+                  <span class="text-[10px] text-gray-400">SLA 3-5H</span>
                 </button>
               </div>
             </div>
+
+            <!-- Tombol Ekspor CSV -->
+            <button 
+              id="btn-export-csv" 
+              type="button" 
+              class="w-full btn-secondary text-xs py-2 px-3 flex items-center justify-center gap-1.5 bg-white font-bold cursor-pointer"
+            >
+              <span>📥</span>
+              <span>Ekspor Data (CSV)</span>
+            </button>
+
+            <!-- Reset Data Demo -->
+            <button 
+              id="btn-reset-demo" 
+              type="button" 
+              class="w-full text-center text-[10px] text-gray-400 hover:text-red-600 transition pt-1 cursor-pointer"
+            >
+              Reset Data Awal Demo
+            </button>
           </div>
-        </div>
+        </aside>
 
-        <!-- Tickets List for Admin -->
-        <div id="admin-tickets-list" class="mt-6 space-y-4"></div>
+        <!-- WORKSPACE UTAMA: Header Bersih, Pencarian, & Daftar Berkas -->
+        <main class="space-y-6">
+          
+          <!-- Workspace Header Bar -->
+          <div class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-[var(--leaf)]">
+                  Semua Berkas Masuk
+                </h2>
+                <span id="filtered-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-[var(--leaf-soft)] text-[var(--leaf)]">
+                  0 Berkas
+                </span>
+              </div>
+              <p class="text-xs text-[var(--muted)] mt-1">
+                Pusat verifikasi dan disposisi posisi berkas fisik loket administrasi FAPERTA INSTIPER.
+              </p>
+            </div>
 
-        <!-- Empty State -->
-        <div id="admin-empty-state" class="hidden py-12 text-center text-xs text-[var(--muted)]">
-          <span class="text-3xl">📭</span>
-          <p class="mt-2 text-sm font-bold text-[var(--ink)]">Tidak ada berkas yang sesuai filter pencarian</p>
-        </div>
+            <!-- Quick Search Input -->
+            <div class="sm:w-80">
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-xs">
+                  🔍
+                </span>
+                <input 
+                  type="text" 
+                  id="admin-search-input" 
+                  placeholder="Cari NIM, Nama, atau Kode..." 
+                  class="w-full rounded-xl border border-[var(--line)] bg-[#fbfdfa] pl-8 pr-3 py-2 text-xs text-[var(--ink)] placeholder:text-gray-400 focus:border-[var(--leaf)] focus:bg-white outline-none font-medium transition"
+                />
+              </div>
+            </div>
+          </div>
 
-        <!-- Footer Actions -->
-        <div class="mt-8 pt-4 border-t border-[var(--line)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <p class="text-[var(--muted)]">
-            Status yang Anda centang akan seketika tersinkronisasi saat mahasiswa memasukkan NIM di <a href="/layanan/cek-status" target="_blank" class="text-[var(--leaf)] font-bold underline">Halaman Cek Status & Pendeteksi NIM</a>.
-          </p>
-          <button id="btn-reset-demo" type="button" class="text-gray-400 hover:text-red-600 transition underline">
-            Reset Data ke Default Demo
-          </button>
-        </div>
+          <!-- Compact Stats Strip (Clean & Professional) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="rounded-2xl border border-[var(--line)] bg-white p-3.5 shadow-2xs flex items-center gap-3">
+              <span class="text-xl">📋</span>
+              <div>
+                <p class="text-[10px] font-bold text-[var(--muted)] uppercase">Total Berkas</p>
+                <p id="stat-total" class="text-lg font-black text-[var(--ink)]">0</p>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-3.5 shadow-2xs flex items-center gap-3">
+              <span class="text-xl">⏳</span>
+              <div>
+                <p class="text-[10px] font-bold text-amber-800 uppercase">Belum Diproses</p>
+                <p id="stat-pending" class="text-lg font-black text-amber-900">0</p>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-blue-200 bg-blue-50/70 p-3.5 shadow-2xs flex items-center gap-3">
+              <span class="text-xl">🔍</span>
+              <div>
+                <p class="text-[10px] font-bold text-blue-800 uppercase">Verifikasi</p>
+                <p id="stat-process" class="text-lg font-black text-blue-900">0</p>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-3.5 shadow-2xs flex items-center gap-3">
+              <span class="text-xl">📦</span>
+              <div>
+                <p class="text-[10px] font-bold text-emerald-800 uppercase">Siap Diambil</p>
+                <p id="stat-done" class="text-lg font-black text-emerald-900">0</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daftar Berkas / Tickets List Container -->
+          <div id="admin-tickets-container" class="space-y-4">
+            <!-- Rendered by JavaScript -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="admin-empty-state" class="hidden rounded-3xl border-2 border-dashed border-[var(--line)] bg-white p-12 text-center">
+            <span class="text-4xl">📂</span>
+            <h3 class="mt-3 text-base font-bold text-[var(--ink)]">Tidak Ada Berkas Ditemukan</h3>
+            <p class="mt-1 text-xs text-[var(--muted)]">
+              Tidak ada permohonan surat yang cocok dengan filter atau kata kunci pencarian Anda.
+            </p>
+          </div>
+        </main>
       </div>
-    </section>
+    </div>
   </div>
 
-  <!-- Client-side Script for Admin Authentication & Dashboard Logic -->
+  <!-- 3. MODAL EDIT & UPDATE DISPOSISI BERKAS (Modern Dialog) -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden transition-opacity opacity-0" aria-hidden="true"></div>
+  <div 
+    id="edit-ticket-modal" 
+    class="fixed inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-xl bg-white z-50 rounded-3xl shadow-2xl border border-[var(--line)] hidden transform scale-95 transition-all duration-200 overflow-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-ticket-title"
+  >
+    <div class="p-5 sm:p-6 border-b border-[var(--line)] bg-[#fbfdfa] flex items-center justify-between">
+      <div>
+        <span class="text-[10px] font-black uppercase tracking-wider text-[var(--leaf)] block">Disposisi Berkas Loket</span>
+        <h3 id="modal-ticket-title" class="text-base sm:text-lg font-black text-[var(--ink)]">
+          KHS-2026-XXXX — Budi Santoso
+        </h3>
+      </div>
+      <button id="btn-close-modal" type="button" class="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <form id="modal-edit-form" class="p-5 sm:p-6 space-y-5">
+      <input type="hidden" id="modal-ticket-code" />
+
+      <!-- Pilihan Status Baru -->
+      <div>
+        <label class="block text-xs font-bold text-[var(--ink)] mb-2">
+          Pilih Status Terkini Permohonan:
+        </label>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <button 
+            type="button" 
+            data-target-status="Belum Diproses" 
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-amber-50 text-amber-900 border-amber-300"
+          >
+            <span>⏳</span>
+            <span>Belum Diproses</span>
+          </button>
+          <button 
+            type="button" 
+            data-target-status="Proses Verifikasi" 
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+          >
+            <span>🔍</span>
+            <span>Verifikasi</span>
+          </button>
+          <button 
+            type="button" 
+            data-target-status="Selesai (Siap Diambil)" 
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+          >
+            <span>📦</span>
+            <span>Siap Diambil</span>
+          </button>
+          <button 
+            type="button" 
+            data-target-status="Ditolak" 
+            class="modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200"
+          >
+            <span>❌</span>
+            <span>Ditolak</span>
+          </button>
+        </div>
+        <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
+      </div>
+
+      <!-- Posisi Berkas Fisik -->
+      <div>
+        <label for="modal-posisi-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
+          Posisi Fisik Berkas Saat Ini di Kampus:
+        </label>
+        <input 
+          type="text" 
+          id="modal-posisi-input" 
+          required 
+          class="w-full rounded-xl border border-[var(--line)] bg-white px-3.5 py-2.5 text-xs text-[var(--ink)] focus:border-[var(--leaf)] outline-none font-medium"
+          placeholder="Contoh: Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)"
+        />
+        <!-- Quick Preset Badges -->
+        <div class="mt-2 flex flex-wrap gap-1.5 text-[10px]">
+          <span class="text-gray-400 font-semibold self-center">Preset:</span>
+          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Antrean Masuk Loket Administrasi FAPERTA">Antrean Loket</button>
+          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Meja Verifikasi Petugas (Gedung A, Lt. 1)">Meja Verifikasi</button>
+          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil">Loket 1 Siap Diambil</button>
+          <button type="button" class="preset-posisi px-2 py-0.5 rounded-md bg-gray-100 hover:bg-[var(--leaf-soft)] text-gray-700 cursor-pointer" data-pos="Ruang Kaprodi (Pemeriksaan Naskah/KHS)">Ruang Kaprodi</button>
+        </div>
+      </div>
+
+      <!-- Catatan / Disposisi Petugas -->
+      <div>
+        <label for="modal-catatan-input" class="block text-xs font-bold text-[var(--ink)] mb-1">
+          Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
+        </label>
+        <textarea 
+          id="modal-catatan-input" 
+          rows="3" 
+          class="w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] focus:border-[var(--leaf)] outline-none font-medium"
+          placeholder="Tuliskan petunjuk pengambilan, waktu jadi, atau alasan penolakan jika ditolak..."
+        ></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-3 border-t border-[var(--line)] flex items-center justify-end gap-2.5">
+        <button 
+          type="button" 
+          id="btn-cancel-modal" 
+          class="btn-secondary text-xs py-2.5 px-4 bg-white font-bold cursor-pointer"
+        >
+          Batal
+        </button>
+        <button 
+          type="submit" 
+          class="btn-cta text-xs py-2.5 px-6 shadow-xs font-bold cursor-pointer"
+        >
+          💾 Simpan Perubahan
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 4. MODAL PRINT STRUK LOKET -->
+  <div id="print-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-[var(--line)] space-y-4">
+      <div class="flex items-center justify-between border-b border-[var(--line)] pb-3">
+        <h4 class="text-sm font-bold text-[var(--leaf)]">🖨️ Struk Tanda Terima Loket</h4>
+        <button id="btn-close-print" type="button" class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
+      </div>
+      <div id="print-content" class="p-4 border border-dashed border-gray-300 rounded-2xl bg-[#fafdf9] text-xs space-y-2 font-mono">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="btn-do-print" type="button" class="btn-cta text-xs py-2 px-4 font-bold shadow-xs cursor-pointer">
+          Cetak Dokumen Sekarang 🖨️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Dashboard Admin Terpadu -->
   <script is:inline define:vars={{ initialDemoTickets: INITIAL_DEMO_TICKETS }}>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Logika Autentikasi Admin
+      // 1. Autentikasi Admin State
       const loginView = document.getElementById('admin-login-view');
       const dashboardView = document.getElementById('admin-dashboard-view');
       const loginForm = document.getElementById('admin-login-form');
-      const userInput = document.getElementById('admin-user-input');
-      const passInput = document.getElementById('admin-pass-input');
-      const errorAlert = document.getElementById('login-error-alert');
+      const loginErrorAlert = document.getElementById('login-error-alert');
       const btnTogglePass = document.getElementById('btn-toggle-pass');
+      const adminPassInput = document.getElementById('admin-pass-input');
       const btnLogout = document.getElementById('btn-admin-logout');
-      const activeUserBadge = document.getElementById('active-user-badge');
 
-      // Cek Session Login
       function checkAuth() {
-        const isAuth = sessionStorage.getItem('faperta_admin_auth') === 'true';
-        const user = sessionStorage.getItem('faperta_admin_user') || 'agrotek';
-
+        const isAuth = sessionStorage.getItem('portal_admin_auth') === 'true';
         if (isAuth) {
           loginView?.classList.add('hidden');
           dashboardView?.classList.remove('hidden');
-          if (activeUserBadge) activeUserBadge.textContent = `👤 Petugas: ${user}`;
-          renderList();
+          renderAll();
         } else {
           loginView?.classList.remove('hidden');
           dashboardView?.classList.add('hidden');
         }
       }
 
-      // Toggle Password Visibility
       btnTogglePass?.addEventListener('click', () => {
-        if (passInput.type === 'password') {
-          passInput.type = 'text';
+        if (!adminPassInput) return;
+        if (adminPassInput.type === 'password') {
+          adminPassInput.type = 'text';
           btnTogglePass.textContent = 'Sembunyikan';
         } else {
-          passInput.type = 'password';
+          adminPassInput.type = 'password';
           btnTogglePass.textContent = 'Lihat';
         }
       });
 
-      // Submit Login Form
       loginForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const username = (userInput?.value || '').trim().toLowerCase();
-        const password = (passInput?.value || '').trim();
+        const u = document.getElementById('admin-user-input')?.value.trim();
+        const p = adminPassInput?.value.trim();
 
-        // Kredensial Resmi: ID: agrotek, Pass: agr001 (atau dekanat / faperta2026)
-        const isValid = (username === 'agrotek' && password === 'agr001') ||
-                        (username === 'dekanat' && password === 'faperta2026') ||
-                        (username === 'admin' && password === 'admin123');
-
-        if (isValid) {
-          errorAlert?.classList.add('hidden');
-          sessionStorage.setItem('faperta_admin_auth', 'true');
-          sessionStorage.setItem('faperta_admin_user', username);
+        if (u === 'agrotek' && p === 'agr001') {
+          sessionStorage.setItem('portal_admin_auth', 'true');
+          loginErrorAlert?.classList.add('hidden');
           checkAuth();
         } else {
-          errorAlert?.classList.remove('hidden');
-          if (passInput) passInput.value = '';
-          passInput?.focus();
+          loginErrorAlert?.classList.remove('hidden');
         }
       });
 
-      // Logout Event
       btnLogout?.addEventListener('click', () => {
-        if (confirm('Apakah Anda yakin ingin keluar dari Portal Admin?')) {
-          sessionStorage.removeItem('faperta_admin_auth');
-          sessionStorage.removeItem('faperta_admin_user');
-          checkAuth();
-        }
+        sessionStorage.removeItem('portal_admin_auth');
+        checkAuth();
       });
 
-      // 2. Logika Dashboard Berkas Admin & Pemisahan Case
-      const container = document.getElementById('admin-tickets-list');
-      const emptyState = document.getElementById('admin-empty-state');
-      const searchInput = document.getElementById('admin-search-input');
-      const filterBtns = document.querySelectorAll('.admin-filter-btn');
-      const caseTabs = document.querySelectorAll('.admin-case-tab');
-      const btnMarkAll = document.getElementById('btn-mark-all-read');
-      const btnSimulate = document.getElementById('btn-simulate-ticket');
-      const simDropdown = document.getElementById('simulate-dropdown');
-      const btnReset = document.getElementById('btn-reset-demo');
-
-      let currentCaseFilter = 'all';
-      let currentStatusFilter = 'all';
-      let searchQuery = '';
-
-      // Helper Klasifikasi Case Mahasiswa
-      function getCaseType(t) {
-        const id = (t.layananId || '').toLowerCase();
-        const code = (t.kode || '').toUpperCase();
-        const name = (t.layananNama || '').toLowerCase();
-
-        if (id === 'khs' || code.startsWith('KHS') || name.includes('khs')) return 'khs';
-        if (id === 'komplain-nilai' || code.startsWith('KMP') || name.includes('komplain') || name.includes('nilai')) return 'komplain';
-        if (id === 'ujian-khusus' || code.startsWith('UKH') || code.startsWith('UJK') || name.includes('ujian khusus')) return 'ujian';
-        return 'lainnya';
-      }
-
-      function getCaseInfo(t) {
-        const type = getCaseType(t);
-        switch (type) {
-          case 'khs':
-            return { title: 'Case KHS', icon: '📜', badge: 'bg-emerald-50 text-emerald-900 border-emerald-300' };
-          case 'komplain':
-            return { title: 'Case Keluhan Nilai', icon: '⚖️', badge: 'bg-amber-50 text-amber-900 border-amber-300' };
-          case 'ujian':
-            return { title: 'Case Ujian Khusus', icon: '📝', badge: 'bg-blue-50 text-blue-900 border-blue-300' };
-          default:
-            return { title: 'Case Surat/Lainnya', icon: '📑', badge: 'bg-purple-50 text-purple-900 border-purple-300' };
-        }
-      }
-
+      // 2. Data Management (localStorage)
       function loadTickets() {
         try {
-          const stored = localStorage.getItem('portal_faperta_tickets');
-          if (stored) {
-            return JSON.parse(stored);
-          }
+          const raw = localStorage.getItem('portal_faperta_tickets');
+          if (raw) return JSON.parse(raw);
           localStorage.setItem('portal_faperta_tickets', JSON.stringify(initialDemoTickets));
-          return initialDemoTickets;
+          return [...initialDemoTickets];
         } catch (e) {
-          return initialDemoTickets;
+          return [...initialDemoTickets];
         }
       }
 
-      function saveTickets(tickets) {
-        localStorage.setItem('portal_faperta_tickets', JSON.stringify(tickets));
-        const unread = tickets.filter(t => t.isNewForAdmin).length;
-        const panelBadge = document.getElementById('panel-unread-badge');
-        const panelText = document.getElementById('panel-unread-text');
-
-        if (panelBadge) panelBadge.textContent = unread;
-        if (panelText) panelText.textContent = `${unread} Surat Baru Perlu Ditinjau`;
-
-        renderMetrics(tickets);
+      function saveTickets(data) {
+        try {
+          localStorage.setItem('portal_faperta_tickets', JSON.stringify(data));
+        } catch (e) {}
       }
 
-      function renderMetrics(tickets) {
-        const total = tickets.length;
-        const pending = tickets.filter(t => t.status === 'Belum Diproses').length;
-        const inProcess = tickets.filter(t => t.status === 'Proses Verifikasi').length;
-        const done = tickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
-        const rejected = tickets.filter(t => t.status === 'Ditolak').length;
+      // 3. State Filter
+      let currentCase = 'all'; // all, khs, komplain, ujian, lainnya
+      let currentStatus = 'all'; // all, Belum Diproses, Proses Verifikasi, Selesai (Siap Diambil), Ditolak
+      let searchQuery = '';
 
-        const elTotal = document.getElementById('stat-total');
-        const elPending = document.getElementById('stat-pending');
-        const elProcess = document.getElementById('stat-process');
-        const elDone = document.getElementById('stat-done');
-        const elRejected = document.getElementById('stat-rejected');
+      const categoryTitleMap = {
+        'all': 'Semua Berkas Masuk',
+        'khs': 'Permohonan KHS Online',
+        'komplain': 'Komplain & Verifikasi Nilai',
+        'ujian': 'Pengajuan Ujian Khusus',
+        'lainnya': 'Surat Izin & Lainnya'
+      };
 
-        if (elTotal) elTotal.textContent = total;
-        if (elPending) elPending.textContent = pending;
-        if (elProcess) elProcess.textContent = inProcess;
-        if (elDone) elDone.textContent = done;
-        if (elRejected) elRejected.textContent = rejected;
-
-        // Hitung Per Case Mahasiswa
+      // 4. Update Badge Notifikasi di Sidebar Kiri
+      function updateSidebarBadges(tickets) {
+        // Hitung per kategori berkas
         const countAll = tickets.length;
-        const countKhs = tickets.filter(t => getCaseType(t) === 'khs').length;
-        const countKomplain = tickets.filter(t => getCaseType(t) === 'komplain').length;
-        const countUjian = tickets.filter(t => getCaseType(t) === 'ujian').length;
-        const countLainnya = tickets.filter(t => getCaseType(t) === 'lainnya').length;
+        const countKhs = tickets.filter(t => (t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS')).length;
+        const countKomplain = tickets.filter(t => (t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP')).length;
+        const countUjian = tickets.filter(t => (t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH')).length;
+        const countLainnya = tickets.filter(t => {
+          const id = (t.layananId || '').toLowerCase();
+          const code = (t.kode || '').toUpperCase();
+          return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH');
+        }).length;
 
-        const bAll = document.getElementById('badge-case-all');
-        const bKhs = document.getElementById('badge-case-khs');
-        const bKomplain = document.getElementById('badge-case-komplain');
-        const bUjian = document.getElementById('badge-case-ujian');
-        const bLainnya = document.getElementById('badge-case-lainnya');
+        // Pending counts
+        const pendingKhs = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS'))).length;
+        const pendingKomplain = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP'))).length;
+        const pendingUjian = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH'))).length;
+
+        // Update DOM badges
+        const bAll = document.getElementById('badge-count-all');
+        const bKhs = document.getElementById('badge-count-khs');
+        const bKomplain = document.getElementById('badge-count-komplain');
+        const bUjian = document.getElementById('badge-count-ujian');
+        const bLainnya = document.getElementById('badge-count-lainnya');
 
         if (bAll) bAll.textContent = countAll;
-        if (bKhs) bKhs.textContent = countKhs;
-        if (bKomplain) bKomplain.textContent = countKomplain;
-        if (bUjian) bUjian.textContent = countUjian;
+        if (bKhs) {
+          bKhs.textContent = pendingKhs > 0 ? `${pendingKhs} Baru` : countKhs;
+          bKhs.className = pendingKhs > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+        }
+        if (bKomplain) {
+          bKomplain.textContent = pendingKomplain > 0 ? `${pendingKomplain} Baru` : countKomplain;
+          bKomplain.className = pendingKomplain > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+        }
+        if (bUjian) {
+          bUjian.textContent = pendingUjian > 0 ? `${pendingUjian} Baru` : countUjian;
+          bUjian.className = pendingUjian > 0 ? 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-2 py-0.5 rounded-full text-[10px] font-mono bg-gray-100 text-gray-700 font-bold';
+        }
         if (bLainnya) bLainnya.textContent = countLainnya;
+
+        // Status counts
+        const cntPending = tickets.filter(t => t.status === 'Belum Diproses').length;
+        const cntProcess = tickets.filter(t => t.status === 'Proses Verifikasi').length;
+        const cntDone = tickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
+        const cntRejected = tickets.filter(t => t.status === 'Ditolak').length;
+
+        const elStatAll = document.getElementById('stat-filter-all');
+        const elStatPending = document.getElementById('stat-filter-pending');
+        const elStatProcess = document.getElementById('stat-filter-process');
+        const elStatDone = document.getElementById('stat-filter-done');
+        const elStatRejected = document.getElementById('stat-filter-rejected');
+
+        if (elStatAll) elStatAll.textContent = countAll;
+        if (elStatPending) elStatPending.textContent = cntPending;
+        if (elStatProcess) elStatProcess.textContent = cntProcess;
+        if (elStatDone) elStatDone.textContent = cntDone;
+        if (elStatRejected) elStatRejected.textContent = cntRejected;
+
+        // KPI chips
+        const kpiTotal = document.getElementById('stat-total');
+        const kpiPending = document.getElementById('stat-pending');
+        const kpiProcess = document.getElementById('stat-process');
+        const kpiDone = document.getElementById('stat-done');
+
+        if (kpiTotal) kpiTotal.textContent = countAll;
+        if (kpiPending) kpiPending.textContent = cntPending;
+        if (kpiProcess) kpiProcess.textContent = cntProcess;
+        if (kpiDone) kpiDone.textContent = cntDone;
       }
 
-      function renderList() {
-        const tickets = loadTickets();
-        saveTickets(tickets);
+      // 5. Render Daftar Berkas
+      function renderTicketsList() {
+        const all = loadTickets();
+        updateSidebarBadges(all);
 
-        const filtered = tickets.filter(t => {
-          const matchCase = currentCaseFilter === 'all' || getCaseType(t) === currentCaseFilter;
-          const matchStatus = currentStatusFilter === 'all' || t.status === currentStatusFilter;
-          const matchQuery = !searchQuery || 
-                             (t.nim && t.nim.toLowerCase().includes(searchQuery)) ||
-                             (t.nama && t.nama.toLowerCase().includes(searchQuery)) ||
-                             (t.kode && t.kode.toLowerCase().includes(searchQuery)) ||
-                             (t.layananNama && t.layananNama.toLowerCase().includes(searchQuery));
-          return matchCase && matchStatus && matchQuery;
+        // Filter kategori
+        let filtered = all.filter(t => {
+          const id = (t.layananId || '').toLowerCase();
+          const code = (t.kode || '').toUpperCase();
+          if (currentCase === 'all') return true;
+          if (currentCase === 'khs') return id.includes('khs') || code.startsWith('KHS');
+          if (currentCase === 'komplain') return id.includes('komplain') || code.startsWith('KMP');
+          if (currentCase === 'ujian') return id.includes('ujian') || code.startsWith('UKH');
+          if (currentCase === 'lainnya') return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH');
+          return true;
         });
 
+        // Filter status
+        if (currentStatus !== 'all') {
+          filtered = filtered.filter(t => t.status === currentStatus);
+        }
+
+        // Filter pencarian
+        if (searchQuery) {
+          filtered = filtered.filter(t => 
+            (t.kode || '').toLowerCase().includes(searchQuery) ||
+            (t.nim || '').toLowerCase().includes(searchQuery) ||
+            (t.nama || '').toLowerCase().includes(searchQuery) ||
+            (t.keperluan || '').toLowerCase().includes(searchQuery)
+          );
+        }
+
+        // Update Title & Counter
+        const titleEl = document.getElementById('active-category-title');
+        const countBadge = document.getElementById('filtered-count-badge');
+        if (titleEl) titleEl.textContent = categoryTitleMap[currentCase] || 'Berkas Masuk';
+        if (countBadge) countBadge.textContent = `${filtered.length} Berkas`;
+
+        const container = document.getElementById('admin-tickets-container');
+        const emptyState = document.getElementById('admin-empty-state');
         if (!container) return;
         container.innerHTML = '';
 
         if (filtered.length === 0) {
           emptyState?.classList.remove('hidden');
           return;
-        } else {
-          emptyState?.classList.add('hidden');
         }
+        emptyState?.classList.add('hidden');
 
-        filtered.forEach((t) => {
-          const isNew = t.isNewForAdmin;
-          const currentStatus = t.status || 'Belum Diproses';
-          const caseInfo = getCaseInfo(t);
+        // Status visual map
+        const statusConfig = {
+          'Belum Diproses': { bg: 'bg-amber-100', text: 'text-amber-900', border: 'border-amber-300', icon: '⏳' },
+          'Proses Verifikasi': { bg: 'bg-blue-100', text: 'text-blue-900', border: 'border-blue-300', icon: '🔍' },
+          'Selesai (Siap Diambil)': { bg: 'bg-emerald-100', text: 'text-emerald-900', border: 'border-emerald-300', icon: '📦' },
+          'Ditolak': { bg: 'bg-rose-100', text: 'text-rose-900', border: 'border-rose-300', icon: '❌' }
+        };
 
+        filtered.forEach(t => {
+          const cfg = statusConfig[t.status] || statusConfig['Belum Diproses'];
           const card = document.createElement('div');
-          card.className = `p-5 rounded-2xl border-2 transition ${
-            currentStatus === 'Ditolak' 
-              ? 'border-rose-200 bg-rose-50/30' 
-              : currentStatus === 'Selesai (Siap Diambil)' 
-                ? 'border-emerald-200 bg-emerald-50/20' 
-                : isNew 
-                  ? 'border-[var(--leaf)] bg-[#f7faf5]' 
-                  : 'border-[var(--line)] bg-white'
-          }`;
+          card.className = `rounded-3xl border ${t.isNewForAdmin ? 'border-amber-400 ring-2 ring-amber-300/40' : 'border-[var(--line)]'} bg-white p-5 sm:p-6 shadow-xs hover:border-[var(--leaf)] transition`;
 
           card.innerHTML = `
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-4">
-              <div>
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-mono text-sm font-black text-[var(--leaf)]">${t.kode}</span>
-                  <!-- Case Tag Badge -->
-                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black border ${caseInfo.badge}">
-                    <span>${caseInfo.icon}</span>
-                    <span>${caseInfo.title}</span>
-                  </span>
-                  ${isNew ? '<span class="inline-block px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold animate-pulse">BARU</span>' : ''}
-                  <span class="text-xs font-semibold text-[var(--muted)]">· Diajukan: ${t.tanggal}</span>
-                </div>
-                <h4 class="text-base font-extrabold text-[var(--ink)] mt-1.5">${t.layananNama}</h4>
-                <p class="text-xs text-[var(--muted)] mt-0.5">
-                  Pemohon: <strong class="text-[var(--ink)]">${t.nama}</strong> (NIM: <span class="font-mono font-bold text-[var(--leaf)]">${t.nim}</span>) · ${t.prodi}
-                </p>
-              </div>
-
-              <!-- Status Badge Terkini -->
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-[var(--muted)]">Status Terkini:</span>
-                <span class="px-3 py-1 rounded-full text-xs font-black border ${
-                  currentStatus === 'Selesai (Siap Diambil)' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
-                  currentStatus === 'Proses Verifikasi' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                  currentStatus === 'Ditolak' ? 'bg-rose-100 text-rose-800 border-rose-300' :
-                  'bg-amber-100 text-amber-900 border-amber-300'
-                }">
-                  ${currentStatus === 'Selesai (Siap Diambil)' ? '✅ ' : currentStatus === 'Proses Verifikasi' ? '🔍 ' : currentStatus === 'Ditolak' ? '❌ ' : '⏳ '}
-                  ${currentStatus}
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--line)] pb-4">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#143516] text-white">
+                  ${t.kode}
                 </span>
+                <span class="px-3 py-1 rounded-full text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5">
+                  <span>${cfg.icon}</span>
+                  <span>${t.status}</span>
+                </span>
+                ${t.isNewForAdmin ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white animate-pulse">BARU</span>' : ''}
+              </div>
+              <div class="text-xs text-[var(--muted)] flex items-center gap-2">
+                <span>🗓️ ${t.tanggal || 'Hari Ini'}</span>
+                <span>·</span>
+                <span class="font-bold text-emerald-700">⏱️ SLA ${t.slaDays || 2} Hari</span>
               </div>
             </div>
 
-            <!-- Penandaan Status Cepat (1-Click Checklist Pills) -->
-            <div class="mt-4 pt-1">
-              <label class="block text-xs font-black text-[var(--leaf)] uppercase tracking-wider mb-2">
-                Centang / Penandaan Status Berkas Petugas:
-              </label>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <!-- Option 1: Belum Diproses -->
-                <button 
-                  type="button" 
-                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    currentStatus === 'Belum Diproses' 
-                      ? 'bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300' 
-                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-amber-50'
-                  }"
-                  data-kode="${t.kode}"
-                  data-set-status="Belum Diproses"
-                >
-                  <span>⏳</span>
-                  <span>Belum Diproses</span>
-                </button>
-
-                <!-- Option 2: Proses Verifikasi -->
-                <button 
-                  type="button" 
-                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    currentStatus === 'Proses Verifikasi' 
-                      ? 'bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300' 
-                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-blue-50'
-                  }"
-                  data-kode="${t.kode}"
-                  data-set-status="Proses Verifikasi"
-                >
-                  <span>🔍</span>
-                  <span>Proses Verifikasi</span>
-                </button>
-
-                <!-- Option 3: Selesai Siap Diambil -->
-                <button 
-                  type="button" 
-                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    currentStatus === 'Selesai (Siap Diambil)' 
-                      ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300' 
-                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-emerald-50'
-                  }"
-                  data-kode="${t.kode}"
-                  data-set-status="Selesai (Siap Diambil)"
-                >
-                  <span>📦</span>
-                  <span>Siap Diambil di Loket</span>
-                </button>
-
-                <!-- Option 4: Ditolak -->
-                <button 
-                  type="button" 
-                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
-                    currentStatus === 'Ditolak' 
-                      ? 'bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300' 
-                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-rose-50'
-                  }"
-                  data-kode="${t.kode}"
-                  data-set-status="Ditolak"
-                >
-                  <span>❌</span>
-                  <span>Ditolak Admin</span>
-                </button>
-              </div>
-              <input type="hidden" id="status-val-${t.kode}" value="${currentStatus}" />
-            </div>
-
-            <!-- Details & Admin Update Section -->
-            <div class="mt-4 grid sm:grid-cols-2 gap-4 text-xs pt-3 border-t border-[var(--line)]">
+            <div class="mt-4 grid md:grid-cols-[1.2fr_1fr] gap-5 items-start">
               <div>
-                <p class="text-[var(--muted)] font-bold">Keperluan & Keterangan Mahasiswa:</p>
-                <p class="text-[var(--ink)] mt-1 bg-white p-2.5 rounded-xl border border-[var(--line)] font-medium leading-relaxed">${t.detailTambahan || t.keperluan}</p>
-                
-                <div class="mt-3 flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                  <span>Metode Pengambilan: <strong class="text-[var(--ink)]">Fisik di Loket 1 FAPERTA</strong></span>
-                  <span>·</span>
-                  <span>SLA: <strong class="text-emerald-700">${t.estimasiSelesai || '1–2 Hari'}</strong></span>
+                <div class="flex items-start gap-3">
+                  <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--leaf-soft)] text-lg text-[var(--leaf)] font-bold">
+                    🎓
+                  </span>
+                  <div>
+                    <h3 class="text-base font-extrabold text-[var(--ink)] leading-snug">${t.nama}</h3>
+                    <p class="text-xs text-[var(--muted)] font-mono mt-0.5">
+                      NIM: <strong class="text-[var(--leaf)] font-bold">${t.nim}</strong> · ${t.prodi} ${t.semester ? `(${t.semester})` : ''}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="mt-3.5 bg-gray-50/80 rounded-2xl p-3 border border-[var(--line)] text-xs space-y-1">
+                  <p class="font-bold text-[var(--leaf)]">${t.layananNama || 'Layanan Mahasiswa'}</p>
+                  <p class="text-[var(--ink)] leading-relaxed">${t.detailTambahan || t.keperluan}</p>
                 </div>
               </div>
 
-              <div>
-                <p class="text-[var(--muted)] font-bold">Posisi Berkas Fisik Saat Ini:</p>
-                <input 
-                  type="text" 
-                  id="posisi-${t.kode}"
-                  class="posisi-input w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none font-medium"
-                  value="${t.posisiBerkas || 'Antrean Masuk Loket Administrasi FAPERTA'}"
-                  data-kode="${t.kode}"
-                />
+              <div class="space-y-2.5 text-xs bg-[#fdfefc] rounded-2xl p-3.5 border border-[var(--line)]">
+                <div>
+                  <span class="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block">Posisi Berkas Fisik:</span>
+                  <p class="font-bold text-[var(--ink)] mt-0.5 flex items-center gap-1.5">
+                    <span>📍</span>
+                    <span>${t.posisiBerkas || 'Antrean Masuk Loket FAPERTA'}</span>
+                  </p>
+                </div>
 
-                <p class="text-[var(--muted)] font-bold mt-2.5 flex items-center justify-between">
-                  <span>Catatan / Alasan Petugas (Dilihat Mahasiswa):</span>
-                  <span class="text-[10px] text-gray-400 font-normal">Wajib diisi jika status Ditolak</span>
-                </p>
-                <textarea 
-                  rows="2"
-                  id="catatan-${t.kode}"
-                  class="catatan-input w-full rounded-xl border border-[var(--line)] bg-white p-2 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none font-medium"
-                  data-kode="${t.kode}"
-                  placeholder="Contoh: Berkas sudah diverifikasi dan dicetak, silakan ambil di Loket 1 dengan membawa KTM..."
-                >${t.catatanAdmin || ''}</textarea>
+                ${t.catatanAdmin ? `
+                  <div class="pt-2 border-t border-[var(--line)]">
+                    <span class="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider block">Catatan Petugas:</span>
+                    <p class="text-[var(--ink)] italic mt-0.5">${t.catatanAdmin}</p>
+                  </div>
+                ` : ''}
+
+                <div class="pt-3 border-t border-[var(--line)] flex flex-wrap items-center justify-between gap-2">
+                  <button 
+                    type="button" 
+                    class="btn-open-edit btn-cta text-xs py-2 px-4 shadow-xs font-bold cursor-pointer inline-flex items-center gap-1.5"
+                    data-kode="${t.kode}"
+                  >
+                    <span>✏️ Disposisi / Ubah Status</span>
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn-open-print btn-secondary text-xs py-2 px-3 bg-white font-bold cursor-pointer inline-flex items-center gap-1"
+                    data-kode="${t.kode}"
+                  >
+                    <span>🖨️ Struk</span>
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <!-- Save Action Button -->
-            <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between">
-              <span class="save-indicator text-xs text-emerald-700 font-bold hidden" id="saved-${t.kode}">
-                ✓ Status berkas tersimpan & tersinkronisasi ke sistem mahasiswa!
-              </span>
-              <button 
-                type="button" 
-                class="btn-save-ticket ml-auto btn-cta text-xs py-2 px-5 shadow-xs"
-                data-kode="${t.kode}"
-              >
-                💾 Simpan Penandaan Berkas
-              </button>
             </div>
           `;
+
           container.appendChild(card);
         });
 
-        // 1-Click Status Pill Handlers
-        document.querySelectorAll('.pill-status-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const kode = btn.getAttribute('data-kode');
-            const targetStatus = btn.getAttribute('data-set-status');
-            const hiddenInp = document.getElementById(`status-val-${kode}`);
-            const posisiInp = document.getElementById(`posisi-${kode}`);
-            const catatanInp = document.getElementById(`catatan-${kode}`);
+        // Attach listeners for Edit Modal & Print
+        attachCardListeners();
+      }
 
-            if (hiddenInp) hiddenInp.value = targetStatus;
+      function renderAll() {
+        renderTicketsList();
+      }
 
-            // Update visuals of sister pills in same card
-            const sisterPills = document.querySelectorAll(`.pill-status-btn[data-kode="${kode}"]`);
-            sisterPills.forEach(p => {
-              p.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
-            });
+      // 6. Modal Disposisi / Edit Status
+      const modal = document.getElementById('edit-ticket-modal');
+      const backdrop = document.getElementById('modal-backdrop');
+      const btnCloseModal = document.getElementById('btn-close-modal');
+      const btnCancelModal = document.getElementById('btn-cancel-modal');
+      const modalForm = document.getElementById('modal-edit-form');
 
-            // Set active class
-            if (targetStatus === 'Belum Diproses') {
-              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300';
-              if (posisiInp) posisiInp.value = 'Antrean Masuk Loket Administrasi FAPERTA';
-            } else if (targetStatus === 'Proses Verifikasi') {
-              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300';
-              if (posisiInp) posisiInp.value = 'Meja Petugas Loket (Pemeriksaan SIAKAD & Dokumen Fisik)';
-            } else if (targetStatus === 'Selesai (Siap Diambil)') {
-              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300';
-              if (posisiInp) posisiInp.value = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
-              if (catatanInp && (!catatanInp.value || catatanInp.value.includes('antrean') || catatanInp.value.includes('menunggu'))) {
-                catatanInp.value = 'Dokumen fisik resmi sudah dicetak dan berstempel basah. Silakan ambil di Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) dengan membawa KTM asli.';
-              }
-            } else if (targetStatus === 'Ditolak') {
-              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300';
-              if (posisiInp) posisiInp.value = 'Ditolak Petugas Loket';
-              if (catatanInp && (!catatanInp.value || !catatanInp.value.toLowerCase().includes('ditolak'))) {
-                catatanInp.value = 'Ditolak: [Tuliskan alasan penolakan berkas mahasiswa di sini agar mahasiswa tahu apa yang harus diperbaiki]';
-                catatanInp.focus();
-                catatanInp.select();
+      const modalTitle = document.getElementById('modal-ticket-title');
+      const modalCode = document.getElementById('modal-ticket-code');
+      const modalSelectedStatus = document.getElementById('modal-selected-status');
+      const modalPosisi = document.getElementById('modal-posisi-input');
+      const modalCatatan = document.getElementById('modal-catatan-input');
+      const modalStatusChoices = document.querySelectorAll('.modal-status-choice');
+
+      function openEditModal(kode) {
+        const all = loadTickets();
+        const t = all.find(x => x.kode === kode);
+        if (!t) return;
+
+        if (modalTitle) modalTitle.textContent = `${t.kode} — ${t.nama} (${t.nim})`;
+        if (modalCode) modalCode.value = t.kode;
+        if (modalSelectedStatus) modalSelectedStatus.value = t.status;
+        if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Antrean Masuk Loket Administrasi FAPERTA';
+        if (modalCatatan) modalCatatan.value = t.catatanAdmin || '';
+
+        updateModalStatusChoiceUI(t.status);
+
+        backdrop?.classList.remove('hidden');
+        modal?.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          backdrop?.classList.remove('opacity-0');
+          modal?.classList.remove('scale-95');
+        });
+      }
+
+      function closeEditModal() {
+        backdrop?.classList.add('opacity-0');
+        modal?.classList.add('scale-95');
+        setTimeout(() => {
+          backdrop?.classList.add('hidden');
+          modal?.classList.add('hidden');
+        }, 200);
+      }
+
+      function updateModalStatusChoiceUI(status) {
+        modalStatusChoices.forEach(btn => {
+          const s = btn.getAttribute('data-target-status');
+          if (s === status) {
+            if (s === 'Belum Diproses') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300';
+            else if (s === 'Proses Verifikasi') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300';
+            else if (s === 'Selesai (Siap Diambil)') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300';
+            else if (s === 'Ditolak') btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300';
+          } else {
+            btn.className = 'modal-status-choice p-2.5 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+          }
+        });
+      }
+
+      modalStatusChoices.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const s = btn.getAttribute('data-target-status');
+          if (modalSelectedStatus) modalSelectedStatus.value = s;
+          updateModalStatusChoiceUI(s);
+
+          // Auto update preset position
+          if (modalPosisi) {
+            if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Administrasi FAPERTA';
+            else if (s === 'Proses Verifikasi') modalPosisi.value = 'Meja Petugas Loket (Pemeriksaan SIAKAD & Dokumen Fisik)';
+            else if (s === 'Selesai (Siap Diambil)') {
+              modalPosisi.value = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
+              if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean'))) {
+                modalCatatan.value = 'Dokumen fisik resmi berstempel basah sudah selesai. Silakan ambil di Loket 1 dengan membawa KTM asli.';
               }
             }
+            else if (s === 'Ditolak') {
+              modalPosisi.value = 'Ditolak Petugas Loket';
+              if (modalCatatan && !modalCatatan.value.toLowerCase().includes('ditolak')) {
+                modalCatatan.value = 'Ditolak: [Tuliskan alasan perbaikan berkas di sini]';
+              }
+            }
+          }
+        });
+      });
+
+      // Preset buttons for position
+      document.querySelectorAll('.preset-posisi').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (modalPosisi) modalPosisi.value = btn.getAttribute('data-pos') || '';
+        });
+      });
+
+      btnCloseModal?.addEventListener('click', closeEditModal);
+      btnCancelModal?.addEventListener('click', closeEditModal);
+      backdrop?.addEventListener('click', closeEditModal);
+
+      modalForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const kode = modalCode?.value;
+        const newStatus = modalSelectedStatus?.value;
+        const newPosisi = modalPosisi?.value;
+        const newCatatan = modalCatatan?.value;
+
+        const all = loadTickets();
+        const target = all.find(x => x.kode === kode);
+        if (target) {
+          target.status = newStatus;
+          target.posisiBerkas = newPosisi;
+          target.catatanAdmin = newCatatan;
+          target.isNewForAdmin = false;
+
+          if (newStatus === 'Belum Diproses') target.statusStep = 1;
+          else if (newStatus === 'Proses Verifikasi') target.statusStep = 2;
+          else if (newStatus === 'Selesai (Siap Diambil)') {
+            target.statusStep = 3;
+            target.estimasiSelesai = 'Selesai (Silakan Ambil di Loket)';
+          }
+          else if (newStatus === 'Ditolak') {
+            target.statusStep = -1;
+            target.estimasiSelesai = '-';
+          }
+
+          saveTickets(all);
+          closeEditModal();
+          renderTicketsList();
+        }
+      });
+
+      // 7. Print Struk
+      const printModal = document.getElementById('print-modal');
+      const btnClosePrint = document.getElementById('btn-close-print');
+      const btnDoPrint = document.getElementById('btn-do-print');
+      const printContent = document.getElementById('print-content');
+
+      function openPrintModal(kode) {
+        const all = loadTickets();
+        const t = all.find(x => x.kode === kode);
+        if (!t) return;
+
+        if (printContent) {
+          printContent.innerHTML = `
+            <div class="text-center pb-2 border-b border-gray-300 font-bold">
+              <p class="text-sm">FAKULTAS PERTANIAN INSTIPER</p>
+              <p class="text-[10px] text-gray-500">TANDA TERIMA BERKAS LOKET 1</p>
+            </div>
+            <div class="pt-2 space-y-1">
+              <p>NO TIKET  : <strong>${t.kode}</strong></p>
+              <p>TANGGAL   : ${t.tanggal || 'Hari Ini'}</p>
+              <p>NAMA      : ${t.nama}</p>
+              <p>NIM       : ${t.nim}</p>
+              <p>PRODI     : ${t.prodi}</p>
+              <p>LAYANAN   : ${t.layananNama}</p>
+              <p>STATUS    : <strong>${t.status}</strong></p>
+              <p>POSISI    : ${t.posisiBerkas}</p>
+            </div>
+            <div class="pt-3 border-t border-gray-300 text-center text-[10px] text-gray-500">
+              *Tunjukkan struk/NIM ini saat pengambilan fisik di Loket 1
+            </div>
+          `;
+        }
+        printModal?.classList.remove('hidden');
+      }
+
+      btnClosePrint?.addEventListener('click', () => {
+        printModal?.classList.add('hidden');
+      });
+      btnDoPrint?.addEventListener('click', () => {
+        window.print();
+      });
+
+      function attachCardListeners() {
+        document.querySelectorAll('.btn-open-edit').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            if (kode) openEditModal(kode);
           });
         });
 
-        // Event listener simpan pembaruan
-        document.querySelectorAll('.btn-save-ticket').forEach(btn => {
+        document.querySelectorAll('.btn-open-print').forEach(btn => {
           btn.addEventListener('click', () => {
             const kode = btn.getAttribute('data-kode');
-            const hiddenStatus = document.getElementById(`status-val-${kode}`);
-            const posisiInp = document.getElementById(`posisi-${kode}`);
-            const catatanInp = document.getElementById(`catatan-${kode}`);
-            const savedMsg = document.getElementById(`saved-${kode}`);
-
-            const all = loadTickets();
-            const target = all.find(t => t.kode === kode);
-            if (target) {
-              const newStatus = hiddenStatus?.value || target.status;
-              target.status = newStatus;
-              target.posisiBerkas = posisiInp ? posisiInp.value : target.posisiBerkas;
-              target.catatanAdmin = catatanInp ? catatanInp.value : target.catatanAdmin;
-              target.isNewForAdmin = false;
-
-              if (newStatus === 'Belum Diproses') {
-                target.statusStep = 1;
-              } else if (newStatus === 'Proses Verifikasi') {
-                target.statusStep = 2;
-              } else if (newStatus === 'Selesai (Siap Diambil)') {
-                target.statusStep = 3;
-                target.estimasiSelesai = 'Selesai (Silakan Ambil di Loket)';
-              } else if (newStatus === 'Ditolak') {
-                target.statusStep = -1;
-                target.estimasiSelesai = '-';
-              }
-
-              saveTickets(all);
-              renderMetrics(all);
-
-              if (savedMsg) {
-                savedMsg.classList.remove('hidden');
-                setTimeout(() => { 
-                  savedMsg.classList.add('hidden');
-                  renderList();
-                }, 1200);
-              }
-            }
+            if (kode) openPrintModal(kode);
           });
         });
       }
 
+      // 8. Event Listeners Sidebar Kiri Kategori
+      const caseTabs = document.querySelectorAll('.admin-case-tab');
+      caseTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          caseTabs.forEach(x => {
+            x.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-[var(--ink)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]';
+          });
+          tab.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-[var(--leaf)] text-white shadow-2xs';
+
+          currentCase = tab.getAttribute('data-case') || 'all';
+          renderTicketsList();
+        });
+      });
+
+      // Filter status click
+      const statusFilters = document.querySelectorAll('.admin-status-filter');
+      statusFilters.forEach(btn => {
+        btn.addEventListener('click', () => {
+          statusFilters.forEach(x => {
+            x.classList.remove('bg-[var(--leaf-soft)]', 'text-[var(--leaf)]');
+          });
+          btn.classList.add('bg-[var(--leaf-soft)]', 'text-[var(--leaf)]');
+
+          currentStatus = btn.getAttribute('data-status') || 'all';
+          renderTicketsList();
+        });
+      });
+
+      // Search input event
+      const searchInput = document.getElementById('admin-search-input');
+      searchInput?.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim().toLowerCase();
+        renderTicketsList();
+      });
+
       // Mark all read
+      const btnMarkAll = document.getElementById('btn-mark-all-read');
       btnMarkAll?.addEventListener('click', () => {
         const all = loadTickets();
         all.forEach(t => { t.isNewForAdmin = false; });
         saveTickets(all);
-        renderList();
+        renderTicketsList();
       });
 
-      // Toggle dropdown simulasi case
+      // Simulasi Dropdown
+      const btnSimulate = document.getElementById('btn-simulate-dropdown');
+      const simMenu = document.getElementById('simulate-dropdown-menu');
       btnSimulate?.addEventListener('click', (e) => {
         e.stopPropagation();
-        simDropdown?.classList.toggle('hidden');
+        simMenu?.classList.toggle('hidden');
       });
-
       document.addEventListener('click', () => {
-        simDropdown?.classList.add('hidden');
+        simMenu?.classList.add('hidden');
       });
-
-      // Handler Simulasi Per Case
-      function simulateCase(caseType) {
-        const all = loadTickets();
-        const rand = Math.floor(1000 + Math.random() * 9000);
-        let newSim;
-
-        if (caseType === 'komplain') {
-          newSim = {
-            kode: `KMP-2026-${rand}`,
-            nim: '22/33445/SP',
-            nama: 'Rian Pratama',
-            prodi: 'S1 Agroteknologi',
-            semester: 'Semester 6',
-            layananId: 'komplain-nilai',
-            layananNama: 'Verifikasi / Komplain Nilai',
-            keperluan: 'Komplain Nilai: Bioteknologi Pertanian (Nilai UAS Belum Masuk SIAKAD)',
-            detailTambahan: 'Dosen: Prof. Dr. Ir. H. Bambang, M.P. | Presensi 100%',
-            format: 'Surat Rekonsiliasi Nilai',
-            status: 'Belum Diproses',
-            statusStep: 1,
-            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-            estimasiSelesai: '2–3 Hari Kerja',
-            slaDays: 3,
-            catatanAdmin: 'Permohonan komplain nilai masuk antrean verifikasi dengan dosen pengampu.',
-            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
-            isNewForAdmin: true
-          };
-        } else if (caseType === 'ujian') {
-          newSim = {
-            kode: `UKH-2026-${rand}`,
-            nim: '20/55667/SP',
-            nama: 'Bagus Saputra',
-            prodi: 'S1 Agribisnis',
-            semester: 'Semester 10',
-            layananId: 'ujian-khusus',
-            layananNama: 'Pengajuan Ujian Khusus',
-            keperluan: 'Ujian Khusus: Manajemen Mutu Pertanian (2 SKS)',
-            detailTambahan: 'Sisa 1 mata kuliah teori terakhir sebelum pendadaran',
-            format: 'Berkas Fisik Loket',
-            status: 'Belum Diproses',
-            statusStep: 1,
-            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-            estimasiSelesai: '3–5 Hari Kerja',
-            slaDays: 5,
-            catatanAdmin: 'Menunggu pemeriksaan KHS kumulatif dan konfirmasi penguji.',
-            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
-            isNewForAdmin: true
-          };
-        } else {
-          // Default: case KHS
-          newSim = {
-            kode: `KHS-2026-${rand}`,
-            nim: '23/11223/SP',
-            nama: 'Dewi Lestari',
-            prodi: 'S1 Agribisnis',
-            semester: 'Semester 4',
-            layananId: 'khs',
-            layananNama: 'Permohonan KHS (Semester 2 s/d 4)',
-            keperluan: 'Pendaftaran Beasiswa Unggulan',
-            detailTambahan: 'Mohon salinan fisik resmi berstempel basah untuk lampiran beasiswa',
-            format: 'Cetak Fisik Berstempel Basah',
-            status: 'Belum Diproses',
-            statusStep: 1,
-            posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-            estimasiSelesai: '1–2 Hari Kerja',
-            slaDays: 2,
-            catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu verifikasi petugas.',
-            tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
-            isNewForAdmin: true
-          };
-        }
-
-        all.unshift(newSim);
-        saveTickets(all);
-        renderList();
-        alert(`🔔 Surat baru [${newSim.kode}] ${newSim.layananNama} dari ${newSim.nama} berhasil ditambahkan ke antrean!`);
-      }
 
       document.querySelectorAll('.sim-case-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
+          simMenu?.classList.add('hidden');
           const caseType = btn.getAttribute('data-sim-case');
-          simDropdown?.classList.add('hidden');
-          simulateCase(caseType);
+          const all = loadTickets();
+          const rand = Math.floor(1000 + Math.random() * 9000);
+          const nowStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+          let item;
+          if (caseType === 'komplain') {
+            item = {
+              kode: `KMP-2026-${rand}`,
+              nim: '22/33445/SP',
+              nama: 'Rian Pratama',
+              prodi: 'S1 Agroteknologi',
+              semester: 'Semester 6',
+              layananId: 'komplain-nilai',
+              layananNama: 'Verifikasi / Komplain Nilai',
+              keperluan: 'Komplain Nilai: Bioteknologi Pertanian (Nilai UAS Belum Masuk SIAKAD)',
+              detailTambahan: 'Dosen: Prof. Dr. Ir. H. Bambang, M.P. | Presensi 100%',
+              format: 'Surat Rekonsiliasi Nilai',
+              status: 'Belum Diproses',
+              statusStep: 1,
+              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+              estimasiSelesai: '2–3 Hari Kerja',
+              slaDays: 3,
+              catatanAdmin: 'Permohonan baru masuk antrean verifikasi petugas.',
+              tanggal: nowStr,
+              isNewForAdmin: true
+            };
+          } else if (caseType === 'ujian') {
+            item = {
+              kode: `UKH-2026-${rand}`,
+              nim: '20/55667/SP',
+              nama: 'Bagus Saputra',
+              prodi: 'S1 Agribisnis',
+              semester: 'Semester 10',
+              layananId: 'ujian-khusus',
+              layananNama: 'Pengajuan Ujian Khusus',
+              keperluan: 'Ujian Khusus: Manajemen Mutu Pertanian (2 SKS)',
+              detailTambahan: 'Sisa 1 mata kuliah teori terakhir sebelum pendadaran skripsi',
+              format: 'Berkas Fisik Loket',
+              status: 'Belum Diproses',
+              statusStep: 1,
+              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+              estimasiSelesai: '3–5 Hari Kerja',
+              slaDays: 5,
+              catatanAdmin: 'Menunggu pemeriksaan KHS kumulatif dan konfirmasi penguji.',
+              tanggal: nowStr,
+              isNewForAdmin: true
+            };
+          } else {
+            item = {
+              kode: `KHS-2026-${rand}`,
+              nim: '23/11223/SP',
+              nama: 'Dewi Lestari',
+              prodi: 'S1 Agribisnis',
+              semester: 'Semester 4',
+              layananId: 'khs',
+              layananNama: 'Permohonan KHS (Semester 2 s/d 4)',
+              keperluan: 'Pendaftaran Beasiswa Unggulan',
+              detailTambahan: 'Mohon salinan fisik resmi berstempel basah untuk lampiran beasiswa',
+              format: 'Cetak Fisik Berstempel Basah',
+              status: 'Belum Diproses',
+              statusStep: 1,
+              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+              estimasiSelesai: '1–2 Hari Kerja',
+              slaDays: 2,
+              catatanAdmin: 'Permohonan baru masuk antrean loket.',
+              tanggal: nowStr,
+              isNewForAdmin: true
+            };
+          }
+
+          all.unshift(item);
+          saveTickets(all);
+          renderTicketsList();
         });
       });
 
-      // Reset data
+      // Export CSV
+      const btnExport = document.getElementById('btn-export-csv');
+      btnExport?.addEventListener('click', () => {
+        const all = loadTickets();
+        const headers = ['Kode Tiket', 'NIM', 'Nama Mahasiswa', 'Program Studi', 'Layanan', 'Status', 'Posisi Berkas', 'Tanggal Pengajuan'];
+        const rows = all.map(t => [
+          `"${t.kode}"`,
+          `"${t.nim}"`,
+          `"${t.nama}"`,
+          `"${t.prodi || ''}"`,
+          `"${t.layananNama || ''}"`,
+          `"${t.status}"`,
+          `"${t.posisiBerkas || ''}"`,
+          `"${t.tanggal || ''}"`
+        ]);
+        const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `rekap-berkas-faperta-${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+      // Reset Demo Data
+      const btnReset = document.getElementById('btn-reset-demo');
       btnReset?.addEventListener('click', () => {
         if (confirm('Kembalikan data ke daftar contoh demo awal?')) {
           localStorage.removeItem('portal_faperta_tickets');
-          renderList();
+          renderTicketsList();
         }
       });
 
-      // Filter events status
-      filterBtns.forEach(b => {
-        b.addEventListener('click', () => {
-          filterBtns.forEach(x => {
-            x.classList.remove('bg-[var(--leaf)]', 'text-white', 'font-bold');
-            x.classList.add('bg-gray-100', 'text-[var(--muted)]');
-          });
-          b.classList.add('bg-[var(--leaf)]', 'text-white', 'font-bold');
-          b.classList.remove('bg-gray-100', 'text-[var(--muted)]');
-
-          currentStatusFilter = b.getAttribute('data-status') || 'all';
-          renderList();
-        });
-      });
-
-      // Filter events case tabs
-      caseTabs.forEach(t => {
-        t.addEventListener('click', () => {
-          caseTabs.forEach(x => {
-            x.className = 'admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-gray-100 text-[var(--muted)] hover:bg-[var(--leaf-soft)] hover:text-[var(--leaf)]';
-          });
-          t.className = 'admin-case-tab px-4 py-2.5 rounded-xl font-extrabold transition flex items-center gap-2 shrink-0 bg-[var(--leaf)] text-white shadow-2xs';
-
-          currentCaseFilter = t.getAttribute('data-case') || 'all';
-          renderList();
-        });
-      });
-
-      // Search event
-      searchInput?.addEventListener('input', (e) => {
-        searchQuery = e.target.value.trim().toLowerCase();
-        renderList();
-      });
-
-      // Inisialisasi awal
+      // Initial run
       checkAuth();
     });
   </script>

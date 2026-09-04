@@ -520,9 +520,112 @@ const currentPath = Astro.url.pathname;
           runSearch(e.target.value);
         });
 
+        // Indonesian Academic Synonyms & Typo Mapping
+        const SYNONYMS = {
+          'ijin': 'izin',
+          'surat ijin': 'surat izin penelitian data',
+          'surat izin': 'surat izin penelitian data',
+          'transkrip': 'khs nilai kartu hasil studi',
+          'cetak khs': 'khs',
+          'sanggah': 'komplain nilai',
+          'protes': 'komplain nilai',
+          'ta': 'skripsi tugas akhir',
+          'sidang': 'pendadaran skripsi ujian',
+          'jadwal': 'kalender akademik perkuliahan',
+          'peta': 'denah kampus instiper',
+          'absen': 'presensi kuliah minimal 75',
+          'hadir': 'presensi kuliah',
+          'kehadiran': 'presensi kuliah',
+          'remidi': 'ujian khusus',
+          'remedial': 'ujian khusus',
+          'perbaikan nilai': 'ujian khusus komplain nilai',
+          'aktif': 'surat keterangan akademik aktif',
+          'masih kuliah': 'surat keterangan akademik aktif',
+          'ruang': 'peminjaman ruang fasilitas aula',
+          'kelas': 'peminjaman ruang aula',
+          'aula': 'peminjaman ruang fasilitas',
+          'lab': 'laboratorium izin penelitian',
+          'riset': 'penelitian izin data',
+          'dosen': 'surat tugas dosen',
+          'dpa': 'krs mengulang mata kuliah',
+          'turnitin': 'batas turnitin etika ai skripsi'
+        };
+
+        function normalizeText(str) {
+          return (str || '')
+            .toLowerCase()
+            .replace(/[^\w\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        }
+
+        function calculateScore(rawQuery, item) {
+          const normQ = normalizeText(rawQuery);
+          if (!normQ) return 0;
+
+          // Expand query with synonyms
+          let expandedQ = normQ;
+          for (const [k, v] of Object.entries(SYNONYMS)) {
+            if (normQ.includes(k)) {
+              expandedQ += ' ' + v;
+            }
+          }
+
+          const qTokens = normQ.split(' ').filter(t => t.length > 1);
+          const expTokens = expandedQ.split(' ').filter(t => t.length > 1);
+
+          const titleNorm = normalizeText(item.title);
+          const descNorm = normalizeText(item.desc);
+          const catNorm = normalizeText(item.subtitle || item.category || '');
+          const keywordsStr = (item.keywords || []).map(k => normalizeText(k)).join(' ');
+          const combined = `${titleNorm} ${catNorm} ${keywordsStr} ${descNorm}`;
+
+          let score = 0;
+
+          // 1. Exact full query match in title
+          if (titleNorm.includes(normQ)) score += 120;
+          // 2. Exact full query in keywords
+          if (keywordsStr.includes(normQ)) score += 100;
+          // 3. Exact phrase in desc
+          if (descNorm.includes(normQ)) score += 40;
+
+          // 4. Token-level matching
+          let matchedTokens = 0;
+          qTokens.forEach(token => {
+            if (combined.includes(token)) {
+              matchedTokens++;
+              if (titleNorm.includes(token)) score += 30;
+              else if (keywordsStr.includes(token)) score += 25;
+              else score += 15;
+            }
+          });
+
+          // All original query tokens matched
+          if (qTokens.length > 0 && matchedTokens === qTokens.length) {
+            score += 60;
+          }
+
+          // 5. Synonym tokens matching
+          expTokens.forEach(token => {
+            if (!qTokens.includes(token) && combined.includes(token)) {
+              score += 20;
+            }
+          });
+
+          return score;
+        }
+
+        window.openPortalSearch = function(initialQuery) {
+          openSearch();
+          if (initialQuery && searchInput) {
+            searchInput.value = initialQuery;
+            runSearch(initialQuery);
+          }
+        };
+
         function runSearch(query) {
-          const q = (query || '').trim().toLowerCase();
-          if (!q) {
+          const raw = (query || '').trim();
+          if (!raw) {
             defaultHint?.classList.remove('hidden');
             dynamicResults?.classList.add('hidden');
             emptyState?.classList.add('hidden');
@@ -531,17 +634,20 @@ const currentPath = Astro.url.pathname;
 
           defaultHint?.classList.add('hidden');
 
-          // Kumpulkan item pencarian
-          let results = [];
+          let pool = [];
 
           if (activeFilter === 'all' || activeFilter === 'layanan') {
             searchServices.forEach(s => {
-              const match = s.title.toLowerCase().includes(q) || 
-                            s.category.toLowerCase().includes(q) || 
-                            s.desc.toLowerCase().includes(q) ||
-                            s.subtitle.toLowerCase().includes(q);
-              if (match) {
-                results.push({
+              const score = calculateScore(raw, {
+                title: s.title,
+                subtitle: s.subtitle,
+                category: s.category,
+                desc: s.desc,
+                keywords: s.keywords || []
+              });
+              if (score > 15) {
+                pool.push({
+                  score,
                   type: 'Layanan',
                   badge: s.badgeClass,
                   badgeLabel: s.typeLabel,
@@ -556,11 +662,16 @@ const currentPath = Astro.url.pathname;
 
           if (activeFilter === 'all' || activeFilter === 'dokumen') {
             searchDocuments.forEach(d => {
-              const match = d.title.toLowerCase().includes(q) || 
-                            d.category.toLowerCase().includes(q) || 
-                            d.desc.toLowerCase().includes(q);
-              if (match) {
-                results.push({
+              const score = calculateScore(raw, {
+                title: d.title,
+                subtitle: d.category,
+                category: d.category,
+                desc: d.desc,
+                keywords: d.keywords || []
+              });
+              if (score > 15) {
+                pool.push({
+                  score,
                   type: 'Dokumen',
                   badge: 'badge-online',
                   badgeLabel: d.format,
@@ -576,14 +687,24 @@ const currentPath = Astro.url.pathname;
           // Pencarian FAQ
           if (activeFilter === 'all' || activeFilter === 'faq') {
             const faqs = [
-              { q: 'Presensi minimal 75% syarat UAS', cat: 'Ujian', url: '/faq#tanya-jawab' },
-              { q: 'Prosedur Ujian Susulan', cat: 'Ujian', url: '/faq#tanya-jawab' },
-              { q: 'Syarat Pengajuan Skripsi & Pembimbing', cat: 'Skripsi', url: '/faq#tanya-jawab' },
-              { q: 'Persyaratan Yudisium Kelulusan', cat: 'Yudisium', url: '/faq#tanya-jawab' }
+              { q: 'Presensi minimal 75% syarat UAS', cat: 'Ujian', url: '/faq#tanya-jawab', keys: ['presensi', 'absen', 'kehadiran', '75', 'uas'] },
+              { q: 'Prosedur Ujian Susulan', cat: 'Ujian', url: '/faq#tanya-jawab', keys: ['ujian susulan', 'ijin sakit', 'izin', 'dispensasi'] },
+              { q: 'Syarat Pengajuan Skripsi & Pembimbing', cat: 'Skripsi', url: '/faq#tanya-jawab', keys: ['skripsi', 'pembimbing', 'proposal', 'ta'] },
+              { q: 'Persyaratan Yudisium Kelulusan', cat: 'Yudisium', url: '/faq#tanya-jawab', keys: ['yudisium', 'kelulusan', 'wisuda', 'sarjana'] },
+              { q: 'Batas Turnitin & Etika AI Skripsi', cat: 'Integritas', url: '/faq#tanya-jawab', keys: ['turnitin', 'ai', 'chatgpt', 'plagiat', 'similarity'] },
+              { q: 'Kriteria Kelulusan Predikat Cumlaude', cat: 'Kelulusan', url: '/faq#tanya-jawab', keys: ['cumlaude', 'ipk 3.51', 'dengan pujian', 'lulus tepat waktu'] }
             ];
             faqs.forEach(f => {
-              if (f.q.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)) {
-                results.push({
+              const score = calculateScore(raw, {
+                title: f.q,
+                subtitle: f.cat,
+                category: f.cat,
+                desc: 'Ketentuan dan regulasi akademik resmi FAPERTA INSTIPER',
+                keywords: f.keys
+              });
+              if (score > 15) {
+                pool.push({
+                  score,
                   type: 'FAQ & Aturan',
                   badge: 'badge-hybrid',
                   badgeLabel: f.cat,
@@ -596,22 +717,53 @@ const currentPath = Astro.url.pathname;
             });
           }
 
-          if (results.length === 0) {
+          // Urutkan berdasarkan relevansi (score tertinggi di atas)
+          pool.sort((a, b) => b.score - a.score);
+
+          if (pool.length === 0) {
             dynamicResults?.classList.add('hidden');
             emptyState?.classList.remove('hidden');
           } else {
             emptyState?.classList.add('hidden');
             dynamicResults?.classList.remove('hidden');
-            dynamicResults.innerHTML = results.slice(0, 10).map(r => `
-              <a href="${r.url}" class="block p-3.5 rounded-2xl border border-[var(--line)] bg-white hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/40 transition">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="text-xs font-bold text-[var(--leaf)]">${r.title}</span>
-                  <span class="${r.badge} text-[9px] py-0.5 px-1.5 uppercase">${r.badgeLabel}</span>
+
+            const topResult = pool[0];
+            const hasTopRecommendation = topResult && topResult.score >= 70;
+
+            dynamicResults.innerHTML = `
+              ${hasTopRecommendation ? `
+                <div class="p-3.5 mb-3 rounded-2xl bg-amber-50/80 border-2 border-amber-300 shadow-xs">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1.5 text-[11px] font-black text-amber-900 uppercase tracking-wide">
+                      <span>🌟</span> Rekomendasi Paling Sesuai
+                    </span>
+                    <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">Kesesuaian Tinggi</span>
+                  </div>
+                  <h4 class="text-sm font-extrabold text-[var(--leaf)] mt-1.5">${topResult.title}</h4>
+                  <p class="text-xs text-[var(--ink)] mt-1 line-clamp-2">${topResult.desc}</p>
+                  <div class="mt-3 flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-[var(--muted)]">${topResult.subtitle}</span>
+                    <a href="${topResult.url}" class="btn-cta text-xs py-1.5 px-3.5 inline-flex items-center gap-1 font-bold shadow-xs">
+                      <span>Buka Laman Ini</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
                 </div>
-                <p class="text-[11px] font-semibold text-[var(--muted)] mt-0.5">${r.subtitle}</p>
-                <p class="text-xs text-[var(--ink)] mt-1.5 line-clamp-1">${r.desc}</p>
-              </a>
-            `).join('');
+              ` : ''}
+
+              <div class="space-y-2">
+                ${pool.slice(hasTopRecommendation ? 1 : 0, 10).map(r => `
+                  <a href="${r.url}" class="block p-3.5 rounded-2xl border border-[var(--line)] bg-white hover:border-[var(--leaf)] hover:bg-[var(--leaf-soft)]/40 transition group">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-xs font-bold text-[var(--leaf)] group-hover:underline">${r.title}</span>
+                      <span class="${r.badge} text-[9px] py-0.5 px-1.5 uppercase">${r.badgeLabel}</span>
+                    </div>
+                    <p class="text-[11px] font-semibold text-[var(--muted)] mt-0.5">${r.subtitle}</p>
+                    <p class="text-xs text-[var(--ink)] mt-1.5 line-clamp-1">${r.desc}</p>
+                  </a>
+                `).join('')}
+              </div>
+            `;
           }
         }
 

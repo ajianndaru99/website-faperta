@@ -16,6 +16,7 @@ export interface ServiceItem {
   actionLabel: string;
   isPrimary?: boolean;
   steps: string[];
+  keywords?: string[];
 }
 
 export interface DocumentItem {
@@ -29,6 +30,7 @@ export interface DocumentItem {
   icon: string;
   isExternal?: boolean;
   isPending?: boolean;
+  keywords?: string[];
 }
 
 export type TicketStatus = 'Belum Diproses' | 'Proses Verifikasi' | 'Selesai (Siap Diambil)' | 'Ditolak';
@@ -70,7 +72,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     actionUrl: "/layanan/permohonan-khs",
     actionLabel: "Isi Formulir Permohonan KHS",
     isPrimary: true,
-    steps: ["Isi Form KHS Online", "Verifikasi Petugas & SIAKAD", "Ambil KHS Fisik di Loket 1"]
+    steps: ["Isi Form KHS Online", "Verifikasi Petugas & SIAKAD", "Ambil KHS Fisik di Loket 1"],
+    keywords: ["khs", "kartu hasil studi", "transkrip", "nilai", "salinan nilai", "cetak khs", "stempel basah", "beasiswa", "syarat ujian khusus", "ipk", "ips", "rekap nilai"]
   },
   {
     id: "komplain-nilai",
@@ -86,7 +89,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     actionUrl: "/layanan/komplain-nilai",
     actionLabel: "Isi Formulir Komplain Nilai",
     isPrimary: true,
-    steps: ["Formulir Pengaduan", "Verifikasi Dosen/Prodi", "Hasil Rekonsiliasi"]
+    steps: ["Formulir Pengaduan", "Verifikasi Dosen/Prodi", "Hasil Rekonsiliasi"],
+    keywords: ["komplain nilai", "verifikasi nilai", "protes nilai", "sanggah nilai", "perbaikan nilai", "klarifikasi nilai", "nilai salah", "nilai belum muncul", "nilai siakad", "revisi nilai", "dosen pengampu"]
   },
   {
     id: "ujian-khusus",
@@ -102,7 +106,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     actionUrl: "/layanan/ujian-khusus",
     actionLabel: "Isi Formulir Ujian Khusus",
     isPrimary: true,
-    steps: ["Lampirkan KHS", "Isi Form Ujian Khusus", "Verifikasi Kaprodi & Penguji"]
+    steps: ["Lampirkan KHS", "Isi Form Ujian Khusus", "Verifikasi Kaprodi & Penguji"],
+    keywords: ["ujian khusus", "remidi", "remedial", "ujian ulang", "tingkat akhir", "maksimal 2 matkul", "sisa sks", "skripsi", "perbaikan nilai d e", "ujian kelulusan"]
   },
   {
     id: "ujian-susulan",
@@ -117,7 +122,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Pengajuan ujian susulan sesuai ketentuan akademik dan bukti pendukung yang sah (sakit rawat inap, duka cita keluarga inti, tugas dinas resmi).",
     actionUrl: "/dalam-proses?item=Ujian+Susulan+(UTS%2FUAS)&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Kirim Bukti Sah", "Verifikasi Prodi", "Jadwal Ujian Offline"]
+    steps: ["Kirim Bukti Sah", "Verifikasi Prodi", "Jadwal Ujian Offline"],
+    keywords: ["ujian susulan", "susulan", "uts susulan", "uas susulan", "dispensasi ujian", "ijin sakit", "izin sakit", "rawat inap", "surat dokter", "tugas dinas"]
   },
   {
     id: "izin-penelitian",
@@ -132,7 +138,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Permohonan surat pengantar izin penelitian atau pengambilan data ke kebun percobaan, instansi pemerintah, BUMN, perusahaan, atau laboratorium mitra.",
     actionUrl: "/dalam-proses?item=Surat+Izin+Penelitian+%26+Data&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Unggah Proposal Disetujui", "Verifikasi Dekanat", "Terbit Surat Izin"]
+    steps: ["Unggah Proposal Disetujui", "Verifikasi Dekanat", "Terbit Surat Izin"],
+    keywords: ["surat izin penelitian", "surat ijin penelitian", "izin penelitian", "ijin penelitian", "izin riset", "ijin riset", "penelitian", "riset", "data", "surat pengantar", "kebun percobaan", "laboratorium", "instansi", "perusahaan", "pengambilan data", "bumn", "mitra", "proposal penelitian", "surat izin", "surat ijin"]
   },
   {
     id: "mengulang-matkul",
@@ -147,7 +154,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Pendataan dan pengajuan mahasiswa yang akan mengulang mata kuliah pada semester berjalan untuk perbaikan indeks prestasi kumulatif.",
     actionUrl: "https://siakad.instiperjogja.ac.id",
     actionLabel: "Buka KRS SIAKAD",
-    steps: ["Konsultasi DPA", "Input Matkul di SIAKAD", "Persetujuan DPA"]
+    steps: ["Konsultasi DPA", "Input Matkul di SIAKAD", "Persetujuan DPA"],
+    keywords: ["mengulang mata kuliah", "ulang matkul", "siakad", "krs", "konsultasi dpa", "remediasi", "perbaikan ipk", "isi krs"]
   },
   {
     id: "perubahan-judul",
@@ -162,7 +170,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Pengajuan pencatatan perubahan judul skripsi/penelitian yang telah disetujui secara tertulis oleh dosen pembimbing utama.",
     actionUrl: "/dalam-proses?item=Perubahan+Judul+Penelitian&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Form Persetujuan Pembimbing", "Verifikasi Kaprodi", "Pencatatan Berita Acara"]
+    steps: ["Form Persetujuan Pembimbing", "Verifikasi Kaprodi", "Pencatatan Berita Acara"],
+    keywords: ["perubahan judul", "ganti judul", "ubah judul", "revisi judul skripsi", "penelitian", "pembimbing", "berita acara"]
   },
   {
     id: "seminar-skripsi",
@@ -177,7 +186,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Informasi dan verifikasi persyaratan pendaftaran seminar hasil penelitian skripsi mahasiswa tingkat akhir.",
     actionUrl: "/dalam-proses?item=Seminar+Hasil+Skripsi&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Naskah Disetujui Pembimbing", "Penetapan Penguji", "Jadwal Seminar"]
+    steps: ["Naskah Disetujui Pembimbing", "Penetapan Penguji", "Jadwal Seminar"],
+    keywords: ["seminar hasil", "seminar skripsi", "semhas", "kolokium", "naskah skripsi", "jadwal seminar", "penguji", "skripsi"]
   },
   {
     id: "ujian-skripsi",
@@ -192,7 +202,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Pendaftaran dan verifikasi kelengkapan berkas pra-ujian pendadaran skripsi mahasiswa program sarjana (S1).",
     actionUrl: "/dalam-proses?item=Ujian+Pendadaran+%2F+Skripsi&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Bebas Pustaka & SPP", "Verifikasi Naskah", "Sidang Pendadaran"]
+    steps: ["Bebas Pustaka & SPP", "Verifikasi Naskah", "Sidang Pendadaran"],
+    keywords: ["ujian skripsi", "pendadaran", "sidang skripsi", "sidang akhir", "yudisium", "sarjana s1", "bebas pustaka", "bebas spp", "kelulusan"]
   },
   {
     id: "surat-keterangan",
@@ -207,7 +218,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Permohonan penerbitan surat keterangan masih aktif kuliah, surat keterangan kelakuan baik, rekomendasi beasiswa, dan dokumen sejenis.",
     actionUrl: "/dalam-proses?item=Surat+Keterangan+Akademik&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket 1"]
+    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket 1"],
+    keywords: ["surat keterangan", "surat aktif kuliah", "surat masih kuliah", "keterangan aktif", "beasiswa", "kelakuan baik", "tunjangan pns", "tunjangan gaji", "bpjs", "surat pengantar"]
   },
   {
     id: "peminjaman-ruang",
@@ -222,7 +234,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Permohonan penggunaan ruang kelas, aula, atau laboratorium untuk kegiatan akademik resmi dan organisasi kemahasiswaan.",
     actionUrl: "/dalam-proses?item=Peminjaman+Ruang+%26+Fasilitas&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Cek Ketersediaan", "Persetujuan WD II / Dekanat", "Konfirmasi Penjagaan"]
+    steps: ["Cek Ketersediaan", "Persetujuan WD II / Dekanat", "Konfirmasi Penjagaan"],
+    keywords: ["peminjaman ruang", "pinjam ruang", "pinjam ruangan", "pinjam kelas", "aula", "fasilitas", "laboratorium", "ormawa", "kegiatan kampus", "rapat"]
   },
   {
     id: "surat-tugas-dosen",
@@ -237,7 +250,8 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Pengajuan surat tugas resmi bagi dosen FAPERTA untuk keperluan penelitian, publikasi jurnal, narasumber, atau pengabdian kepada masyarakat.",
     actionUrl: "/dalam-proses?item=Surat+Tugas+%26+Kegiatan+Dosen&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Kirim Kerangka Acuan", "Persetujuan Dekan", "Terbit Surat Tugas Resmi"]
+    steps: ["Kirim Kerangka Acuan", "Persetujuan Dekan", "Terbit Surat Tugas Resmi"],
+    keywords: ["surat tugas", "tugas dosen", "kegiatan dosen", "penelitian dosen", "publikasi", "jurnal", "pengabdian masyarakat", "narasumber"]
   }
 ];
 
@@ -252,7 +266,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/dokumen/buku-panduan-akademik.pdf",
     format: "PDF",
     icon: "▣",
-    isExternal: false
+    isExternal: false,
+    keywords: ["buku panduan", "buku pedoman", "panduan akademik", "pedoman akademik", "aturan", "regulasi", "kurikulum", "sks", "etika", "buku saku"]
   },
   {
     id: "kalender-akademik",
@@ -263,7 +278,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/dokumen/kalender-akademik.pdf",
     format: "PDF",
     icon: "▦",
-    isExternal: false
+    isExternal: false,
+    keywords: ["kalender akademik", "jadwal kuliah", "kalender", "semester gasal", "semester genap", "jadwal krs", "libur", "jadwal uts", "jadwal uas", "jadwal yudisium"]
   },
   {
     id: "denah-kampus",
@@ -274,7 +290,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/denah-instiper.jpg",
     format: "JPG",
     icon: "⌖",
-    isExternal: false
+    isExternal: false,
+    keywords: ["denah kampus", "denah", "peta", "lokasi", "gedung faperta", "dekanat", "laboratorium", "kebun", "peta kampus", "ruang kelas"]
   },
   {
     id: "panduan-proposal-agrotek",
@@ -285,7 +302,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "https://drive.google.com/drive/folders/1j3mfUotpP83SYsLnwRZjtBUPr9ehFjnp",
     format: "G-Drive",
     icon: "▤",
-    isExternal: true
+    isExternal: true,
+    keywords: ["panduan proposal", "template proposal", "proposal agroteknologi", "skripsi agrotek", "format proposal", "naskah proposal"]
   },
   {
     id: "panduan-skripsi-agrotek",
@@ -296,7 +314,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "https://drive.google.com/drive/folders/1_bsyTzr5tGBzMEJsm01EngkfbMEfL1NK",
     format: "G-Drive",
     icon: "▤",
-    isExternal: true
+    isExternal: true,
+    keywords: ["panduan skripsi", "template skripsi", "laporan skripsi", "format skripsi", "agroteknologi", "tata tulis skripsi"]
   },
   {
     id: "kurikulum-agroteknologi",
@@ -307,7 +326,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/dalam-proses?item=Kurikulum+Prodi+Agroteknologi&tipe=unduhan",
     format: "Dalam Proses",
     icon: "◒",
-    isPending: true
+    isPending: true,
+    keywords: ["kurikulum agroteknologi", "silabus", "sebaran matkul", "mata kuliah agrotek", "sks"]
   },
   {
     id: "kurikulum-agribisnis",
@@ -318,7 +338,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/dalam-proses?item=Kurikulum+Prodi+Agribisnis&tipe=unduhan",
     format: "Dalam Proses",
     icon: "◒",
-    isPending: true
+    isPending: true,
+    keywords: ["kurikulum agribisnis", "silabus", "sebaran matkul agribisnis", "manajemen agribisnis", "mata kuliah"]
   },
   {
     id: "template-skripsi-agri",
@@ -329,7 +350,8 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
     file: "/dalam-proses?item=Template+Skripsi+Agribisnis&tipe=unduhan",
     format: "Dalam Proses",
     icon: "▤",
-    isPending: true
+    isPending: true,
+    keywords: ["template skripsi agribisnis", "format skripsi agribisnis", "panduan skripsi agribisnis", "skripsi agribisnis"]
   }
 ];
 

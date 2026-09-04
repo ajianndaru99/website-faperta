@@ -16,7 +16,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 				<p class="mt-6 max-w-lg text-base sm:text-lg leading-relaxed text-[var(--ink)]">
 					Temukan buku panduan, kalender perkuliahan, kurikulum prodi, template skripsi, dan regulasi akademik FAPERTA INSTIPER dalam satu ruang yang tertata rapi.
 				</p>
-				<div class="mt-8 flex flex-wrap gap-3">
+				<!-- Smart Quick Search Bar -->
+				<form id="hero-smart-search-form" class="mt-8 flex items-center rounded-2xl border-2 border-[var(--leaf)]/30 bg-white p-1.5 shadow-md focus-within:border-[var(--leaf)] focus-within:ring-4 focus-within:ring-[var(--leaf)]/15 transition max-w-xl">
+					<div class="flex items-center flex-1 px-3 py-1.5">
+						<span class="text-gray-400 text-lg mr-2.5 select-none" aria-hidden="true">🔍</span>
+						<input 
+							type="text" 
+							id="hero-smart-search-input" 
+							placeholder="Cari surat atau layanan (misal: surat ijin penelitian, cetak KHS)..." 
+							class="w-full bg-transparent text-xs sm:text-sm font-medium text-[var(--ink)] placeholder:text-gray-400 outline-none border-none"
+							autocomplete="off"
+						/>
+					</div>
+					<button type="submit" class="btn-cta text-xs sm:text-sm py-2.5 px-4 sm:px-5 shrink-0 shadow-xs font-bold rounded-xl">
+						<span>Cari Pintar</span>
+						<span aria-hidden="true">→</span>
+					</button>
+				</form>
+
+				<div class="mt-6 flex flex-wrap gap-3">
 					<a href="/layanan/permohonan-khs" class="btn-cta text-base">
 						✦ Permohonan KHS Online <span aria-hidden="true" class="ml-1 font-bold">→</span>
 					</a>
@@ -143,4 +161,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 			</a>
 		</div>
 	</section>
+
+	<script is:inline>
+		document.addEventListener('DOMContentLoaded', () => {
+			const form = document.getElementById('hero-smart-search-form');
+			const input = document.getElementById('hero-smart-search-input');
+
+			form?.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const q = (input?.value || '').trim();
+				if (typeof window.openPortalSearch === 'function') {
+					window.openPortalSearch(q);
+				}
+			});
+		});
+	</script>
 </BaseLayout>
