@@ -178,29 +178,27 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
               </div>
             </div>
 
-            <!-- BLOK 3: Format Dokumen KHS -->
+            <!-- BLOK 3: Ketentuan Pengambilan Dokumen Fisik di Loket Kampus -->
             <div>
               <div class="flex items-center gap-2 border-b border-[var(--line)] pb-3">
                 <span class="grid h-7 w-7 place-items-center rounded-lg bg-[var(--leaf)] text-xs font-black text-white">3</span>
-                <h2 class="text-lg font-black text-[var(--leaf)]">Format Dokumen</h2>
+                <h2 class="text-lg font-black text-[var(--leaf)]">Pengambilan Dokumen Fisik</h2>
               </div>
 
-              <div class="mt-5 grid sm:grid-cols-2 gap-4">
-                <label class="flex items-start gap-3 rounded-2xl border border-[var(--line)] p-4 cursor-pointer hover:border-[var(--leaf)]">
-                  <input type="radio" name="format_output" value="digital" checked class="mt-1 accent-[var(--leaf)]" />
+              <div class="mt-5 rounded-2xl border-2 border-[var(--leaf)]/20 bg-[#f7faf5] p-5 text-xs text-[var(--ink)]">
+                <div class="flex items-start gap-3">
+                  <span class="text-2xl shrink-0">🏢</span>
                   <div>
-                    <strong class="text-xs font-black text-[var(--leaf)]">PDF Digital Berstempel Elektronik</strong>
-                    <p class="text-[11px] text-[var(--muted)] mt-0.5">Dikirimkan langsung ke sistem tiket dan email resmi Anda.</p>
+                    <h3 class="font-black text-[var(--leaf)] text-sm">Cetak Fisik Resmi Berstempel Basah di Loket Kampus</h3>
+                    <p class="text-[var(--muted)] mt-1 leading-relaxed">
+                      Sistem saat ini adalah sistem pelacakan alur berkas (belum tahap unggah/unduh dokumen digital). Salinan resmi KHS diterbitkan dalam bentuk cetak fisik berstempel basah Dekanat FAPERTA INSTIPER Yogyakarta.
+                    </p>
+                    <div class="mt-3 grid sm:grid-cols-2 gap-2 pt-3 border-t border-[var(--leaf)]/20">
+                      <p>📍 <strong>Lokasi Pengambilan:</strong> Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)</p>
+                      <p>🪪 <strong>Syarat Pengambilan:</strong> Wajib membawa KTM Asli & Kode Tiket</p>
+                    </div>
                   </div>
-                </label>
-
-                <label class="flex items-start gap-3 rounded-2xl border border-[var(--line)] p-4 cursor-pointer hover:border-[var(--leaf)]">
-                  <input type="radio" name="format_output" value="cetak_loket" class="mt-1 accent-[var(--leaf)]" />
-                  <div>
-                    <strong class="text-xs font-black text-[var(--ink)]">Cetak Fisik Berstempel Basah</strong>
-                    <p class="text-[11px] text-[var(--muted)] mt-0.5">Diambil di Front Desk Bagian Akademik FAPERTA setelah tiket selesai.</p>
-                  </div>
-                </label>
+                </div>
               </div>
             </div>
 
@@ -279,12 +277,25 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
             </div>
           </div>
 
+          <!-- Panduan Pengambilan di Loket -->
+          <div class="mt-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-950">
+            <div class="flex items-start gap-2.5">
+              <span class="text-base shrink-0">📍</span>
+              <div>
+                <strong>Pengambilan Dokumen Fisik di Kampus:</strong>
+                <p class="text-amber-900 mt-0.5 leading-relaxed">
+                  Setelah status permohonan Anda diverifikasi dan berstatus <strong>Selesai (Siap Diambil)</strong> di sistem, silakan datang ke <strong>Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)</strong> dengan membawa <strong>KTM Asli</strong> dan menyebutkan Nomor Tiket Anda.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <!-- Tindak Lanjut -->
           <div class="mt-6 space-y-3">
             <h4 class="text-sm font-black text-[var(--ink)]">Tindak Lanjut Permohonan:</h4>
             <div class="grid sm:grid-cols-2 gap-3">
               <button id="btn-print-receipt" type="button" class="rounded-2xl bg-[var(--leaf)] text-white p-4 font-bold text-xs flex items-center justify-center gap-2 hover:bg-[var(--leaf-dark)] transition shadow-sm">
-                <span>🖨️</span> Cetak / Simpan Bukti Pengajuan
+                <span>🖨️</span> Cetak Bukti Tiket untuk Loket
               </button>
               <a href="/layanan/cek-status" class="rounded-2xl border-2 border-[var(--leaf)] bg-white text-[var(--leaf)] p-4 font-bold text-xs flex items-center justify-center gap-2 hover:bg-[var(--leaf-soft)] transition">
                 <span>🔍</span> Pantau Status Verifikasi Berkas
@@ -410,13 +421,13 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
           layananNama: `Permohonan KHS (${semesterDimohon})`,
           keperluan: `Permohonan KHS (${semesterDimohon})`,
           detailTambahan: `Tujuan: ${keperluan} | Catatan: ${catatan}`,
-          format: formatOutput === 'digital' ? 'PDF Digital Berstempel Elektronik' : 'Cetak Fisik Berstempel Basah',
-          status: 'Diajukan',
+          format: 'Cetak Fisik Berstempel Basah (Ambil di Loket)',
+          status: 'Belum Diproses',
           statusStep: 1,
-          posisiBerkas: 'Meja Administrasi Akademik (Menunggu Verifikasi)',
+          posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
           estimasiSelesai: '1–2 Hari Kerja',
           slaDays: 2,
-          catatanAdmin: 'Pengajuan baru diterima sistem, menunggu verifikasi staf.',
+          catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu verifikasi petugas.',
           tanggal: tanggalPengajuan,
           isNewForAdmin: true
         };

@@ -29,6 +29,8 @@ export interface DocumentItem {
   icon: string;
 }
 
+export type TicketStatus = 'Belum Diproses' | 'Proses Verifikasi' | 'Selesai (Siap Diambil)' | 'Ditolak';
+
 export interface TicketItem {
   kode: string;
   nim: string;
@@ -40,8 +42,8 @@ export interface TicketItem {
   keperluan: string;
   detailTambahan?: string;
   format?: string;
-  status: 'Diajukan' | 'Verifikasi Berkas' | 'Persetujuan' | 'Selesai' | 'Perlu Revisi';
-  statusStep: number; // 1 to 4
+  status: TicketStatus;
+  statusStep: 1 | 2 | 3 | -1; // 1: Belum Diproses, 2: Proses Verifikasi, 3: Selesai (Siap Diambil), -1: Ditolak
   posisiBerkas: string;
   estimasiSelesai: string;
   slaDays: number;
@@ -58,15 +60,15 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     title: "Permohonan KHS (Kartu Hasil Studi)",
     subtitle: "Semester 1 - 14",
     category: "Dokumen Akademik",
-    type: "online",
-    typeLabel: "Layanan Mandiri",
-    badgeClass: "badge-online",
+    type: "hybrid",
+    typeLabel: "Ambil di Loket",
+    badgeClass: "badge-hybrid",
     sla: "1 – 2 Hari Kerja",
-    desc: "Permohonan penerbitan salinan resmi Kartu Hasil Studi (KHS) atau transkrip nilai akademik sementara untuk prasyarat ujian khusus, beasiswa, maupun dinas.",
+    desc: "Permohonan penerbitan salinan resmi Kartu Hasil Studi (KHS) berstempel basah untuk prasyarat ujian khusus, beasiswa, maupun arsip dinas. Berkas fisik diambil di Loket FAPERTA.",
     actionUrl: "/layanan/permohonan-khs",
-    actionLabel: "Isi Formulir KHS Online",
+    actionLabel: "Isi Formulir Permohonan KHS",
     isPrimary: true,
-    steps: ["Isi Form KHS", "Verifikasi SIAKAD", "Penerbitan KHS Digital"]
+    steps: ["Isi Form KHS Online", "Verifikasi Petugas & SIAKAD", "Ambil KHS Fisik di Loket 1"]
   },
   {
     id: "komplain-nilai",
@@ -203,7 +205,7 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Permohonan penerbitan surat keterangan masih aktif kuliah, surat keterangan kelakuan baik, rekomendasi beasiswa, dan dokumen sejenis.",
     actionUrl: "mailto:akademik@instiperjogja.ac.id?subject=Permohonan%20Surat%20Keterangan%20Akademik",
     actionLabel: "Ajukan Surat Keterangan",
-    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Terbit Dokumen Digital / Fisik"]
+    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket 1"]
   },
   {
     id: "peminjaman-ruang",
@@ -332,14 +334,14 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     layananId: "khs",
     layananNama: "Permohonan KHS (Semester 1 - 7)",
     keperluan: "Prasyarat Pendaftaran Ujian Khusus",
-    detailTambahan: "Dimohon salinan fisik berstempel basah untuk lampiran berkas",
+    detailTambahan: "Dimohon cetak fisik resmi berstempel basah",
     format: "Cetak Fisik Berstempel Basah",
-    status: "Verifikasi Berkas",
+    status: "Proses Verifikasi",
     statusStep: 2,
     posisiBerkas: "Meja Verifikasi Administrasi Akademik (Gedung A, Lt. 1)",
     estimasiSelesai: "1 Hari Kerja (Besok, Pukul 14.00 WIB)",
     slaDays: 2,
-    catatanAdmin: "Berkas SIAKAD sudah dicocokkan, sedang menunggu proses cetak & tanda tangan dekanat.",
+    catatanAdmin: "Petugas sedang mencocokkan data nilai SIAKAD untuk dicetak dan dimintakan stempel basah.",
     tanggal: "04 September 2026, 07:30 WIB",
     isNewForAdmin: true
   },
@@ -353,13 +355,13 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     layananNama: "Pengajuan Ujian Khusus",
     keperluan: "Ujian Khusus: Rancangan Percobaan (3 SKS)",
     detailTambahan: "DPA: Ir. H. Sudirman, M.P. | Sisa 1 Mata Kuliah Teori",
-    format: "Berkas Verifikasi Hybrid",
-    status: "Diajukan",
+    format: "Berkas Fisik Loket",
+    status: "Belum Diproses",
     statusStep: 1,
-    posisiBerkas: "Antrean Pengajuan Mahasiswa (Menunggu Lampiran KHS Terbit)",
+    posisiBerkas: "Antrean Masuk Loket Administrasi",
     estimasiSelesai: "3 Hari Kerja (Senin, 07 September 2026)",
     slaDays: 5,
-    catatanAdmin: "Pengajuan diterima sistem. Menunggu KHS fisik diterbitkan sebelum disposisi ke Kaprodi.",
+    catatanAdmin: "Permohonan baru masuk antrean. Menunggu verifikasi KHS fisik sebelum diteruskan ke Kaprodi.",
     tanggal: "04 September 2026, 08:00 WIB",
     isNewForAdmin: true
   },
@@ -372,14 +374,14 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     layananId: "komplain-nilai",
     layananNama: "Verifikasi / Komplain Nilai",
     keperluan: "Komplain Nilai: Manajemen Agribisnis (Nilai SIAKAD Belum Muncul)",
-    detailTambahan: "Dosen: Dr. Ir. Hj. Nurhidayah, M.S. | Presensi 100%, UTS & UAS lengkap",
-    format: "Dokumen Digital (Verifikasi Hasil)",
-    status: "Persetujuan",
+    detailTambahan: "Dosen: Dr. Ir. Hj. Nurhidayah, M.S. | Presensi 100%",
+    format: "Surat Rekonsiliasi Nilai",
+    status: "Selesai (Siap Diambil)",
     statusStep: 3,
-    posisiBerkas: "Konfirmasi Dosen Pengampu & Bagian Input Nilai SIAKAD",
-    estimasiSelesai: "Hari Ini, Pukul 15.00 WIB",
+    posisiBerkas: "Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)",
+    estimasiSelesai: "Selesai (Silakan Ambil di Loket)",
     slaDays: 3,
-    catatanAdmin: "Dosen pengampu sudah mengonfirmasi nilai A-. Sedang dilakukan update data di portal SIAKAD.",
+    catatanAdmin: "Dosen pengampu telah mengesahkan nilai A-. Berkas surat perubahan nilai fisik sudah siap diambil di Loket 1. Harap membawa KTM.",
     tanggal: "03 September 2026, 11:20 WIB",
     isNewForAdmin: false
   },
@@ -391,15 +393,15 @@ export const INITIAL_DEMO_TICKETS: TicketItem[] = [
     semester: "Semester 10",
     layananId: "izin-penelitian",
     layananNama: "Surat Izin Penelitian & Pengambilan Data",
-    keperluan: "Pengambilan Sampel Tanah & Daun Kelapa Sawit di PTPN",
-    detailTambahan: "Lokasi: Kebun Percobaan & PT Perkebunan Nusantara",
-    format: "PDF Digital Berstempel Elektronik",
-    status: "Selesai",
-    statusStep: 4,
-    posisiBerkas: "Dokumen Siap Diambil / Diunduh",
-    estimasiSelesai: "Selesai Tepat Waktu",
+    keperluan: "Pengambilan Sampel Tanah di Kebun Sawit",
+    detailTambahan: "Lokasi: PT Perkebunan Nusantara",
+    format: "Surat Pengantar Fisik",
+    status: "Ditolak",
+    statusStep: -1,
+    posisiBerkas: "Ditolak Administrasi",
+    estimasiSelesai: "-",
     slaDays: 1,
-    catatanAdmin: "Surat izin nomor 412/FAP/PL/2026 telah ditandatangani Dekan. Salinan PDF dikirim ke email.",
+    catatanAdmin: "DITOLAK: Berkas proposal belum disetujui Dosen Pembimbing Utama. Silakan minta tanda tangan pembimbing terlebih dahulu.",
     tanggal: "02 September 2026, 09:15 WIB",
     isNewForAdmin: false
   }

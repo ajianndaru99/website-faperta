@@ -109,10 +109,10 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
               </span>
             </div>
             <h1 class="display-title mt-3 text-3xl sm:text-4xl font-extrabold !text-white leading-tight">
-              Manajemen Surat Masuk & SLA
+              Penandaan & Verifikasi Berkas Loket
             </h1>
             <p class="mt-2 text-sm text-white/80 max-w-2xl leading-relaxed">
-              Pantau surat permohonan KHS, ujian khusus, dan komplain nilai yang masuk. Ubah status pemrosesan berkas, perbarui posisi dokumen, dan berikan catatan langsung ke mahasiswa.
+              Pusat penandaan status berkas fisik mahasiswa FAPERTA INSTIPER. Cukup centang/pilih status permohonan untuk mengabari mahasiswa kapan berkas fisik siap diambil di loket kampus atau perlu revisi.
             </p>
           </div>
 
@@ -150,40 +150,65 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
       </div>
     </section>
 
+    <!-- Operational Workflow Notice Box -->
+    <section class="bg-amber-50/80 border-b border-amber-200 py-3.5 text-xs text-amber-950">
+      <div class="container-shell flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-start gap-2.5">
+          <span class="text-lg shrink-0">📌</span>
+          <div>
+            <strong>Alur Kerja Loket FAPERTA:</strong>
+            <span class="text-amber-900">
+              Sistem ini tidak memproses upload/download file digital. Mahasiswa wajib datang langsung ke <strong>Loket 1 Administrasi FAPERTA (Gedung A Lantai 1)</strong> membawa KTM asli. Petugas di sini cukup melakukan centang / penandaan status:
+              <span class="font-bold text-amber-900">Belum Diproses</span>, 
+              <span class="font-bold text-blue-900">Proses Verifikasi</span>, 
+              <span class="font-bold text-emerald-900">Selesai (Siap Diambil di Loket)</span>, atau 
+              <span class="font-bold text-red-900">Ditolak</span>.
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Dashboard Metrics Section -->
     <section class="container-shell py-8">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="rounded-2xl border border-[var(--line)] bg-white p-5 shadow-xs">
-          <p class="text-xs font-bold text-[var(--muted)]">Total Pengajuan Surat</p>
-          <p id="stat-total" class="text-3xl font-black text-[var(--ink)] mt-2">0</p>
-          <span class="text-[10px] text-[var(--muted)] mt-1 block">Semua berkas di sistem</span>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        <div class="rounded-2xl border border-[var(--line)] bg-white p-4 sm:p-5 shadow-xs">
+          <p class="text-[11px] font-bold text-[var(--muted)]">Total Berkas</p>
+          <p id="stat-total" class="text-2xl sm:text-3xl font-black text-[var(--ink)] mt-1.5">0</p>
+          <span class="text-[10px] text-[var(--muted)] mt-1 block">Semua pengajuan</span>
         </div>
 
-        <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 shadow-xs">
-          <p class="text-xs font-bold text-amber-900">Perlu Verifikasi</p>
-          <p id="stat-pending" class="text-3xl font-black text-amber-900 mt-2">0</p>
-          <span class="text-[10px] text-amber-800/80 mt-1 block">Surat baru masuk / antrean</span>
+        <div class="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 sm:p-5 shadow-xs">
+          <p class="text-[11px] font-bold text-amber-900">⏳ Belum Diproses</p>
+          <p id="stat-pending" class="text-2xl sm:text-3xl font-black text-amber-900 mt-1.5">0</p>
+          <span class="text-[10px] text-amber-800/80 mt-1 block">Antrean baru masuk</span>
         </div>
 
-        <div class="rounded-2xl border border-blue-200 bg-blue-50/60 p-5 shadow-xs">
-          <p class="text-xs font-bold text-blue-900">Sedang Diproses</p>
-          <p id="stat-process" class="text-3xl font-black text-blue-900 mt-2">0</p>
-          <span class="text-[10px] text-blue-800/80 mt-1 block">Di Meja SIAKAD / Prodi</span>
+        <div class="rounded-2xl border border-blue-200 bg-blue-50/70 p-4 sm:p-5 shadow-xs">
+          <p class="text-[11px] font-bold text-blue-900">🔍 Proses Verifikasi</p>
+          <p id="stat-process" class="text-2xl sm:text-3xl font-black text-blue-900 mt-1.5">0</p>
+          <span class="text-[10px] text-blue-800/80 mt-1 block">Pemeriksaan SIAKAD</span>
         </div>
 
-        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5 shadow-xs">
-          <p class="text-xs font-bold text-emerald-900">Selesai / Terbit</p>
-          <p id="stat-done" class="text-3xl font-black text-emerald-900 mt-2">0</p>
-          <span class="text-[10px] text-emerald-800/80 mt-1 block">Siap diambil mahasiswa</span>
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 sm:p-5 shadow-xs">
+          <p class="text-[11px] font-bold text-emerald-900">📦 Siap Diambil</p>
+          <p id="stat-done" class="text-2xl sm:text-3xl font-black text-emerald-900 mt-1.5">0</p>
+          <span class="text-[10px] text-emerald-800/80 mt-1 block">Sudah di Loket 1</span>
+        </div>
+
+        <div class="rounded-2xl border border-rose-200 bg-rose-50/70 p-4 sm:p-5 shadow-xs col-span-2 sm:col-span-1">
+          <p class="text-[11px] font-bold text-rose-900">❌ Ditolak</p>
+          <p id="stat-rejected" class="text-2xl sm:text-3xl font-black text-rose-900 mt-1.5">0</p>
+          <span class="text-[10px] text-rose-800/80 mt-1 block">Perlu klarifikasi</span>
         </div>
       </div>
     </section>
 
     <!-- Admin Controls & Filter -->
     <section class="container-shell pb-16">
-      <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-6 shadow-sm">
+      <div class="rounded-3xl border-2 border-[var(--line)] bg-white p-5 sm:p-7 shadow-sm">
         <!-- Toolbar Filter & Search -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
           <div class="flex-1 max-w-md relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 text-sm">
               🔍
@@ -191,17 +216,18 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             <input 
               type="text" 
               id="admin-search-input" 
-              placeholder="Cari berdasarkan NIM, Nama Mahasiswa, atau Kode Tiket..." 
+              placeholder="Cari NIM, Nama Mahasiswa, atau Kode Tiket..." 
               class="w-full rounded-xl border border-[var(--line)] bg-gray-50 pl-9 pr-3 py-2 text-xs font-medium text-[var(--ink)] focus:border-[var(--leaf)] focus:bg-white focus:outline-none transition"
             />
           </div>
 
-          <div class="flex flex-wrap items-center gap-2 text-xs">
-            <span class="text-[var(--muted)] font-bold">Filter Status:</span>
-            <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-[var(--leaf)] text-white font-bold" data-status="all">Semua</button>
-            <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Diajukan">Diajukan</button>
-            <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Verifikasi Berkas">Verifikasi</button>
-            <button type="button" class="admin-filter-btn px-3 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Selesai">Selesai</button>
+          <div class="flex flex-wrap items-center gap-1.5 text-xs">
+            <span class="text-[var(--muted)] font-bold mr-1">Filter Status:</span>
+            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-[var(--leaf)] text-white font-bold" data-status="all">Semua</button>
+            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Belum Diproses">Belum Diproses</button>
+            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Proses Verifikasi">Proses Verifikasi</button>
+            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Selesai (Siap Diambil)">Siap Diambil</button>
+            <button type="button" class="admin-filter-btn px-2.5 py-1.5 rounded-lg bg-gray-100 text-[var(--muted)] font-medium hover:bg-gray-200" data-status="Ditolak">Ditolak</button>
             
             <button id="btn-simulate-ticket" type="button" class="ml-auto btn-cta text-[11px] py-1.5 px-3 bg-[var(--gold)] !text-[var(--leaf)] hover:bg-[var(--gold-dark)] shadow-xs">
               + Simulasi Surat Masuk
@@ -215,14 +241,16 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
         <!-- Empty State -->
         <div id="admin-empty-state" class="hidden py-12 text-center text-xs text-[var(--muted)]">
           <span class="text-3xl">📭</span>
-          <p class="mt-2 text-sm font-bold text-[var(--ink)]">Tidak ada surat masuk yang sesuai filter</p>
+          <p class="mt-2 text-sm font-bold text-[var(--ink)]">Tidak ada berkas yang sesuai filter pencarian</p>
         </div>
 
         <!-- Footer Actions -->
         <div class="mt-8 pt-4 border-t border-[var(--line)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <p class="text-[var(--muted)]">Perubahan status yang Anda simpan akan langsung terlihat saat mahasiswa mengecek NIM di <a href="/layanan/cek-status" class="text-[var(--leaf)] font-bold underline">Halaman Cek Status</a>.</p>
+          <p class="text-[var(--muted)]">
+            Status yang Anda centang akan seketika tersinkronisasi saat mahasiswa memasukkan NIM di <a href="/layanan/cek-status" target="_blank" class="text-[var(--leaf)] font-bold underline">Halaman Cek Status & Pendeteksi NIM</a>.
+          </p>
           <button id="btn-reset-demo" type="button" class="text-gray-400 hover:text-red-600 transition underline">
-            Reset Basis Data ke Kondisi Awal
+            Reset Data ke Default Demo
           </button>
         </div>
       </div>
@@ -341,19 +369,22 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
       function renderMetrics(tickets) {
         const total = tickets.length;
-        const pending = tickets.filter(t => t.status === 'Diajukan').length;
-        const inProcess = tickets.filter(t => t.status === 'Verifikasi Berkas' || t.status === 'Persetujuan').length;
-        const done = tickets.filter(t => t.status === 'Selesai').length;
+        const pending = tickets.filter(t => t.status === 'Belum Diproses').length;
+        const inProcess = tickets.filter(t => t.status === 'Proses Verifikasi').length;
+        const done = tickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
+        const rejected = tickets.filter(t => t.status === 'Ditolak').length;
 
         const elTotal = document.getElementById('stat-total');
         const elPending = document.getElementById('stat-pending');
         const elProcess = document.getElementById('stat-process');
         const elDone = document.getElementById('stat-done');
+        const elRejected = document.getElementById('stat-rejected');
 
         if (elTotal) elTotal.textContent = total;
         if (elPending) elPending.textContent = pending;
         if (elProcess) elProcess.textContent = inProcess;
         if (elDone) elDone.textContent = done;
+        if (elRejected) elRejected.textContent = rejected;
       }
 
       function renderList() {
@@ -382,17 +413,26 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
 
         filtered.forEach((t) => {
           const isNew = t.isNewForAdmin;
-          const statusOptions = ['Diajukan', 'Verifikasi Berkas', 'Persetujuan', 'Selesai', 'Perlu Revisi'];
+          const currentStatus = t.status || 'Belum Diproses';
 
           const card = document.createElement('div');
-          card.className = `p-5 rounded-2xl border-2 transition ${isNew ? 'border-[var(--leaf)] bg-[#f7faf5]' : 'border-[var(--line)] bg-white'}`;
+          card.className = `p-5 rounded-2xl border-2 transition ${
+            currentStatus === 'Ditolak' 
+              ? 'border-rose-200 bg-rose-50/30' 
+              : currentStatus === 'Selesai (Siap Diambil)' 
+                ? 'border-emerald-200 bg-emerald-50/20' 
+                : isNew 
+                  ? 'border-[var(--leaf)] bg-[#f7faf5]' 
+                  : 'border-[var(--line)] bg-white'
+          }`;
+
           card.innerHTML = `
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[var(--line)] pb-4">
               <div>
                 <div class="flex items-center gap-2">
                   <span class="font-mono text-sm font-black text-[var(--leaf)]">${t.kode}</span>
                   ${isNew ? '<span class="inline-block px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-bold animate-pulse">BARU</span>' : ''}
-                  <span class="text-xs font-semibold text-[var(--muted)]">· ${t.tanggal}</span>
+                  <span class="text-xs font-semibold text-[var(--muted)]">· Diajukan: ${t.tanggal}</span>
                 </div>
                 <h4 class="text-base font-extrabold text-[var(--ink)] mt-1">${t.layananNama}</h4>
                 <p class="text-xs text-[var(--muted)] mt-0.5">
@@ -400,43 +440,123 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
                 </p>
               </div>
 
-              <!-- Quick Status Selector -->
-              <div class="flex flex-wrap items-center gap-2">
-                <label class="text-xs font-bold text-[var(--muted)]">Status Berkas:</label>
-                <select class="status-select rounded-xl border border-[var(--line)] bg-white px-3 py-1.5 text-xs font-bold text-[var(--ink)] focus:border-[var(--leaf)] outline-none" data-kode="${t.kode}">
-                  ${statusOptions.map(opt => `<option value="${opt}" ${t.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
-                </select>
+              <!-- Status Badge Terkini -->
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-[var(--muted)]">Status Terkini:</span>
+                <span class="px-3 py-1 rounded-full text-xs font-black border ${
+                  currentStatus === 'Selesai (Siap Diambil)' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' :
+                  currentStatus === 'Proses Verifikasi' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                  currentStatus === 'Ditolak' ? 'bg-rose-100 text-rose-800 border-rose-300' :
+                  'bg-amber-100 text-amber-900 border-amber-300'
+                }">
+                  ${currentStatus === 'Selesai (Siap Diambil)' ? '✅ ' : currentStatus === 'Proses Verifikasi' ? '🔍 ' : currentStatus === 'Ditolak' ? '❌ ' : '⏳ '}
+                  ${currentStatus}
+                </span>
               </div>
             </div>
 
+            <!-- Penandaan Status Cepat (1-Click Checklist Pills) -->
+            <div class="mt-4 pt-1">
+              <label class="block text-xs font-black text-[var(--leaf)] uppercase tracking-wider mb-2">
+                Centang / Penandaan Status Berkas Petugas:
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <!-- Option 1: Belum Diproses -->
+                <button 
+                  type="button" 
+                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    currentStatus === 'Belum Diproses' 
+                      ? 'bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300' 
+                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-amber-50'
+                  }"
+                  data-kode="${t.kode}"
+                  data-set-status="Belum Diproses"
+                >
+                  <span>⏳</span>
+                  <span>Belum Diproses</span>
+                </button>
+
+                <!-- Option 2: Proses Verifikasi -->
+                <button 
+                  type="button" 
+                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    currentStatus === 'Proses Verifikasi' 
+                      ? 'bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300' 
+                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-blue-50'
+                  }"
+                  data-kode="${t.kode}"
+                  data-set-status="Proses Verifikasi"
+                >
+                  <span>🔍</span>
+                  <span>Proses Verifikasi</span>
+                </button>
+
+                <!-- Option 3: Selesai Siap Diambil -->
+                <button 
+                  type="button" 
+                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    currentStatus === 'Selesai (Siap Diambil)' 
+                      ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300' 
+                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-emerald-50'
+                  }"
+                  data-kode="${t.kode}"
+                  data-set-status="Selesai (Siap Diambil)"
+                >
+                  <span>📦</span>
+                  <span>Siap Diambil di Loket</span>
+                </button>
+
+                <!-- Option 4: Ditolak -->
+                <button 
+                  type="button" 
+                  class="pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 ${
+                    currentStatus === 'Ditolak' 
+                      ? 'bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300' 
+                      : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-rose-50'
+                  }"
+                  data-kode="${t.kode}"
+                  data-set-status="Ditolak"
+                >
+                  <span>❌</span>
+                  <span>Ditolak Admin</span>
+                </button>
+              </div>
+              <input type="hidden" id="status-val-${t.kode}" value="${currentStatus}" />
+            </div>
+
             <!-- Details & Admin Update Section -->
-            <div class="mt-4 grid sm:grid-cols-2 gap-4 text-xs">
+            <div class="mt-4 grid sm:grid-cols-2 gap-4 text-xs pt-3 border-t border-[var(--line)]">
               <div>
-                <p class="text-[var(--muted)] font-bold">Keperluan / Keterangan Mahasiswa:</p>
-                <p class="text-[var(--ink)] mt-1 bg-white p-2.5 rounded-xl border border-[var(--line)]">${t.detailTambahan || t.keperluan}</p>
+                <p class="text-[var(--muted)] font-bold">Keperluan & Keterangan Mahasiswa:</p>
+                <p class="text-[var(--ink)] mt-1 bg-white p-2.5 rounded-xl border border-[var(--line)] font-medium leading-relaxed">${t.detailTambahan || t.keperluan}</p>
                 
                 <div class="mt-3 flex items-center gap-2 text-[11px] text-[var(--muted)]">
-                  <span>Format: <strong>${t.format || 'Digital'}</strong></span>
+                  <span>Metode Pengambilan: <strong class="text-[var(--ink)]">Fisik di Loket 1 FAPERTA</strong></span>
                   <span>·</span>
                   <span>SLA: <strong class="text-emerald-700">${t.estimasiSelesai || '1–2 Hari'}</strong></span>
                 </div>
               </div>
 
               <div>
-                <p class="text-[var(--muted)] font-bold">Posisi Berkas Saat Ini:</p>
+                <p class="text-[var(--muted)] font-bold">Posisi Berkas Fisik Saat Ini:</p>
                 <input 
                   type="text" 
-                  class="posisi-input w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none"
-                  value="${t.posisiBerkas || 'Pemeriksaan Administrasi Akademik'}"
+                  id="posisi-${t.kode}"
+                  class="posisi-input w-full rounded-xl border border-[var(--line)] bg-white p-2.5 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none font-medium"
+                  value="${t.posisiBerkas || 'Antrean Masuk Loket Administrasi FAPERTA'}"
                   data-kode="${t.kode}"
                 />
 
-                <p class="text-[var(--muted)] font-bold mt-3">Catatan Petugas (Dilihat Mahasiswa):</p>
+                <p class="text-[var(--muted)] font-bold mt-2.5 flex items-center justify-between">
+                  <span>Catatan / Alasan Petugas (Dilihat Mahasiswa):</span>
+                  <span class="text-[10px] text-gray-400 font-normal">Wajib diisi jika status Ditolak</span>
+                </p>
                 <textarea 
                   rows="2"
-                  class="catatan-input w-full rounded-xl border border-[var(--line)] bg-white p-2 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none"
+                  id="catatan-${t.kode}"
+                  class="catatan-input w-full rounded-xl border border-[var(--line)] bg-white p-2 text-xs text-[var(--ink)] mt-1 focus:border-[var(--leaf)] outline-none font-medium"
                   data-kode="${t.kode}"
-                  placeholder="Contoh: Berkas sudah diverifikasi, silakan ambil di loket..."
+                  placeholder="Contoh: Berkas sudah diverifikasi dan dicetak, silakan ambil di Loket 1 dengan membawa KTM..."
                 >${t.catatanAdmin || ''}</textarea>
               </div>
             </div>
@@ -444,51 +564,101 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
             <!-- Save Action Button -->
             <div class="mt-4 pt-3 border-t border-[var(--line)] flex items-center justify-between">
               <span class="save-indicator text-xs text-emerald-700 font-bold hidden" id="saved-${t.kode}">
-                ✓ Tersimpan & Tersinkronisasi ke Mahasiswa!
+                ✓ Status berkas tersimpan & tersinkronisasi ke sistem mahasiswa!
               </span>
               <button 
                 type="button" 
-                class="btn-save-ticket ml-auto btn-cta text-xs py-1.5 px-4 shadow-xs"
+                class="btn-save-ticket ml-auto btn-cta text-xs py-2 px-5 shadow-xs"
                 data-kode="${t.kode}"
               >
-                💾 Simpan Pembaruan
+                💾 Simpan Penandaan Berkas
               </button>
             </div>
           `;
           container.appendChild(card);
         });
 
+        // 1-Click Status Pill Handlers
+        document.querySelectorAll('.pill-status-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            const targetStatus = btn.getAttribute('data-set-status');
+            const hiddenInp = document.getElementById(`status-val-${kode}`);
+            const posisiInp = document.getElementById(`posisi-${kode}`);
+            const catatanInp = document.getElementById(`catatan-${kode}`);
+
+            if (hiddenInp) hiddenInp.value = targetStatus;
+
+            // Update visuals of sister pills in same card
+            const sisterPills = document.querySelectorAll(`.pill-status-btn[data-kode="${kode}"]`);
+            sisterPills.forEach(p => {
+              p.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+            });
+
+            // Set active class
+            if (targetStatus === 'Belum Diproses') {
+              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300';
+              if (posisiInp) posisiInp.value = 'Antrean Masuk Loket Administrasi FAPERTA';
+            } else if (targetStatus === 'Proses Verifikasi') {
+              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300';
+              if (posisiInp) posisiInp.value = 'Meja Petugas Loket (Pemeriksaan SIAKAD & Dokumen Fisik)';
+            } else if (targetStatus === 'Selesai (Siap Diambil)') {
+              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300';
+              if (posisiInp) posisiInp.value = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
+              if (catatanInp && (!catatanInp.value || catatanInp.value.includes('antrean') || catatanInp.value.includes('menunggu'))) {
+                catatanInp.value = 'Dokumen fisik resmi sudah dicetak dan berstempel basah. Silakan ambil di Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) dengan membawa KTM asli.';
+              }
+            } else if (targetStatus === 'Ditolak') {
+              btn.className = 'pill-status-btn p-2.5 rounded-xl border text-center font-bold transition flex items-center justify-center gap-1.5 bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300';
+              if (posisiInp) posisiInp.value = 'Ditolak Petugas Loket';
+              if (catatanInp && (!catatanInp.value || !catatanInp.value.toLowerCase().includes('ditolak'))) {
+                catatanInp.value = 'Ditolak: [Tuliskan alasan penolakan berkas mahasiswa di sini agar mahasiswa tahu apa yang harus diperbaiki]';
+                catatanInp.focus();
+                catatanInp.select();
+              }
+            }
+          });
+        });
+
         // Event listener simpan pembaruan
         document.querySelectorAll('.btn-save-ticket').forEach(btn => {
           btn.addEventListener('click', () => {
             const kode = btn.getAttribute('data-kode');
-            const statusSel = document.querySelector(`.status-select[data-kode="${kode}"]`);
-            const posisiInp = document.querySelector(`.posisi-input[data-kode="${kode}"]`);
-            const catatanInp = document.querySelector(`.catatan-input[data-kode="${kode}"]`);
+            const hiddenStatus = document.getElementById(`status-val-${kode}`);
+            const posisiInp = document.getElementById(`posisi-${kode}`);
+            const catatanInp = document.getElementById(`catatan-${kode}`);
             const savedMsg = document.getElementById(`saved-${kode}`);
 
             const all = loadTickets();
             const target = all.find(t => t.kode === kode);
             if (target) {
-              target.status = statusSel.value;
-              target.posisiBerkas = posisiInp.value;
-              target.catatanAdmin = catatanInp.value;
+              const newStatus = hiddenStatus?.value || target.status;
+              target.status = newStatus;
+              target.posisiBerkas = posisiInp ? posisiInp.value : target.posisiBerkas;
+              target.catatanAdmin = catatanInp ? catatanInp.value : target.catatanAdmin;
               target.isNewForAdmin = false;
 
-              const stepMap = {
-                'Diajukan': 1,
-                'Verifikasi Berkas': 2,
-                'Persetujuan': 3,
-                'Selesai': 4,
-                'Perlu Revisi': 2
-              };
-              target.statusStep = stepMap[target.status] || 1;
+              if (newStatus === 'Belum Diproses') {
+                target.statusStep = 1;
+              } else if (newStatus === 'Proses Verifikasi') {
+                target.statusStep = 2;
+              } else if (newStatus === 'Selesai (Siap Diambil)') {
+                target.statusStep = 3;
+                target.estimasiSelesai = 'Selesai (Silakan Ambil di Loket)';
+              } else if (newStatus === 'Ditolak') {
+                target.statusStep = -1;
+                target.estimasiSelesai = '-';
+              }
 
               saveTickets(all);
+              renderMetrics(all);
 
               if (savedMsg) {
                 savedMsg.classList.remove('hidden');
-                setTimeout(() => { savedMsg.classList.add('hidden'); }, 3000);
+                setTimeout(() => { 
+                  savedMsg.classList.add('hidden');
+                  renderList();
+                }, 1200);
               }
             }
           });
@@ -516,21 +686,21 @@ import { INITIAL_DEMO_TICKETS } from "../../data/portalData";
           layananId: 'khs',
           layananNama: 'Permohonan KHS (Semester 1 - 3)',
           keperluan: 'Pendaftaran Beasiswa Unggulan',
-          detailTambahan: 'Mohon stempel basah fakultas untuk lampiran beasiswa',
+          detailTambahan: 'Mohon stempel basah fakultas untuk lampiran beasiswa fisik',
           format: 'Cetak Fisik Berstempel Basah',
-          status: 'Diajukan',
+          status: 'Belum Diproses',
           statusStep: 1,
-          posisiBerkas: 'Antrean Surat Masuk Baru',
-          estimasiSelesai: '1 Hari Kerja (Besok)',
+          posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
+          estimasiSelesai: '1–2 Hari Kerja',
           slaDays: 2,
-          catatanAdmin: 'Surat baru diterima sistem. Menunggu pemeriksaan staf administrasi.',
+          catatanAdmin: 'Permohonan baru masuk antrean loket. Menunggu verifikasi petugas.',
           tanggal: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB',
           isNewForAdmin: true
         };
         all.unshift(newSim);
         saveTickets(all);
         renderList();
-        alert('🔔 Surat masuk baru dari Dewi Lestari (NIM: 23/11223/SP) berhasil disimulasikan!');
+        alert('🔔 Surat masuk baru dari Dewi Lestari (NIM: 23/11223/SP) masuk ke antrean Belum Diproses!');
       });
 
       // Reset data
