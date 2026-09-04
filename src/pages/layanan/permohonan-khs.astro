@@ -124,14 +124,99 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
 
               <div class="mt-5 space-y-4">
                 <div>
-                  <label for="semester_dimohon" class="form-label">Semester KHS yang Dimohonkan *</label>
-                  <select id="semester_dimohon" name="semester_dimohon" required class="form-select">
-                    <option value="Seluruh Semester (Transkrip KHS Kumulatif)">Seluruh Semester (Transkrip KHS Kumulatif Lengkap)</option>
-                    {semesterList.map((smt) => (
-                      <option value={`KHS ${smt}`}>Hanya KHS {smt}</option>
-                    ))}
-                  </select>
-                  <p class="mt-1 text-[11px] text-[var(--muted)]">Pilih semester spesifik atau transkrip kumulatif seluruh semester.</p>
+                  <label class="form-label">Cakupan Semester KHS yang Dimohonkan *</label>
+                  
+                  <!-- Pilihan Mode Cakupan KHS -->
+                  <div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                    <label class="flex items-center gap-2 p-3 rounded-xl border-2 border-[var(--leaf)] bg-[var(--leaf-soft)] cursor-pointer transition mode-cakupan-card" id="card-mode-range">
+                      <input type="radio" name="mode_cakupan" value="range" checked class="accent-[var(--leaf)]" />
+                      <span class="font-bold text-[var(--leaf)]">Rentang Semester (1-3, 2-4)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 rounded-xl border border-[var(--line)] bg-white cursor-pointer hover:border-[var(--leaf)] transition mode-cakupan-card" id="card-mode-all">
+                      <input type="radio" name="mode_cakupan" value="all" class="accent-[var(--leaf)]" />
+                      <span class="font-bold text-[var(--ink)]">Seluruh Semester (Kumulatif)</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-3 rounded-xl border border-[var(--line)] bg-white cursor-pointer hover:border-[var(--leaf)] transition mode-cakupan-card" id="card-mode-single">
+                      <input type="radio" name="mode_cakupan" value="single" class="accent-[var(--leaf)]" />
+                      <span class="font-bold text-[var(--ink)]">Satu Semester Saja</span>
+                    </label>
+                  </div>
+
+                  <!-- KOTAK 1: Rentang Semester (Default) -->
+                  <div id="box-range" class="mt-4 p-4 rounded-2xl bg-[#f7faf5] border border-[var(--leaf)]/30 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label for="smt_dari" class="text-xs font-bold text-[var(--ink)] block mb-1">Dari Semester:</label>
+                        <select id="smt_dari" class="form-select text-sm font-medium bg-white">
+                          {semesterList.map((smt, idx) => (
+                            <option value={idx + 1} selected={idx === 0}>{smt}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label for="smt_sampai" class="text-xs font-bold text-[var(--ink)] block mb-1">Sampai Semester:</label>
+                        <select id="smt_sampai" class="form-select text-sm font-medium bg-white">
+                          {semesterList.map((smt, idx) => (
+                            <option value={idx + 1} selected={idx === 2}>{smt}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- Preset Rentang Cepat (1-3, 2-4, dll) -->
+                    <div class="pt-2 border-t border-[var(--leaf)]/20 flex flex-wrap items-center gap-1.5 text-xs">
+                      <span class="text-[var(--muted)] font-bold mr-1">Contoh Cepat:</span>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="3">
+                        Semester 1 – 3
+                      </button>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="2" data-to="4">
+                        Semester 2 – 4
+                      </button>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="4">
+                        Semester 1 – 4
+                      </button>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="7">
+                        Semester 1 – 7
+                      </button>
+                      <button type="button" class="btn-range-preset px-2.5 py-1 rounded-lg bg-white border border-[var(--leaf)]/40 font-bold text-[var(--leaf)] hover:bg-[var(--leaf)] hover:text-white transition shadow-2xs" data-from="1" data-to="8">
+                        Semester 1 – 8
+                      </button>
+                    </div>
+
+                    <!-- Ringkasan Cakupan Real-time -->
+                    <div class="p-2.5 rounded-xl bg-white border border-[var(--line)] flex items-center justify-between text-xs">
+                      <span class="text-[var(--muted)] font-medium">Rentang Dokumen yang Dimohon:</span>
+                      <strong id="range-preview-badge" class="text-[var(--leaf)] font-mono font-bold bg-[var(--leaf-soft)] px-2.5 py-1 rounded-md">
+                        Semester 1 s/d 3
+                      </strong>
+                    </div>
+                  </div>
+
+                  <!-- KOTAK 2: Seluruh Semester (Kumulatif) -->
+                  <div id="box-all" class="hidden mt-4 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-amber-950">
+                    <div class="flex items-center gap-2.5">
+                      <span class="text-xl">📋</span>
+                      <div>
+                        <strong class="text-amber-900 block font-bold">Transkrip KHS Kumulatif Seluruh Semester</strong>
+                        <p class="text-amber-800 mt-0.5 leading-relaxed">
+                          Mencakup seluruh daftar nilai mata kuliah dari Semester 1 hingga semester yang telah Anda tempuh.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- KOTAK 3: Satu Semester Spesifik -->
+                  <div id="box-single" class="hidden mt-4 p-4 rounded-2xl bg-[#f7faf5] border border-[var(--leaf)]/30 space-y-2 text-xs">
+                    <label for="smt_single" class="font-bold text-[var(--ink)] block">Pilih Satu Semester Tertentu:</label>
+                    <select id="smt_single" class="form-select text-sm font-medium bg-white">
+                      {semesterList.map((smt) => (
+                        <option value={smt}>Hanya KHS {smt}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <!-- Hidden Input untuk dikirim ke Form -->
+                  <input type="hidden" id="semester_dimohon" name="semester_dimohon" value="Semester 1 s/d 3" />
                 </div>
 
                 <div>
@@ -388,6 +473,89 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
       const btnReset = document.getElementById('btn-reset-form');
       const btnPrint = document.getElementById('btn-print-receipt');
 
+      // 1. Logika Pilihan Rentang Semester (1-3, 2-4, dll.)
+      const modeRadios = document.querySelectorAll('input[name="mode_cakupan"]');
+      const boxRange = document.getElementById('box-range');
+      const boxAll = document.getElementById('box-all');
+      const boxSingle = document.getElementById('box-single');
+      const smtDari = document.getElementById('smt_dari');
+      const smtSampai = document.getElementById('smt_sampai');
+      const smtSingle = document.getElementById('smt_single');
+      const hiddenCakupan = document.getElementById('semester_dimohon');
+      const rangePreviewBadge = document.getElementById('range-preview-badge');
+      const presetBtns = document.querySelectorAll('.btn-range-preset');
+
+      function updateCakupanValue() {
+        const activeMode = document.querySelector('input[name="mode_cakupan"]:checked')?.value || 'range';
+
+        // Update card styles
+        document.querySelectorAll('.mode-cakupan-card').forEach(card => {
+          card.classList.remove('border-2', 'border-[var(--leaf)]', 'bg-[var(--leaf-soft)]');
+          card.classList.add('border-[var(--line)]', 'bg-white');
+          const span = card.querySelector('span');
+          if (span) {
+            span.classList.remove('text-[var(--leaf)]');
+            span.classList.add('text-[var(--ink)]');
+          }
+        });
+        const activeCard = document.getElementById(`card-mode-${activeMode}`);
+        if (activeCard) {
+          activeCard.classList.add('border-2', 'border-[var(--leaf)]', 'bg-[var(--leaf-soft)]');
+          activeCard.classList.remove('border-[var(--line)]', 'bg-white');
+          const span = activeCard.querySelector('span');
+          if (span) {
+            span.classList.add('text-[var(--leaf)]');
+            span.classList.remove('text-[var(--ink)]');
+          }
+        }
+
+        // Show/hide boxes
+        boxRange?.classList.toggle('hidden', activeMode !== 'range');
+        boxAll?.classList.toggle('hidden', activeMode !== 'all');
+        boxSingle?.classList.toggle('hidden', activeMode !== 'single');
+
+        if (activeMode === 'range') {
+          let fromVal = parseInt(smtDari?.value || '1', 10);
+          let toVal = parseInt(smtSampai?.value || '3', 10);
+
+          if (toVal < fromVal) {
+            toVal = fromVal;
+            if (smtSampai) smtSampai.value = toVal.toString();
+          }
+
+          const rangeStr = `Semester ${fromVal} s/d ${toVal}`;
+          if (rangePreviewBadge) rangePreviewBadge.textContent = rangeStr;
+          if (hiddenCakupan) hiddenCakupan.value = rangeStr;
+        } else if (activeMode === 'all') {
+          if (hiddenCakupan) hiddenCakupan.value = 'Seluruh Semester (Transkrip Kumulatif)';
+        } else if (activeMode === 'single') {
+          const singleVal = smtSingle?.value || 'Semester 1';
+          if (hiddenCakupan) hiddenCakupan.value = `Hanya KHS ${singleVal}`;
+        }
+      }
+
+      modeRadios.forEach(r => r.addEventListener('change', updateCakupanValue));
+      smtDari?.addEventListener('change', updateCakupanValue);
+      smtSampai?.addEventListener('change', updateCakupanValue);
+      smtSingle?.addEventListener('change', updateCakupanValue);
+
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const from = btn.getAttribute('data-from');
+          const to = btn.getAttribute('data-to');
+          if (smtDari && from) smtDari.value = from;
+          if (smtSampai && to) smtSampai.value = to;
+
+          const radioRange = document.querySelector('input[name="mode_cakupan"][value="range"]');
+          if (radioRange) radioRange.checked = true;
+
+          updateCakupanValue();
+        });
+      });
+
+      // Inisialisasi awal
+      updateCakupanValue();
+
       khsForm?.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -475,6 +643,7 @@ const semesterList = Array.from({ length: 14 }, (_, i) => `Semester ${i + 1}`);
 
       btnReset?.addEventListener('click', () => {
         khsForm?.reset();
+        updateCakupanValue();
         successWrapper?.classList.add('hidden');
         formWrapper?.classList.remove('hidden');
         window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });

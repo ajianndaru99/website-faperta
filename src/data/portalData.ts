@@ -27,6 +27,7 @@ export interface DocumentItem {
   file: string;
   format: string;
   icon: string;
+  isExternal?: boolean;
 }
 
 export type TicketStatus = 'Belum Diproses' | 'Proses Verifikasi' | 'Selesai (Siap Diambil)' | 'Ditolak';
@@ -239,87 +240,95 @@ export const PORTAL_SERVICES: ServiceItem[] = [
   }
 ];
 
-// 8 Dokumen Pokok Berdasarkan dari GAS.txt
+// 8 Dokumen Pokok Berdasarkan dari GAS.txt & Berkas Resmi Kampus
 export const PORTAL_DOCUMENTS: DocumentItem[] = [
   {
     id: "buku-panduan",
     category: "Panduan Umum",
-    title: "Buku Panduan Akademik",
-    desc: "Panduan induk ketentuan studi, hak & kewajiban, kurikulum, dan etika mahasiswa FAPERTA tahun berjalan.",
-    meta: "PDF · Tahun 2025 / 2026",
+    title: "Buku Panduan Akademik 2026 - 2027",
+    desc: "Buku pedoman induk penyelenggaraan akademik, kurikulum, sistem kredit semester (SKS), hak & kewajiban, serta etika mahasiswa FAPERTA INSTIPER Yogyakarta.",
+    meta: "PDF Resmi · Edisi 2026 / 2027 (20 MB)",
     file: "/dokumen/buku-panduan-akademik.pdf",
     format: "PDF",
-    icon: "▣"
+    icon: "▣",
+    isExternal: false
+  },
+  {
+    id: "kalender-akademik",
+    category: "Kalender",
+    title: "Kalender Akademik FAPERTA",
+    desc: "Jadwal resmi semester gasal & genap, masa pengisian KRS, perkuliahan aktif, UTS, UAS, libur semester, dan batas pendaftaran yudisium kelulusan.",
+    meta: "PDF Resmi · Tahun Akademik 2026 / 2027 (4.7 MB)",
+    file: "/dokumen/kalender-akademik.pdf",
+    format: "PDF",
+    icon: "▦",
+    isExternal: false
+  },
+  {
+    id: "denah-kampus",
+    category: "Kampus",
+    title: "Denah Kampus INSTIPER",
+    desc: "Peta denah resmi lokasi gedung dekanat Fakultas Pertanian, ruang kuliah, laboratorium penelitian, kebun percobaan, dan fasilitas kampus.",
+    meta: "JPG Gambar Resmi · Resolusi Tinggi (1.9 MB)",
+    file: "/denah-instiper.jpg",
+    format: "JPG",
+    icon: "⌖",
+    isExternal: false
+  },
+  {
+    id: "panduan-proposal-agrotek",
+    category: "Proposal & Skripsi",
+    title: "Panduan Proposal Penelitian Agroteknologi",
+    desc: "Akses folder Google Drive resmi berisi panduan baku penyusunan dan template naskah proposal penelitian tugas akhir Program Studi Agroteknologi.",
+    meta: "Google Drive Resmi · Prodi Agroteknologi",
+    file: "https://drive.google.com/drive/folders/1j3mfUotpP83SYsLnwRZjtBUPr9ehFjnp",
+    format: "G-Drive",
+    icon: "▤",
+    isExternal: true
+  },
+  {
+    id: "panduan-skripsi-agrotek",
+    category: "Proposal & Skripsi",
+    title: "Panduan Penulisan Skripsi Agroteknologi",
+    desc: "Akses folder Google Drive resmi berisi pedoman penulisan laporan skripsi, tata letak bab, tabel percobaan, dan template baku skripsi Program Studi Agroteknologi.",
+    meta: "Google Drive Resmi · Prodi Agroteknologi",
+    file: "https://drive.google.com/drive/folders/1_bsyTzr5tGBzMEJsm01EngkfbMEfL1NK",
+    format: "G-Drive",
+    icon: "▤",
+    isExternal: true
   },
   {
     id: "kurikulum-agroteknologi",
     category: "Program Studi",
     title: "Kurikulum Prodi Agroteknologi",
     desc: "Struktur sebaran mata kuliah, silabus, praktikum, dan peminatan konsentrasi Agroteknologi.",
-    meta: "PDF · Kurikulum 2025",
+    meta: "PDF · Kurikulum Berjalan",
     file: "/dokumen/panduan-agroteknologi.pdf",
     format: "PDF",
-    icon: "◒"
+    icon: "◒",
+    isExternal: false
   },
   {
     id: "kurikulum-agribisnis",
     category: "Program Studi",
     title: "Kurikulum Prodi Agribisnis",
     desc: "Peta kurikulum mata kuliah, manajemen agribisnis, studi kelayakan, dan kewirausahaan pertanian.",
-    meta: "PDF · Kurikulum 2025",
+    meta: "PDF · Kurikulum Berjalan",
     file: "/dokumen/panduan-agribisnis.pdf",
     format: "PDF",
-    icon: "◒"
-  },
-  {
-    id: "kalender-akademik",
-    category: "Kalender",
-    title: "Kalender Akademik FAPERTA",
-    desc: "Jadwal penting semester gasal & genap, masa KRS, perkuliahan, UTS, UAS, dan batas yudisium.",
-    meta: "PDF · Tahun Akademik 2025 / 2026",
-    file: "/dokumen/kalender-akademik.pdf",
-    format: "PDF",
-    icon: "▦"
-  },
-  {
-    id: "template-skripsi-agrotek",
-    category: "Template",
-    title: "Template Skripsi Agroteknologi",
-    desc: "Format baku penulisan laporan skripsi, tata letak bab, tabel, grafik percobaan, dan daftar pustaka.",
-    meta: "DOCX · Format Baku",
-    file: "/dokumen/template-skripsi-agroteknologi.docx",
-    format: "DOCX",
-    icon: "▤"
+    icon: "◒",
+    isExternal: false
   },
   {
     id: "template-skripsi-agri",
     category: "Template",
     title: "Template Skripsi Agribisnis",
     desc: "Format baku naskah skripsi penelitian sosial-ekonomi pertanian, studi kasus, dan permodelan bisnis.",
-    meta: "DOCX · Format Baku",
+    meta: "DOCX · Format Baku Agribisnis",
     file: "/dokumen/template-skripsi-agribisnis.docx",
     format: "DOCX",
-    icon: "▤"
-  },
-  {
-    id: "template-proposal",
-    category: "Template",
-    title: "Template Proposal Penelitian",
-    desc: "Format standar penyusunan naskah proposal penelitian tugas akhir untuk kedua program studi.",
-    meta: "DOCX · Agroteknologi & Agribisnis",
-    file: "/dokumen/template-proposal.docx",
-    format: "DOCX",
-    icon: "▤"
-  },
-  {
-    id: "denah-kampus",
-    category: "Kampus",
-    title: "Denah Kampus INSTIPER",
-    desc: "Informasi lokasi gedung dekanat FAPERTA, laboratorium, ruang kuliah, dan kebun percobaan.",
-    meta: "SVG · Peta Wilayah Kampus",
-    file: "/campus-map.svg",
-    format: "SVG",
-    icon: "⌖"
+    icon: "▤",
+    isExternal: false
   }
 ];
 

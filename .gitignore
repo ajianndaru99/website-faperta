@@ -25,4 +25,5 @@ pnpm-debug.log*
 
 # local notes
 dari GAS.txt
+*.zip
 
