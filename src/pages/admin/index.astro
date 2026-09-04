@@ -11,18 +11,19 @@ import {
 <BaseLayout 
   title="Portal Admin & Database Administrasi" 
   description="Dashboard petugas loket dan sistem database utama administrasi Fakultas Pertanian INSTIPER Yogyakarta."
+  isStandaloneAdmin={true}
 >
   
   <!-- ============================================================
-       1. TAMPILAN LOGIN KHUSUS ADMIN (Konsep & Tema Portal Ujian)
+       1. TAMPILAN LOGIN KHUSUS ADMIN (Simple & Professional)
        ============================================================ -->
-  <section id="admin-login-view" class="container-shell py-16 sm:py-24 max-w-md mx-auto">
-    <div class="rounded-3xl border border-slate-200/90 bg-white p-8 sm:p-10 shadow-xl relative overflow-hidden">
+  <section id="admin-login-view" class="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+    <div class="w-full max-w-md rounded-3xl border border-slate-200/90 bg-white p-8 sm:p-10 shadow-xl relative overflow-hidden">
       <!-- Decorative top emerald strip -->
       <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700"></div>
 
       <div class="text-center">
-        <div class="mx-auto h-16 w-16 rounded-2xl bg-emerald-50 border border-emerald-200 p-2.5 flex items-center justify-center shadow-xs">
+        <div class="mx-auto h-16 w-16 rounded-2xl bg-slate-50 border border-slate-200 p-2.5 flex items-center justify-center shadow-xs">
           <img 
             src="/logo-instiper.webp" 
             alt="Logo INSTIPER" 
@@ -44,11 +45,11 @@ import {
       </div>
 
       <!-- Form Login Admin -->
-      <form id="admin-login-form" class="mt-8 space-y-4">
+      <form id="admin-login-form" class="mt-8 space-y-4 text-left">
         <!-- Error Alert -->
         <div id="login-error-alert" class="hidden p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 font-medium flex items-center gap-2">
           <span>⚠️</span>
-          <span><strong>ID atau Kata Sandi salah!</strong> Silakan gunakan kredensial staf loket.</span>
+          <span><strong>ID atau Kata Sandi salah!</strong> Silakan periksa kembali kredensial Anda.</span>
         </div>
 
         <div>
@@ -102,7 +103,7 @@ import {
       </form>
 
       <!-- Informasi Akun Demo Staf -->
-      <div class="mt-6 pt-5 border-t border-slate-100 bg-slate-50/80 p-3.5 rounded-2xl text-[11px] text-slate-600 space-y-1">
+      <div class="mt-6 pt-5 border-t border-slate-100 bg-slate-50/80 p-3.5 rounded-2xl text-[11px] text-slate-600 space-y-1 text-left">
         <p class="font-bold text-emerald-800 flex items-center gap-1.5">
           <span>💡</span>
           <span>Kredensial Akses Staf Loket:</span>
@@ -122,117 +123,78 @@ import {
   </section>
 
   <!-- ============================================================
-       2. TAMPILAN DASHBOARD & DATABASE ADMIN (Tema Portal Ujian)
+       2. TAMPILAN DASHBOARD & DATABASE ADMIN (Desktop Fit & Pro)
        ============================================================ -->
   <div id="admin-dashboard-view" class="hidden flex-1 bg-slate-50 min-h-screen border-b border-slate-200">
     
-    <!-- Top System Header Bar (Live Clock, Status Server & Quick Actions) -->
+    <!-- Top System Header Bar (Logo INSTIPER disesuaikan, Live Clock & Status Loket) -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-      <div class="container-shell py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="w-full px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
         
-        <!-- Left: Branding & Section -->
-        <div class="flex items-center gap-3">
-          <div class="h-9 w-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shadow-xs">
-            FP
-          </div>
-          <div>
+        <!-- Left: Logo INSTIPER Disesuaikan & Title -->
+        <div class="flex items-center gap-3.5">
+          <img 
+            src="/logo-instiper.webp" 
+            alt="Logo INSTIPER" 
+            width="40" 
+            height="40" 
+            class="h-10 w-10 object-contain shrink-0 drop-shadow-xs" 
+          />
+          <div class="flex flex-col text-left">
             <div class="flex items-center gap-2">
-              <h1 class="text-sm sm:text-base font-black text-slate-900 leading-none">
-                Sistem Administrasi FAPERTA
+              <h1 class="text-base font-black text-slate-900 tracking-tight leading-none">
+                FAPERTA INSTIPER
               </h1>
-              <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                Loket Online
+                Portal Administrasi Loket
               </span>
             </div>
-            <p class="text-[11px] text-slate-500 mt-0.5">
-              Fakultas Pertanian INSTIPER • Gedung A Lantai 1
+            <p class="text-[11px] text-slate-500 font-medium mt-1">
+              Fakultas Pertanian • Gedung A Lantai 1
             </p>
           </div>
         </div>
 
-        <!-- Right: Real-time Live Clock & Date + Quick Actions -->
-        <div class="flex items-center gap-2.5">
-          <!-- Digital Clock Widget (portal-ujian style) -->
-          <div class="hidden md:flex items-center gap-2 bg-slate-100/80 px-3 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+        <!-- Right: Real-time Live Clock & Date Widget -->
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2.5 bg-slate-50 px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-700">
             <span class="text-slate-400">📅</span>
             <span id="live-calendar" class="font-medium">Jumat, 4 September 2026</span>
             <span class="text-slate-300">|</span>
             <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span id="live-clock" class="font-mono font-bold text-emerald-700">--:--:-- WIB</span>
           </div>
-
-          <!-- Tombol Tambah / Simulasi Berkas Baru -->
-          <div class="relative">
-            <button 
-              id="btn-simulate-dropdown" 
-              type="button" 
-              class="px-3 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
-            >
-              <span>➕</span>
-              <span class="hidden sm:inline">Simulasi Berkas</span>
-              <span class="text-[9px]">▼</span>
-            </button>
-            <div id="simulate-dropdown-menu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-40 space-y-1 text-xs">
-              <div class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Tambah Antrean Demo:
-              </div>
-              <button type="button" data-sim-case="khs" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
-                <span>📄 Permohonan KHS Baru</span>
-                <span class="text-[10px] text-slate-400">Loket</span>
-              </button>
-              <button type="button" data-sim-case="komplain" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
-                <span>⚖️ Komplain Nilai Baru</span>
-                <span class="text-[10px] text-slate-400">SIAKAD</span>
-              </button>
-              <button type="button" data-sim-case="ujian" class="sim-case-btn w-full text-left px-3 py-2 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold flex items-center justify-between cursor-pointer">
-                <span>🎓 Ujian Khusus Baru</span>
-                <span class="text-[10px] text-slate-400">Dekanat</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Tombol Ekspor CSV Rekap -->
-          <button 
-            id="btn-export-csv" 
-            type="button" 
-            class="px-3 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
-            title="Unduh data seluruh berkas format CSV"
-          >
-            <span>📥</span>
-            <span class="hidden sm:inline">Unduh CSV</span>
-          </button>
         </div>
       </div>
     </header>
 
-    <!-- Main Container -->
-    <div class="container-shell py-6">
-      
-      <div class="grid lg:grid-cols-[270px_1fr] gap-6 items-start">
+    <!-- Main Container: Full width for desktop monitors -->
+    <div class="w-full px-6 lg:px-8 py-6">
+      <div class="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
         
         <!-- ============================================================
-             SIDEBAR KIRI (Tema & Konsep portal-ujian-faperta)
+             SIDEBAR KIRI (Rata Kiri, Rapi, & Jarak Elemen Nyaman)
              ============================================================ -->
-        <aside class="space-y-5 lg:sticky lg:top-20">
+        <aside class="space-y-6 lg:sticky lg:top-20">
           
           <!-- Box Navigasi Utama -->
-          <div class="rounded-3xl border border-slate-200 bg-white p-4 shadow-xs space-y-5">
+          <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-xs space-y-6 text-left">
             
             <!-- SECTION 1: MENU UTAMA -->
             <div>
-              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2 px-2">
+              <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 block mb-2.5 px-2 text-left">
                 Menu Utama
               </span>
-              <nav class="space-y-1" aria-label="Menu Utama Admin">
+              <nav class="space-y-1.5" aria-label="Menu Utama Admin">
                 <!-- 1. Berkas Masuk / Dashboard -->
                 <button 
                   type="button" 
                   id="tab-btn-berkas" 
-                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md shadow-emerald-900/15"
+                  class="admin-main-tab w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition cursor-pointer bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md shadow-emerald-900/15 text-left"
                 >
-                  <div class="flex items-center gap-2.5">
-                    <span class="text-sm">📥</span>
+                  <div class="flex items-center gap-3">
+                    <span class="text-base">📥</span>
                     <span>Daftar Berkas Masuk</span>
                   </div>
                   <span id="badge-count-all" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/20 text-white font-black">0</span>
@@ -242,10 +204,10 @@ import {
                 <button 
                   type="button" 
                   id="tab-btn-database" 
-                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800"
+                  class="admin-main-tab w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
                 >
-                  <div class="flex items-center gap-2.5">
-                    <span class="text-sm">🗄️</span>
+                  <div class="flex items-center gap-3">
+                    <span class="text-base">🗄️</span>
                     <span>Database Administrasi</span>
                   </div>
                   <span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-800">MASTER</span>
@@ -255,10 +217,10 @@ import {
                 <button 
                   type="button" 
                   id="tab-btn-rekap" 
-                  class="admin-main-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800"
+                  class="admin-main-tab w-full flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
                 >
-                  <div class="flex items-center gap-2.5">
-                    <span class="text-sm">📊</span>
+                  <div class="flex items-center gap-3">
+                    <span class="text-base">📊</span>
                     <span>Rekap & Laporan</span>
                   </div>
                   <span class="text-slate-400 text-xs">→</span>
@@ -267,18 +229,18 @@ import {
             </div>
 
             <!-- SECTION 2: FILTER STATUS BERKAS (Aktif pada View Berkas) -->
-            <div id="sidebar-filter-status-box" class="border-t border-slate-100 pt-4">
-              <div class="flex items-center justify-between mb-2 px-2">
-                <span class="text-[10px] font-black uppercase tracking-wider text-slate-400">
+            <div id="sidebar-filter-status-box" class="border-t border-slate-100 pt-5">
+              <div class="flex items-center justify-between mb-2.5 px-2">
+                <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 text-left">
                   Filter Status
                 </span>
                 <span class="text-[10px] text-slate-400 font-mono">Real-time</span>
               </div>
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <button 
                   type="button" 
                   data-status="all" 
-                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-emerald-50 text-emerald-800"
+                  class="admin-status-filter w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-emerald-50 text-emerald-800 text-left"
                 >
                   <span>Semua Status</span>
                   <span id="stat-filter-all" class="font-mono text-[10px]">0</span>
@@ -286,60 +248,60 @@ import {
                 <button 
                   type="button" 
                   data-status="Belum Diproses" 
-                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-amber-50 hover:text-amber-900"
+                  class="admin-status-filter w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-amber-50 hover:text-amber-900 text-left"
                 >
-                  <span class="flex items-center gap-1.5">
+                  <span class="flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-amber-500"></span>
                     <span>Belum Diproses</span>
                   </span>
-                  <span id="stat-filter-pending" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-amber-100 text-amber-900 font-black">0</span>
+                  <span id="stat-filter-pending" class="px-2 py-0.5 rounded font-mono text-[10px] bg-amber-100 text-amber-900 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-status="Proses Verifikasi" 
-                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-blue-50 hover:text-blue-900"
+                  class="admin-status-filter w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-blue-50 hover:text-blue-900 text-left"
                 >
-                  <span class="flex items-center gap-1.5">
+                  <span class="flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-blue-500"></span>
                     <span>Proses Verifikasi</span>
                   </span>
-                  <span id="stat-filter-process" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-blue-100 text-blue-900 font-black">0</span>
+                  <span id="stat-filter-process" class="px-2 py-0.5 rounded font-mono text-[10px] bg-blue-100 text-blue-900 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-status="Selesai (Siap Diambil)" 
-                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-emerald-50 hover:text-emerald-900"
+                  class="admin-status-filter w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-emerald-50 hover:text-emerald-900 text-left"
                 >
-                  <span class="flex items-center gap-1.5">
+                  <span class="flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
                     <span>Siap Diambil</span>
                   </span>
-                  <span id="stat-filter-done" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-emerald-100 text-emerald-900 font-black">0</span>
+                  <span id="stat-filter-done" class="px-2 py-0.5 rounded font-mono text-[10px] bg-emerald-100 text-emerald-900 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-status="Ditolak" 
-                  class="admin-status-filter w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-rose-50 hover:text-rose-900"
+                  class="admin-status-filter w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-rose-50 hover:text-rose-900 text-left"
                 >
-                  <span class="flex items-center gap-1.5">
+                  <span class="flex items-center gap-2">
                     <span class="h-2 w-2 rounded-full bg-rose-500"></span>
                     <span>Ditolak</span>
                   </span>
-                  <span id="stat-filter-rejected" class="px-1.5 py-0.2 rounded font-mono text-[10px] bg-rose-100 text-rose-900 font-black">0</span>
+                  <span id="stat-filter-rejected" class="px-2 py-0.5 rounded font-mono text-[10px] bg-rose-100 text-rose-900 font-bold">0</span>
                 </button>
               </div>
             </div>
 
             <!-- SECTION 3: FILTER KATEGORI LAYANAN BERKAS -->
-            <div id="sidebar-filter-category-box" class="border-t border-slate-100 pt-4">
-              <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2 px-2">
+            <div id="sidebar-filter-category-box" class="border-t border-slate-100 pt-5">
+              <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 block mb-2.5 px-2 text-left">
                 Kategori Berkas
               </span>
-              <div class="space-y-1">
+              <div class="space-y-1.5">
                 <button 
                   type="button" 
                   data-case="all" 
-                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900"
+                  class="admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900 text-left"
                 >
                   <span>📋 Seluruh Dokumen</span>
                   <span id="badge-cat-all" class="font-mono text-[10px]">0</span>
@@ -347,44 +309,44 @@ import {
                 <button 
                   type="button" 
                   data-case="khs" 
-                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                  class="admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50 text-left"
                 >
                   <span>📄 Permohonan KHS</span>
-                  <span id="badge-count-khs" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                  <span id="badge-count-khs" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-case="komplain" 
-                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                  class="admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50 text-left"
                 >
                   <span>⚖️ Komplain Nilai</span>
-                  <span id="badge-count-komplain" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                  <span id="badge-count-komplain" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-case="ujian" 
-                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                  class="admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50 text-left"
                 >
                   <span>🎓 Ujian Khusus</span>
-                  <span id="badge-count-ujian" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                  <span id="badge-count-ujian" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold">0</span>
                 </button>
                 <button 
                   type="button" 
                   data-case="lainnya" 
-                  class="admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50"
+                  class="admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50 text-left"
                 >
                   <span>📑 Surat Izin / Lainnya</span>
-                  <span id="badge-count-lainnya" class="px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700">0</span>
+                  <span id="badge-count-lainnya" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold">0</span>
                 </button>
               </div>
             </div>
 
             <!-- SECTION 4: SYSTEM CONTROLS -->
-            <div class="border-t border-slate-100 pt-4 space-y-1.5">
+            <div class="border-t border-slate-100 pt-5 space-y-2">
               <button 
                 id="btn-mark-all-read" 
                 type="button" 
-                class="w-full text-left px-3 py-1.5 rounded-xl text-[11px] font-bold text-slate-600 hover:bg-slate-100 hover:text-emerald-800 transition flex items-center gap-1.5 cursor-pointer"
+                class="w-full text-left px-3.5 py-2 rounded-xl text-[11px] font-bold text-slate-600 hover:bg-slate-100 hover:text-emerald-800 transition flex items-center gap-2 cursor-pointer"
               >
                 <span>✓</span>
                 <span>Tandai Semua Berkas Terbaca</span>
@@ -392,7 +354,7 @@ import {
               <button 
                 id="btn-reset-demo" 
                 type="button" 
-                class="w-full text-left px-3 py-1.5 rounded-xl text-[11px] font-bold text-rose-600 hover:bg-rose-50 transition flex items-center gap-1.5 cursor-pointer"
+                class="w-full text-left px-3.5 py-2 rounded-xl text-[11px] font-bold text-rose-600 hover:bg-rose-50 transition flex items-center gap-2 cursor-pointer"
               >
                 <span>🔄</span>
                 <span>Reset Data Awal Demo</span>
@@ -406,7 +368,7 @@ import {
               <div class="h-10 w-10 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-sm shadow-xs">
                 A
               </div>
-              <div>
+              <div class="text-left">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block leading-none">Petugas Loket</span>
                 <strong class="text-xs font-black text-slate-900 block mt-0.5">agrotek</strong>
                 <span class="text-[10px] text-emerald-700 font-bold block">Super Admin</span>
@@ -426,9 +388,9 @@ import {
         </aside>
 
         <!-- ============================================================
-             WORKSPACE UTAMA (KANAN)
+             WORKSPACE UTAMA (KANAN - FIT SCREEN & COMFORTABLE)
              ============================================================ -->
-        <main class="space-y-6">
+        <main class="space-y-6 text-left">
           
           <!-- ========================================================
                VIEW 1: DAFTAR BERKAS MASUK (DASHBOARD PEMROSESAN)
@@ -436,13 +398,13 @@ import {
           <div id="view-berkas-container" class="space-y-6">
             
             <!-- Workspace Header Bar -->
-            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div class="flex items-center gap-2.5">
                   <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                     Semua Berkas Masuk
                   </h2>
-                  <span id="filtered-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  <span id="filtered-count-badge" class="px-3 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-800 border border-emerald-200">
                     0 Berkas
                   </span>
                 </div>
@@ -467,10 +429,10 @@ import {
               </div>
             </div>
 
-            <!-- Compact KPI Stats Strip (portal-ujian clean aesthetic) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+            <!-- Compact KPI Stats Strip -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs flex items-center gap-3.5">
-                <div class="h-10 w-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg">
+                <div class="h-11 w-11 rounded-xl bg-slate-100 flex items-center justify-center text-xl">
                   📋
                 </div>
                 <div>
@@ -479,7 +441,7 @@ import {
                 </div>
               </div>
               <div class="rounded-2xl border border-amber-200 bg-amber-50/60 p-4 shadow-2xs flex items-center gap-3.5">
-                <div class="h-10 w-10 rounded-xl bg-amber-100 flex items-center justify-center text-lg">
+                <div class="h-11 w-11 rounded-xl bg-amber-100 flex items-center justify-center text-xl">
                   ⏳
                 </div>
                 <div>
@@ -488,7 +450,7 @@ import {
                 </div>
               </div>
               <div class="rounded-2xl border border-blue-200 bg-blue-50/60 p-4 shadow-2xs flex items-center gap-3.5">
-                <div class="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center text-lg">
+                <div class="h-11 w-11 rounded-xl bg-blue-100 flex items-center justify-center text-xl">
                   🔍
                 </div>
                 <div>
@@ -497,7 +459,7 @@ import {
                 </div>
               </div>
               <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-2xs flex items-center gap-3.5">
-                <div class="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center text-lg">
+                <div class="h-11 w-11 rounded-xl bg-emerald-100 flex items-center justify-center text-xl">
                   ✅
                 </div>
                 <div>
@@ -507,11 +469,11 @@ import {
               </div>
             </div>
 
-            <!-- Notice: Cetak Struk Hanya di Mahasiswa -->
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-3.5 flex items-center justify-between gap-3 text-xs text-emerald-900">
-              <div class="flex items-center gap-2">
+            <!-- Notice: Kebijakan Cetak Struk di Mahasiswa -->
+            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 flex items-center justify-between gap-3 text-xs text-emerald-900">
+              <div class="flex items-center gap-2.5">
                 <span class="text-base">ℹ️</span>
-                <span><strong>Catatan Kebijakan:</strong> Fitur cetak struk fisik tanda terima resmi dikhususkan untuk dicetak langsung oleh <strong>Mahasiswa</strong> pada menu Cek Status & Konfirmasi Permohonan.</span>
+                <span><strong>Kebijakan Cetak Struk:</strong> Cetak tanda terima permohonan resmi dikhususkan langsung bagi <strong>Mahasiswa</strong> pada halaman Cek Status & Konfirmasi Pengajuan.</span>
               </div>
             </div>
 
@@ -531,7 +493,7 @@ import {
           </div>
 
           <!-- ========================================================
-               VIEW 2: DATABASE UTAMA ADMINISTRASI (Requirement #2)
+               VIEW 2: DATABASE UTAMA ADMINISTRASI (Requirement #2 & #3)
                ======================================================== -->
           <div id="view-database-container" class="hidden space-y-6">
             
@@ -555,28 +517,28 @@ import {
                   <button 
                     type="button" 
                     data-db-tab="mahasiswa" 
-                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
                   >
                     🎓 Mahasiswa ({MASTER_MAHASISWA.length})
                   </button>
                   <button 
                     type="button" 
                     data-db-tab="dosen" 
-                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
                   >
                     👨‍🏫 Dosen & Kaprodi ({MASTER_DOSEN.length})
                   </button>
                   <button 
                     type="button" 
                     data-db-tab="matkul" 
-                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
                   >
                     📚 Mata Kuliah ({MASTER_MATAKULIAH.length})
                   </button>
                   <button 
                     type="button" 
                     data-db-tab="arsip" 
-                    class="db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
                   >
                     📋 Buku Besar Berkas
                   </button>
@@ -628,19 +590,16 @@ import {
               </div>
             </div>
 
-            <!-- TAB PANE 2: MASTER DOSEN & KAPRODI -->
+            <!-- TAB PANE 2: MASTER DOSEN & KAPRODI (Cukup Nama Lengkap & Gelar serta Program Studi) -->
             <div id="pane-dosen" class="db-pane hidden space-y-4">
               <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs text-slate-700">
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4">NIDN</th>
-                        <th class="py-3.5 px-4">Kode</th>
-                        <th class="py-3.5 px-4">Nama Lengkap & Gelar</th>
-                        <th class="py-3.5 px-4">Program Studi</th>
-                        <th class="py-3.5 px-4">Jabatan Akademik</th>
-                        <th class="py-3.5 px-4">Email Resmi</th>
+                        <th class="py-3.5 px-6 w-16 text-center">No</th>
+                        <th class="py-3.5 px-6">Nama Lengkap & Gelar</th>
+                        <th class="py-3.5 px-6">Program Studi</th>
                       </tr>
                     </thead>
                     <tbody id="table-dosen-body" class="divide-y divide-slate-100">
@@ -715,24 +674,24 @@ import {
                   Unduh ringkasan transaksi surat masuk, permohonan KHS, komplain nilai, dan ujian khusus dalam format spreadsheet CSV untuk arsip dinas atau laporan berkala fakultas.
                 </p>
 
-                <div class="mt-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <div class="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
                   <h4 class="text-xs font-bold text-slate-800">Ringkasan Berkas Tercatat:</h4>
-                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                    <div class="p-3 bg-white rounded-xl border border-slate-200">
-                      <p class="text-[10px] text-slate-400">Total Pengajuan</p>
-                      <p id="rekap-total" class="text-base font-black text-slate-900 mt-0.5">0</p>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-xs">
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-slate-400 font-bold uppercase">Total Pengajuan</p>
+                      <p id="rekap-total" class="text-lg font-black text-slate-900 mt-0.5">0</p>
                     </div>
-                    <div class="p-3 bg-white rounded-xl border border-slate-200">
-                      <p class="text-[10px] text-amber-700 font-bold">Belum Diproses</p>
-                      <p id="rekap-pending" class="text-base font-black text-amber-900 mt-0.5">0</p>
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-amber-700 font-bold uppercase">Belum Diproses</p>
+                      <p id="rekap-pending" class="text-lg font-black text-amber-900 mt-0.5">0</p>
                     </div>
-                    <div class="p-3 bg-white rounded-xl border border-slate-200">
-                      <p class="text-[10px] text-blue-700 font-bold">Verifikasi</p>
-                      <p id="rekap-process" class="text-base font-black text-blue-900 mt-0.5">0</p>
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-blue-700 font-bold uppercase">Verifikasi</p>
+                      <p id="rekap-process" class="text-lg font-black text-blue-900 mt-0.5">0</p>
                     </div>
-                    <div class="p-3 bg-white rounded-xl border border-slate-200">
-                      <p class="text-[10px] text-emerald-700 font-bold">Siap Diambil</p>
-                      <p id="rekap-done" class="text-base font-black text-emerald-900 mt-0.5">0</p>
+                    <div class="p-3.5 bg-white rounded-xl border border-slate-200">
+                      <p class="text-[10px] text-emerald-700 font-bold uppercase">Siap Diambil</p>
+                      <p id="rekap-done" class="text-lg font-black text-emerald-900 mt-0.5">0</p>
                     </div>
                   </div>
                 </div>
@@ -741,7 +700,7 @@ import {
                   <button 
                     id="btn-rekap-download-csv" 
                     type="button" 
-                    class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold px-5 py-3 shadow-md shadow-emerald-900/15 flex items-center gap-2 cursor-pointer"
+                    class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs font-bold px-5 py-3 shadow-md shadow-emerald-900/15 flex items-center gap-2 cursor-pointer transition"
                   >
                     <span>📥</span>
                     <span>Download Rekap Lengkap (.CSV)</span>
@@ -749,7 +708,7 @@ import {
                   <button 
                     id="btn-back-to-berkas" 
                     type="button" 
-                    class="rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-3 cursor-pointer"
+                    class="rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-3 cursor-pointer transition"
                   >
                     Kembali ke Berkas Masuk
                   </button>
@@ -768,7 +727,7 @@ import {
   <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden transition-opacity opacity-0" aria-hidden="true"></div>
   <div 
     id="edit-ticket-modal" 
-    class="fixed inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-xl bg-white z-50 rounded-3xl shadow-2xl border border-slate-200 hidden transform scale-95 transition-all duration-200 overflow-hidden"
+    class="fixed inset-x-4 top-1/2 -translate-y-1/2 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 sm:w-full sm:max-w-xl bg-white z-50 rounded-3xl shadow-2xl border border-slate-200 hidden transform scale-95 transition-all duration-200 overflow-hidden text-left"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-ticket-title"
@@ -850,13 +809,13 @@ import {
         <!-- Preset Posisi Cepat -->
         <div class="mt-2 flex flex-wrap gap-1.5 text-[10px]">
           <span class="text-slate-400 self-center">Pilihan cepat:</span>
-          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)">
+          <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)">
             Loket 1 Gedung A
           </button>
-          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Berkas">
+          <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Berkas">
             Meja Verifikasi
           </button>
-          <button type="button" class="preset-posisi px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi / Dekanat">
+          <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi / Dekanat">
             Ruang Kaprodi
           </button>
         </div>
@@ -1077,10 +1036,6 @@ import {
           return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH');
         }).length;
 
-        const pendingKhs = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS'))).length;
-        const pendingKomplain = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP'))).length;
-        const pendingUjian = tickets.filter(t => t.status === 'Belum Diproses' && ((t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH'))).length;
-
         const bAll = document.getElementById('badge-count-all');
         const bCatAll = document.getElementById('badge-cat-all');
         const bKhs = document.getElementById('badge-count-khs');
@@ -1091,16 +1046,16 @@ import {
         if (bAll) bAll.textContent = countAll;
         if (bCatAll) bCatAll.textContent = countAll;
         if (bKhs) {
-          bKhs.textContent = pendingKhs > 0 ? `${pendingKhs} Baru` : countKhs;
-          bKhs.className = pendingKhs > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
+          bKhs.textContent = countKhs;
+          bKhs.className = 'px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bKomplain) {
-          bKomplain.textContent = pendingKomplain > 0 ? `${pendingKomplain} Baru` : countKomplain;
-          bKomplain.className = pendingKomplain > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
+          bKomplain.textContent = countKomplain;
+          bKomplain.className = 'px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bUjian) {
-          bUjian.textContent = pendingUjian > 0 ? `${pendingUjian} Baru` : countUjian;
-          bUjian.className = pendingUjian > 0 ? 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-500 text-white font-black' : 'px-1.5 py-0.2 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
+          bUjian.textContent = countUjian;
+          bUjian.className = 'px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 font-bold';
         }
         if (bLainnya) bLainnya.textContent = countLainnya;
 
@@ -1189,7 +1144,7 @@ import {
         filtered.forEach(t => {
           const cfg = statusConfig[t.status] || statusConfig['Belum Diproses'];
           const card = document.createElement('div');
-          card.className = `rounded-3xl border ${t.isNewForAdmin ? 'border-emerald-400 ring-2 ring-emerald-300/30' : 'border-slate-200'} bg-white p-5 sm:p-6 shadow-xs hover:border-emerald-600/60 transition`;
+          card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-xs hover:border-emerald-600/60 transition text-left';
 
           card.innerHTML = `
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
@@ -1201,14 +1156,13 @@ import {
                   <span>${cfg.icon}</span>
                   <span>${t.status}</span>
                 </span>
-                ${t.isNewForAdmin ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-600 text-white animate-pulse">BARU</span>' : ''}
               </div>
               <div class="text-xs text-slate-500 flex items-center gap-2">
                 <span>🗓️ ${t.tanggal || 'Hari Ini'}</span>
               </div>
             </div>
 
-            <div class="mt-4 grid md:grid-cols-[1.2fr_1fr] gap-5 items-start">
+            <div class="mt-4 grid md:grid-cols-[1.2fr_1fr] gap-6 items-start">
               <div>
                 <div class="flex items-start gap-3">
                   <div class="h-10 w-10 shrink-0 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-base border border-emerald-200">
@@ -1222,13 +1176,13 @@ import {
                   </div>
                 </div>
 
-                <div class="mt-3.5 bg-slate-50 rounded-2xl p-3 border border-slate-200/80 text-xs space-y-1">
+                <div class="mt-4 bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 text-xs space-y-1">
                   <p class="font-bold text-emerald-800">${t.layananNama || 'Layanan Mahasiswa'}</p>
                   <p class="text-slate-700 leading-relaxed">${t.detailTambahan || t.keperluan}</p>
                 </div>
               </div>
 
-              <div class="space-y-2.5 text-xs bg-slate-50/50 rounded-2xl p-4 border border-slate-200/80">
+              <div class="space-y-3 text-xs bg-slate-50/50 rounded-2xl p-4 border border-slate-200/80">
                 <div>
                   <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Posisi Berkas Fisik:</span>
                   <p class="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
@@ -1398,7 +1352,7 @@ import {
         }
       });
 
-      // 8. DATABASE UTAMA ADMINISTRASI (Requirement #2)
+      // 8. DATABASE UTAMA ADMINISTRASI (Requirement #2 & #3)
       let activeDbTab = 'mahasiswa';
       let dbSearchQuery = '';
 
@@ -1412,9 +1366,9 @@ import {
           activeDbTab = target;
           
           dbSubTabs.forEach(t => {
-            t.className = 'db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
+            t.className = 'db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
           });
-          tab.className = 'db-sub-tab px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
+          tab.className = 'db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
 
           dbPanes.forEach(p => p.classList.add('hidden'));
           document.getElementById(`pane-${target}`)?.classList.remove('hidden');
@@ -1463,7 +1417,6 @@ import {
             </tr>
           `).join('');
 
-          // Bind cek berkas button
           mhsBody.querySelectorAll('.btn-check-mhs').forEach(btn => {
             btn.addEventListener('click', () => {
               const nim = btn.getAttribute('data-nim');
@@ -1476,29 +1429,20 @@ import {
           });
         }
 
-        // 2. Table Dosen
+        // 2. Table Dosen (Sesuai Permintaan: Cukup Nama Lengkap & Gelar serta Program Studi saja)
         const dsnBody = document.getElementById('table-dosen-body');
         if (dsnBody) {
           let dsnList = masterDosen.filter(d => 
             !query ||
-            d.nidn.toLowerCase().includes(query) ||
             d.nama.toLowerCase().includes(query) ||
-            d.prodi.toLowerCase().includes(query) ||
-            d.jabatan.toLowerCase().includes(query)
+            d.prodi.toLowerCase().includes(query)
           );
 
-          dsnBody.innerHTML = dsnList.map(d => `
+          dsnBody.innerHTML = dsnList.map((d, idx) => `
             <tr class="hover:bg-slate-50/80 transition">
-              <td class="py-3 px-4 font-mono font-bold text-slate-700">${d.nidn}</td>
-              <td class="py-3 px-4 font-mono font-bold text-emerald-700">${d.kodeDosen}</td>
-              <td class="py-3 px-4 font-bold text-slate-900">${d.nama}</td>
-              <td class="py-3 px-4 text-slate-600">${d.prodi}</td>
-              <td class="py-3 px-4">
-                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-200">
-                  ${d.jabatan}
-                </span>
-              </td>
-              <td class="py-3 px-4 font-mono text-[11px] text-slate-500">${d.email}</td>
+              <td class="py-3.5 px-6 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
+              <td class="py-3.5 px-6 font-bold text-slate-900 text-sm">${d.nama}</td>
+              <td class="py-3.5 px-6 text-slate-600 font-medium text-xs">${d.prodi}</td>
             </tr>
           `).join('');
         }
@@ -1569,9 +1513,9 @@ import {
       caseTabs.forEach(tab => {
         tab.addEventListener('click', () => {
           caseTabs.forEach(x => {
-            x.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50';
+            x.className = 'admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer text-slate-700 hover:bg-slate-50 text-left';
           });
-          tab.className = 'admin-case-tab w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900 font-black';
+          tab.className = 'admin-case-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer bg-slate-100 text-slate-900 font-black text-left';
 
           currentCase = tab.getAttribute('data-case') || 'all';
           renderTicketsList();
@@ -1605,98 +1549,7 @@ import {
         renderTicketsList();
       });
 
-      // 10. Simulasi Surat Masuk Dropdown
-      const btnSimulate = document.getElementById('btn-simulate-dropdown');
-      const simMenu = document.getElementById('simulate-dropdown-menu');
-      btnSimulate?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        simMenu?.classList.toggle('hidden');
-      });
-      document.addEventListener('click', () => {
-        simMenu?.classList.add('hidden');
-      });
-
-      document.querySelectorAll('.sim-case-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          simMenu?.classList.add('hidden');
-          const caseType = btn.getAttribute('data-sim-case');
-          const all = loadTickets();
-          const rand = Math.floor(1000 + Math.random() * 9000);
-          const nowStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB';
-
-          let item;
-          if (caseType === 'komplain') {
-            item = {
-              kode: `KMP-2026-${rand}`,
-              nim: '22/33445/SP',
-              nama: 'Rian Pratama',
-              prodi: 'S1 Agroteknologi',
-              semester: 'Semester 6',
-              layananId: 'komplain-nilai',
-              layananNama: 'Verifikasi / Komplain Nilai',
-              keperluan: 'Komplain Nilai: Bioteknologi Pertanian (Nilai UAS Belum Masuk SIAKAD)',
-              detailTambahan: 'Dosen: Prof. Dr. Ir. H. Bambang, M.P. | Presensi 100%',
-              format: 'Surat Rekonsiliasi Nilai',
-              status: 'Belum Diproses',
-              statusStep: 1,
-              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-              estimasiSelesai: '2–3 Hari Kerja',
-              catatanAdmin: 'Permohonan baru masuk antrean verifikasi petugas.',
-              tanggal: nowStr,
-              isNewForAdmin: true
-            };
-          } else if (caseType === 'ujian') {
-            item = {
-              kode: `UKH-2026-${rand}`,
-              nim: '20/55667/SP',
-              nama: 'Bagus Saputra',
-              prodi: 'S1 Agribisnis',
-              semester: 'Semester 10',
-              layananId: 'ujian-khusus',
-              layananNama: 'Pengajuan Ujian Khusus',
-              keperluan: 'Ujian Khusus: Manajemen Mutu Pertanian (2 SKS)',
-              detailTambahan: 'Sisa 1 mata kuliah teori terakhir sebelum pendadaran skripsi',
-              format: 'Berkas Fisik Loket',
-              status: 'Belum Diproses',
-              statusStep: 1,
-              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-              estimasiSelesai: '3–5 Hari Kerja',
-              catatanAdmin: 'Menunggu pemeriksaan KHS kumulatif dan konfirmasi penguji.',
-              tanggal: nowStr,
-              isNewForAdmin: true
-            };
-          } else {
-            item = {
-              kode: `KHS-2026-${rand}`,
-              nim: '23/11223/SP',
-              nama: 'Dewi Lestari',
-              prodi: 'S1 Agribisnis',
-              semester: 'Semester 4',
-              layananId: 'khs',
-              layananNama: 'Permohonan KHS (Semester 2 s/d 4)',
-              keperluan: 'Pendaftaran Beasiswa Unggulan',
-              detailTambahan: 'Mohon salinan fisik resmi berstempel basah untuk lampiran beasiswa',
-              format: 'Cetak Fisik Berstempel Basah',
-              status: 'Belum Diproses',
-              statusStep: 1,
-              posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
-              estimasiSelesai: '1–2 Hari Kerja',
-              catatanAdmin: 'Permohonan baru masuk antrean loket.',
-              tanggal: nowStr,
-              isNewForAdmin: true
-            };
-          }
-
-          all.unshift(item);
-          saveTickets(all);
-          setMainView('berkas');
-          renderTicketsList();
-          renderDatabaseTables();
-        });
-      });
-
-      // 11. Ekspor CSV Rekap Data
+      // 10. Ekspor CSV Rekap Data (Tersedia di Modul Rekap & Laporan)
       function triggerExportCSV() {
         const all = loadTickets();
         const headers = ['Kode Tiket', 'NIM', 'Nama Mahasiswa', 'Program Studi', 'Layanan', 'Status', 'Posisi Berkas Fisik', 'Tanggal Pengajuan'];
@@ -1720,7 +1573,6 @@ import {
         document.body.removeChild(link);
       }
 
-      document.getElementById('btn-export-csv')?.addEventListener('click', triggerExportCSV);
       document.getElementById('btn-rekap-download-csv')?.addEventListener('click', triggerExportCSV);
 
       function updateRekapStats() {
@@ -1740,7 +1592,7 @@ import {
         if (elDon) elDon.textContent = cntDone;
       }
 
-      // 12. Reset Demo Data
+      // 11. Reset Demo Data
       const btnReset = document.getElementById('btn-reset-demo');
       btnReset?.addEventListener('click', () => {
         if (confirm('Kembalikan data permohonan ke daftar contoh demo awal?')) {

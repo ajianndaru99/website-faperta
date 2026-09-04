@@ -1,7 +1,11 @@
 ---
 import "../styles/global.css";
 import { PORTAL_SERVICES, PORTAL_DOCUMENTS } from "../data/portalData";
-const { title = "Pusat Informasi Akademik", description = "Pusat informasi akademik FAPERTA INSTIPER Yogyakarta." } = Astro.props;
+const { 
+  title = "Pusat Informasi Akademik", 
+  description = "Pusat informasi akademik FAPERTA INSTIPER Yogyakarta.",
+  isStandaloneAdmin = false
+} = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 <!doctype html>
@@ -16,9 +20,10 @@ const currentPath = Astro.url.pathname;
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&family=Poppins:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     <title>{title} — FAPERTA INSTIPER</title>
   </head>
-  <body class="min-h-screen flex flex-col bg-[#fafcf8] text-[var(--ink)]">
-    <!-- Header Navbar -->
-    <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[#f7faf5]/95 backdrop-blur-md transition-all shadow-xs">
+  <body class={`min-h-screen flex flex-col ${isStandaloneAdmin ? 'bg-slate-50 text-slate-900' : 'bg-[#fafcf8] text-[var(--ink)]'}`}>
+    {!isStandaloneAdmin && (
+      <>
+        <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[#f7faf5]/95 backdrop-blur-md transition-all shadow-xs">
       <div class="container-shell flex min-h-[74px] items-center justify-between gap-3">
         
         <!-- Sisi Kiri: Tombol Hamburger Mobile + Brand Logo + Desktop Nav -->
@@ -335,12 +340,14 @@ const currentPath = Astro.url.pathname;
         <p class="text-[10px] text-[var(--muted)] mt-0.5">YOGYAKARTA</p>
       </div>
     </aside>
+      </>
+    )}
 
     <main class="flex-1">
       <slot />
     </main>
 
-    <!-- Footer Website -->
+    {!isStandaloneAdmin && (
     <footer class="mt-20 border-t border-[var(--line)] bg-[#ecf3e8]">
       <div class="container-shell py-12">
         <div class="grid gap-8 md:grid-cols-4">
@@ -407,10 +414,13 @@ const currentPath = Astro.url.pathname;
         </div>
       </div>
     </footer>
+    )}
 
     <!-- Global Client Script (Search Palette + Unread Admin Counter + Drawer) -->
     <script is:inline define:vars={{ searchServices: PORTAL_SERVICES, searchDocuments: PORTAL_DOCUMENTS }}>
       document.addEventListener('DOMContentLoaded', () => {
+        if (window.location.pathname.startsWith('/admin')) return;
+
         // 1. Drawer Logic
         const toggle = document.querySelector('#menu-toggle');
         const drawer = document.querySelector('#mobile-drawer');
