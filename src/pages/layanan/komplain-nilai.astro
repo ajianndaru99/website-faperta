@@ -51,7 +51,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
         </div>
 
-        <form id="komplain-form" action="javascript:void(0);" onsubmit="return false;" class="space-y-6">
+        <form id="komplain-form" action="javascript:void(0);" onsubmit="if(window.handleKomplainSubmit){window.handleKomplainSubmit(); return false;} return false;" class="space-y-6">
           
           <!-- SEKSI 1: Data Identitas Mahasiswa -->
           <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
@@ -186,7 +186,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </label>
 
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[var(--line)]">
-              <button type="submit" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
+              <button type="submit" id="btn-submit-komplain" onclick="if(window.handleKomplainSubmit) window.handleKomplainSubmit();" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
                 Kirim Pengaduan Nilai →
               </button>
               <button type="reset" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)]">
@@ -380,8 +380,16 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         }
       }
 
-      komplainForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
+      function submitKomplainForm(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        if (komplainForm && !komplainForm.checkValidity()) {
+          komplainForm.reportValidity();
+          return false;
+        }
 
         const formData = new FormData(komplainForm);
         const nama = formData.get('nama');
@@ -414,7 +422,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           if (dupLink) dupLink.href = `/layanan/cek-status?q=${encodeURIComponent(activeDup.kode)}`;
 
           dupModal?.classList.remove('hidden');
-          return; // Hentikan pengajuan!
+          return false; // Hentikan pengajuan!
         }
 
         const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -459,33 +467,42 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           console.error(err);
         }
 
-        document.getElementById('ticket-number').textContent = ticketCode;
-        document.getElementById('res-mk').textContent = mk;
-        document.getElementById('res-nim').textContent = nim;
+        const elTicket = document.getElementById('ticket-number');
+        const elMk = document.getElementById('res-mk');
+        const elNim = document.getElementById('res-nim');
+        if (elTicket) elTicket.textContent = ticketCode;
+        if (elMk) elMk.textContent = String(mk || '-');
+        if (elNim) elNim.textContent = String(nim || '-');
 
         formWrapper?.classList.add('hidden');
         successWrapper?.classList.remove('hidden');
-        window.scrollTo({ top: successWrapper.offsetTop - 80, behavior: 'smooth' });
-      });
+        window.scrollTo({ top: (successWrapper ? successWrapper.offsetTop - 80 : 0), behavior: 'smooth' });
+        return false;
+      }
+
+      window.handleKomplainSubmit = submitKomplainForm;
+      komplainForm?.addEventListener('submit', submitKomplainForm);
 
       btnCopy?.addEventListener('click', () => {
         const ticketCode = document.getElementById('ticket-number')?.textContent || '';
-        navigator.clipboard.writeText(ticketCode).then(() => {
-          btnCopy.textContent = '✓ Disalin!';
-          setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
-        });
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(ticketCode).then(() => {
+            btnCopy.textContent = '✓ Disalin!';
+            setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
+          });
+        }
       });
 
       btnPrint?.addEventListener('click', () => {
         const ticketCode = document.getElementById('ticket-number')?.textContent || '';
-        if (typeof (window as any).printOfficialTicket === 'function') {
+        if (typeof window.printOfficialTicket === 'function') {
           try {
             const raw = localStorage.getItem('portal_faperta_tickets');
             const list = raw ? JSON.parse(raw) : [];
-            const t = list.find((item: any) => item.kode === ticketCode);
-            (window as any).printOfficialTicket(t || ticketCode);
+            const t = list.find(item => item && item.kode === ticketCode);
+            window.printOfficialTicket(t || ticketCode);
           } catch (e) {
-            (window as any).printOfficialTicket(ticketCode);
+            window.printOfficialTicket(ticketCode);
           }
         } else {
           window.print();
@@ -496,7 +513,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         komplainForm?.reset();
         successWrapper?.classList.add('hidden');
         formWrapper?.classList.remove('hidden');
-        window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
+        window.scrollTo({ top: (formWrapper ? formWrapper.offsetTop - 80 : 0), behavior: 'smooth' });
       });
     }
 

@@ -81,7 +81,7 @@ const semesterAkhirList = [
           </div>
         </div>
 
-        <form id="ujian-khusus-form" action="javascript:void(0);" onsubmit="return false;" class="space-y-6">
+        <form id="ujian-khusus-form" action="javascript:void(0);" onsubmit="if(window.handleUjianSubmit) return window.handleUjianSubmit(event); return false;" class="space-y-6">
           
           <!-- SEKSI 1: Identitas Mahasiswa Pemohon -->
           <div class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-8 shadow-xs space-y-5">
@@ -254,7 +254,7 @@ const semesterAkhirList = [
             </label>
 
             <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[var(--line)]">
-              <button type="submit" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
+              <button type="submit" id="btn-submit-ujian" onclick="if(window.handleUjianSubmit) window.handleUjianSubmit(event);" class="btn-cta w-full sm:w-auto text-sm px-8 py-3.5">
                 Daftarkan Ujian Khusus Sekarang →
               </button>
               <button type="reset" class="text-xs font-bold text-[var(--muted)] hover:text-[var(--leaf)]">
@@ -449,8 +449,16 @@ const semesterAkhirList = [
         }
       }
 
-      ujianForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
+      function submitUjianForm(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        if (ujianForm && !ujianForm.checkValidity()) {
+          ujianForm.reportValidity();
+          return false;
+        }
 
         const formData = new FormData(ujianForm);
         const nama = formData.get('nama');
@@ -460,7 +468,7 @@ const semesterAkhirList = [
         const dpa = formData.get('dpa');
         const mk1 = formData.get('mk1_nama');
         const mk2 = formData.get('mk2_nama');
-        const matkulSummary = mk2 ? `${mk1} & ${mk2}` : mk1;
+        const matkulSummary = mk2 ? (mk1 + ' & ' + mk2) : mk1;
 
         // Cek Duplikasi Permohonan Aktif
         const activeDup = findActiveDuplicate(nim, 'ujian-khusus');
@@ -482,14 +490,14 @@ const semesterAkhirList = [
           }
           if (dupPos) dupPos.textContent = activeDup.posisiBerkas || 'Pemeriksaan Administrasi Loket';
           if (dupDate) dupDate.textContent = activeDup.tanggal || 'Baru Saja';
-          if (dupLink) dupLink.href = `/layanan/cek-status?q=${encodeURIComponent(activeDup.kode)}`;
+          if (dupLink) dupLink.href = '/layanan/cek-status?q=' + encodeURIComponent(activeDup.kode);
 
           dupModal?.classList.remove('hidden');
-          return; // Hentikan pengajuan!
+          return false;
         }
 
         const randomNum = Math.floor(1000 + Math.random() * 9000);
-        const ticketCode = `UKH-2026-${randomNum}`;
+        const ticketCode = 'UKH-2026-' + randomNum;
         const tanggal = new Date().toLocaleDateString('id-ID', {
           day: 'numeric',
           month: 'long',
@@ -500,21 +508,21 @@ const semesterAkhirList = [
 
         const newTicket = {
           kode: ticketCode,
-          nama,
-          nim,
-          prodi,
-          semester,
+          nama: nama,
+          nim: nim,
+          prodi: prodi,
+          semester: semester,
           layananId: 'ujian-khusus',
-          layananNama: `Pengajuan Ujian Khusus (${matkulSummary})`,
-          keperluan: `Ujian Khusus: ${matkulSummary}`,
-          detailTambahan: `DPA: ${dpa} | Matkul: ${matkulSummary}`,
+          layananNama: 'Pengajuan Ujian Khusus (' + matkulSummary + ')',
+          keperluan: 'Ujian Khusus: ' + matkulSummary,
+          detailTambahan: 'DPA: ' + dpa + ' | Matkul: ' + matkulSummary,
           format: 'Berkas Formulir Ujian Fisik (Ambil di Loket)',
           status: 'Belum Diproses',
           statusStep: 1,
           posisiBerkas: 'Antrean Masuk Loket Administrasi FAPERTA',
           estimasiSelesai: '3–5 Hari Kerja',
           catatanAdmin: 'Pengajuan ujian khusus baru masuk antrean loket. Menunggu verifikasi syarat KHS fisik.',
-          tanggal,
+          tanggal: tanggal,
           isNewForAdmin: true
         };
 
@@ -531,34 +539,45 @@ const semesterAkhirList = [
           console.error(err);
         }
 
-        document.getElementById('ticket-number').textContent = ticketCode;
-        document.getElementById('res-nama').textContent = nama;
-        document.getElementById('res-nim').textContent = nim;
-        document.getElementById('res-matkul').textContent = matkulSummary;
+        const elNum = document.getElementById('ticket-number');
+        const elNama = document.getElementById('res-nama');
+        const elNim = document.getElementById('res-nim');
+        const elMk = document.getElementById('res-matkul');
+
+        if (elNum) elNum.textContent = ticketCode;
+        if (elNama) elNama.textContent = String(nama || '-');
+        if (elNim) elNim.textContent = String(nim || '-');
+        if (elMk) elMk.textContent = String(matkulSummary || '-');
 
         formWrapper?.classList.add('hidden');
         successWrapper?.classList.remove('hidden');
-        window.scrollTo({ top: successWrapper.offsetTop - 80, behavior: 'smooth' });
-      });
+        window.scrollTo({ top: (successWrapper ? successWrapper.offsetTop - 80 : 0), behavior: 'smooth' });
+        return false;
+      }
+
+      window.handleUjianSubmit = submitUjianForm;
+      ujianForm?.addEventListener('submit', submitUjianForm);
 
       btnCopy?.addEventListener('click', () => {
         const ticketCode = document.getElementById('ticket-number')?.textContent || '';
-        navigator.clipboard.writeText(ticketCode).then(() => {
-          btnCopy.textContent = '✓ Disalin!';
-          setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
-        });
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(ticketCode).then(() => {
+            btnCopy.textContent = '✓ Disalin!';
+            setTimeout(() => { btnCopy.textContent = '📋 Salin'; }, 2000);
+          });
+        }
       });
 
       btnPrint?.addEventListener('click', () => {
         const ticketCode = document.getElementById('ticket-number')?.textContent || '';
-        if (typeof (window as any).printOfficialTicket === 'function') {
+        if (typeof window.printOfficialTicket === 'function') {
           try {
             const raw = localStorage.getItem('portal_faperta_tickets');
             const list = raw ? JSON.parse(raw) : [];
-            const t = list.find((item: any) => item.kode === ticketCode);
-            (window as any).printOfficialTicket(t || ticketCode);
+            const t = list.find(item => item.kode === ticketCode);
+            window.printOfficialTicket(t || ticketCode);
           } catch (e) {
-            (window as any).printOfficialTicket(ticketCode);
+            window.printOfficialTicket(ticketCode);
           }
         } else {
           window.print();
@@ -569,7 +588,7 @@ const semesterAkhirList = [
         ujianForm?.reset();
         successWrapper?.classList.add('hidden');
         formWrapper?.classList.remove('hidden');
-        window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
+        window.scrollTo({ top: (formWrapper ? formWrapper.offsetTop - 80 : 0), behavior: 'smooth' });
       });
     }
 
