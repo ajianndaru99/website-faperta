@@ -1413,16 +1413,40 @@ import {
         return false;
       }
 
-      // SINKRONISASI DINAMIS KPI & KATEGORI SIDEBAR (Requirement #4 & #3)
+      // Helper untuk memeriksa apakah tiket sesuai dengan kategori tab di sidebar
+      function isTicketInCategory(t, category) {
+        if (!category || category === 'all') return true;
+        const id = (t.layananId || '').toLowerCase();
+        const code = (t.kode || '').toUpperCase();
+        const kep = (t.keperluan || '').toLowerCase();
+
+        if (category === 'khs') return id.includes('khs') || code.startsWith('KHS');
+        if (category === 'ujian') return id.includes('ujian') || code.startsWith('UKH');
+        if (category === 'komplain') return id.includes('komplain') || code.startsWith('KMP');
+        if (category === 'penelitian') return id.includes('penelitian') || code.startsWith('PEN') || kep.includes('penelitian');
+        if (category === 'lainnya') {
+          return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !id.includes('penelitian')
+            && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH') && !code.startsWith('PEN')
+            && !kep.includes('penelitian');
+        }
+        return true;
+      }
+
+      // SINKRONISASI DINAMIS KPI & KATEGORI SIDEBAR
       function updateSidebarBadges(tickets) {
         // Pool dasar untuk KPI cards (jika toggle sembunyikan berkas yang sudah diambil/selesai aktif)
         const activeTickets = hideTaken ? tickets.filter(t => !isTicketFinished(t)) : tickets;
 
-        // KPI Status Counts
-        const cntTotal = activeTickets.length;
-        const cntPending = activeTickets.filter(t => t.status === 'Belum Diproses').length;
-        const cntProcess = activeTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
-        const cntDone = activeTickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
+        // KPI Status Counts: DIHITUNG KHUSUS UNTUK KATEGORI BERKAS YANG SEDANG DIPILIH (currentCase)
+        // - Jika berada di tab "Semua Berkas" ('all'), maka menghitung seluruh berkas yang ada
+        // - Jika berada di tab "KHS" ('khs'), maka kartu Total Berkas, Belum Diproses, Verifikasi, Siap Diambil hanya menghitung berkas KHS
+        // - Jika berada di tab lain ("Ujian Khusus", "Komplain Nilai", dll.), kartu menghitung berkas kategori tersebut saja
+        const kpiPool = activeTickets.filter(t => isTicketInCategory(t, currentCase));
+
+        const cntTotal = kpiPool.length;
+        const cntPending = kpiPool.filter(t => t.status === 'Belum Diproses').length;
+        const cntProcess = kpiPool.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
+        const cntDone = kpiPool.filter(t => t.status === 'Selesai (Siap Diambil)').length;
 
         const kpiTotal = document.getElementById('stat-total');
         const kpiPending = document.getElementById('stat-pending');
@@ -1445,23 +1469,11 @@ import {
         }
 
         const countAll = categoryPool.length;
-        const countKhs = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS')).length;
-        const countUjian = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH')).length;
-        const countKomplain = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP')).length;
-        const countPenelitian = categoryPool.filter(t => {
-          const id = (t.layananId || '').toLowerCase();
-          const code = (t.kode || '').toUpperCase();
-          const kep = (t.keperluan || '').toLowerCase();
-          return id.includes('penelitian') || code.startsWith('PEN') || kep.includes('penelitian');
-        }).length;
-        const countLainnya = categoryPool.filter(t => {
-          const id = (t.layananId || '').toLowerCase();
-          const code = (t.kode || '').toUpperCase();
-          const kep = (t.keperluan || '').toLowerCase();
-          return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !id.includes('penelitian')
-            && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH') && !code.startsWith('PEN')
-            && !kep.includes('penelitian');
-        }).length;
+        const countKhs = categoryPool.filter(t => isTicketInCategory(t, 'khs')).length;
+        const countUjian = categoryPool.filter(t => isTicketInCategory(t, 'ujian')).length;
+        const countKomplain = categoryPool.filter(t => isTicketInCategory(t, 'komplain')).length;
+        const countPenelitian = categoryPool.filter(t => isTicketInCategory(t, 'penelitian')).length;
+        const countLainnya = categoryPool.filter(t => isTicketInCategory(t, 'lainnya')).length;
 
         const bCatAll = document.getElementById('badge-cat-all');
         const bKhs = document.getElementById('badge-count-khs');
@@ -1510,24 +1522,8 @@ import {
           filtered = filtered.filter(t => !isTicketFinished(t));
         }
 
-        // Filter kategori
-        filtered = filtered.filter(t => {
-          const id = (t.layananId || '').toLowerCase();
-          const code = (t.kode || '').toUpperCase();
-          const kep = (t.keperluan || '').toLowerCase();
-
-          if (currentCase === 'all') return true;
-          if (currentCase === 'khs') return id.includes('khs') || code.startsWith('KHS');
-          if (currentCase === 'ujian') return id.includes('ujian') || code.startsWith('UKH');
-          if (currentCase === 'komplain') return id.includes('komplain') || code.startsWith('KMP');
-          if (currentCase === 'penelitian') return id.includes('penelitian') || code.startsWith('PEN') || kep.includes('penelitian');
-          if (currentCase === 'lainnya') {
-            return !id.includes('khs') && !id.includes('komplain') && !id.includes('ujian') && !id.includes('penelitian')
-              && !code.startsWith('KHS') && !code.startsWith('KMP') && !code.startsWith('UKH') && !code.startsWith('PEN')
-              && !kep.includes('penelitian');
-          }
-          return true;
-        });
+        // Filter kategori sesuai tab yang sedang aktif
+        filtered = filtered.filter(t => isTicketInCategory(t, currentCase));
 
         // Filter status
         if (currentStatus !== 'all') {
