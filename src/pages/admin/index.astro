@@ -853,12 +853,15 @@ import {
   <div id="edit-ticket-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-3 sm:p-6">
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs transition-opacity"></div>
     
-    <div class="relative w-full max-w-2xl sm:max-w-3xl my-auto max-h-[85vh] flex flex-col rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden z-10 text-left">
-      <!-- Modal Header (Tetap terlihat di atas / shrink-0) -->
-      <div class="bg-slate-100 px-5 sm:px-6 py-3 border-b-2 border-slate-200 flex items-center justify-between shrink-0">
-        <div class="pr-2">
-          <h3 id="modal-ticket-title" class="text-base sm:text-lg font-black text-slate-900 leading-tight">Pemrosesan & Disposisi Berkas</h3>
-          <p id="modal-ticket-sub" class="text-xs text-slate-600 font-mono mt-0.5 truncate">Kode Tiket: -</p>
+    <div class="relative w-full max-w-4xl lg:max-w-5xl my-auto max-h-[92vh] flex flex-col rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden z-10 text-left">
+      <!-- Modal Header (Bersih, Rapi, Tanpa Duplikasi Identitas) -->
+      <div class="bg-slate-100 px-6 py-3 border-b-2 border-slate-200 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <span class="h-8 w-8 rounded-xl bg-emerald-700 text-white font-bold text-sm flex items-center justify-center shrink-0">📋</span>
+          <div>
+            <h3 class="text-base font-black text-slate-900 leading-tight">Pemrosesan & Disposisi Berkas</h3>
+            <p class="text-[11px] text-slate-500 font-medium">Portal Loket Administrasi Fakultas Pertanian INSTIPER</p>
+          </div>
         </div>
         <button 
           type="button" 
@@ -874,161 +877,156 @@ import {
       <form id="modal-edit-form" class="flex flex-col flex-1 min-h-0 overflow-hidden">
         <input type="hidden" id="modal-ticket-code" />
 
-        <!-- Scrollable Form Body -->
-        <div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3.5">
-          <!-- Identitas Lengkap Mahasiswa Pemohon (Senior Friendly, Jelas, Rapi) -->
-          <div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 p-4 text-xs">
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200/80 pb-2 mb-2.5">
-              <span class="text-[11px] font-black uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
-                <span>🎓</span> Identitas Lengkap Mahasiswa Pemohon
-              </span>
-              <span id="modal-mhs-layanan-badge" class="font-bold text-emerald-900 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200 text-xs shadow-2xs">
-                -
-              </span>
+        <!-- Form Body (Ringkas, Padat, Terlihat Utuh Tanpa Perlu Scroll) -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3">
+          <!-- Identitas Tunggal Mahasiswa Pemohon (Satu Tempat, Rapi, Kontak Soft) -->
+          <div class="rounded-2xl border border-slate-200 bg-slate-50/90 p-3.5 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2 mb-2.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span id="modal-ticket-badge" class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-slate-900 text-white shadow-2xs">
+                  -
+                </span>
+                <span id="modal-mhs-layanan-badge" class="font-bold text-emerald-950 bg-emerald-100/90 px-2.5 py-1 rounded-lg border border-emerald-300 text-xs">
+                  -
+                </span>
+              </div>
+              <!-- Tombol Kontak Mahasiswa (Warna Soft Serasi, Teks Jelas Terbaca) -->
+              <div class="flex flex-wrap items-center gap-2">
+                <div id="modal-mhs-wa-wrap"></div>
+                <div id="modal-mhs-email-wrap"></div>
+              </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-800">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-slate-800 items-center">
               <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nama Lengkap:</span>
-                <strong id="modal-mhs-nama" class="text-sm sm:text-base text-slate-900 font-extrabold block mt-0.5">-</strong>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Nama Mahasiswa:</span>
+                <strong id="modal-mhs-nama" class="text-sm font-extrabold text-slate-900 block truncate mt-0.5">-</strong>
               </div>
               <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">NIM & Program Studi:</span>
-                <p class="mt-0.5 text-xs sm:text-sm font-bold text-slate-800">
-                  <span id="modal-mhs-nim" class="font-mono text-emerald-800">-</span> · <span id="modal-mhs-prodi">-</span>
-                </p>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">NIM Mahasiswa:</span>
+                <span id="modal-mhs-nim" class="font-mono font-bold text-emerald-800 text-sm block mt-0.5">-</span>
               </div>
               <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nomor WhatsApp:</span>
-                <div id="modal-mhs-wa-wrap" class="mt-1">
-                  <span id="modal-mhs-wa" class="font-mono font-bold text-slate-800">-</span>
-                </div>
-              </div>
-              <div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Alamat Email:</span>
-                <div id="modal-mhs-email-wrap" class="mt-1">
-                  <span id="modal-mhs-email" class="font-mono font-bold text-slate-800">-</span>
-                </div>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Program Studi:</span>
+                <span id="modal-mhs-prodi" class="font-semibold text-slate-700 text-xs block truncate mt-0.5">-</span>
               </div>
             </div>
           </div>
 
-          <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Rapi, Tanpa Icon) -->
+          <!-- Pilihan Tahapan Status (Tulisan Jelas, Rapi, Sejajar) -->
           <div>
-            <label class="block text-xs sm:text-sm font-black text-slate-900 mb-2">
+            <label class="block text-xs font-black text-slate-900 mb-1.5">
               Pilih Tahapan Status Berkas:
             </label>
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
               <button 
                 type="button" 
                 data-target-status="Belum Diproses" 
-                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-amber-50 text-amber-900 border-amber-400 shadow-2xs"
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px] bg-amber-50 text-amber-900 border-amber-400 shadow-2xs"
               >
-                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 1</span>
+                <span class="text-[9px] font-extrabold uppercase opacity-75 leading-none">Tahap 1</span>
                 <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Antrean Loket</span>
               </button>
               <button 
                 type="button" 
                 data-target-status="Verifikasi Admin Loket" 
-                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
               >
-                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 2</span>
+                <span class="text-[9px] font-extrabold uppercase opacity-75 leading-none">Tahap 2</span>
                 <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Verif Admin</span>
               </button>
               <button 
                 type="button" 
-                data-target-status="Verifikasi Dosen / Kaprodi" 
-                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+                data-target-status="Verifikasi Dosen / Kaprodi / Dekanat" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
               >
-                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 3</span>
-                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Dosen/Dekanat</span>
+                <span class="text-[9px] font-extrabold uppercase opacity-75 leading-none">Tahap 3</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Dosen/Kaprodi/Dekanat</span>
               </button>
               <button 
                 type="button" 
                 data-target-status="Selesai (Siap Diambil)" 
-                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
               >
-                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 4</span>
+                <span class="text-[9px] font-extrabold uppercase opacity-75 leading-none">Tahap 4</span>
                 <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Siap Ambil</span>
               </button>
               <button 
                 type="button" 
                 data-target-status="Ditolak" 
-                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1 shadow-2xs"
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1 shadow-2xs"
               >
-                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none text-rose-500">Batal/Tolak</span>
+                <span class="text-[9px] font-extrabold uppercase opacity-75 leading-none text-rose-500">Batal/Tolak</span>
                 <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Ditolak</span>
               </button>
             </div>
             <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
           </div>
 
-          <!-- Posisi Berkas Fisik Terkini (Preset: Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat) -->
-          <div>
-            <label for="modal-posisi-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
-              Posisi Berkas Fisik Saat Ini:
-            </label>
-            <input 
-              type="text" 
-              id="modal-posisi-input" 
-              required 
-              class="w-full rounded-xl border-2 border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
-              placeholder="Loket Admin FAPERTA"
-            />
-            
-            <!-- Preset Posisi Cepat: HANYA Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat -->
-            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
-              <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
-              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Loket Admin FAPERTA">
-                Loket Admin FAPERTA
-              </button>
-              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Ruang Dosen / Kaprodi">
-                Ruang Dosen / Kaprodi
-              </button>
-              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Ruang Dekanat">
-                Ruang Dekanat
-              </button>
+          <!-- Posisi Berkas & Estimasi Selesai (2 Kolom Sejajar, Hemat Ruang Vertikal) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
+            <!-- Kolom Kiri: Posisi Berkas Fisik Terkini -->
+            <div>
+              <label for="modal-posisi-input" class="block text-xs font-black text-slate-900 mb-1">
+                Posisi Berkas Fisik Saat Ini:
+              </label>
+              <input 
+                type="text" 
+                id="modal-posisi-input" 
+                required 
+                class="w-full rounded-xl border-2 border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+                placeholder="Loket Admin FAPERTA"
+              />
+              <!-- Preset Posisi Cepat: Loket Admin & Ruang Dosen/Kaprodi/Dekanat -->
+              <div class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
+                <span class="text-slate-400 font-bold text-[11px] self-center">Pilihan cepat:</span>
+                <button type="button" class="preset-posisi px-2.5 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-pos="Loket Admin FAPERTA">
+                  Loket Admin FAPERTA
+                </button>
+                <button type="button" class="preset-posisi px-2.5 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-pos="Ruang Dosen / Kaprodi / Dekanat">
+                  Ruang Dosen / Kaprodi / Dekanat
+                </button>
+              </div>
+            </div>
+
+            <!-- Kolom Kanan: Perkiraan Waktu Selesai (Estimasi Admin) -->
+            <div>
+              <label for="modal-estimasi-input" class="block text-xs font-black text-slate-900 mb-1">
+                Perkiraan Waktu Selesai (Estimasi Admin):
+              </label>
+              <input 
+                type="text" 
+                id="modal-estimasi-input" 
+                class="w-full rounded-xl border-2 border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+                placeholder="Contoh: 1 Hari Kerja / Besok Pukul 14.00 WIB"
+              />
+              <!-- Preset Estimasi Cepat -->
+              <div class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
+                <span class="text-slate-400 font-bold text-[11px] self-center">Pilihan cepat:</span>
+                <button type="button" class="preset-estimasi px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-est="-">
+                  -
+                </button>
+                <button type="button" class="preset-estimasi px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-est="Hari Ini">
+                  Hari Ini
+                </button>
+                <button type="button" class="preset-estimasi px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-est="1 Hari Kerja">
+                  1 Hari Kerja
+                </button>
+                <button type="button" class="preset-estimasi px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-[11px]" data-est="2–3 Hari Kerja">
+                  2–3 Hari Kerja
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Perkiraan Waktu Selesai (Estimasi diatur sendiri oleh Admin) -->
+          <!-- Catatan Admin untuk Mahasiswa (Kompak 2 Baris) -->
           <div>
-            <label for="modal-estimasi-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
-              Perkiraan Waktu Selesai (Estimasi Admin):
-            </label>
-            <input 
-              type="text" 
-              id="modal-estimasi-input" 
-              class="w-full rounded-xl border-2 border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
-              placeholder="Contoh: 1 Hari Kerja / Besok Pukul 14.00 WIB (Ketik '-' jika belum ditentukan)"
-            />
-            
-            <!-- Preset Estimasi Cepat -->
-            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
-              <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
-              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="-">
-                - (Belum Ditentukan)
-              </button>
-              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="Hari Ini">
-                Hari Ini
-              </button>
-              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="1 Hari Kerja">
-                1 Hari Kerja
-              </button>
-              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="2–3 Hari Kerja">
-                2–3 Hari Kerja
-              </button>
-            </div>
-          </div>
-
-          <!-- Catatan Admin untuk Mahasiswa -->
-          <div>
-            <label for="modal-catatan-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
+            <label for="modal-catatan-input" class="block text-xs font-black text-slate-900 mb-1">
               Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
             </label>
             <textarea 
               id="modal-catatan-input" 
               rows="2" 
-              class="w-full rounded-xl border-2 border-slate-300 bg-white p-3 text-xs sm:text-sm text-slate-900 font-medium focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+              class="w-full rounded-xl border-2 border-slate-300 bg-white p-2.5 text-xs text-slate-900 font-medium focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
               placeholder="Tuliskan petunjuk atau keterangan perbaikan di sini..."
             ></textarea>
           </div>
@@ -1494,7 +1492,7 @@ import {
 
         const cntTotal = kpiPool.length;
         const cntPending = kpiPool.filter(t => t.status === 'Belum Diproses').length;
-        const cntProcess = kpiPool.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
+        const cntProcess = kpiPool.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi' || t.status === 'Verifikasi Dosen / Kaprodi / Dekanat' || (t.status && t.status.includes('Dosen'))).length;
         const cntDone = kpiPool.filter(t => t.status === 'Selesai (Siap Diambil)').length;
 
         const kpiTotal = document.getElementById('stat-total');
@@ -1511,7 +1509,7 @@ import {
         let categoryPool = activeTickets;
         if (currentStatus !== 'all') {
           if (currentStatus === 'Proses Verifikasi') {
-            categoryPool = activeTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi');
+            categoryPool = activeTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi' || t.status === 'Verifikasi Dosen / Kaprodi / Dekanat' || (t.status && t.status.includes('Dosen')));
           } else {
             categoryPool = activeTickets.filter(t => t.status === currentStatus);
           }
@@ -1577,7 +1575,7 @@ import {
         // Filter status
         if (currentStatus !== 'all') {
           if (currentStatus === 'Proses Verifikasi') {
-            filtered = filtered.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi');
+            filtered = filtered.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi' || t.status === 'Verifikasi Dosen / Kaprodi / Dekanat' || (t.status && t.status.includes('Dosen')));
           } else {
             filtered = filtered.filter(t => t.status === currentStatus);
           }
@@ -1642,6 +1640,7 @@ import {
           'Belum Diproses': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: '⏳' },
           'Verifikasi Admin Loket': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
           'Proses Verifikasi': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
+          'Verifikasi Dosen / Kaprodi / Dekanat': { bg: 'bg-indigo-50', text: 'text-indigo-800', border: 'border-indigo-200', icon: '👨‍🏫' },
           'Verifikasi Dosen / Kaprodi': { bg: 'bg-indigo-50', text: 'text-indigo-800', border: 'border-indigo-200', icon: '👨‍🏫' },
           'Selesai (Siap Diambil)': { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', icon: '📦' },
           'Ditolak': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: '❌' }
@@ -1658,6 +1657,15 @@ import {
           const cleanWa = waNumber.replace(/[^0-9]/g, '');
           const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
 
+          let displayStatus = t.status;
+          if (displayStatus.includes('Dosen') || displayStatus.includes('Dekanat')) {
+            displayStatus = 'Verifikasi Dosen / Kaprodi / Dekanat';
+          }
+          let displayPosisi = t.posisiBerkas || 'Loket Admin FAPERTA';
+          if (displayPosisi.includes('Dosen') || displayPosisi.includes('Dekanat')) {
+            displayPosisi = 'Ruang Dosen / Kaprodi / Dekanat';
+          }
+
           const card = document.createElement('div');
           card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-xs hover:border-emerald-600/60 transition text-left';
 
@@ -1671,7 +1679,7 @@ import {
                 <!-- Status Tiket -->
                 <span class="px-3 py-1 rounded-xl text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5 shadow-2xs">
                   <span>${cfg.icon}</span>
-                  <span>${t.status}</span>
+                  <span>${displayStatus}</span>
                 </span>
                 <!-- Nama Spesifik Kasus Berkas -->
                 <span class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1.5 shadow-2xs">
@@ -1703,18 +1711,18 @@ import {
                     <p class="text-xs text-slate-500 font-mono mt-0.5">
                       NIM: <strong class="text-emerald-800 font-bold">${t.nim}</strong> · ${t.prodi} ${t.semester ? `(${t.semester})` : ''}
                     </p>
-                    <!-- Kontak Lengkap Mahasiswa (WhatsApp & Email) -->
+                    <!-- Kontak Lengkap Mahasiswa (WhatsApp & Email Soft Serasi) -->
                     <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs">
                       ${waNumber ? `
                         <a 
                           href="https://wa.me/${formattedWa}" 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100 font-bold transition shadow-2xs cursor-pointer"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold transition shadow-2xs cursor-pointer"
                           title="Chat WhatsApp Mahasiswa"
                         >
                           <span>💬</span>
-                          <span class="font-mono text-[11px]">${waNumber}</span>
+                          <span class="font-mono text-slate-900 text-[11px]">${waNumber}</span>
                         </a>
                       ` : `
                         <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 text-slate-400 text-[11px]">
@@ -1724,11 +1732,11 @@ import {
                       ${emailAddr ? `
                         <a 
                           href="mailto:${emailAddr}" 
-                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 font-medium transition shadow-2xs cursor-pointer"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-medium transition shadow-2xs cursor-pointer"
                           title="Kirim Email Mahasiswa"
                         >
                           <span>✉️</span>
-                          <span class="font-mono text-[11px]">${emailAddr}</span>
+                          <span class="font-mono text-slate-900 text-[11px]">${emailAddr}</span>
                         </a>
                       ` : `
                         <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 text-slate-400 text-[11px]">
@@ -1750,7 +1758,7 @@ import {
                   <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Posisi Berkas Fisik:</span>
                   <p class="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
                     <span>📍</span>
-                    <span>${t.posisiBerkas || 'Loket Admin FAPERTA'}</span>
+                    <span>${displayPosisi}</span>
                   </p>
                 </div>
 
@@ -1957,6 +1965,7 @@ import {
         const cleanWa = waNumber.replace(/[^0-9]/g, '');
         const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
 
+        const elTicketBadge = document.getElementById('modal-ticket-badge');
         const elNama = document.getElementById('modal-mhs-nama');
         const elNim = document.getElementById('modal-mhs-nim');
         const elProdi = document.getElementById('modal-mhs-prodi');
@@ -1964,6 +1973,7 @@ import {
         const elWaWrap = document.getElementById('modal-mhs-wa-wrap');
         const elEmailWrap = document.getElementById('modal-mhs-email-wrap');
 
+        if (elTicketBadge) elTicketBadge.textContent = t.kode;
         if (elNama) elNama.textContent = t.nama;
         if (elNim) elNim.textContent = t.nim;
         if (elProdi) elProdi.textContent = t.prodi || (mhsInfo && mhsInfo.prodi) || '-';
@@ -1972,34 +1982,36 @@ import {
         if (elWaWrap) {
           if (waNumber) {
             elWaWrap.innerHTML = `
-              <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition shadow-xs cursor-pointer">
-                <span>💬 Hubungi WA:</span>
-                <span class="font-mono">${waNumber}</span>
+              <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold transition shadow-2xs cursor-pointer" title="Chat WhatsApp">
+                <span class="text-xs">💬</span>
+                <span class="font-mono text-slate-900">${waNumber}</span>
               </a>
             `;
           } else {
-            elWaWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">- Belum tercatat -</span>`;
+            elWaWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">WA: -</span>`;
           }
         }
 
         if (elEmailWrap) {
           if (emailAddr) {
             elEmailWrap.innerHTML = `
-              <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 text-white font-medium text-xs hover:bg-blue-700 transition shadow-xs cursor-pointer">
-                <span>✉️ Kirim Email:</span>
-                <span class="font-mono">${emailAddr}</span>
+              <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-bold transition shadow-2xs cursor-pointer" title="Kirim Email">
+                <span class="text-xs">✉️</span>
+                <span class="font-mono text-slate-900 truncate max-w-[180px]">${emailAddr}</span>
               </a>
             `;
           } else {
-            elEmailWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">- Belum tercatat -</span>`;
+            elEmailWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">Email: -</span>`;
           }
         }
 
-        if (modalTitle) modalTitle.textContent = `${t.kode} — ${t.nama}`;
-        if (modalTicketSub) modalTicketSub.textContent = `NIM: ${t.nim} • ${t.layananNama}`;
         if (modalCode) modalCode.value = t.kode;
         if (modalSelectedStatus) modalSelectedStatus.value = t.status;
-        if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Loket Admin FAPERTA';
+        if (modalPosisi) {
+          let pos = t.posisiBerkas || 'Loket Admin FAPERTA';
+          if (pos.includes('Dosen') || pos.includes('Dekanat')) pos = 'Ruang Dosen / Kaprodi / Dekanat';
+          modalPosisi.value = pos;
+        }
         if (modalEstimasi) modalEstimasi.value = (t.estimasiSelesai && t.estimasiSelesai !== '-') ? t.estimasiSelesai : '-';
         if (modalCatatan) modalCatatan.value = t.catatanAdmin || '';
 
@@ -2025,15 +2037,15 @@ import {
       function updateModalStatusChoiceUI(status) {
         modalStatusChoices.forEach(btn => {
           const s = btn.getAttribute('data-target-status');
-          const isSelected = (s === status);
-          const baseClasses = 'modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[58px]' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
+          const isSelected = (s === status) || (status.includes('Dosen') && s.includes('Dosen'));
+          const baseClasses = 'modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[48px]' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
 
           if (isSelected) {
             if (s === 'Belum Diproses') {
               btn.className = `${baseClasses} bg-amber-500 text-white border-amber-600 shadow-md ring-4 ring-amber-200`;
             } else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') {
               btn.className = `${baseClasses} bg-blue-600 text-white border-blue-700 shadow-md ring-4 ring-blue-200`;
-            } else if (s === 'Verifikasi Dosen / Kaprodi') {
+            } else if (s.includes('Dosen') || s.includes('Dekanat')) {
               btn.className = `${baseClasses} bg-indigo-600 text-white border-indigo-700 shadow-md ring-4 ring-indigo-200`;
             } else if (s === 'Selesai (Siap Diambil)') {
               btn.className = `${baseClasses} bg-emerald-600 text-white border-emerald-700 shadow-md ring-4 ring-emerald-200`;
@@ -2059,10 +2071,10 @@ import {
           if (modalPosisi) {
             if (s === 'Belum Diproses') modalPosisi.value = 'Loket Admin FAPERTA';
             else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Loket Admin FAPERTA';
-            else if (s === 'Verifikasi Dosen / Kaprodi') {
-              modalPosisi.value = 'Ruang Dosen / Kaprodi';
+            else if (s.includes('Dosen') || s.includes('Dekanat')) {
+              modalPosisi.value = 'Ruang Dosen / Kaprodi / Dekanat';
               if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean'))) {
-                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Kaprodi.';
+                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen / Kaprodi / Dekanat.';
               }
             }
             else if (s === 'Selesai (Siap Diambil)') {
@@ -2138,7 +2150,7 @@ import {
             target.statusStep = 2;
             target.estimasiSelesai = newEstimasi;
           }
-          else if (newStatus === 'Verifikasi Dosen / Kaprodi') {
+          else if (newStatus.includes('Dosen') || newStatus.includes('Dekanat')) {
             target.statusStep = 3;
             target.estimasiSelesai = newEstimasi;
           }
@@ -2713,7 +2725,7 @@ import {
       function updateRekapStats() {
         const all = loadTickets();
         const cntPending = all.filter(t => t.status === 'Belum Diproses').length;
-        const cntProcess = all.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
+        const cntProcess = all.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi' || t.status === 'Verifikasi Dosen / Kaprodi / Dekanat' || (t.status && t.status.includes('Dosen'))).length;
         const cntDone = all.filter(t => t.status === 'Selesai (Siap Diambil)').length;
 
         const elTot = document.getElementById('rekap-total');

@@ -35,6 +35,7 @@ export interface DocumentItem {
 export type TicketStatus = 
   | 'Belum Diproses' 
   | 'Verifikasi Admin Loket' 
+  | 'Verifikasi Dosen / Kaprodi / Dekanat'
   | 'Verifikasi Dosen / Kaprodi' 
   | 'Proses Verifikasi' 
   | 'Selesai (Siap Diambil)' 
@@ -463,11 +464,11 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     keperluan: "Ujian Khusus: Rancangan Percobaan (3 SKS)",
     detailTambahan: "DPA: Ir. H. Sudirman, M.P. | Sisa 1 Mata Kuliah Teori",
     format: "Berkas Fisik Loket",
-    status: "Verifikasi Dosen / Kaprodi",
+    status: "Verifikasi Dosen / Kaprodi / Dekanat",
     statusStep: 3,
-    posisiBerkas: "Ruang Dosen / Kaprodi",
+    posisiBerkas: "Ruang Dosen / Kaprodi / Dekanat",
     estimasiSelesai: "-",
-    catatanAdmin: "Berkas fisik KHS telah lolos verifikasi loket. Sedang menunggu persetujuan dan disposisi Kaprodi Agroteknologi.",
+    catatanAdmin: "Berkas fisik telah lolos verifikasi loket. Sedang menunggu persetujuan dan disposisi Dosen / Kaprodi / Dekanat.",
     tanggal: "04 September 2026, 08:00 WIB",
     isNewForAdmin: true
   },

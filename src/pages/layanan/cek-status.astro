@@ -8,7 +8,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
   description="Lacak riwayat pengajuan surat akademik mahasiswa FAPERTA INSTIPER, pantau tahapan proses dan posisi berkas fisik di loket."
 >
   <!-- Hero Section -->
-  <section class="border-b border-[var(--line)] bg-gradient-to-b from-[#f4f9f4] to-white pt-8 pb-5 sm:py-10 hero-noise">
+  <section id="hero-status-section" class="border-b border-[var(--line)] bg-gradient-to-b from-[#f4f9f4] to-white pt-8 pb-5 sm:py-10 hero-noise">
     <div class="container-shell">
       <nav class="flex items-center gap-2 text-xs font-semibold text-[var(--muted)] mb-5" aria-label="Breadcrumb">
         <a href="/" class="hover:text-[var(--leaf)]">Beranda</a>
@@ -18,7 +18,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         <span class="text-[var(--leaf)] font-bold">Pelacakan Status Berkas</span>
       </nav>
 
-      <div class="max-w-3xl">
+      <div id="hero-title-box" class="max-w-3xl">
         <div class="inline-flex items-center gap-2 rounded-full border border-[var(--leaf)]/20 bg-[var(--leaf-soft)] px-3.5 py-1.5 text-xs font-bold text-[var(--leaf)]">
           <span class="h-2 w-2 rounded-full bg-[var(--gold)]"></span>
           <span>Pelacakan Status Administrasi Mahasiswa</span>
@@ -32,7 +32,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
       </div>
 
       <!-- Jam Layanan Loket Banner -->
-      <div class="mt-6 sm:mt-8 p-4 sm:p-5 rounded-2xl bg-white border border-[var(--line)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div id="hero-loket-banner" class="mt-6 sm:mt-8 p-4 sm:p-5 rounded-2xl bg-white border border-[var(--line)] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center gap-3.5">
           <div class="h-11 w-11 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xl font-bold flex items-center justify-center shrink-0">
             🏛️
@@ -54,7 +54,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
     <div class="max-w-4xl mx-auto space-y-4 sm:space-y-6">
       
       <!-- Search Box Card -->
-      <div class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-8 shadow-sm">
+      <div id="search-box-card" class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-8 shadow-sm">
         <form id="search-form" action="javascript:void(0);" onsubmit="return false;" class="flex flex-col sm:flex-row gap-3">
           <div class="flex-1 flex items-center rounded-2xl border-2 border-[var(--line)] bg-white px-4 py-2.5 focus-within:border-[var(--leaf)] focus-within:ring-3 focus-within:ring-[var(--leaf)]/15 transition shadow-xs">
             <span class="text-gray-400 text-xl shrink-0 select-none mr-3" aria-hidden="true">🔍</span>
@@ -80,17 +80,28 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         </p>
       </div>
 
-      <!-- Applicant Profile Card (Muncul Saat Pencarian NIM) -->
-      <div id="applicant-profile-card" class="hidden rounded-3xl border border-slate-200 bg-slate-50/70 p-6 sm:p-8 shadow-xs">
+      <!-- Applicant Profile Card (Muncul Paling Atas Saat Cek Status) -->
+      <div id="applicant-profile-card" class="hidden rounded-3xl border border-slate-200 bg-white p-5 sm:p-7 shadow-xs">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div class="flex items-start sm:items-center gap-4">
             <div class="h-14 w-14 rounded-2xl bg-emerald-700 text-white text-2xl font-bold flex items-center justify-center shrink-0 shadow-xs">
               🎓
             </div>
             <div>
-              <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                Data Mahasiswa Terdaftar
-              </span>
+              <div class="flex items-center gap-2">
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                  Data Mahasiswa Terdaftar
+                </span>
+                <button 
+                  type="button" 
+                  id="btn-toggle-search" 
+                  class="text-xs font-bold text-slate-500 hover:text-emerald-700 hover:bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200 transition cursor-pointer flex items-center gap-1"
+                  title="Klik untuk mencari dengan NIM atau Nomor Tiket lain"
+                >
+                  <span>🔍</span>
+                  <span>Cari NIM Lain</span>
+                </button>
+              </div>
               <h2 id="prof-nama" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">-</h2>
               <p class="text-xs sm:text-sm text-slate-500 font-mono mt-1">
                 NIM: <strong id="prof-nim" class="text-emerald-800 font-bold">-</strong> · <span id="prof-prodi">-</span>
@@ -124,6 +135,9 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
     function initCekStatus() {
       const searchForm = document.getElementById('search-form');
       const searchInput = document.getElementById('search-input');
+      const heroStatusSection = document.getElementById('hero-status-section');
+      const searchBoxCard = document.getElementById('search-box-card');
+      const btnToggleSearch = document.getElementById('btn-toggle-search');
       const profileCard = document.getElementById('applicant-profile-card');
       const ticketsContainer = document.getElementById('tickets-container');
       const notFoundCard = document.getElementById('not-found-card');
@@ -174,6 +188,8 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         ticketsContainer.innerHTML = '';
 
         if (!ticketsList || ticketsList.length === 0) {
+          heroStatusSection?.classList.remove('hidden');
+          searchBoxCard?.classList.remove('hidden');
           profileCard?.classList.add('hidden');
           notFoundCard?.classList.remove('hidden');
           window.getActiveTicketForPrint = () => null;
@@ -185,17 +201,17 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         const activeList = ticketsList.filter(t => !isTicketArchived(t));
         const archivedList = ticketsList.filter(t => isTicketArchived(t));
 
-        // Tampilkan profil jika pencarian berbasis NIM
-        if (searchedNim && ticketsList.length > 0) {
-          const first = ticketsList[0];
-          document.getElementById('prof-nama').textContent = first.nama;
-          document.getElementById('prof-nim').textContent = first.nim;
-          document.getElementById('prof-prodi').textContent = first.prodi;
-          document.getElementById('prof-total').textContent = `${ticketsList.length} Berkas (${activeList.length} Aktif, ${archivedList.length} Arsip)`;
-          profileCard?.classList.remove('hidden');
-        } else {
-          profileCard?.classList.add('hidden');
-        }
+        // Sesuai Permintaan User: Sembunyikan Judul Hero, Informasi Loket, dan Input Cari Berkas
+        // Cukup tampilkan Data Mahasiswa Terdaftar di bagian paling atas
+        heroStatusSection?.classList.add('hidden');
+        searchBoxCard?.classList.add('hidden');
+
+        const first = ticketsList[0];
+        document.getElementById('prof-nama').textContent = first.nama;
+        document.getElementById('prof-nim').textContent = first.nim;
+        document.getElementById('prof-prodi').textContent = first.prodi;
+        document.getElementById('prof-total').textContent = `${ticketsList.length} Berkas (${activeList.length} Aktif, ${archivedList.length} Arsip)`;
+        profileCard?.classList.remove('hidden');
 
         // Tentukan default tab jika tidak ada berkas aktif
         if (activeList.length === 0 && archivedList.length > 0) {
@@ -288,7 +304,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
           let step = 1;
           if (ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4) {
             step = 4;
-          } else if (ticket.status === 'Verifikasi Dosen / Kaprodi' || ticket.statusStep === 3) {
+          } else if (ticket.status === 'Verifikasi Dosen / Kaprodi / Dekanat' || ticket.status === 'Verifikasi Dosen / Kaprodi' || (ticket.status && ticket.status.includes('Dosen')) || ticket.statusStep === 3) {
             step = 3;
           } else if (ticket.status === 'Verifikasi Admin Loket' || ticket.status === 'Proses Verifikasi' || ticket.statusStep === 2) {
             step = 2;
@@ -296,15 +312,26 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
             step = 1;
           }
 
+          let displayStatus = ticket.status;
+          if (displayStatus.includes('Dosen') || displayStatus.includes('Dekanat')) {
+            displayStatus = 'Verifikasi Dosen / Kaprodi / Dekanat';
+          }
+
+          let displayPosisi = ticket.posisiBerkas || (isKomplain ? 'Proses Rekonsiliasi Nilai SIAKAD' : 'Loket Admin FAPERTA');
+          if (displayPosisi.includes('Dosen') || displayPosisi.includes('Dekanat')) {
+            displayPosisi = 'Ruang Dosen / Kaprodi / Dekanat';
+          }
+
           const statusColors = {
             'Belum Diproses': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: '⏳' },
             'Verifikasi Admin Loket': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
             'Proses Verifikasi': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
+            'Verifikasi Dosen / Kaprodi / Dekanat': { bg: 'bg-indigo-50', text: 'text-indigo-800', border: 'border-indigo-200', icon: '👨‍🏫' },
             'Verifikasi Dosen / Kaprodi': { bg: 'bg-indigo-50', text: 'text-indigo-800', border: 'border-indigo-200', icon: '👨‍🏫' },
             'Selesai (Siap Diambil)': { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', icon: '📦' },
             'Ditolak': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: '❌' }
           };
-          const badge = statusColors[ticket.status] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', icon: '📄' };
+          const badge = statusColors[displayStatus] || statusColors[ticket.status] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', icon: '📄' };
 
           const dynamicPhases = {
             1: {
@@ -330,15 +357,15 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               defaultNote: 'Petugas loket sedang memverifikasi data dan kelengkapan berkas pada sistem akademik kampus.'
             },
             3: {
-              badge: 'Tahap 3 dari 4 • Verifikasi Dosen / Dekanat',
-              title: 'Sedang Diverifikasi Dosen / Dekanat',
+              badge: 'Tahap 3 dari 4 • Verifikasi Dosen / Kaprodi / Dekanat',
+              title: 'Sedang Diverifikasi Dosen / Kaprodi / Dekanat',
               percent: 75,
               icon: '👨‍🏫',
               themeBg: 'bg-indigo-50/80 border-indigo-300',
               badgeClass: 'bg-indigo-100 text-indigo-900 border-indigo-300',
               titleColor: 'text-indigo-950',
               barColor: 'bg-indigo-600',
-              defaultNote: isKomplain ? 'Sedang dalam telaah rekonsiliasi nilai oleh Dosen Pengampu mata kuliah.' : 'Berkas fisik sedang dalam telaah persetujuan dan tanda tangan Dekanat / Kaprodi.'
+              defaultNote: isKomplain ? 'Sedang dalam telaah rekonsiliasi nilai oleh Dosen Pengampu mata kuliah.' : 'Berkas fisik sedang dalam telaah persetujuan dan tanda tangan Dosen / Kaprodi / Dekanat.'
             },
             4: {
               badge: isKomplain ? 'Tahap 4 dari 4 • Selesai Diproses (Online)' : 'Tahap 4 dari 4 • Selesai (Siap Diambil)',
@@ -364,7 +391,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                 <div class="flex flex-wrap items-center gap-2">
                   <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${badge.bg} ${badge.text} border ${badge.border}">
                     <span>${badge.icon}</span>
-                    <span>${ticket.status}</span>
+                    <span>${displayStatus}</span>
                   </span>
                   ${isArchived ? `
                     <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-900 border border-purple-300">
@@ -398,7 +425,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                 <span class="text-base shrink-0">${isRejected ? '❌' : isKomplain ? '🌐' : '📍'}</span>
                 <div>
                   <span class="font-bold text-slate-600 block text-[11px] uppercase tracking-wider">Posisi Berkas:</span>
-                  <p class="${isRejected ? 'text-rose-900' : 'text-slate-900'} font-bold mt-0.5">${ticket.posisiBerkas || (isKomplain ? 'Proses Rekonsiliasi Nilai SIAKAD' : 'Loket Admin FAPERTA')}</p>
+                  <p class="${isRejected ? 'text-rose-900' : 'text-slate-900'} font-bold mt-0.5">${displayPosisi}</p>
                 </div>
               </div>
               <div class="flex items-start gap-2.5">
@@ -588,6 +615,15 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         const query = (searchInput?.value || '').trim().toUpperCase();
         if (!query) return;
         executeSearch(query, true);
+      });
+
+      // 4b. Toggle Form Pencarian jika mahasiswa ingin mencari NIM lain
+      btnToggleSearch?.addEventListener('click', () => {
+        searchBoxCard?.classList.toggle('hidden');
+        if (!searchBoxCard?.classList.contains('hidden')) {
+          searchInput?.focus();
+          searchBoxCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       });
 
       // 5. Inisialisasi Otomatis Saat Halaman Dimuat / Direfresh (F5)
