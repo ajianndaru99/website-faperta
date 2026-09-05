@@ -295,7 +295,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                 <span class="text-lg shrink-0">${isRejected ? '⚠️' : '⏱️'}</span>
                 <div>
                   <span class="font-bold text-slate-700 block text-xs uppercase tracking-wider">Estimasi Selesai:</span>
-                  <p class="${isRejected ? 'text-rose-700' : 'text-emerald-800'} font-extrabold mt-1">${ticket.estimasiSelesai || '1–2 Hari Kerja'}</p>
+                  <p class="${isRejected ? 'text-rose-700' : 'text-emerald-800'} font-extrabold mt-1">${(ticket.estimasiSelesai && ticket.estimasiSelesai !== '-') ? ticket.estimasiSelesai : '-'}</p>
                 </div>
               </div>
             </div>

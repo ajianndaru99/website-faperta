@@ -182,7 +182,7 @@ import {
                 </span>
               </div>
               <nav class="space-y-2" aria-label="Kategori Berkas Loket">
-                <!-- 1. Semua Dokumen Masuk -->
+                <!-- 1. Semua Berkas -->
                 <button 
                   type="button" 
                   data-case="all" 
@@ -190,12 +190,12 @@ import {
                 >
                   <div class="flex items-center gap-3 min-w-0">
                     <span class="text-xl shrink-0">📋</span>
-                    <span class="case-tab-title text-sm font-bold tracking-tight text-white">Semua Dokumen</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-white">Semua Berkas</span>
                   </div>
                   <span id="badge-cat-all" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-white/25 text-white">0</span>
                 </button>
 
-                <!-- 2. Permohonan KHS -->
+                <!-- 2. KHS -->
                 <button 
                   type="button" 
                   data-case="khs" 
@@ -203,12 +203,12 @@ import {
                 >
                   <div class="flex items-center gap-3 min-w-0">
                     <span class="text-xl shrink-0">📄</span>
-                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Permohonan KHS</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">KHS</span>
                   </div>
                   <span id="badge-count-khs" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
-                <!-- 3. Pengajuan Ujian Khusus -->
+                <!-- 3. Ujian Khusus -->
                 <button 
                   type="button" 
                   data-case="ujian" 
@@ -234,7 +234,7 @@ import {
                   <span id="badge-count-komplain" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
-                <!-- 5. Surat Izin Penelitian -->
+                <!-- 5. Izin Penelitian -->
                 <button 
                   type="button" 
                   data-case="penelitian" 
@@ -247,7 +247,7 @@ import {
                   <span id="badge-count-penelitian" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
-                <!-- 6. Layanan Lainnya -->
+                <!-- 6. Lainnya -->
                 <button 
                   type="button" 
                   data-case="lainnya" 
@@ -255,7 +255,7 @@ import {
                 >
                   <div class="flex items-center gap-3 min-w-0">
                     <span class="text-xl shrink-0">📁</span>
-                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Layanan Lainnya</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Lainnya</span>
                   </div>
                   <span id="badge-count-lainnya" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
@@ -349,7 +349,7 @@ import {
               <div class="space-y-1">
                 <div class="flex flex-wrap items-center gap-3">
                   <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                    Semua Berkas Masuk
+                    Semua Berkas
                   </h2>
                   <span 
                     id="filtered-count-badge" 
@@ -358,8 +358,8 @@ import {
                     0 Berkas
                   </span>
                 </div>
-                <p class="text-xs text-slate-500 font-medium">
-                  Pusat verifikasi dan disposisi posisi berkas fisik loket administrasi FAPERTA INSTIPER.
+                <p id="active-category-subtitle" class="text-xs text-slate-500 font-medium">
+                  Monitoring seluruh berkas KHS, ujian khusus, dan komplain nilai mahasiswa.
                 </p>
               </div>
 
@@ -462,9 +462,9 @@ import {
             <!-- Empty State -->
             <div id="admin-empty-state" class="hidden rounded-3xl border-2 border-dashed border-slate-200 bg-white p-12 text-center">
               <span class="text-4xl">📂</span>
-              <h3 class="mt-3 text-base font-bold text-slate-800">Tidak Ada Berkas Ditemukan</h3>
-              <p class="mt-1 text-xs text-slate-500">
-                Tidak ada permohonan berkas yang cocok dengan filter atau kata kunci pencarian Anda.
+              <h3 id="empty-state-title" class="mt-3 text-base font-bold text-slate-800">Tidak Ada Berkas</h3>
+              <p id="empty-state-desc" class="mt-1 text-xs text-slate-500">
+                Belum ada berkas pada kategori atau filter ini.
               </p>
             </div>
           </div>
@@ -873,52 +873,57 @@ import {
       <form id="modal-edit-form" class="p-6 sm:p-8 space-y-6">
         <input type="hidden" id="modal-ticket-code" />
 
-        <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Tanpa Icon untuk Orang Senior) -->
+        <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Rapi, Tanpa Icon) -->
         <div>
           <label class="block text-sm sm:text-base font-black text-slate-900 mb-2.5">
             Pilih Tahapan Status Berkas:
           </label>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs sm:text-sm">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
             <button 
               type="button" 
               data-target-status="Belum Diproses" 
-              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-amber-50 text-amber-900 border-amber-400"
+              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-amber-50 text-amber-900 border-amber-400 shadow-2xs"
             >
-              <span>1. Antrean Loket</span>
+              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 1</span>
+              <span class="text-xs font-black mt-1 leading-tight">Antrean Loket</span>
             </button>
             <button 
               type="button" 
               data-target-status="Verifikasi Admin Loket" 
-              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
             >
-              <span>2. Verif Admin</span>
+              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 2</span>
+              <span class="text-xs font-black mt-1 leading-tight">Verif Admin</span>
             </button>
             <button 
               type="button" 
               data-target-status="Verifikasi Dosen / Kaprodi" 
-              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
             >
-              <span>3. Dosen/Dekanat</span>
+              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 3</span>
+              <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Dosen/Dekanat</span>
             </button>
             <button 
               type="button" 
               data-target-status="Selesai (Siap Diambil)" 
-              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
             >
-              <span>4. Siap Ambil</span>
+              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 4</span>
+              <span class="text-xs font-black mt-1 leading-tight">Siap Ambil</span>
             </button>
             <button 
               type="button" 
               data-target-status="Ditolak" 
-              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1"
+              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1 shadow-2xs"
             >
-              <span>Ditolak</span>
+              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none text-rose-500">Batal/Tolak</span>
+              <span class="text-xs font-black mt-1 leading-tight">Ditolak</span>
             </button>
           </div>
           <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
         </div>
 
-        <!-- Posisi Berkas Fisik Terkini (Setting Pengambilan Loket Admin FAPERTA) -->
+        <!-- Posisi Berkas Fisik Terkini (Preset: Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat) -->
         <div>
           <label for="modal-posisi-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
             Posisi Berkas Fisik Saat Ini:
@@ -931,17 +936,47 @@ import {
             placeholder="Loket Admin FAPERTA"
           />
           
-          <!-- Preset Posisi Cepat -->
+          <!-- Preset Posisi Cepat: HANYA Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat -->
           <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
             <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
             <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Loket Admin FAPERTA">
               Loket Admin FAPERTA
             </button>
-            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Meja Verifikasi SIAKAD & Dokumen Fisik">
-              Meja Verifikasi Loket
+            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dosen / Kaprodi">
+              Ruang Dosen / Kaprodi
             </button>
-            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dosen Pengampu / Dekanat">
-              Ruang Dosen / Dekanat
+            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dekanat">
+              Ruang Dekanat
+            </button>
+          </div>
+        </div>
+
+        <!-- Perkiraan Waktu Selesai (Estimasi diatur sendiri oleh Admin) -->
+        <div>
+          <label for="modal-estimasi-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
+            Perkiraan Waktu Selesai (Estimasi Admin):
+          </label>
+          <input 
+            type="text" 
+            id="modal-estimasi-input" 
+            class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-sm sm:text-base text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+            placeholder="Contoh: 1 Hari Kerja / Besok Pukul 14.00 WIB (Ketik '-' jika belum ditentukan)"
+          />
+          
+          <!-- Preset Estimasi Cepat -->
+          <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+            <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
+            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="-">
+              - (Belum Ditentukan)
+            </button>
+            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="Hari Ini">
+              Hari Ini
+            </button>
+            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="1 Hari Kerja">
+              1 Hari Kerja
+            </button>
+            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="2–3 Hari Kerja">
+              2–3 Hari Kerja
             </button>
           </div>
         </div>
@@ -1284,12 +1319,21 @@ import {
       });
 
       const categoryTitleMap = {
-        'all': 'Semua Berkas Masuk',
-        'khs': 'Permohonan KHS Online',
-        'ujian': 'Pengajuan Ujian Khusus',
-        'komplain': 'Komplain & Verifikasi Nilai',
-        'penelitian': 'Surat Izin Penelitian',
-        'lainnya': 'Layanan & Surat Lainnya'
+        'all': 'Semua Berkas',
+        'khs': 'Berkas KHS',
+        'ujian': 'Ujian Khusus',
+        'komplain': 'Komplain Nilai',
+        'penelitian': 'Izin Penelitian',
+        'lainnya': 'Berkas Lainnya'
+      };
+
+      const categorySubtitleMap = {
+        'all': 'Monitoring berkas mahasiswa KHS, ujian khusus, dan komplain nilai.',
+        'khs': 'Penerbitan salinan Kartu Hasil Studi untuk prasyarat ujian dan beasiswa.',
+        'ujian': 'Pendaftaran berkas ujian khusus tingkat akhir mahasiswa.',
+        'komplain': 'Rekonsiliasi perbaikan nilai mahasiswa dengan dosen pengampu di SIAKAD.',
+        'penelitian': 'Surat pengantar izin pengambilan data dan riset lapangan.',
+        'lainnya': 'Pengurusan surat keterangan dan berkas akademik mahasiswa lainnya.'
       };
 
       const caseTabs = document.querySelectorAll('.admin-case-tab');
@@ -1431,6 +1475,26 @@ import {
         if (bLainnya) bLainnya.textContent = countLainnya;
       }
 
+      function getCleanCaseName(t) {
+        if (!t) return 'Berkas';
+        const id = (t.layananId || '').toLowerCase();
+        const code = (t.kode || '').toUpperCase();
+        const name = t.layananNama || '';
+        if (id.includes('khs') || code.startsWith('KHS')) {
+          return name.replace(/^Permohonan\s+/i, '');
+        }
+        if (id.includes('ujian') || code.startsWith('UKH')) {
+          return name.replace(/^Pengajuan\s+/i, '');
+        }
+        if (id.includes('komplain') || code.startsWith('KMP')) {
+          return name.replace(/^Verifikasi\s*\/\s*/i, '');
+        }
+        if (id.includes('penelitian') || code.startsWith('PEN')) {
+          return 'Izin Penelitian';
+        }
+        return name || 'Berkas Mahasiswa';
+      }
+
       // 7. Render Daftar Berkas Masuk
       function renderTicketsList() {
         const all = loadTickets();
@@ -1483,20 +1547,44 @@ import {
         }
 
         const titleEl = document.getElementById('active-category-title');
+        const subtitleEl = document.getElementById('active-category-subtitle');
         const countBadge = document.getElementById('filtered-count-badge');
         if (titleEl) {
           let suffix = '';
-          if (currentStatus !== 'all') suffix = ` • Status: ${currentStatus}`;
-          titleEl.textContent = (categoryTitleMap[currentCase] || 'Berkas Masuk') + suffix;
+          if (currentStatus !== 'all') suffix = ` • ${currentStatus}`;
+          titleEl.textContent = (categoryTitleMap[currentCase] || 'Berkas Mahasiswa') + suffix;
+        }
+        if (subtitleEl) {
+          subtitleEl.textContent = categorySubtitleMap[currentCase] || 'Monitoring berkas mahasiswa FAPERTA.';
         }
         if (countBadge) countBadge.textContent = `${filtered.length} Berkas`;
 
         const container = document.getElementById('admin-tickets-container');
         const emptyState = document.getElementById('admin-empty-state');
+        const emptyTitle = document.getElementById('empty-state-title');
+        const emptyDesc = document.getElementById('empty-state-desc');
         if (!container) return;
         container.innerHTML = '';
 
         if (filtered.length === 0) {
+          if (emptyTitle && emptyDesc) {
+            if (currentCase === 'khs') {
+              emptyTitle.textContent = 'Tidak Ada Berkas KHS';
+              emptyDesc.textContent = 'Belum ada permohonan KHS mahasiswa yang cocok dengan filter.';
+            } else if (currentCase === 'ujian') {
+              emptyTitle.textContent = 'Tidak Ada Berkas Ujian Khusus';
+              emptyDesc.textContent = 'Belum ada pendaftaran ujian khusus yang cocok dengan filter.';
+            } else if (currentCase === 'komplain') {
+              emptyTitle.textContent = 'Tidak Ada Aduan Komplain Nilai';
+              emptyDesc.textContent = 'Tidak ada laporan aduan nilai yang cocok dengan filter.';
+            } else if (currentCase === 'penelitian') {
+              emptyTitle.textContent = 'Tidak Ada Berkas Izin Penelitian';
+              emptyDesc.textContent = 'Belum ada permohonan surat izin penelitian yang cocok dengan filter.';
+            } else {
+              emptyTitle.textContent = 'Tidak Ada Berkas Ditemukan';
+              emptyDesc.textContent = searchQuery ? 'Tidak ada berkas yang cocok dengan kata kunci pencarian Anda.' : 'Semua berkas pada tahapan ini telah tuntas diproses.';
+            }
+          }
           emptyState?.classList.remove('hidden');
           return;
         }
@@ -1513,6 +1601,9 @@ import {
 
         filtered.forEach(t => {
           const cfg = statusConfig[t.status] || statusConfig['Belum Diproses'];
+          const cleanCase = getCleanCaseName(t);
+          const displayDate = t.tanggal && t.tanggal !== 'Hari Ini' ? t.tanggal : '-';
+          const displayEstimasi = (t.estimasiSelesai && t.estimasiSelesai !== '-') ? t.estimasiSelesai : '-';
           const card = document.createElement('div');
           card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-xs hover:border-emerald-600/60 transition text-left';
 
@@ -1528,10 +1619,10 @@ import {
                   <span>${cfg.icon}</span>
                   <span>${t.status}</span>
                 </span>
-                <!-- Nama Berkas / Layanan (Requirement #2) -->
+                <!-- Nama Spesifik Kasus Berkas -->
                 <span class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1.5 shadow-2xs">
                   <span>📄</span>
-                  <span>${t.layananNama || 'Layanan Akademik'}</span>
+                  <span>${cleanCase}</span>
                 </span>
                 ${t.sudahDiambil ? `
                   <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs">
@@ -1540,10 +1631,10 @@ import {
                   </span>
                 ` : ''}
               </div>
-              <!-- Tanggal Dimasukkannya Surat (Requirement #2) -->
+              <!-- Tanggal Masuk -->
               <div class="text-xs flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 shrink-0">
-                <span class="text-slate-500 font-medium">📅 Tanggal Masuk:</span>
-                <strong class="text-slate-800">${t.tanggal || 'Hari Ini'}</strong>
+                <span class="text-slate-500 font-medium">📅 Masuk:</span>
+                <strong class="text-slate-800">${displayDate}</strong>
               </div>
             </div>
 
@@ -1562,8 +1653,8 @@ import {
                 </div>
 
                 <div class="mt-4 bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 text-xs space-y-1">
-                  <p class="font-bold text-emerald-800">${t.layananNama || 'Layanan Mahasiswa'}</p>
-                  <p class="text-slate-700 leading-relaxed">${t.detailTambahan || t.keperluan}</p>
+                  <p class="font-bold text-emerald-800">${cleanCase}</p>
+                  <p class="text-slate-700 leading-relaxed">${t.detailTambahan || t.keperluan || '-'}</p>
                 </div>
               </div>
 
@@ -1572,13 +1663,21 @@ import {
                   <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Posisi Berkas Fisik:</span>
                   <p class="font-bold text-slate-900 mt-0.5 flex items-center gap-1.5">
                     <span>📍</span>
-                    <span>${t.posisiBerkas || 'Antrean Masuk Loket FAPERTA'}</span>
+                    <span>${t.posisiBerkas || 'Loket Admin FAPERTA'}</span>
+                  </p>
+                </div>
+
+                <div>
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Perkiraan Waktu Selesai:</span>
+                  <p class="font-bold ${displayEstimasi !== '-' ? 'text-emerald-800' : 'text-slate-500'} mt-0.5 flex items-center gap-1.5">
+                    <span>⏱️</span>
+                    <span>${displayEstimasi !== '-' ? displayEstimasi : '- (Belum Diatur Admin)'}</span>
                   </p>
                 </div>
 
                 ${t.catatanAdmin ? `
                   <div class="pt-2 border-t border-slate-200/60">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Catatan Petugas Loket:</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Catatan Petugas:</span>
                     <p class="text-slate-700 italic mt-0.5">${t.catatanAdmin}</p>
                   </div>
                 ` : ''}
@@ -1750,6 +1849,7 @@ import {
       const modalCode = document.getElementById('modal-ticket-code');
       const modalSelectedStatus = document.getElementById('modal-selected-status');
       const modalPosisi = document.getElementById('modal-posisi-input');
+      const modalEstimasi = document.getElementById('modal-estimasi-input');
       const modalCatatan = document.getElementById('modal-catatan-input');
       const modalStatusChoices = document.querySelectorAll('.modal-status-choice');
 
@@ -1763,6 +1863,7 @@ import {
         if (modalCode) modalCode.value = t.kode;
         if (modalSelectedStatus) modalSelectedStatus.value = t.status;
         if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Loket Admin FAPERTA';
+        if (modalEstimasi) modalEstimasi.value = (t.estimasiSelesai && t.estimasiSelesai !== '-') ? t.estimasiSelesai : '-';
         if (modalCatatan) modalCatatan.value = t.catatanAdmin || '';
 
         updateModalStatusChoiceUI(t.status);
@@ -1788,20 +1889,22 @@ import {
         modalStatusChoices.forEach(btn => {
           const s = btn.getAttribute('data-target-status');
           const isSelected = (s === status);
+          const baseClasses = 'modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[58px]' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
+
           if (isSelected) {
             if (s === 'Belum Diproses') {
-              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-amber-500 text-white border-amber-600 shadow-md ring-4 ring-amber-200';
+              btn.className = `${baseClasses} bg-amber-500 text-white border-amber-600 shadow-md ring-4 ring-amber-200`;
             } else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') {
-              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-blue-600 text-white border-blue-700 shadow-md ring-4 ring-blue-200';
+              btn.className = `${baseClasses} bg-blue-600 text-white border-blue-700 shadow-md ring-4 ring-blue-200`;
             } else if (s === 'Verifikasi Dosen / Kaprodi') {
-              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-indigo-600 text-white border-indigo-700 shadow-md ring-4 ring-indigo-200';
+              btn.className = `${baseClasses} bg-indigo-600 text-white border-indigo-700 shadow-md ring-4 ring-indigo-200`;
             } else if (s === 'Selesai (Siap Diambil)') {
-              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-emerald-600 text-white border-emerald-700 shadow-md ring-4 ring-emerald-200';
+              btn.className = `${baseClasses} bg-emerald-600 text-white border-emerald-700 shadow-md ring-4 ring-emerald-200`;
             } else if (s === 'Ditolak') {
-              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-rose-600 text-white border-rose-700 shadow-md ring-4 ring-rose-200 col-span-2 sm:col-span-1';
+              btn.className = `${baseClasses} bg-rose-600 text-white border-rose-700 shadow-md ring-4 ring-rose-200`;
             }
           } else {
-            btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-800 border-slate-300 hover:bg-slate-100' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
+            btn.className = `${baseClasses} bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs`;
           }
         });
       }
@@ -1817,17 +1920,17 @@ import {
           const isKmp = curTarget && ((curTarget.layananId || '').toLowerCase().includes('komplain') || (curTarget.layananNama || '').toLowerCase().includes('komplain') || (curTarget.kode || '').toUpperCase().startsWith('KMP'));
 
           if (modalPosisi) {
-            if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Admin FAPERTA';
-            else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Meja Verifikasi SIAKAD & Dokumen Fisik';
+            if (s === 'Belum Diproses') modalPosisi.value = 'Loket Admin FAPERTA';
+            else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Loket Admin FAPERTA';
             else if (s === 'Verifikasi Dosen / Kaprodi') {
-              modalPosisi.value = 'Ruang Dosen Pengampu / Dekanat';
+              modalPosisi.value = 'Ruang Dosen / Kaprodi';
               if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean'))) {
-                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Dekanat.';
+                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Kaprodi.';
               }
             }
             else if (s === 'Selesai (Siap Diambil)') {
               if (isKmp) {
-                modalPosisi.value = 'Selesai Diproses Online (SIAKAD)';
+                modalPosisi.value = 'Loket Admin FAPERTA';
                 if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean') || modalCatatan.value.includes('telaah'))) {
                   modalCatatan.value = 'Komplain nilai telah diverifikasi oleh Dosen Pengampu dan nilai akhir telah disinkronkan ke SIAKAD. Mahasiswa tidak perlu ke loket.';
                 }
@@ -1839,7 +1942,7 @@ import {
               }
             }
             else if (s === 'Ditolak') {
-              modalPosisi.value = 'Ditolak Petugas Administrasi';
+              modalPosisi.value = 'Loket Admin FAPERTA';
               if (modalCatatan && !modalCatatan.value.toLowerCase().includes('ditolak')) {
                 modalCatatan.value = 'Ditolak: [Tuliskan alasan perbaikan berkas di sini]';
               }
@@ -1851,6 +1954,12 @@ import {
       document.querySelectorAll('.preset-posisi').forEach(btn => {
         btn.addEventListener('click', () => {
           if (modalPosisi) modalPosisi.value = btn.getAttribute('data-pos') || '';
+        });
+      });
+
+      document.querySelectorAll('.preset-estimasi').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (modalEstimasi) modalEstimasi.value = btn.getAttribute('data-est') || '-';
         });
       });
 
@@ -1871,6 +1980,7 @@ import {
         const kode = modalCode?.value;
         const newStatus = modalSelectedStatus?.value;
         const newPosisi = modalPosisi?.value;
+        const newEstimasi = modalEstimasi ? (modalEstimasi.value.trim() || '-') : '-';
         const newCatatan = modalCatatan?.value;
 
         const all = loadTickets();
@@ -1883,12 +1993,23 @@ import {
 
           const isKmp = ((target.layananId || '').toLowerCase().includes('komplain') || (target.layananNama || '').toLowerCase().includes('komplain') || (target.kode || '').toUpperCase().startsWith('KMP'));
 
-          if (newStatus === 'Belum Diproses') target.statusStep = 1;
-          else if (newStatus === 'Verifikasi Admin Loket' || newStatus === 'Proses Verifikasi') target.statusStep = 2;
-          else if (newStatus === 'Verifikasi Dosen / Kaprodi') target.statusStep = 3;
+          if (newStatus === 'Belum Diproses') {
+            target.statusStep = 1;
+            target.estimasiSelesai = newEstimasi;
+          }
+          else if (newStatus === 'Verifikasi Admin Loket' || newStatus === 'Proses Verifikasi') {
+            target.statusStep = 2;
+            target.estimasiSelesai = newEstimasi;
+          }
+          else if (newStatus === 'Verifikasi Dosen / Kaprodi') {
+            target.statusStep = 3;
+            target.estimasiSelesai = newEstimasi;
+          }
           else if (newStatus === 'Selesai (Siap Diambil)') {
             target.statusStep = 4;
-            target.estimasiSelesai = isKmp ? 'Selesai Diproses Online' : 'Siap Diambil di Loket Admin FAPERTA';
+            target.estimasiSelesai = (newEstimasi && newEstimasi !== '-') 
+              ? newEstimasi 
+              : (isKmp ? 'Selesai Diproses Online' : 'Siap Diambil di Loket Admin FAPERTA');
           }
           else if (newStatus === 'Ditolak') {
             target.statusStep = -1;
