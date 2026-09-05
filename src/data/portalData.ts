@@ -38,6 +38,7 @@ export type TicketStatus =
   | 'Verifikasi Dosen / Kaprodi' 
   | 'Proses Verifikasi' 
   | 'Selesai (Siap Diambil)' 
+  | 'Sudah Diambil'
   | 'Ditolak';
 
 export interface TicketItem {
@@ -58,6 +59,9 @@ export interface TicketItem {
   catatanAdmin?: string;
   tanggal: string;
   isNewForAdmin?: boolean;
+  sudahDiambil?: boolean;
+  tanggalDiambil?: string;
+  petugasPenyerah?: string;
 }
 
 // ============================================================

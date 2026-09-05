@@ -360,18 +360,26 @@ import {
                 </p>
               </div>
 
-              <!-- Quick Search Input -->
-              <div class="sm:w-80">
-                <div class="relative">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
-                    🔍
-                  </span>
-                  <input 
-                    type="text" 
-                    id="admin-search-input" 
-                    placeholder="Cari NIM, Nama, atau Kode..." 
-                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
-                  />
+              <!-- Controls: Toggle Sembunyikan yang Sudah Diambil + Search -->
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 cursor-pointer select-none hover:bg-slate-100 transition shadow-2xs">
+                  <input type="checkbox" id="toggle-hide-taken" checked class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                  <span>Sembunyikan yang Sudah Diambil</span>
+                </label>
+
+                <!-- Quick Search Input -->
+                <div class="sm:w-64">
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
+                      🔍
+                    </span>
+                    <input 
+                      type="text" 
+                      id="admin-search-input" 
+                      placeholder="Cari NIM, Nama, atau Kode..." 
+                      class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -518,6 +526,13 @@ import {
                   </button>
                   <button 
                     type="button" 
+                    data-db-tab="pengambilan" 
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    📦 Pengambilan Berkas
+                  </button>
+                  <button 
+                    type="button" 
                     data-db-tab="admin" 
                     class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
                   >
@@ -631,6 +646,39 @@ import {
                       </tr>
                     </thead>
                     <tbody id="table-arsip-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE: MASTER DATA PENGAMBILAN BERKAS FISIK -->
+            <div id="pane-pengambilan" class="db-pane hidden space-y-4">
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="p-4 bg-slate-50/90 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Master Data Rekam Pengambilan Berkas Fisik</h3>
+                    <p class="text-[11px] text-slate-500">Seluruh riwayat penyerahan berkas fisik yang telah diambil mahasiswa tercatat di sini.</p>
+                  </div>
+                  <span id="badge-total-pengambilan" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 self-start sm:self-center">
+                    0 Berkas Diserahkan
+                  </span>
+                </div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4 w-12 text-center">No</th>
+                        <th class="py-3.5 px-4">Kode Tiket</th>
+                        <th class="py-3.5 px-4">Waktu Pengambilan</th>
+                        <th class="py-3.5 px-4">Mahasiswa (NIM & Nama)</th>
+                        <th class="py-3.5 px-4">Jenis Berkas / Layanan</th>
+                        <th class="py-3.5 px-4">Petugas Penyerah</th>
+                        <th class="py-3.5 px-4 text-center">Status Fisik</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-pengambilan-body" class="divide-y divide-slate-100">
                       <!-- Rendered by JS -->
                     </tbody>
                   </table>
@@ -758,7 +806,7 @@ import {
   <!-- ============================================================
        MODAL PEMROSESAN STATUS BERKAS (5 PILIHAN STATUS SPESIFIK)
        ============================================================ -->
-  <div id="admin-status-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="edit-ticket-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"></div>
     
     <div class="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white shadow-2xl overflow-hidden z-10 text-left">
@@ -769,7 +817,7 @@ import {
             ⚙️
           </span>
           <div>
-            <h3 class="text-sm font-black text-slate-900">Pemrosesan & Pembaruan Status Berkas</h3>
+            <h3 id="modal-ticket-title" class="text-sm font-black text-slate-900">Pemrosesan & Pembaruan Status Berkas</h3>
             <p id="modal-ticket-sub" class="text-[11px] text-slate-500 font-mono">Kode Tiket: -</p>
           </div>
         </div>
@@ -783,13 +831,13 @@ import {
       </div>
 
       <!-- Modal Form -->
-      <form id="modal-edit-form" class="p-5 sm:p-6 space-y-5">
+      <form id="modal-edit-form" class="p-5 sm:p-6 space-y-4">
         <input type="hidden" id="modal-ticket-code" />
 
-        <!-- Pilihan Status Baru (5 Pilihan Spesifik) -->
+        <!-- Pilihan Status Baru (4 Tahap + Ditolak Sesuai Kesepakatan) -->
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-2">
-            Pilih Status Terkini Permohonan (Sinkron ke Mahasiswa):
+            Pilih Tahapan Status Berkas (Sinkron ke Mahasiswa):
           </label>
           <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
             <button 
@@ -798,7 +846,7 @@ import {
               class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-amber-50 text-amber-900 border-amber-300"
             >
               <span>⏳</span>
-              <span class="text-[11px]">1. Antrean</span>
+              <span class="text-[10px]">1. Antrean Loket</span>
             </button>
             <button 
               type="button" 
@@ -806,7 +854,7 @@ import {
               class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
               <span>🔍</span>
-              <span class="text-[11px]">2. Verif Loket</span>
+              <span class="text-[10px]">2. Verif Admin</span>
             </button>
             <button 
               type="button" 
@@ -814,7 +862,7 @@ import {
               class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
               <span>👨‍🏫</span>
-              <span class="text-[11px]">3. Verif Dosen</span>
+              <span class="text-[10px]">3. Dosen/Dekanat</span>
             </button>
             <button 
               type="button" 
@@ -822,7 +870,7 @@ import {
               class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
               <span>📦</span>
-              <span class="text-[11px]">4. Siap Ambil</span>
+              <span class="text-[10px]">4. Siap Ambil</span>
             </button>
             <button 
               type="button" 
@@ -830,7 +878,7 @@ import {
               class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1"
             >
               <span>❌</span>
-              <span class="text-[11px]">Ditolak</span>
+              <span class="text-[10px]">Ditolak</span>
             </button>
           </div>
           <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
@@ -839,7 +887,7 @@ import {
         <!-- Posisi Berkas Fisik Terkini -->
         <div>
           <label for="modal-posisi-input" class="block text-xs font-bold text-slate-700 mb-1">
-            Posisi Berkas Fisik Saat Ini (Muncul di Cek Status Mahasiswa):
+            Posisi Berkas Fisik Saat Ini:
           </label>
           <input 
             type="text" 
@@ -855,7 +903,7 @@ import {
             <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)">
               Loket 1 Gedung A
             </button>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Dokumen">
+            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Dokumen Fisik">
               Meja Verifikasi Loket
             </button>
             <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)">
@@ -877,27 +925,51 @@ import {
           </label>
           <textarea 
             id="modal-catatan-input" 
-            rows="3" 
+            rows="2" 
             class="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-900 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
             placeholder="Tuliskan petunjuk pengambilan atau alasan perbaikan jika berkas ditolak..."
           ></textarea>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <!-- Status Pengambilan Berkas Fisik (Requirement #1) -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold text-slate-800 block">Status Pengambilan Berkas Fisik:</span>
+            <span class="text-[11px] text-slate-500">Centang jika dokumen fisik sudah diambil oleh mahasiswa</span>
+          </div>
+          <label class="inline-flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs hover:border-emerald-500 transition">
+            <input type="checkbox" id="modal-sudah-diambil" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+            <span class="text-xs font-bold text-emerald-800">Sudah Diambil</span>
+          </label>
+        </div>
+
+        <!-- Action Buttons (Termasuk Tombol Langsung Selesai) -->
+        <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
           <button 
             type="button" 
-            id="btn-cancel-modal" 
-            class="rounded-xl border border-slate-200 text-xs py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold cursor-pointer transition"
+            id="btn-modal-quick-complete" 
+            class="rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs py-2.5 px-4 font-bold shadow-xs transition cursor-pointer flex items-center gap-1.5"
+            title="Langsung selesaikan berkas ke Loket 1 Siap Diambil"
           >
-            Batal
+            <span>⚡</span>
+            <span>Langsung Selesaikan</span>
           </button>
-          <button 
-            type="submit" 
-            class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-6 font-bold shadow-sm transition cursor-pointer"
-          >
-            💾 Simpan Perubahan
-          </button>
+          
+          <div class="flex items-center gap-2">
+            <button 
+              type="button" 
+              id="btn-cancel-modal" 
+              class="rounded-xl border border-slate-200 text-xs py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold cursor-pointer transition"
+            >
+              Batal
+            </button>
+            <button 
+              type="submit" 
+              class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-6 font-bold shadow-sm transition cursor-pointer"
+            >
+              💾 Simpan Perubahan
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -1187,6 +1259,13 @@ import {
       let currentCase = 'all'; // all, khs, ujian, komplain, penelitian, lainnya
       let currentStatus = 'all'; // all, Belum Diproses, Proses Verifikasi, Selesai (Siap Diambil), Ditolak
       let searchQuery = '';
+      let hideTaken = true; // Sembunyikan berkas yang sudah diambil agar tidak menumpuk di antrean aktif
+
+      const toggleHideTaken = document.getElementById('toggle-hide-taken');
+      toggleHideTaken?.addEventListener('change', (e) => {
+        hideTaken = e.target.checked;
+        renderTicketsList();
+      });
 
       const categoryTitleMap = {
         'all': 'Semua Berkas Masuk',
@@ -1227,7 +1306,7 @@ import {
         });
       });
 
-      // 6. Interactive KPI Status Cards Click Handler (User Requirement #1)
+      // 6. Interactive KPI Status Cards Click Handler (User Requirement #1 & #4)
       const kpiCards = document.querySelectorAll('.kpi-status-card');
       function updateKpiActiveUI(status) {
         kpiCards.forEach(card => {
@@ -1252,18 +1331,48 @@ import {
         });
       });
 
+      // SINKRONISASI DINAMIS KPI & KATEGORI SIDEBAR (Requirement #4)
       function updateSidebarBadges(tickets) {
-        const countAll = tickets.length;
-        const countKhs = tickets.filter(t => (t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS')).length;
-        const countUjian = tickets.filter(t => (t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH')).length;
-        const countKomplain = tickets.filter(t => (t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP')).length;
-        const countPenelitian = tickets.filter(t => {
+        // Pool dasar untuk KPI cards (jika toggle sembunyikan berkas yang sudah diambil aktif)
+        const activeTickets = hideTaken ? tickets.filter(t => !t.sudahDiambil) : tickets;
+
+        // KPI Status Counts
+        const cntTotal = activeTickets.length;
+        const cntPending = activeTickets.filter(t => t.status === 'Belum Diproses').length;
+        const cntProcess = activeTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
+        const cntDone = activeTickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
+
+        const kpiTotal = document.getElementById('stat-total');
+        const kpiPending = document.getElementById('stat-pending');
+        const kpiProcess = document.getElementById('stat-process');
+        const kpiDone = document.getElementById('stat-done');
+
+        if (kpiTotal) kpiTotal.textContent = cntTotal;
+        if (kpiPending) kpiPending.textContent = cntPending;
+        if (kpiProcess) kpiProcess.textContent = cntProcess;
+        if (kpiDone) kpiDone.textContent = cntDone;
+
+        // Hitung kategori di sidebar kiri menyesuaikan kotak status yang sedang dipilih (currentStatus)
+        let categoryPool = activeTickets;
+        if (currentStatus !== 'all') {
+          if (currentStatus === 'Proses Verifikasi') {
+            categoryPool = activeTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi');
+          } else {
+            categoryPool = activeTickets.filter(t => t.status === currentStatus);
+          }
+        }
+
+        const countAll = categoryPool.length;
+        const countKhs = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('khs') || (t.kode || '').startsWith('KHS')).length;
+        const countUjian = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('ujian') || (t.kode || '').startsWith('UKH')).length;
+        const countKomplain = categoryPool.filter(t => (t.layananId || '').toLowerCase().includes('komplain') || (t.kode || '').startsWith('KMP')).length;
+        const countPenelitian = categoryPool.filter(t => {
           const id = (t.layananId || '').toLowerCase();
           const code = (t.kode || '').toUpperCase();
           const kep = (t.keperluan || '').toLowerCase();
           return id.includes('penelitian') || code.startsWith('PEN') || kep.includes('penelitian');
         }).length;
-        const countLainnya = tickets.filter(t => {
+        const countLainnya = categoryPool.filter(t => {
           const id = (t.layananId || '').toLowerCase();
           const code = (t.kode || '').toUpperCase();
           const kep = (t.keperluan || '').toLowerCase();
@@ -1285,21 +1394,6 @@ import {
         if (bKomplain) bKomplain.textContent = countKomplain;
         if (bPenelitian) bPenelitian.textContent = countPenelitian;
         if (bLainnya) bLainnya.textContent = countLainnya;
-
-        // Status counts for KPI cards
-        const cntPending = tickets.filter(t => t.status === 'Belum Diproses').length;
-        const cntProcess = tickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi').length;
-        const cntDone = tickets.filter(t => t.status === 'Selesai (Siap Diambil)').length;
-
-        const kpiTotal = document.getElementById('stat-total');
-        const kpiPending = document.getElementById('stat-pending');
-        const kpiProcess = document.getElementById('stat-process');
-        const kpiDone = document.getElementById('stat-done');
-
-        if (kpiTotal) kpiTotal.textContent = countAll;
-        if (kpiPending) kpiPending.textContent = cntPending;
-        if (kpiProcess) kpiProcess.textContent = cntProcess;
-        if (kpiDone) kpiDone.textContent = cntDone;
       }
 
       // 7. Render Daftar Berkas Masuk
@@ -1307,7 +1401,15 @@ import {
         const all = loadTickets();
         updateSidebarBadges(all);
 
-        let filtered = all.filter(t => {
+        let filtered = all;
+
+        // Filter: Sembunyikan yang sudah diambil dari antrean aktif jika toggle dicentang
+        if (hideTaken) {
+          filtered = filtered.filter(t => !t.sudahDiambil);
+        }
+
+        // Filter kategori
+        filtered = filtered.filter(t => {
           const id = (t.layananId || '').toLowerCase();
           const code = (t.kode || '').toUpperCase();
           const kep = (t.keperluan || '').toLowerCase();
@@ -1325,6 +1427,7 @@ import {
           return true;
         });
 
+        // Filter status
         if (currentStatus !== 'all') {
           if (currentStatus === 'Proses Verifikasi') {
             filtered = filtered.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status === 'Verifikasi Dosen / Kaprodi');
@@ -1333,12 +1436,14 @@ import {
           }
         }
 
+        // Filter search input
         if (searchQuery) {
           filtered = filtered.filter(t => 
             (t.kode || '').toLowerCase().includes(searchQuery) ||
             (t.nim || '').toLowerCase().includes(searchQuery) ||
             (t.nama || '').toLowerCase().includes(searchQuery) ||
-            (t.keperluan || '').toLowerCase().includes(searchQuery)
+            (t.keperluan || '').toLowerCase().includes(searchQuery) ||
+            (t.layananNama || '').toLowerCase().includes(searchQuery)
           );
         }
 
@@ -1346,7 +1451,7 @@ import {
         const countBadge = document.getElementById('filtered-count-badge');
         if (titleEl) {
           let suffix = '';
-          if (currentStatus !== 'all') suffix = ` • Filter: ${currentStatus}`;
+          if (currentStatus !== 'all') suffix = ` • Status: ${currentStatus}`;
           titleEl.textContent = (categoryTitleMap[currentCase] || 'Berkas Masuk') + suffix;
         }
         if (countBadge) countBadge.textContent = `${filtered.length} Berkas`;
@@ -1379,16 +1484,31 @@ import {
           card.innerHTML = `
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
               <div class="flex flex-wrap items-center gap-2.5">
-                <span class="px-3 py-1 rounded-xl text-xs font-mono font-bold bg-slate-900 text-white">
+                <!-- Kode Tiket -->
+                <span class="px-3 py-1 rounded-xl text-xs font-mono font-bold bg-slate-900 text-white shadow-2xs">
                   ${t.kode}
                 </span>
-                <span class="px-3 py-1 rounded-xl text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5">
+                <!-- Status Tiket -->
+                <span class="px-3 py-1 rounded-xl text-xs font-bold border ${cfg.bg} ${cfg.text} ${cfg.border} flex items-center gap-1.5 shadow-2xs">
                   <span>${cfg.icon}</span>
                   <span>${t.status}</span>
                 </span>
+                <!-- Nama Berkas / Layanan (Requirement #2) -->
+                <span class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1.5 shadow-2xs">
+                  <span>📄</span>
+                  <span>${t.layananNama || 'Layanan Akademik'}</span>
+                </span>
+                ${t.sudahDiambil ? `
+                  <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs">
+                    <span>✓</span>
+                    <span>Sudah Diambil</span>
+                  </span>
+                ` : ''}
               </div>
-              <div class="text-xs text-slate-500 flex items-center gap-2">
-                <span>🗓️ ${t.tanggal || 'Hari Ini'}</span>
+              <!-- Tanggal Dimasukkannya Surat (Requirement #2) -->
+              <div class="text-xs flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 shrink-0">
+                <span class="text-slate-500 font-medium">📅 Tanggal Masuk:</span>
+                <strong class="text-slate-800">${t.tanggal || 'Hari Ini'}</strong>
               </div>
             </div>
 
@@ -1428,14 +1548,45 @@ import {
                   </div>
                 ` : ''}
 
-                <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between gap-2">
+                <div class="pt-3 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2">
                   <button 
                     type="button" 
-                    class="btn-open-edit w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-4 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1.5 transition"
+                    class="btn-open-edit flex-1 min-w-[130px] rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1.5 transition"
                     data-kode="${t.kode}"
                   >
-                    <span>✏️ Disposisi / Update Status</span>
+                    <span>✏️ Disposisi / Update</span>
                   </button>
+
+                  ${t.status !== 'Selesai (Siap Diambil)' && t.status !== 'Ditolak' ? `
+                    <button 
+                      type="button" 
+                      class="btn-quick-complete rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1 transition"
+                      data-kode="${t.kode}"
+                      title="Selesaikan berkas dan pindahkan ke Loket 1 Siap Diambil"
+                    >
+                      <span>⚡</span>
+                      <span>Langsung Selesai</span>
+                    </button>
+                  ` : ''}
+
+                  ${t.status === 'Selesai (Siap Diambil)' && !t.sudahDiambil ? `
+                    <button 
+                      type="button" 
+                      class="btn-mark-taken rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1 transition"
+                      data-kode="${t.kode}"
+                      title="Tandai berkas fisik telah diserahkan dan diambil oleh mahasiswa"
+                    >
+                      <span>🤝</span>
+                      <span>Serahkan (Sudah Diambil)</span>
+                    </button>
+                  ` : ''}
+
+                  ${t.sudahDiambil ? `
+                    <span class="text-[11px] font-bold text-purple-900 bg-purple-100 px-3 py-1.5 rounded-xl border border-purple-200 inline-flex items-center gap-1">
+                      <span>✓</span>
+                      <span>Diambil: ${t.tanggalDiambil || '-'}</span>
+                    </span>
+                  ` : ''}
                 </div>
               </div>
             </div>
@@ -1454,20 +1605,100 @@ import {
             if (kode) openEditModal(kode);
           });
         });
+
+        document.querySelectorAll('.btn-quick-complete').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            if (kode) quickCompleteTicket(kode);
+          });
+        });
+
+        document.querySelectorAll('.btn-mark-taken').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const kode = btn.getAttribute('data-kode');
+            if (kode) markTicketAsTaken(kode);
+          });
+        });
       }
 
-      // 7. Modal Disposisi / Edit Status
+      // AKSI CEPAT: LANGSUNG SELESAI (1-KLIK)
+      function quickCompleteTicket(kode) {
+        const all = loadTickets();
+        const target = all.find(x => x.kode === kode);
+        if (!target) return;
+
+        target.status = 'Selesai (Siap Diambil)';
+        target.statusStep = 4;
+        target.posisiBerkas = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
+        target.estimasiSelesai = 'Siap Diambil di Loket 1 Gedung A';
+        target.catatanAdmin = 'Dokumen fisik resmi berstempel basah telah selesai diverifikasi dan siap diambil langsung di Loket 1 Gedung A dengan membawa KTM asli.';
+        target.isNewForAdmin = false;
+
+        saveTickets(all);
+        renderTicketsList();
+        renderDatabaseTables();
+        updateRekapStats();
+        showAdminToast(`⚡ Berkas ${target.kode} (${target.nama}) berhasil diselesaikan langsung!`);
+      }
+
+      // AKSI CEPAT: SERAHKAN BERKAS / SUDAH DIAMBIL (Requirement #1)
+      function markTicketAsTaken(kode) {
+        const all = loadTickets();
+        const target = all.find(x => x.kode === kode);
+        if (!target) return;
+
+        const curAdminName = sessionStorage.getItem('portal_admin_name') || 'Petugas Loket 1';
+        const now = new Date();
+        const timeStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+        target.sudahDiambil = true;
+        target.tanggalDiambil = timeStr;
+        target.petugasPenyerah = curAdminName;
+        target.status = 'Selesai (Siap Diambil)';
+        target.posisiBerkas = `Sudah Diserahkan ke Mahasiswa (${timeStr})`;
+        target.catatanAdmin = `Berkas fisik telah diambil langsung oleh mahasiswa pada ${timeStr} melalui petugas ${curAdminName}.`;
+
+        saveTickets(all);
+        renderTicketsList();
+        renderDatabaseTables();
+        updateRekapStats();
+        showAdminToast(`📦 Berkas ${target.kode} telah diserahkan dan dicatat di Master Data Pengambilan!`);
+      }
+
+      // TOAST NOTIFIKASI FEEDBACK ADMIN
+      function showAdminToast(msg) {
+        const existing = document.getElementById('admin-toast-notification');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'admin-toast-notification';
+        toast.className = 'fixed bottom-6 right-6 z-50 rounded-2xl bg-slate-900/95 text-white px-5 py-3.5 text-xs font-bold shadow-2xl flex items-center gap-3 border border-emerald-500/60 backdrop-blur-md transform translate-y-2 opacity-0 transition-all duration-300';
+        toast.innerHTML = `<span class="text-emerald-400 text-base">✓</span><span>${msg}</span>`;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        });
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      }
+
+      // 7. Modal Disposisi / Edit Status (Perbaikan Bug Cloudflare & Fitur Lengkap)
       const modal = document.getElementById('edit-ticket-modal');
       const backdrop = document.getElementById('modal-backdrop');
       const btnCloseModal = document.getElementById('btn-close-modal');
       const btnCancelModal = document.getElementById('btn-cancel-modal');
       const modalForm = document.getElementById('modal-edit-form');
+      const btnModalQuickComplete = document.getElementById('btn-modal-quick-complete');
 
       const modalTitle = document.getElementById('modal-ticket-title');
+      const modalTicketSub = document.getElementById('modal-ticket-sub');
       const modalCode = document.getElementById('modal-ticket-code');
       const modalSelectedStatus = document.getElementById('modal-selected-status');
       const modalPosisi = document.getElementById('modal-posisi-input');
       const modalCatatan = document.getElementById('modal-catatan-input');
+      const modalSudahDiambil = document.getElementById('modal-sudah-diambil');
       const modalStatusChoices = document.querySelectorAll('.modal-status-choice');
 
       function openEditModal(kode) {
@@ -1475,11 +1706,13 @@ import {
         const t = all.find(x => x.kode === kode);
         if (!t) return;
 
-        if (modalTitle) modalTitle.textContent = `${t.kode} — ${t.nama} (${t.nim})`;
+        if (modalTitle) modalTitle.textContent = `${t.kode} — ${t.nama}`;
+        if (modalTicketSub) modalTicketSub.textContent = `NIM: ${t.nim} • ${t.layananNama}`;
         if (modalCode) modalCode.value = t.kode;
         if (modalSelectedStatus) modalSelectedStatus.value = t.status;
         if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Antrean Masuk Loket Administrasi FAPERTA';
         if (modalCatatan) modalCatatan.value = t.catatanAdmin || '';
+        if (modalSudahDiambil) modalSudahDiambil.checked = !!t.sudahDiambil;
 
         updateModalStatusChoiceUI(t.status);
 
@@ -1523,11 +1756,11 @@ import {
 
           if (modalPosisi) {
             if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Administrasi FAPERTA';
-            else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Meja Petugas Loket (Pemeriksaan SIAKAD & Dokumen Fisik)';
+            else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Meja Verifikasi SIAKAD & Dokumen Fisik';
             else if (s === 'Verifikasi Dosen / Kaprodi') {
-              modalPosisi.value = 'Ruang Kaprodi Agroteknologi / Dosen Pengampu (Gedung A, Lt. 2)';
+              modalPosisi.value = 'Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)';
               if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean'))) {
-                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Kaprodi.';
+                modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Dekanat.';
               }
             }
             else if (s === 'Selesai (Siap Diambil)') {
@@ -1556,12 +1789,21 @@ import {
       btnCancelModal?.addEventListener('click', closeEditModal);
       backdrop?.addEventListener('click', closeEditModal);
 
+      btnModalQuickComplete?.addEventListener('click', () => {
+        const kode = modalCode?.value;
+        if (kode) {
+          quickCompleteTicket(kode);
+          closeEditModal();
+        }
+      });
+
       modalForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         const kode = modalCode?.value;
         const newStatus = modalSelectedStatus?.value;
         const newPosisi = modalPosisi?.value;
         const newCatatan = modalCatatan?.value;
+        const isTaken = modalSudahDiambil ? modalSudahDiambil.checked : false;
 
         const all = loadTickets();
         const target = all.find(x => x.kode === kode);
@@ -1570,6 +1812,19 @@ import {
           target.posisiBerkas = newPosisi;
           target.catatanAdmin = newCatatan;
           target.isNewForAdmin = false;
+
+          if (isTaken) {
+            target.sudahDiambil = true;
+            if (!target.tanggalDiambil) {
+              const now = new Date();
+              target.tanggalDiambil = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+            }
+            if (!target.petugasPenyerah) {
+              target.petugasPenyerah = sessionStorage.getItem('portal_admin_name') || 'Petugas Loket';
+            }
+          } else {
+            target.sudahDiambil = false;
+          }
 
           if (newStatus === 'Belum Diproses') target.statusStep = 1;
           else if (newStatus === 'Verifikasi Admin Loket' || newStatus === 'Proses Verifikasi') target.statusStep = 2;
@@ -1586,7 +1841,9 @@ import {
           saveTickets(all);
           closeEditModal();
           renderTicketsList();
-          renderDatabaseTables(); // sync arsip table
+          renderDatabaseTables(); // sync arsip & pengambilan tables
+          updateRekapStats();
+          showAdminToast(`✓ Perubahan status berkas ${target.kode} berhasil disimpan!`);
         }
       });
 
@@ -1743,6 +2000,57 @@ import {
               </td>
             </tr>
           `).join('');
+        }
+
+        // 4b. Table Pengambilan Berkas Fisik (Requirement #1)
+        const pengambilanBody = document.getElementById('table-pengambilan-body');
+        const badgePengambilan = document.getElementById('badge-total-pengambilan');
+        if (pengambilanBody) {
+          const allTickets = loadTickets();
+          let takenList = allTickets.filter(t => t.sudahDiambil);
+          if (query) {
+            takenList = takenList.filter(t =>
+              t.kode.toLowerCase().includes(query) ||
+              t.nim.toLowerCase().includes(query) ||
+              t.nama.toLowerCase().includes(query) ||
+              (t.layananNama && t.layananNama.toLowerCase().includes(query)) ||
+              ((t.petugasPenyerah || '').toLowerCase().includes(query))
+            );
+          }
+
+          if (badgePengambilan) {
+            const totalCount = allTickets.filter(t => t.sudahDiambil).length;
+            badgePengambilan.textContent = `${totalCount} Berkas Diserahkan`;
+          }
+
+          if (takenList.length === 0) {
+            pengambilanBody.innerHTML = `
+              <tr>
+                <td colspan="7" class="py-8 text-center text-slate-400 italic">
+                  Belum ada catatan pengambilan berkas fisik. Berkas yang diserahkan di loket akan tercatat otomatis di sini.
+                </td>
+              </tr>
+            `;
+          } else {
+            pengambilanBody.innerHTML = takenList.map((t, idx) => `
+              <tr class="hover:bg-slate-50/80 transition">
+                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
+                <td class="py-3.5 px-4 font-mono font-bold text-emerald-800">${t.kode}</td>
+                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.tanggalDiambil || '-'}</td>
+                <td class="py-3.5 px-4">
+                  <strong class="text-slate-900 block">${t.nama}</strong>
+                  <span class="font-mono text-[11px] text-slate-500">${t.nim}</span>
+                </td>
+                <td class="py-3.5 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
+                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.petugasPenyerah || 'Petugas Loket 1'}</td>
+                <td class="py-3.5 px-4 text-center">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-200">
+                    <span>✓</span> Telah Diambil
+                  </span>
+                </td>
+              </tr>
+            `).join('');
+          }
         }
 
         // 5. Table Akun Petugas & Admin (Multi-Admin Management Dikelola Super Admin)
