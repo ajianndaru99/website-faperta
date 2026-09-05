@@ -147,7 +147,7 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     actionUrl: "/layanan/permohonan-khs",
     actionLabel: "Isi Formulir Permohonan KHS",
     isPrimary: true,
-    steps: ["Isi Form KHS Online", "Verifikasi Petugas & SIAKAD", "Ambil KHS Fisik di Loket 1"],
+    steps: ["Isi Form KHS Online", "Verifikasi Petugas & SIAKAD", "Ambil KHS Fisik di Loket Admin FAPERTA"],
     keywords: ["khs", "kartu hasil studi", "transkrip", "nilai", "salinan nilai", "cetak khs", "stempel basah", "beasiswa", "syarat ujian khusus", "ipk", "ips", "rekap nilai"]
   },
   {
@@ -284,7 +284,7 @@ export const PORTAL_SERVICES: ServiceItem[] = [
     desc: "Permohonan penerbitan surat keterangan masih aktif kuliah, surat keterangan kelakuan baik, rekomendasi beasiswa, dan dokumen sejenis.",
     actionUrl: "/dalam-proses?item=Surat+Keterangan+Akademik&tipe=layanan",
     actionLabel: "Lihat Info & Alur Loket",
-    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket 1"],
+    steps: ["Input Data Pemohon", "Verifikasi Status Aktif", "Ambil Berkas Fisik di Loket Admin FAPERTA"],
     keywords: ["surat keterangan", "surat aktif kuliah", "surat masih kuliah", "keterangan aktif", "beasiswa", "kelakuan baik", "tunjangan pns", "tunjangan gaji", "bpjs", "surat pengantar"]
   },
   {
@@ -437,7 +437,7 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     format: "Cetak Fisik Berstempel Basah",
     status: "Verifikasi Admin Loket",
     statusStep: 2,
-    posisiBerkas: "Meja Verifikasi Administrasi Akademik (Gedung A, Lt. 1)",
+    posisiBerkas: "Meja Verifikasi Loket Admin FAPERTA",
     estimasiSelesai: "Besok, Pukul 14.00 WIB",
     catatanAdmin: "Petugas sedang mencocokkan data nilai SIAKAD untuk dicetak dan dimintakan stempel basah.",
     tanggal: "04 September 2026, 07:30 WIB",
@@ -456,7 +456,7 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     format: "Berkas Fisik Loket",
     status: "Verifikasi Dosen / Kaprodi",
     statusStep: 3,
-    posisiBerkas: "Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)",
+    posisiBerkas: "Ruang Kaprodi Agroteknologi (FAPERTA)",
     estimasiSelesai: "Senin, 07 September 2026",
     catatanAdmin: "Berkas fisik KHS telah lolos verifikasi loket. Sedang menunggu persetujuan dan disposisi Kaprodi Agroteknologi.",
     tanggal: "04 September 2026, 08:00 WIB",
@@ -475,9 +475,9 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     format: "Surat Rekonsiliasi Nilai",
     status: "Selesai (Siap Diambil)",
     statusStep: 4,
-    posisiBerkas: "Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)",
-    estimasiSelesai: "Siap Diambil di Loket 1",
-    catatanAdmin: "Dosen pengampu telah mengesahkan nilai A-. Berkas surat perubahan nilai fisik sudah siap diambil di Loket 1. Harap membawa KTM.",
+    posisiBerkas: "Selesai Diproses Online (SIAKAD)",
+    estimasiSelesai: "Selesai Diproses Online",
+    catatanAdmin: "Komplain nilai telah diverifikasi oleh Dosen Pengampu dan perubahan nilai telah diproses di SIAKAD. Mahasiswa tidak perlu hadir ke loket.",
     tanggal: "03 September 2026, 11:20 WIB",
     isNewForAdmin: false
   },
@@ -523,7 +523,7 @@ export const MASTER_ADMINS: AdminAccountItem[] = [
     username: "admin",
     password: "admin",
     role: "Super Admin",
-    loket: "Loket 1 & 2 Gedung A",
+    loket: "Loket Admin FAPERTA",
     status: "Aktif",
     terakhirAkses: "Hari Ini, 20:45 WIB"
   },
@@ -533,7 +533,7 @@ export const MASTER_ADMINS: AdminAccountItem[] = [
     username: "dekanat",
     password: "faperta2026",
     role: "Dekanat",
-    loket: "Ruang Dekanat Gedung A",
+    loket: "Ruang Dekanat FAPERTA",
     status: "Aktif",
     terakhirAkses: "Hari Ini, 16:20 WIB"
   },
@@ -553,7 +553,7 @@ export const MASTER_ADMINS: AdminAccountItem[] = [
     username: "agrotek",
     password: "admin123",
     role: "Petugas Loket",
-    loket: "Loket 1 Gedung A",
+    loket: "Loket Admin FAPERTA",
     status: "Aktif",
     terakhirAkses: "04 Sep 2026, 14:10 WIB"
   },
@@ -563,7 +563,7 @@ export const MASTER_ADMINS: AdminAccountItem[] = [
     username: "agribisnis",
     password: "admin123",
     role: "Petugas Loket",
-    loket: "Loket 2 Gedung A",
+    loket: "Loket Admin FAPERTA",
     status: "Aktif",
     terakhirAkses: "04 Sep 2026, 11:30 WIB"
   },

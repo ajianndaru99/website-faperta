@@ -119,7 +119,7 @@ import {
     
     <!-- Top System Header Bar (Logo INSTIPER disesuaikan, Live Clock & Status Loket) -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-      <div class="w-full px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="max-w-[1720px] 2xl:max-w-[1920px] mx-auto px-6 lg:px-10 py-3.5 flex flex-wrap items-center justify-between gap-4">
         
         <!-- Left: Logo INSTIPER Disesuaikan & Title (Klik kembali ke Beranda) -->
         <a href="/" class="flex items-center gap-3.5 group cursor-pointer hover:opacity-95 transition" title="Kembali ke Beranda FAPERTA">
@@ -141,7 +141,7 @@ import {
               </span>
             </div>
             <p class="text-[11px] text-slate-500 font-medium mt-1">
-              Fakultas Pertanian • Gedung A Lantai 1
+              Fakultas Pertanian • Loket Admin FAPERTA
             </p>
           </div>
         </a>
@@ -159,9 +159,9 @@ import {
       </div>
     </header>
 
-    <!-- Main Container: Full width for desktop monitors -->
-    <div class="w-full px-6 lg:px-8 py-6">
-      <div class="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+    <!-- Main Container: Scalable for 22 inch to 32 inch monitors -->
+    <div class="max-w-[1720px] 2xl:max-w-[1920px] mx-auto px-6 lg:px-10 py-6 sm:py-8">
+      <div class="grid lg:grid-cols-[300px_1fr] xl:grid-cols-[320px_1fr] 2xl:grid-cols-[340px_1fr] gap-6 xl:gap-8 items-start">
         
         <!-- ============================================================
              SIDEBAR KIRI (Rata Kiri, Rapi, & Jarak Elemen Nyaman)
@@ -171,7 +171,7 @@ import {
           <!-- Box Navigasi Utama -->
           <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-xs space-y-6 text-left">
             
-            <!-- BAGIAN 1: KATEGORI BERKAS (Lebih Besar & Jelas) -->
+            <!-- BAGIAN 1: KATEGORI BERKAS (Lebih Besar, Konsisten & Elegan) -->
             <div>
               <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-black uppercase tracking-wider text-slate-400 block text-left">
@@ -186,78 +186,78 @@ import {
                 <button 
                   type="button" 
                   data-case="all" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md shadow-emerald-900/15 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-md shadow-emerald-950/20 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">📋</span>
-                    <span>Semua Dokumen</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">📋</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-white">Semua Dokumen</span>
                   </div>
-                  <span id="badge-cat-all" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-white/20 text-white font-black">0</span>
+                  <span id="badge-cat-all" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-white/25 text-white">0</span>
                 </button>
 
                 <!-- 2. Permohonan KHS -->
                 <button 
                   type="button" 
                   data-case="khs" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">📄</span>
-                    <span>Permohonan KHS</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">📄</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Permohonan KHS</span>
                   </div>
-                  <span id="badge-count-khs" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold">0</span>
+                  <span id="badge-count-khs" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
                 <!-- 3. Pengajuan Ujian Khusus -->
                 <button 
                   type="button" 
                   data-case="ujian" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">🎓</span>
-                    <span>Ujian Khusus</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">🎓</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Ujian Khusus</span>
                   </div>
-                  <span id="badge-count-ujian" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold">0</span>
+                  <span id="badge-count-ujian" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
                 <!-- 4. Komplain Nilai -->
                 <button 
                   type="button" 
                   data-case="komplain" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">⚖️</span>
-                    <span>Komplain Nilai</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">⚖️</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Komplain Nilai</span>
                   </div>
-                  <span id="badge-count-komplain" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold">0</span>
+                  <span id="badge-count-komplain" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
                 <!-- 5. Surat Izin Penelitian -->
                 <button 
                   type="button" 
                   data-case="penelitian" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">📑</span>
-                    <span>Izin Penelitian</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">📑</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Izin Penelitian</span>
                   </div>
-                  <span id="badge-count-penelitian" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold">0</span>
+                  <span id="badge-count-penelitian" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
 
                 <!-- 6. Layanan Lainnya -->
                 <button 
                   type="button" 
                   data-case="lainnya" 
-                  class="admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">📁</span>
-                    <span>Layanan Lainnya</span>
+                  <div class="flex items-center gap-3 min-w-0">
+                    <span class="text-xl shrink-0">📁</span>
+                    <span class="case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900">Layanan Lainnya</span>
                   </div>
-                  <span id="badge-count-lainnya" class="px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold">0</span>
+                  <span id="badge-count-lainnya" class="case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">0</span>
                 </button>
               </nav>
             </div>
@@ -1055,7 +1055,7 @@ import {
 
         <div>
           <label for="acc-loket" class="block font-bold text-slate-700 mb-1">Unit / Loket / Ruang Tugas *</label>
-          <input type="text" id="acc-loket" required placeholder="Contoh: Ruang Kaprodi Agroteknologi / Loket 1 Gedung A" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-emerald-600 outline-none font-medium" />
+          <input type="text" id="acc-loket" required placeholder="Contoh: Ruang Kaprodi Agroteknologi / Loket Admin FAPERTA" class="w-full rounded-xl border border-slate-200 bg-white p-2.5 text-xs text-slate-900 focus:border-emerald-600 outline-none font-medium" />
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
@@ -1080,7 +1080,7 @@ import {
     masterMatkul: MASTER_MATAKULIAH,
     masterAdmins: MASTER_ADMINS
   }}>
-    document.addEventListener('DOMContentLoaded', () => {
+    function initAdminSystem() {
       // 1. Storage Admin Accounts (Multi-Role Super Admin Control)
       function loadAdminAccounts() {
         try {
@@ -1116,7 +1116,7 @@ import {
 
           const curName = sessionStorage.getItem('portal_admin_name') || 'Administrator Loket';
           const curRole = sessionStorage.getItem('portal_admin_role') || 'Super Admin';
-          const curLoket = sessionStorage.getItem('portal_admin_loket') || 'Gedung A Lantai 1';
+          const curLoket = sessionStorage.getItem('portal_admin_loket') || 'Loket Admin FAPERTA';
 
           const roleDisplayEl = document.getElementById('user-role-label');
           const nameDisplayEl = document.getElementById('user-name-display');
@@ -1296,22 +1296,27 @@ import {
       function updateCategoryTabsUI() {
         caseTabs.forEach(tab => {
           const c = tab.getAttribute('data-case') || 'all';
-          const badge = tab.querySelector('span:last-child');
+          const title = tab.querySelector('.case-tab-title');
+          const badge = tab.querySelector('.case-tab-badge');
           if (c === currentCase) {
-            tab.className = 'admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md shadow-emerald-900/15 text-left';
-            if (badge) badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-mono bg-white/20 text-white font-black';
+            tab.className = 'admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-md shadow-emerald-950/20 text-left';
+            if (title) title.className = 'case-tab-title text-sm font-bold tracking-tight text-white';
+            if (badge) badge.className = 'case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-white/25 text-white';
           } else {
-            tab.className = 'admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left';
-            if (badge) badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold';
+            tab.className = 'admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left';
+            if (title) title.className = 'case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900';
+            if (badge) badge.className = 'case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800';
           }
         });
       }
 
       function resetCategoryTabsUI() {
         caseTabs.forEach(tab => {
-          const badge = tab.querySelector('span:last-child');
-          tab.className = 'admin-case-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left';
-          if (badge) badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-mono bg-slate-100 text-slate-700 font-bold';
+          const title = tab.querySelector('.case-tab-title');
+          const badge = tab.querySelector('.case-tab-badge');
+          tab.className = 'admin-case-tab group w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl text-sm font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left';
+          if (title) title.className = 'case-tab-title text-sm font-bold tracking-tight text-slate-800 group-hover:text-emerald-900';
+          if (badge) badge.className = 'case-tab-badge min-w-[24px] h-6 px-2 rounded-full text-xs font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800';
         });
       }
 
@@ -1347,10 +1352,24 @@ import {
         });
       });
 
-      // SINKRONISASI DINAMIS KPI & KATEGORI SIDEBAR (Requirement #4)
+      // Helper: Apakah berkas sudah selesai atau sudah diambil
+      function isTicketFinished(t) {
+        if (t.sudahDiambil) return true;
+        // Khusus komplain nilai: prosesnya online murni. Begitu selesai di SIAKAD (status 'Selesai (Siap Diambil)'),
+        // berkas dianggap tuntas sama seperti berkas fisik yang sudah diambil oleh mahasiswa.
+        const isKomplain = (t.layananId || '').toLowerCase().includes('komplain') ||
+                           (t.layananNama || '').toLowerCase().includes('komplain') ||
+                           (t.kode || '').toUpperCase().startsWith('KMP');
+        if (isKomplain && t.status === 'Selesai (Siap Diambil)') {
+          return true;
+        }
+        return false;
+      }
+
+      // SINKRONISASI DINAMIS KPI & KATEGORI SIDEBAR (Requirement #4 & #3)
       function updateSidebarBadges(tickets) {
-        // Pool dasar untuk KPI cards (jika toggle sembunyikan berkas yang sudah diambil aktif)
-        const activeTickets = hideTaken ? tickets.filter(t => !t.sudahDiambil) : tickets;
+        // Pool dasar untuk KPI cards (jika toggle sembunyikan berkas yang sudah diambil/selesai aktif)
+        const activeTickets = hideTaken ? tickets.filter(t => !isTicketFinished(t)) : tickets;
 
         // KPI Status Counts
         const cntTotal = activeTickets.length;
@@ -1419,9 +1438,9 @@ import {
 
         let filtered = all;
 
-        // Filter: Sembunyikan yang sudah diambil dari antrean aktif jika toggle dicentang
+        // Filter: Sembunyikan yang sudah diambil / selesai dari antrean aktif jika toggle dicentang
         if (hideTaken) {
-          filtered = filtered.filter(t => !t.sudahDiambil);
+          filtered = filtered.filter(t => !isTicketFinished(t));
         }
 
         // Filter kategori
@@ -2414,6 +2433,12 @@ import {
 
       // Jalankan cek status auth awal
       checkAuth();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAdminSystem);
+    } else {
+      initAdminSystem();
+    }
   </script>
 </BaseLayout>

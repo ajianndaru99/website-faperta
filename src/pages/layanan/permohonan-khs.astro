@@ -58,13 +58,13 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
   </div>
 
   <!-- Main Content Form Section -->
-  <section class="container-shell py-12">
-    <div class="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
+  <section class="container-shell py-6 sm:py-10 md:py-12">
+    <div class="grid lg:grid-cols-[1fr_360px] gap-8 sm:gap-10 items-start">
       
       <!-- Kolom Kiri: Formulir Interaktif Gaya Google Form -->
       <div>
-        <div id="form-wrapper" class="rounded-3xl border border-[var(--line)] bg-white p-6 sm:p-9 shadow-sm border-t-8 border-t-[var(--leaf)]">
-          <form id="khs-form" class="space-y-8">
+        <div id="form-wrapper" class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-9 shadow-sm border-t-8 border-t-[var(--leaf)]">
+          <form id="khs-form" action="javascript:void(0);" onsubmit="return false;" class="space-y-6 sm:space-y-8">
             
             <!-- BLOK 1: Data Mahasiswa -->
             <div>
@@ -196,14 +196,18 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
                   </div>
 
                   <!-- KOTAK 2: Seluruh Semester (Kumulatif) -->
-                  <div id="box-all" class="hidden mt-4 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-amber-950">
-                    <div class="flex items-center gap-2.5">
-                      <span class="text-xl">📋</span>
+                  <div id="box-all" class="hidden mt-4 p-4 sm:p-5 rounded-2xl bg-emerald-50/80 border-2 border-emerald-500/30 text-xs text-emerald-950 shadow-xs">
+                    <div class="flex items-start gap-3">
+                      <span class="text-2xl shrink-0">📋</span>
                       <div>
-                        <strong class="text-amber-900 block font-bold">Transkrip KHS Kumulatif Seluruh Semester</strong>
-                        <p class="text-amber-800 mt-0.5 leading-relaxed">
-                          Mencakup seluruh daftar nilai mata kuliah dari Semester 1 hingga semester yang telah Anda tempuh.
+                        <strong class="text-emerald-900 block font-black text-sm">Transkrip KHS Kumulatif Seluruh Semester</strong>
+                        <p class="text-emerald-800 mt-1 leading-relaxed">
+                          Mencakup seluruh daftar nilai mata kuliah dari Semester 1 hingga semester yang telah Anda tempuh secara lengkap. Anda tidak perlu memilih rentang semester secara manual karena seluruh riwayat nilai akan diterbitkan otomatis.
                         </p>
+                        <div class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-emerald-300 text-emerald-800 font-bold text-[11px]">
+                          <span>✓</span>
+                          <span>Otomatis Seluruh Semester Terdata</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -282,7 +286,7 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
                       Sistem saat ini adalah sistem pelacakan alur berkas (belum tahap unggah/unduh dokumen digital). Salinan resmi KHS diterbitkan dalam bentuk cetak fisik berstempel basah Dekanat FAPERTA INSTIPER Yogyakarta.
                     </p>
                     <div class="mt-3 grid sm:grid-cols-2 gap-2 pt-3 border-t border-[var(--leaf)]/20">
-                      <p>📍 <strong>Lokasi Pengambilan:</strong> Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)</p>
+                      <p>📍 <strong>Lokasi Pengambilan:</strong> Loket Admin FAPERTA</p>
                       <p>🪪 <strong>Syarat Pengambilan:</strong> Wajib membawa KTM Asli & Kode Tiket</p>
                     </div>
                   </div>
@@ -372,7 +376,7 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
               <div>
                 <strong>Pengambilan Dokumen Fisik di Kampus:</strong>
                 <p class="text-amber-900 mt-0.5 leading-relaxed">
-                  Setelah status permohonan Anda diverifikasi dan berstatus <strong>Selesai (Siap Diambil)</strong> di sistem, silakan datang ke <strong>Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)</strong> dengan membawa <strong>KTM Asli</strong> dan menyebutkan Nomor Tiket Anda.
+                  Setelah status permohonan Anda diverifikasi dan berstatus <strong>Selesai (Siap Diambil)</strong> di sistem, silakan datang ke <strong>Loket Admin FAPERTA</strong> dengan membawa <strong>KTM Asli</strong> dan menyebutkan Nomor Tiket Anda.
                 </p>
               </div>
             </div>
@@ -452,8 +456,8 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
           </h4>
           <p class="mt-2 text-xs leading-relaxed !text-white/80">
             Jam operasional loket layanan:
-            <br />Senin - Jumat: 08.00 - 15.30 WIB
-            <br />Gedung Fakultas Pertanian INSTIPER Lt. 1
+            <br />Senin - Jumat: 08.00 - 15.00 WIB
+            <br />Loket Admin FAPERTA INSTIPER Yogyakarta
           </p>
           <div class="mt-4 pt-3 border-t border-white/20">
             <span class="text-[11px] !text-white/70 block">Email Resmi:</span>
@@ -539,7 +543,7 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
 
   <!-- Client-side Logic Script -->
   <script is:inline>
-    document.addEventListener('DOMContentLoaded', () => {
+    function initKhsPage() {
       const khsForm = document.getElementById('khs-form');
       const formWrapper = document.getElementById('form-wrapper');
       const successWrapper = document.getElementById('success-wrapper');
@@ -667,13 +671,28 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
         }
       }
 
-      modeRadios.forEach(r => r.addEventListener('change', updateCakupanValue));
+      modeRadios.forEach(r => {
+        r.addEventListener('change', updateCakupanValue);
+      });
+
+      // Tambahkan klik langsung pada kartu mode cakupan agar responsif seketika
+      document.querySelectorAll('.mode-cakupan-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const radio = card.querySelector('input[type="radio"]');
+          if (radio && !radio.checked) {
+            radio.checked = true;
+            updateCakupanValue();
+          }
+        });
+      });
+
       smtDari?.addEventListener('change', updateCakupanValue);
       smtSampai?.addEventListener('change', updateCakupanValue);
       smtSingle?.addEventListener('change', updateCakupanValue);
 
       presetBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           const from = btn.getAttribute('data-from');
           const to = btn.getAttribute('data-to');
           if (smtDari && from) smtDari.value = from;
@@ -686,7 +705,7 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
         });
       });
 
-      // Inisialisasi awal
+      // Inisialisasi awal tampilan cakupan
       updateCakupanValue();
 
       khsForm?.addEventListener('submit', (e) => {
@@ -818,6 +837,12 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
         formWrapper?.classList.remove('hidden');
         window.scrollTo({ top: formWrapper.offsetTop - 80, behavior: 'smooth' });
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initKhsPage);
+    } else {
+      initKhsPage();
+    }
   </script>
 </BaseLayout>
