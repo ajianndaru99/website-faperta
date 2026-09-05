@@ -849,20 +849,20 @@ import {
   <!-- ============================================================
        MODAL PEMROSESAN STATUS BERKAS (SENIOR & ACCESSIBILITY FRIENDLY)
        ============================================================ -->
-  <div id="edit-ticket-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="edit-ticket-modal" class="hidden fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-3 sm:p-6">
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs transition-opacity"></div>
     
-    <div class="relative w-full max-w-2xl sm:max-w-3xl rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden z-10 text-left">
-      <!-- Modal Header (Besar & Jelas) -->
-      <div class="bg-slate-100 px-6 sm:px-8 py-5 border-b-2 border-slate-200 flex items-center justify-between">
-        <div>
-          <h3 id="modal-ticket-title" class="text-base sm:text-xl font-black text-slate-900">Pemrosesan & Disposisi Berkas</h3>
-          <p id="modal-ticket-sub" class="text-xs sm:text-sm text-slate-600 font-mono mt-0.5">Kode Tiket: -</p>
+    <div class="relative w-full max-w-2xl sm:max-w-3xl my-auto max-h-[85vh] flex flex-col rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden z-10 text-left">
+      <!-- Modal Header (Tetap terlihat di atas / shrink-0) -->
+      <div class="bg-slate-100 px-5 sm:px-6 py-3 border-b-2 border-slate-200 flex items-center justify-between shrink-0">
+        <div class="pr-2">
+          <h3 id="modal-ticket-title" class="text-base sm:text-lg font-black text-slate-900 leading-tight">Pemrosesan & Disposisi Berkas</h3>
+          <p id="modal-ticket-sub" class="text-xs text-slate-600 font-mono mt-0.5 truncate">Kode Tiket: -</p>
         </div>
         <button 
           type="button" 
           id="btn-close-modal" 
-          class="text-slate-400 hover:text-slate-800 text-2xl font-black p-1 cursor-pointer transition"
+          class="h-8 w-8 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-200 text-lg font-black flex items-center justify-center cursor-pointer transition shrink-0"
           title="Tutup Modal"
         >
           ✕
@@ -870,153 +870,156 @@ import {
       </div>
 
       <!-- Modal Form -->
-      <form id="modal-edit-form" class="p-6 sm:p-8 space-y-6">
+      <form id="modal-edit-form" class="flex flex-col flex-1 min-h-0 overflow-hidden">
         <input type="hidden" id="modal-ticket-code" />
 
-        <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Rapi, Tanpa Icon) -->
-        <div>
-          <label class="block text-sm sm:text-base font-black text-slate-900 mb-2.5">
-            Pilih Tahapan Status Berkas:
-          </label>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
-            <button 
-              type="button" 
-              data-target-status="Belum Diproses" 
-              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-amber-50 text-amber-900 border-amber-400 shadow-2xs"
-            >
-              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 1</span>
-              <span class="text-xs font-black mt-1 leading-tight">Antrean Loket</span>
-            </button>
-            <button 
-              type="button" 
-              data-target-status="Verifikasi Admin Loket" 
-              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
-            >
-              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 2</span>
-              <span class="text-xs font-black mt-1 leading-tight">Verif Admin</span>
-            </button>
-            <button 
-              type="button" 
-              data-target-status="Verifikasi Dosen / Kaprodi" 
-              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
-            >
-              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 3</span>
-              <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Dosen/Dekanat</span>
-            </button>
-            <button 
-              type="button" 
-              data-target-status="Selesai (Siap Diambil)" 
-              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
-            >
-              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 4</span>
-              <span class="text-xs font-black mt-1 leading-tight">Siap Ambil</span>
-            </button>
-            <button 
-              type="button" 
-              data-target-status="Ditolak" 
-              class="modal-status-choice p-2.5 rounded-2xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[56px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1 shadow-2xs"
-            >
-              <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none text-rose-500">Batal/Tolak</span>
-              <span class="text-xs font-black mt-1 leading-tight">Ditolak</span>
-            </button>
+        <!-- Scrollable Form Body -->
+        <div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3.5">
+          <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Rapi, Tanpa Icon) -->
+          <div>
+            <label class="block text-xs sm:text-sm font-black text-slate-900 mb-2">
+              Pilih Tahapan Status Berkas:
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+              <button 
+                type="button" 
+                data-target-status="Belum Diproses" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-amber-50 text-amber-900 border-amber-400 shadow-2xs"
+              >
+                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 1</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Antrean Loket</span>
+              </button>
+              <button 
+                type="button" 
+                data-target-status="Verifikasi Admin Loket" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+              >
+                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 2</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Verif Admin</span>
+              </button>
+              <button 
+                type="button" 
+                data-target-status="Verifikasi Dosen / Kaprodi" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+              >
+                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 3</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Dosen/Dekanat</span>
+              </button>
+              <button 
+                type="button" 
+                data-target-status="Selesai (Siap Diambil)" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 shadow-2xs"
+              >
+                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none">Tahap 4</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Siap Ambil</span>
+              </button>
+              <button 
+                type="button" 
+                data-target-status="Ditolak" 
+                class="modal-status-choice p-2 rounded-xl border-2 font-black transition flex flex-col items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1 shadow-2xs"
+              >
+                <span class="text-[10px] font-extrabold uppercase opacity-75 leading-none text-rose-500">Batal/Tolak</span>
+                <span class="text-xs font-black mt-1 leading-tight whitespace-nowrap">Ditolak</span>
+              </button>
+            </div>
+            <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
           </div>
-          <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
-        </div>
 
-        <!-- Posisi Berkas Fisik Terkini (Preset: Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat) -->
-        <div>
-          <label for="modal-posisi-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
-            Posisi Berkas Fisik Saat Ini:
-          </label>
-          <input 
-            type="text" 
-            id="modal-posisi-input" 
-            required 
-            class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-sm sm:text-base text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
-            placeholder="Loket Admin FAPERTA"
-          />
-          
-          <!-- Preset Posisi Cepat: HANYA Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat -->
-          <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-            <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
-            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Loket Admin FAPERTA">
-              Loket Admin FAPERTA
-            </button>
-            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dosen / Kaprodi">
-              Ruang Dosen / Kaprodi
-            </button>
-            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dekanat">
-              Ruang Dekanat
-            </button>
+          <!-- Posisi Berkas Fisik Terkini (Preset: Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat) -->
+          <div>
+            <label for="modal-posisi-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
+              Posisi Berkas Fisik Saat Ini:
+            </label>
+            <input 
+              type="text" 
+              id="modal-posisi-input" 
+              required 
+              class="w-full rounded-xl border-2 border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+              placeholder="Loket Admin FAPERTA"
+            />
+            
+            <!-- Preset Posisi Cepat: HANYA Loket Admin, Ruang Dosen/Kaprodi, Ruang Dekanat -->
+            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
+              <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
+              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Loket Admin FAPERTA">
+                Loket Admin FAPERTA
+              </button>
+              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Ruang Dosen / Kaprodi">
+                Ruang Dosen / Kaprodi
+              </button>
+              <button type="button" class="preset-posisi px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-pos="Ruang Dekanat">
+                Ruang Dekanat
+              </button>
+            </div>
+          </div>
+
+          <!-- Perkiraan Waktu Selesai (Estimasi diatur sendiri oleh Admin) -->
+          <div>
+            <label for="modal-estimasi-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
+              Perkiraan Waktu Selesai (Estimasi Admin):
+            </label>
+            <input 
+              type="text" 
+              id="modal-estimasi-input" 
+              class="w-full rounded-xl border-2 border-slate-300 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+              placeholder="Contoh: 1 Hari Kerja / Besok Pukul 14.00 WIB (Ketik '-' jika belum ditentukan)"
+            />
+            
+            <!-- Preset Estimasi Cepat -->
+            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
+              <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
+              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="-">
+                - (Belum Ditentukan)
+              </button>
+              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="Hari Ini">
+                Hari Ini
+              </button>
+              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="1 Hari Kerja">
+                1 Hari Kerja
+              </button>
+              <button type="button" class="preset-estimasi px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200 text-xs" data-est="2–3 Hari Kerja">
+                2–3 Hari Kerja
+              </button>
+            </div>
+          </div>
+
+          <!-- Catatan Admin untuk Mahasiswa -->
+          <div>
+            <label for="modal-catatan-input" class="block text-xs sm:text-sm font-black text-slate-900 mb-1.5">
+              Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
+            </label>
+            <textarea 
+              id="modal-catatan-input" 
+              rows="2" 
+              class="w-full rounded-xl border-2 border-slate-300 bg-white p-3 text-xs sm:text-sm text-slate-900 font-medium focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+              placeholder="Tuliskan petunjuk atau keterangan perbaikan di sini..."
+            ></textarea>
           </div>
         </div>
 
-        <!-- Perkiraan Waktu Selesai (Estimasi diatur sendiri oleh Admin) -->
-        <div>
-          <label for="modal-estimasi-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
-            Perkiraan Waktu Selesai (Estimasi Admin):
-          </label>
-          <input 
-            type="text" 
-            id="modal-estimasi-input" 
-            class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-sm sm:text-base text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
-            placeholder="Contoh: 1 Hari Kerja / Besok Pukul 14.00 WIB (Ketik '-' jika belum ditentukan)"
-          />
-          
-          <!-- Preset Estimasi Cepat -->
-          <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-            <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
-            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="-">
-              - (Belum Ditentukan)
-            </button>
-            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="Hari Ini">
-              Hari Ini
-            </button>
-            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="1 Hari Kerja">
-              1 Hari Kerja
-            </button>
-            <button type="button" class="preset-estimasi px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-est="2–3 Hari Kerja">
-              2–3 Hari Kerja
-            </button>
-          </div>
-        </div>
-
-        <!-- Catatan Admin untuk Mahasiswa -->
-        <div>
-          <label for="modal-catatan-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
-            Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
-          </label>
-          <textarea 
-            id="modal-catatan-input" 
-            rows="3" 
-            class="w-full rounded-2xl border-2 border-slate-300 bg-white p-4 text-sm sm:text-base text-slate-900 font-medium focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
-            placeholder="Tuliskan petunjuk atau keterangan perbaikan di sini..."
-          ></textarea>
-        </div>
-
-        <!-- Action Buttons (Termasuk Tombol Langsung Selesai) -->
-        <div class="pt-4 border-t-2 border-slate-100 flex flex-wrap items-center justify-between gap-3">
+        <!-- Sticky Modal Footer (Selalu Terlihat di Layar, Tidak Terpotong Bawah) -->
+        <div class="px-5 sm:px-6 py-2.5 sm:py-3 bg-slate-100 border-t-2 border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
           <button 
             type="button" 
             id="btn-modal-quick-complete" 
-            class="h-12 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm py-2 px-5 font-black shadow-xs transition cursor-pointer flex items-center gap-2"
+            class="h-9 sm:h-10 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm py-1.5 px-3.5 font-black shadow-xs transition cursor-pointer flex items-center gap-1.5"
             title="Langsung selesaikan berkas ke Loket Admin FAPERTA"
           >
             <span>⚡</span>
             <span>Langsung Selesaikan</span>
           </button>
           
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center gap-2">
             <button 
               type="button" 
               id="btn-cancel-modal" 
-              class="h-12 rounded-2xl border-2 border-slate-300 text-xs sm:text-sm py-2 px-5 bg-white hover:bg-slate-100 text-slate-800 font-black cursor-pointer transition"
+              class="h-9 sm:h-10 rounded-xl border-2 border-slate-300 text-xs sm:text-sm py-1.5 px-3.5 bg-white hover:bg-slate-100 text-slate-800 font-black cursor-pointer transition"
             >
               Batal
             </button>
             <button 
               type="submit" 
-              class="h-12 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs sm:text-sm py-2 px-7 font-black shadow-md transition cursor-pointer"
+              class="h-9 sm:h-10 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs sm:text-sm py-1.5 px-4 sm:px-5 font-black shadow-md transition cursor-pointer"
             >
               💾 Simpan Perubahan
             </button>
