@@ -50,8 +50,8 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
   </section>
 
   <!-- Search & Tracking Section -->
-  <section class="container-shell pt-4 pb-12 sm:py-8 md:py-10">
-    <div class="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+  <section class="container-shell pt-4 pb-6 sm:pb-8">
+    <div class="max-w-4xl mx-auto space-y-4 sm:space-y-5">
       
       <!-- Search Box Card -->
       <div id="search-box-card" class="rounded-3xl border border-[var(--line)] bg-white p-5 sm:p-8 shadow-sm">
@@ -80,43 +80,39 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         </p>
       </div>
 
-      <!-- Applicant Profile Card (Muncul Paling Atas Saat Cek Status) -->
-      <div id="applicant-profile-card" class="hidden rounded-3xl border border-slate-200 bg-white p-5 sm:p-7 shadow-xs">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div class="flex items-start sm:items-center gap-4">
-            <div class="h-14 w-14 rounded-2xl bg-emerald-700 text-white text-2xl font-bold flex items-center justify-center shrink-0 shadow-xs">
-              🎓
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                  Data Mahasiswa Terdaftar
-                </span>
-                <button 
-                  type="button" 
-                  id="btn-toggle-search" 
-                  class="text-xs font-bold text-slate-500 hover:text-emerald-700 hover:bg-slate-100 px-2.5 py-0.5 rounded-lg border border-slate-200 transition cursor-pointer flex items-center gap-1"
-                  title="Klik untuk mencari dengan NIM atau Nomor Tiket lain"
-                >
-                  <span>🔍</span>
-                  <span>Cari NIM Lain</span>
-                </button>
-              </div>
-              <h2 id="prof-nama" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">-</h2>
-              <p class="text-xs sm:text-sm text-slate-500 font-mono mt-1">
-                NIM: <strong id="prof-nim" class="text-emerald-800 font-bold">-</strong> · <span id="prof-prodi">-</span>
-              </p>
-            </div>
+      <!-- Applicant Profile Card (Symmetric, Rapi & Mobile Friendly - Poin 1) -->
+      <div id="applicant-profile-card" class="hidden rounded-3xl border border-emerald-200/90 bg-white p-5 sm:p-6 shadow-sm text-center">
+        <!-- Icon & Badge Centered Symmetrical -->
+        <div class="flex flex-col items-center justify-center">
+          <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-emerald-700 text-white text-2xl font-bold flex items-center justify-center shadow-xs mb-2.5">
+            🎓
           </div>
-          <div class="sm:text-right border-t sm:border-t-0 pt-4 sm:pt-0 border-slate-200">
-            <p class="text-xs text-slate-500 font-medium">Total Pengajuan Surat:</p>
-            <p id="prof-total" class="text-2xl font-black text-emerald-800 mt-0.5">0 Berkas</p>
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
+            Data Mahasiswa Terdaftar
+          </span>
+        </div>
+
+        <!-- Nama Mahasiswa Symmetrical -->
+        <div class="mt-3">
+          <h2 id="prof-nama" class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight capitalize leading-tight">-</h2>
+          <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
+            NIM: <strong id="prof-nim" class="font-mono text-emerald-800 font-bold text-sm sm:text-base">-</strong>
+            <span class="mx-1.5 text-slate-300">•</span>
+            <span id="prof-prodi" class="text-slate-700 font-semibold">-</span>
+          </p>
+        </div>
+
+        <!-- Total Pengajuan (Symmetric Center Pill) -->
+        <div class="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-center">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-600 shadow-2xs">
+            <span>Total Pengajuan Surat:</span>
+            <span id="prof-total" class="font-mono font-black text-emerald-800 text-sm">0 Berkas</span>
           </div>
         </div>
       </div>
 
       <!-- Multi-Ticket Cards Container -->
-      <div id="tickets-container" class="space-y-8"></div>
+      <div id="tickets-container" class="space-y-4 sm:space-y-5"></div>
 
       <!-- Not Found Card -->
       <div id="not-found-card" class="hidden rounded-3xl border-2 border-dashed border-slate-200 bg-white p-12 text-center">
@@ -137,7 +133,6 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
       const searchInput = document.getElementById('search-input');
       const heroStatusSection = document.getElementById('hero-status-section');
       const searchBoxCard = document.getElementById('search-box-card');
-      const btnToggleSearch = document.getElementById('btn-toggle-search');
       const profileCard = document.getElementById('applicant-profile-card');
       const ticketsContainer = document.getElementById('tickets-container');
       const notFoundCard = document.getElementById('not-found-card');
@@ -545,13 +540,13 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               </div>
             `) : ''}
 
-            <!-- Footer Bukti Pengambilan & Cetak Struk Mahasiswa -->
-            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
-              <span>Keperluan: <strong class="text-slate-900">${ticket.detailTambahan || ticket.keperluan}</strong></span>
+            <!-- Footer Bukti Pengambilan & Cetak Struk Mahasiswa (Symmetric, Rapi & Mobile Friendly) -->
+            <div class="pt-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-600">
+              <span class="text-slate-700">Keperluan: <strong class="text-slate-900 font-semibold">${ticket.detailTambahan || ticket.keperluan}</strong></span>
               <button 
                 type="button" 
                 onclick="window.printOfficialTicket('${ticket.kode}')" 
-                class="no-print px-4 py-2 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs transition flex items-center gap-2 cursor-pointer shadow-2xs"
+                class="no-print w-full sm:w-auto px-4 py-2.5 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs shrink-0"
               >
                 <span>🖨️</span>
                 <span>Cetak Tanda Terima Mahasiswa</span>
@@ -562,7 +557,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
           ticketsContainer.appendChild(card);
         });
 
-        ticketsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        profileCard?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       // 3. Eksekusi Pencarian & Persist URL State (Requirement #4)
@@ -615,15 +610,6 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         const query = (searchInput?.value || '').trim().toUpperCase();
         if (!query) return;
         executeSearch(query, true);
-      });
-
-      // 4b. Toggle Form Pencarian jika mahasiswa ingin mencari NIM lain
-      btnToggleSearch?.addEventListener('click', () => {
-        searchBoxCard?.classList.toggle('hidden');
-        if (!searchBoxCard?.classList.contains('hidden')) {
-          searchInput?.focus();
-          searchBoxCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
       });
 
       // 5. Inisialisasi Otomatis Saat Halaman Dimuat / Direfresh (F5)

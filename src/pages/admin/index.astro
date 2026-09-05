@@ -470,260 +470,166 @@ import {
           </div>
 
           <!-- ========================================================
-               VIEW 2: DATABASE UTAMA ADMINISTRASI (Requirement #2 & #3)
+               VIEW 2: DATABASE UTAMA ADMINISTRASI (SELURUH PELAYANAN)
                ======================================================== -->
-          <div id="view-database-container" class="hidden space-y-6">
+          <div id="view-database-container" class="hidden space-y-5">
             
-            <!-- Database Header -->
-            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xs">
+            <!-- Database Header & Controls -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs space-y-4">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <div class="flex items-center gap-2.5">
                     <span class="text-2xl">🗄️</span>
                     <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                      Database Utama Administrasi
+                      Database Master Administrasi Pelayanan
                     </h2>
                   </div>
                   <p class="text-xs text-slate-500 mt-1">
-                    Master data induk Fakultas Pertanian INSTIPER untuk validasi mahasiswa, dosen, mata kuliah, dan rekap administrasi loket.
+                    Seluruh rekam data permohonan surat & kegiatan pelayanan mahasiswa (selesai maupun dalam proses) tercatat secara terpadu.
                   </p>
                 </div>
                 
-                <!-- Database Tabs Pills -->
-                <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl">
+                <!-- Database Tabs Pills (Hanya Master Layanan & Akun Admin - Poin 5) -->
+                <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl self-start sm:self-center">
                   <button 
                     type="button" 
-                    data-db-tab="mahasiswa" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
+                    data-db-tab="master-layanan" 
+                    class="db-sub-tab px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
                   >
-                    🎓 Mahasiswa ({MASTER_MAHASISWA.length})
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="dosen" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    👨‍🏫 Dosen & Kaprodi ({MASTER_DOSEN.length})
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="matkul" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    📚 Mata Kuliah ({MASTER_MATAKULIAH.length})
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="arsip" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    📋 Buku Besar Berkas
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="pengambilan" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    📦 Pengambilan Berkas
+                    📋 Database Master Layanan
                   </button>
                   <button 
                     type="button" 
                     data-db-tab="admin" 
                     class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
                   >
-                    👥 Akun Petugas & Admin ({MASTER_ADMINS.length})
+                    👥 Akun Petugas & Admin
                   </button>
                 </div>
               </div>
 
-              <!-- Master Search & Sorting Controls (Poin 2) -->
-              <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 flex-1 max-w-xl">
-                  <div class="relative flex-1 min-w-[200px]">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
-                      🔍
-                    </span>
+              <!-- KPI Rekap Pemisah Waktu (Hari Ini, Kemarin, 7 Hari, Bulan Ini, Total - Poin 6) -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-2">
+                <div class="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-300 shadow-2xs">
+                  <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">🌟 Hari Ini</span>
+                  <span id="kpi-db-today" class="text-lg sm:text-xl font-black text-emerald-950 font-mono">0 Layanan</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">📅 Kemarin</span>
+                  <span id="kpi-db-yesterday" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">📆 7 Hari Terakhir</span>
+                  <span id="kpi-db-week" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">🗓️ Bulan Ini</span>
+                  <span id="kpi-db-month" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-900 border border-slate-900 text-white shadow-2xs col-span-2 sm:col-span-1">
+                  <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">🏛️ Total Master</span>
+                  <span id="kpi-db-total" class="text-lg sm:text-xl font-black text-emerald-400 font-mono">0 Layanan</span>
+                </div>
+              </div>
+
+              <!-- Filter & Sorting Controls (Prodi & Case & Status - Poin 4) -->
+              <div class="pt-3 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2 flex-1">
+                  <!-- Search Bar -->
+                  <div class="relative min-w-[180px] flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs">🔍</span>
                     <input 
                       type="text" 
-                      id="db-search-input" 
-                      placeholder="Cari NIM, Nama, atau Kata Kunci..." 
-                      class="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition shadow-2xs"
+                      id="db-master-search" 
+                      placeholder="Cari NIM, Nama, Kode Tiket..." 
+                      class="h-9 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-8 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition shadow-2xs"
                     />
                   </div>
 
-                  <!-- Dropdown Pengurutan (Sort) Cepat -->
+                  <!-- Filter Program Studi (Poin 4) -->
                   <div class="flex items-center gap-1.5 shrink-0">
-                    <label for="db-sort-select" class="text-xs font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
+                    <label for="db-filter-prodi" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Prodi:</label>
                     <select 
-                      id="db-sort-select" 
-                      class="h-10 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                      id="db-filter-prodi" 
+                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
                     >
-                      <option value="nama_asc">Nama (A ➜ Z)</option>
-                      <option value="nama_desc">Nama (Z ➜ A)</option>
-                      <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
-                      <option value="nim_desc">NIM (Terbesar ➜ Terkecil)</option>
-                      <option value="angkatan_desc">Angkatan (Terbaru)</option>
-                      <option value="angkatan_asc">Angkatan (Terlama)</option>
-                      <option value="prodi_asc">Program Studi (A ➜ Z)</option>
+                      <option value="all">Semua Program Studi</option>
+                      <option value="S1 Agroteknologi">S1 Agroteknologi</option>
+                      <option value="S1 Agribisnis">S1 Agribisnis</option>
+                    </select>
+                  </div>
+
+                  <!-- Filter Case / Skenario Pelayanan (Poin 4) -->
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <label for="db-filter-case" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Case Layanan:</label>
+                    <select 
+                      id="db-filter-case" 
+                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                    >
+                      <option value="all">Semua Skenario Layanan</option>
+                      <option value="khs">Permohonan KHS</option>
+                      <option value="ujian">Ujian Khusus</option>
+                      <option value="komplain">Komplain Nilai</option>
+                      <option value="penelitian">Izin Penelitian</option>
+                      <option value="lainnya">Lainnya</option>
+                    </select>
+                  </div>
+
+                  <!-- Filter Status -->
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <label for="db-filter-status" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Status:</label>
+                    <select 
+                      id="db-filter-status" 
+                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                    >
+                      <option value="all">Semua Status</option>
+                      <option value="Belum Diproses">Belum Diproses</option>
+                      <option value="Proses Verifikasi">Proses Verifikasi</option>
+                      <option value="Selesai (Siap Diambil)">Selesai (Siap Diambil)</option>
+                      <option value="Sudah Diambil">Sudah Diambil</option>
+                      <option value="Ditolak">Ditolak</option>
                     </select>
                   </div>
                 </div>
 
-                <div id="db-active-count" class="text-xs font-bold text-slate-500 shrink-0">
-                  Menampilkan data master
+                <!-- Sort Control -->
+                <div class="flex items-center gap-1.5 shrink-0 self-start md:self-auto">
+                  <label for="db-master-sort" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
+                  <select 
+                    id="db-master-sort" 
+                    class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                  >
+                    <option value="waktu_desc">Waktu (Terbaru ➜ Terlama)</option>
+                    <option value="waktu_asc">Waktu (Terlama ➜ Terbaru)</option>
+                    <option value="prodi_asc">Program Studi (A ➜ Z)</option>
+                    <option value="prodi_desc">Program Studi (Z ➜ A)</option>
+                    <option value="case_asc">Skenario Layanan (A ➜ Z)</option>
+                    <option value="nama_asc">Nama Mahasiswa (A ➜ Z)</option>
+                    <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
+                  </select>
                 </div>
               </div>
             </div>
 
-            <!-- TAB PANE 1: MASTER MAHASISWA -->
-            <div id="pane-mahasiswa" class="db-pane space-y-4">
+            <!-- TAB PANE: MASTER SELURUH LAYANAN DENGAN PEMISAH HARI (Poin 3 & 6) -->
+            <div id="pane-master-layanan" class="db-pane space-y-4">
               <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs text-slate-700">
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="nim">
-                          <span class="inline-flex items-center gap-1">NIM <span class="sort-icon-mhs opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="nama">
-                          <span class="inline-flex items-center gap-1">Nama Mahasiswa <span class="sort-icon-mhs opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="prodi">
-                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-mhs opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4">Kontak (WhatsApp & Email)</th>
-                        <th class="py-3.5 px-4">Minat Studi</th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="angkatan">
-                          <span class="inline-flex items-center gap-1">Angkatan <span class="sort-icon-mhs opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4">Semester</th>
-                        <th class="py-3.5 px-4">DPA (Dosen Pembimbing)</th>
+                        <th class="py-3.5 px-4 w-28">Waktu / Jam</th>
+                        <th class="py-3.5 px-4">Kode Tiket</th>
+                        <th class="py-3.5 px-4">Mahasiswa (NIM & Kontak)</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Skenario Layanan (Case)</th>
+                        <th class="py-3.5 px-4">Posisi Berkas Fisik</th>
                         <th class="py-3.5 px-4 text-center">Status</th>
                         <th class="py-3.5 px-4 text-right">Aksi</th>
                       </tr>
                     </thead>
-                    <tbody id="table-mahasiswa-body" class="divide-y divide-slate-100">
-                      <!-- Rendered by JS -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- TAB PANE 2: MASTER DOSEN & KAPRODI (Cukup Nama Lengkap & Gelar serta Program Studi) -->
-            <div id="pane-dosen" class="db-pane hidden space-y-4">
-              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
-                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                      <tr>
-                        <th class="py-3.5 px-6 w-16 text-center">No</th>
-                        <th class="py-3.5 px-6 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-dsn" data-sort="nama">
-                          <span class="inline-flex items-center gap-1">Nama Lengkap & Gelar <span class="sort-icon-dsn opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-6 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-dsn" data-sort="prodi">
-                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-dsn opacity-60">⇅</span></span>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="table-dosen-body" class="divide-y divide-slate-100">
-                      <!-- Rendered by JS -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- TAB PANE 3: MASTER MATA KULIAH -->
-            <div id="pane-matkul" class="db-pane hidden space-y-4">
-              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
-                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                      <tr>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="kode">
-                          <span class="inline-flex items-center gap-1">Kode MK <span class="sort-icon-mk opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="nama">
-                          <span class="inline-flex items-center gap-1">Nama Mata Kuliah <span class="sort-icon-mk opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 text-center">SKS</th>
-                        <th class="py-3.5 px-4 text-center">Semester</th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="prodi">
-                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-mk opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4">Dosen Pengampu Utama</th>
-                      </tr>
-                    </thead>
-                    <tbody id="table-matkul-body" class="divide-y divide-slate-100">
-                      <!-- Rendered by JS -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- TAB PANE 4: BUKU BESAR BERKAS (ARSIP SELURUH PERMOHONAN) -->
-            <div id="pane-arsip" class="db-pane hidden space-y-4">
-              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
-                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                      <tr>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-arsip" data-sort="kode">
-                          <span class="inline-flex items-center gap-1">Kode Tiket <span class="sort-icon-arsip opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-arsip" data-sort="nama">
-                          <span class="inline-flex items-center gap-1">NIM & Mahasiswa <span class="sort-icon-arsip opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4">Program Studi</th>
-                        <th class="py-3.5 px-4">Layanan</th>
-                        <th class="py-3.5 px-4">Tanggal Pengajuan</th>
-                        <th class="py-3.5 px-4">Posisi Berkas Fisik</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody id="table-arsip-body" class="divide-y divide-slate-100">
-                      <!-- Rendered by JS -->
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <!-- TAB PANE: MASTER DATA PENGAMBILAN BERKAS FISIK -->
-            <div id="pane-pengambilan" class="db-pane hidden space-y-4">
-              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
-                <div class="p-4 bg-slate-50/90 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Master Data Rekam Pengambilan Berkas Fisik</h3>
-                    <p class="text-[11px] text-slate-500">Seluruh riwayat penyerahan berkas fisik yang telah diambil mahasiswa tercatat di sini.</p>
-                  </div>
-                  <span id="badge-total-pengambilan" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 self-start sm:self-center">
-                    0 Berkas Diserahkan
-                  </span>
-                </div>
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
-                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                      <tr>
-                        <th class="py-3.5 px-4 w-12 text-center">No</th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="kode">
-                          <span class="inline-flex items-center gap-1">Kode Tiket <span class="sort-icon-taken opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="waktu">
-                          <span class="inline-flex items-center gap-1">Waktu Pengambilan <span class="sort-icon-taken opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="nama">
-                          <span class="inline-flex items-center gap-1">Mahasiswa (NIM & Nama) <span class="sort-icon-taken opacity-60">⇅</span></span>
-                        </th>
-                        <th class="py-3.5 px-4">Jenis Berkas / Layanan</th>
-                        <th class="py-3.5 px-4">Petugas Penyerah</th>
-                        <th class="py-3.5 px-4 text-center">Status Fisik</th>
-                      </tr>
-                    </thead>
-                    <tbody id="table-pengambilan-body" class="divide-y divide-slate-100">
-                      <!-- Rendered by JS -->
+                    <tbody id="table-master-layanan-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS, dikelompokkan dengan separator baris per hari! -->
                     </tbody>
                   </table>
                 </div>
@@ -2182,16 +2088,21 @@ import {
         }
       });
 
-      // 8. DATABASE UTAMA ADMINISTRASI (Requirement #2 & #3)
-      let activeDbTab = 'mahasiswa';
-      let dbSearchQuery = '';
-      let dbSortKey = 'nama';
-      let dbSortAsc = true;
+      // 8. DATABASE MASTER SELURUH PELAYANAN (Semua Berkas Masuk, Filter Prodi & Case, Pemisah Hari - Poin 3, 4, 5, 6)
+      let activeDbTab = 'master-layanan'; // 'master-layanan' atau 'admin'
+      let dbMasterSearchQuery = '';
+      let dbFilterProdi = 'all';
+      let dbFilterCase = 'all';
+      let dbFilterStatus = 'all';
+      let dbMasterSort = 'waktu_desc';
 
       const dbSubTabs = document.querySelectorAll('.db-sub-tab');
       const dbPanes = document.querySelectorAll('.db-pane');
-      const dbSearchInput = document.getElementById('db-search-input');
-      const dbSortSelect = document.getElementById('db-sort-select');
+      const dbSearchInput = document.getElementById('db-master-search');
+      const dbFilterProdiSelect = document.getElementById('db-filter-prodi');
+      const dbFilterCaseSelect = document.getElementById('db-filter-case');
+      const dbFilterStatusSelect = document.getElementById('db-filter-status');
+      const dbMasterSortSelect = document.getElementById('db-master-sort');
 
       dbSubTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -2201,7 +2112,7 @@ import {
           dbSubTabs.forEach(t => {
             t.className = 'db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
           });
-          tab.className = 'db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
+          tab.className = 'db-sub-tab px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
 
           dbPanes.forEach(p => p.classList.add('hidden'));
           document.getElementById(`pane-${target}`)?.classList.remove('hidden');
@@ -2210,300 +2121,348 @@ import {
       });
 
       dbSearchInput?.addEventListener('input', (e) => {
-        dbSearchQuery = e.target.value.trim().toLowerCase();
+        dbMasterSearchQuery = e.target.value.trim().toLowerCase();
         renderDatabaseTables();
       });
 
-      dbSortSelect?.addEventListener('change', (e) => {
-        const val = e.target.value;
-        const parts = val.split('_');
-        dbSortKey = parts[0];
-        dbSortAsc = parts[1] === 'asc';
-        updateSortHeaderIcons();
+      dbFilterProdiSelect?.addEventListener('change', (e) => {
+        dbFilterProdi = e.target.value;
         renderDatabaseTables();
       });
 
-      function attachSortHeaderListeners() {
-        document.querySelectorAll('.sort-th-mhs, .sort-th-dsn, .sort-th-mk, .sort-th-arsip, .sort-th-taken').forEach(th => {
-          th.addEventListener('click', () => {
-            const key = th.getAttribute('data-sort');
-            if (dbSortKey === key) {
-              dbSortAsc = !dbSortAsc;
-            } else {
-              dbSortKey = key;
-              dbSortAsc = true;
-            }
-            if (dbSortSelect) {
-              const val = `${dbSortKey}_${dbSortAsc ? 'asc' : 'desc'}`;
-              if (Array.from(dbSortSelect.options).some(o => o.value === val)) {
-                dbSortSelect.value = val;
-              }
-            }
-            updateSortHeaderIcons();
-            renderDatabaseTables();
-          });
-        });
-      }
+      dbFilterCaseSelect?.addEventListener('change', (e) => {
+        dbFilterCase = e.target.value;
+        renderDatabaseTables();
+      });
 
-      function updateSortHeaderIcons() {
-        document.querySelectorAll('.sort-th-mhs, .sort-th-dsn, .sort-th-mk, .sort-th-arsip, .sort-th-taken').forEach(th => {
-          const key = th.getAttribute('data-sort');
-          const icon = th.querySelector('[class*="sort-icon"]');
-          if (icon) {
-            if (dbSortKey === key) {
-              icon.textContent = dbSortAsc ? '▲' : '▼';
-              icon.classList.remove('opacity-60');
-              icon.classList.add('text-emerald-700', 'font-black');
-            } else {
-              icon.textContent = '⇅';
-              icon.classList.add('opacity-60');
-              icon.classList.remove('text-emerald-700', 'font-black');
-            }
-          }
-        });
-      }
+      dbFilterStatusSelect?.addEventListener('change', (e) => {
+        dbFilterStatus = e.target.value;
+        renderDatabaseTables();
+      });
 
-      attachSortHeaderListeners();
+      dbMasterSortSelect?.addEventListener('change', (e) => {
+        dbMasterSort = e.target.value;
+        renderDatabaseTables();
+      });
+
+      // Helper Ekstraksi Informasi Tanggal Berkas Secara Akurat
+      function getTicketDateInfo(t) {
+        const str = t.tanggal || '';
+        const monthsMap = {
+          'januari': 0, 'februari': 1, 'maret': 2, 'april': 3, 'mei': 4, 'juni': 5,
+          'juli': 6, 'agustus': 7, 'september': 8, 'oktober': 9, 'november': 10, 'desember': 11
+        };
+
+        const m = str.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+        if (m) {
+          const day = parseInt(m[1], 10);
+          const monthName = m[2];
+          const year = parseInt(m[3], 10);
+          const monthIndex = monthsMap[monthName.toLowerCase()] ?? 8;
+          const dateObj = new Date(year, monthIndex, day);
+          const dateKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const displayDate = `${day} ${monthName} ${year}`;
+          
+          const timeMatch = str.match(/(\d{1,2}[:.]\d{2})/);
+          const timeStr = timeMatch ? (timeMatch[1] + ' WIB') : '-';
+
+          return {
+            day, monthName, year, monthIndex,
+            timestamp: dateObj.getTime(),
+            dateKey, displayDate, timeStr
+          };
+        }
+
+        // Fallback jika format berbeda
+        let ts = Date.now();
+        if (t.sudahDiambilAt) ts = t.sudahDiambilAt;
+        const d = new Date(ts);
+        const day = d.getDate();
+        const monthName = d.toLocaleDateString('id-ID', { month: 'long' });
+        const year = d.getFullYear();
+        const dateKey = `${year}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const displayDate = `${day} ${monthName} ${year}`;
+        const timeStr = d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+        return {
+          day, monthName, year, monthIndex: d.getMonth(),
+          timestamp: ts,
+          dateKey, displayDate, timeStr
+        };
+      }
 
       function renderDatabaseTables() {
-        const query = dbSearchQuery;
+        // 1. Render Master Pelayanan Berkas (Pemisah per Hari, Sort Prodi & Case)
+        const masterTableBody = document.getElementById('table-master-layanan-body');
+        const allTickets = loadTickets();
 
-        // 1. Table Mahasiswa (Sorted)
-        const mhsBody = document.getElementById('table-mahasiswa-body');
-        if (mhsBody) {
-          let mhsList = masterMahasiswa.filter(m => 
-            !query ||
-            m.nim.toLowerCase().includes(query) ||
-            m.nama.toLowerCase().includes(query) ||
-            m.prodi.toLowerCase().includes(query) ||
-            (m.dpa && m.dpa.toLowerCase().includes(query))
-          );
+        // Hitung KPI Waktu (Hari Ini, Kemarin, Minggu Ini, Bulan Ini, Total)
+        const now = new Date();
+        const todayDateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        const yesterdayObj = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const yesterdayDateStr = yesterdayObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        const sevenDaysAgo = now.getTime() - 7 * 24 * 60 * 60 * 1000;
+        const currentMonthName = now.toLocaleDateString('id-ID', { month: 'long' }).toLowerCase();
+        const currentYear = now.getFullYear();
 
-          mhsList.sort((a, b) => {
-            let valA = a[dbSortKey] || '';
-            let valB = b[dbSortKey] || '';
-            if (dbSortKey === 'angkatan' || dbSortKey === 'semester') {
-              return dbSortAsc ? (Number(valA) - Number(valB)) : (Number(valB) - Number(valA));
-            }
-            return dbSortAsc ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
-          });
-          
-          mhsBody.innerHTML = mhsList.map(m => {
-            const cleanWa = (m.whatsapp || '').replace(/[^0-9]/g, '');
-            const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
-            return `
-              <tr class="hover:bg-slate-50/80 transition">
-                <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.nim}</td>
-                <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
-                <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
-                <td class="py-3 px-4 text-slate-700">
-                  <div class="space-y-1">
-                    ${m.whatsapp ? `
-                      <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline" title="Chat WhatsApp">
-                        <span>💬</span> <span class="font-mono">${m.whatsapp}</span>
-                      </a>
-                    ` : '<span class="text-slate-400 text-[11px]">-</span>'}
-                    ${m.email ? `
-                      <div class="block">
-                        <a href="mailto:${m.email}" class="inline-flex items-center gap-1 text-[11px] text-blue-700 hover:text-blue-900 hover:underline truncate max-w-[180px]" title="Kirim Email">
-                          <span>✉️</span> <span>${m.email}</span>
-                        </a>
-                      </div>
-                    ` : ''}
-                  </div>
-                </td>
-                <td class="py-3 px-4 text-slate-500">${m.minat || '-'}</td>
-                <td class="py-3 px-4 font-mono text-slate-600">${m.angkatan}</td>
-                <td class="py-3 px-4 text-slate-600">${m.semester}</td>
-                <td class="py-3 px-4 text-slate-700 font-medium">${m.dpa || '-'}</td>
-                <td class="py-3 px-4 text-center">
-                  <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                    ${m.statusAkademik}
-                  </span>
-                </td>
-                <td class="py-3 px-4 text-right">
-                  <button type="button" class="btn-check-mhs text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline cursor-pointer" data-nim="${m.nim}">
-                    Cek Berkas
-                  </button>
-                </td>
-              </tr>
-            `;
-          }).join('');
+        let cntToday = 0;
+        let cntYesterday = 0;
+        let cntWeek = 0;
+        let cntMonth = 0;
 
-          mhsBody.querySelectorAll('.btn-check-mhs').forEach(btn => {
-            btn.addEventListener('click', () => {
-              const nim = btn.getAttribute('data-nim');
-              setMainView('berkas');
-              const searchInp = document.getElementById('admin-search-input');
-              if (searchInp) searchInp.value = nim;
-              searchQuery = nim.toLowerCase();
-              renderTicketsList();
-            });
-          });
-        }
+        allTickets.forEach(t => {
+          const dInfo = getTicketDateInfo(t);
+          if (dInfo.displayDate.toLowerCase() === todayDateStr.toLowerCase()) cntToday++;
+          if (dInfo.displayDate.toLowerCase() === yesterdayDateStr.toLowerCase()) cntYesterday++;
+          if (dInfo.timestamp && dInfo.timestamp >= sevenDaysAgo) cntWeek++;
+          if (dInfo.year === currentYear && dInfo.monthName.toLowerCase() === currentMonthName) cntMonth++;
+        });
 
-        // 2. Table Dosen (Sorted)
-        const dsnBody = document.getElementById('table-dosen-body');
-        if (dsnBody) {
-          let dsnList = masterDosen.filter(d => 
-            !query ||
-            d.nama.toLowerCase().includes(query) ||
-            d.prodi.toLowerCase().includes(query)
-          );
+        const elToday = document.getElementById('kpi-db-today');
+        const elYesterday = document.getElementById('kpi-db-yesterday');
+        const elWeek = document.getElementById('kpi-db-week');
+        const elMonth = document.getElementById('kpi-db-month');
+        const elTotal = document.getElementById('kpi-db-total');
 
-          dsnList.sort((a, b) => {
-            let key = (dbSortKey === 'prodi') ? 'prodi' : 'nama';
-            return dbSortAsc ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
-          });
+        if (elToday) elToday.textContent = `${cntToday} Layanan`;
+        if (elYesterday) elYesterday.textContent = `${cntYesterday} Layanan`;
+        if (elWeek) elWeek.textContent = `${cntWeek} Layanan`;
+        if (elMonth) elMonth.textContent = `${cntMonth} Layanan`;
+        if (elTotal) elTotal.textContent = `${allTickets.length} Layanan`;
 
-          dsnBody.innerHTML = dsnList.map((d, idx) => `
-            <tr class="hover:bg-slate-50/80 transition">
-              <td class="py-3.5 px-6 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
-              <td class="py-3.5 px-6 font-bold text-slate-900 text-sm">${d.nama}</td>
-              <td class="py-3.5 px-6 text-slate-600 font-medium text-xs">${d.prodi}</td>
-            </tr>
-          `).join('');
-        }
+        if (masterTableBody) {
+          // Filter tickets
+          let filtered = allTickets;
 
-        // 3. Table Matkul (Sorted)
-        const mkBody = document.getElementById('table-matkul-body');
-        if (mkBody) {
-          let mkList = masterMatkul.filter(m => 
-            !query ||
-            m.kode.toLowerCase().includes(query) ||
-            m.nama.toLowerCase().includes(query) ||
-            m.prodi.toLowerCase().includes(query) ||
-            m.dosenPengampu.toLowerCase().includes(query)
-          );
-
-          mkList.sort((a, b) => {
-            let key = (dbSortKey === 'kode' || dbSortKey === 'nim') ? 'kode' : (dbSortKey === 'prodi' ? 'prodi' : 'nama');
-            return dbSortAsc ? String(a[key] || '').localeCompare(String(b[key] || '')) : String(b[key] || '').localeCompare(String(a[key] || ''));
-          });
-
-          mkBody.innerHTML = mkList.map(m => `
-            <tr class="hover:bg-slate-50/80 transition">
-              <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.kode}</td>
-              <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
-              <td class="py-3 px-4 text-center font-mono font-bold">${m.sks} SKS</td>
-              <td class="py-3 px-4 text-center font-mono text-slate-600">Sem ${m.semester}</td>
-              <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
-              <td class="py-3 px-4 text-slate-700 font-medium">${m.dosenPengampu}</td>
-            </tr>
-          `).join('');
-        }
-
-        // 4. Table Arsip Seluruh Berkas (Sorted)
-        const arsipBody = document.getElementById('table-arsip-body');
-        if (arsipBody) {
-          const allTickets = loadTickets();
-          let arsipList = allTickets.filter(t => 
-            !query ||
-            t.kode.toLowerCase().includes(query) ||
-            t.nim.toLowerCase().includes(query) ||
-            t.nama.toLowerCase().includes(query) ||
-            (t.layananNama && t.layananNama.toLowerCase().includes(query)) ||
-            (t.posisiBerkas && t.posisiBerkas.toLowerCase().includes(query))
-          );
-
-          arsipList.sort((a, b) => {
-            let key = (dbSortKey === 'nim') ? 'nim' : (dbSortKey === 'kode' ? 'kode' : 'nama');
-            return dbSortAsc ? String(a[key] || '').localeCompare(String(b[key] || '')) : String(b[key] || '').localeCompare(String(a[key] || ''));
-          });
-
-          arsipBody.innerHTML = arsipList.map(t => {
-            const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
-            const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
-            return `
-            <tr class="hover:bg-slate-50/80 transition">
-              <td class="py-3 px-4 font-mono font-bold text-slate-900">${t.kode}</td>
-              <td class="py-3 px-4">
-                <strong class="text-slate-900 block">${t.nama}</strong>
-                <span class="font-mono text-[11px] text-emerald-800">${t.nim}</span>
-                ${waNumber ? `<span class="text-slate-400 font-mono text-[10px] block">WA: ${waNumber}</span>` : ''}
-              </td>
-              <td class="py-3 px-4 text-slate-600">${t.prodi || '-'}</td>
-              <td class="py-3 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
-              <td class="py-3 px-4 text-[11px] text-slate-500">${t.tanggal || '-'}</td>
-              <td class="py-3 px-4 text-slate-700">${t.posisiBerkas || '-'}</td>
-              <td class="py-3 px-4 text-center">
-                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold ${
-                  t.status === 'Selesai (Siap Diambil)' ? 'bg-emerald-100 text-emerald-800' :
-                  t.status === 'Proses Verifikasi' ? 'bg-blue-100 text-blue-800' :
-                  t.status === 'Ditolak' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-900'
-                }">
-                  ${t.status}
-                </span>
-              </td>
-            </tr>
-          `;
-          }).join('');
-        }
-
-        // 4b. Table Pengambilan Berkas Fisik (Sorted)
-        const pengambilanBody = document.getElementById('table-pengambilan-body');
-        const badgePengambilan = document.getElementById('badge-total-pengambilan');
-        if (pengambilanBody) {
-          const allTickets = loadTickets();
-          let takenList = allTickets.filter(t => t.sudahDiambil);
-          if (query) {
-            takenList = takenList.filter(t =>
-              t.kode.toLowerCase().includes(query) ||
-              t.nim.toLowerCase().includes(query) ||
-              t.nama.toLowerCase().includes(query) ||
-              (t.layananNama && t.layananNama.toLowerCase().includes(query)) ||
-              ((t.petugasPenyerah || '').toLowerCase().includes(query))
+          // Filter Search Query
+          if (dbMasterSearchQuery) {
+            filtered = filtered.filter(t => 
+              (t.kode || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.nim || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.nama || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.layananNama || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.posisiBerkas || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.catatanAdmin || '').toLowerCase().includes(dbMasterSearchQuery)
             );
           }
 
-          takenList.sort((a, b) => {
-            if (dbSortKey === 'nim') return dbSortAsc ? a.nim.localeCompare(b.nim) : b.nim.localeCompare(a.nim);
-            if (dbSortKey === 'kode') return dbSortAsc ? a.kode.localeCompare(b.kode) : b.kode.localeCompare(a.kode);
-            if (dbSortKey === 'waktu') return dbSortAsc ? (a.tanggalDiambil || '').localeCompare(b.tanggalDiambil || '') : (b.tanggalDiambil || '').localeCompare(a.tanggalDiambil || '');
-            return dbSortAsc ? a.nama.localeCompare(b.nama) : b.nama.localeCompare(a.nama);
-          });
-
-          if (badgePengambilan) {
-            const totalCount = allTickets.filter(t => t.sudahDiambil).length;
-            badgePengambilan.textContent = `${totalCount} Berkas Diserahkan`;
+          // Filter Program Studi
+          if (dbFilterProdi !== 'all') {
+            filtered = filtered.filter(t => (t.prodi || '').toLowerCase() === dbFilterProdi.toLowerCase());
           }
 
-          if (takenList.length === 0) {
-            pengambilanBody.innerHTML = `
+          // Filter Case / Skenario Layanan
+          if (dbFilterCase !== 'all') {
+            filtered = filtered.filter(t => isTicketInCategory(t, dbFilterCase));
+          }
+
+          // Filter Status
+          if (dbFilterStatus !== 'all') {
+            if (dbFilterStatus === 'Proses Verifikasi') {
+              filtered = filtered.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status.includes('Dosen'));
+            } else if (dbFilterStatus === 'Sudah Diambil') {
+              filtered = filtered.filter(t => t.sudahDiambil);
+            } else {
+              filtered = filtered.filter(t => t.status === dbFilterStatus);
+            }
+          }
+
+          if (filtered.length === 0) {
+            masterTableBody.innerHTML = `
               <tr>
-                <td colspan="7" class="py-8 text-center text-slate-400 italic">
-                  Belum ada catatan pengambilan berkas fisik. Berkas yang diserahkan di loket akan tercatat otomatis di sini.
+                <td colspan="8" class="py-12 text-center text-slate-400 italic">
+                  <div class="text-3xl mb-2">🔎</div>
+                  <strong class="text-slate-700 block text-sm">Tidak Ditemukan Data Layanan</strong>
+                  <p class="text-xs text-slate-400 mt-1">Coba sesuaikan filter Program Studi, Case Pelayanan, atau kata kunci pencarian.</p>
                 </td>
               </tr>
             `;
           } else {
-            pengambilanBody.innerHTML = takenList.map((t, idx) => {
-              const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
-              const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
-              return `
-              <tr class="hover:bg-slate-50/80 transition">
-                <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
-                <td class="py-3.5 px-4 font-mono font-bold text-emerald-800">${t.kode}</td>
-                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.tanggalDiambil || '-'}</td>
-                <td class="py-3.5 px-4">
-                  <strong class="text-slate-900 block">${t.nama}</strong>
-                  <span class="font-mono text-[11px] text-slate-500">${t.nim}</span>
-                  ${waNumber ? `<span class="text-slate-400 font-mono text-[10px] block">WA: ${waNumber}</span>` : ''}
-                </td>
-                <td class="py-3.5 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
-                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.petugasPenyerah || 'Petugas Loket'}</td>
-                <td class="py-3.5 px-4 text-center">
-                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-200">
-                    <span>✓</span> Telah Diambil
-                  </span>
-                </td>
-              </tr>
-            `;
-            }).join('');
+            // Kelompokkan per Hari (Group By Date)
+            const groups = {};
+            filtered.forEach(t => {
+              const dInfo = getTicketDateInfo(t);
+              const key = dInfo.dateKey;
+              if (!groups[key]) {
+                groups[key] = {
+                  dateKey: key,
+                  displayDate: dInfo.displayDate,
+                  timestamp: dInfo.timestamp,
+                  tickets: []
+                };
+              }
+              groups[key].tickets.push(t);
+            });
+
+            // Urutkan kelompok hari (Hari terbaru di atas)
+            const sortedDateKeys = Object.keys(groups).sort((a, b) => {
+              return b.localeCompare(a); // desc (2026-09-05 sebelum 2026-09-04)
+            });
+
+            let htmlBuffer = '';
+
+            sortedDateKeys.forEach(dateKey => {
+              const group = groups[dateKey];
+              let dayTickets = group.tickets;
+
+              // Sort tiket di dalam hari tersebut
+              dayTickets.sort((a, b) => {
+                if (dbMasterSort === 'waktu_asc') {
+                  return (a.tanggal || '').localeCompare(b.tanggal || '');
+                } else if (dbMasterSort === 'prodi_asc') {
+                  return (a.prodi || '').localeCompare(b.prodi || '');
+                } else if (dbMasterSort === 'prodi_desc') {
+                  return (b.prodi || '').localeCompare(a.prodi || '');
+                } else if (dbMasterSort === 'case_asc') {
+                  return (a.layananNama || '').localeCompare(b.layananNama || '');
+                } else if (dbMasterSort === 'nama_asc') {
+                  return (a.nama || '').localeCompare(b.nama || '');
+                } else if (dbMasterSort === 'nim_asc') {
+                  return (a.nim || '').localeCompare(b.nim || '');
+                } else {
+                  // waktu_desc default
+                  return (b.tanggal || '').localeCompare(a.tanggal || '');
+                }
+              });
+
+              // Hitung statistik sub-kelompok hari
+              const daySelesai = dayTickets.filter(t => t.sudahDiambil || t.status === 'Selesai (Siap Diambil)').length;
+              const dayProses = dayTickets.filter(t => t.status === 'Proses Verifikasi' || t.status === 'Verifikasi Admin Loket' || t.status.includes('Dosen')).length;
+              const dayAntrean = dayTickets.filter(t => t.status === 'Belum Diproses').length;
+
+              const isToday = group.displayDate.toLowerCase() === todayDateStr.toLowerCase();
+              const isYesterday = group.displayDate.toLowerCase() === yesterdayDateStr.toLowerCase();
+              const dayHeaderTitle = isToday 
+                ? `🌟 HARI INI — ${group.displayDate}` 
+                : isYesterday 
+                ? `📅 KEMARIN — ${group.displayDate}` 
+                : `🗓️ ${group.displayDate}`;
+
+              // Header Pemisah Hari (Row Separator - Poin 6)
+              htmlBuffer += `
+                <tr class="bg-gradient-to-r from-emerald-800 via-emerald-900 to-slate-900 text-white shadow-2xs select-none">
+                  <td colspan="8" class="py-2.5 px-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-black uppercase tracking-wider">${dayHeaderTitle}</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-xs">
+                        <span class="px-2.5 py-0.5 rounded-full font-extrabold bg-white/20 text-white font-mono">
+                          ${dayTickets.length} Layanan
+                        </span>
+                        <span class="text-emerald-200 text-[11px] font-medium hidden sm:inline">
+                          (${daySelesai} Selesai/Diambil · ${dayProses} Proses · ${dayAntrean} Antrean)
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              `;
+
+              // Render Baris-Baris Berkas pada Hari Tersebut
+              dayTickets.forEach(t => {
+                const dInfo = getTicketDateInfo(t);
+                const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
+                const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
+                const emailAddr = t.email || (mhsInfo && mhsInfo.email) || '';
+                const cleanWa = waNumber.replace(/[^0-9]/g, '');
+                const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
+                const cleanCase = getCleanCaseName(t);
+
+                let statusBadgeClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+                if (t.status === 'Selesai (Siap Diambil)') {
+                  statusBadgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+                } else if (t.status.includes('Dosen') || t.status.includes('Dekanat')) {
+                  statusBadgeClass = 'bg-indigo-100 text-indigo-900 border border-indigo-300';
+                } else if (t.status === 'Verifikasi Admin Loket' || t.status === 'Proses Verifikasi') {
+                  statusBadgeClass = 'bg-blue-100 text-blue-900 border border-blue-300';
+                } else if (t.status === 'Ditolak') {
+                  statusBadgeClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+                }
+
+                let displayStatus = t.status;
+                if (displayStatus.includes('Dosen') || displayStatus.includes('Dekanat')) {
+                  displayStatus = 'Verifikasi Dosen / Kaprodi / Dekanat';
+                }
+
+                htmlBuffer += `
+                  <tr class="hover:bg-slate-50/90 transition text-xs">
+                    <td class="py-3 px-4 font-mono text-slate-500 font-bold whitespace-nowrap">
+                      ${dInfo.timeStr}
+                    </td>
+                    <td class="py-3 px-4 font-mono font-bold text-slate-900 whitespace-nowrap">
+                      ${t.kode}
+                    </td>
+                    <td class="py-3 px-4 min-w-[200px]">
+                      <strong class="text-slate-900 block font-extrabold text-xs sm:text-sm">${t.nama}</strong>
+                      <span class="font-mono text-[11px] text-emerald-800 font-bold block">${t.nim}</span>
+                      <div class="mt-1 flex flex-wrap items-center gap-1.5">
+                        ${waNumber ? `
+                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-mono text-[10px]" title="Chat WA">
+                            <span>💬</span> <span>${waNumber}</span>
+                          </a>
+                        ` : ''}
+                        ${emailAddr ? `
+                          <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-mono text-[10px] truncate max-w-[140px]" title="Email">
+                            <span>✉️</span> <span class="truncate">${emailAddr}</span>
+                          </a>
+                        ` : ''}
+                      </div>
+                    </td>
+                    <td class="py-3 px-4 text-slate-700 font-semibold whitespace-nowrap">
+                      ${t.prodi || '-'}
+                    </td>
+                    <td class="py-3 px-4 min-w-[180px]">
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-900 border border-emerald-200 font-bold text-[11px]">
+                        <span>📄</span>
+                        <span>${cleanCase}</span>
+                      </span>
+                      <p class="text-[11px] text-slate-500 mt-1 leading-tight line-clamp-2">
+                        ${t.layananNama}
+                      </p>
+                    </td>
+                    <td class="py-3 px-4 text-slate-700 font-medium whitespace-nowrap">
+                      ${t.posisiBerkas || 'Loket Admin FAPERTA'}
+                    </td>
+                    <td class="py-3 px-4 text-center whitespace-nowrap">
+                      <span class="inline-block px-2.5 py-1 rounded-lg text-[11px] font-black ${statusBadgeClass}">
+                        ${displayStatus}
+                      </span>
+                      ${t.sudahDiambil ? `
+                        <span class="block mt-1 text-[10px] font-bold text-purple-900">
+                          ✓ Diambil (${t.tanggalDiambil || '-'})
+                        </span>
+                      ` : ''}
+                    </td>
+                    <td class="py-3 px-4 text-right whitespace-nowrap">
+                      <button 
+                        type="button" 
+                        class="btn-disposisi-master px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-700 hover:text-white text-slate-800 border border-slate-300 font-bold text-xs transition cursor-pointer shadow-2xs inline-flex items-center gap-1"
+                        data-code="${t.kode}"
+                        title="Perbarui Status & Disposisi Berkas"
+                      >
+                        <span>⚡</span>
+                        <span>Disposisi</span>
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              });
+            });
+
+            masterTableBody.innerHTML = htmlBuffer;
+
+            // Wire up Disposisi button click in Master Database
+            masterTableBody.querySelectorAll('.btn-disposisi-master').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const code = btn.getAttribute('data-code');
+                if (code) openEditModal(code);
+              });
+            });
           }
         }
 
-        // 5. Table Akun Petugas & Admin (Multi-Admin Management Dikelola Super Admin)
+        // 2. Table Akun Petugas & Admin (Dikelola Super Admin)
         const adminBody = document.getElementById('table-admin-body');
         const restrictedNotice = document.getElementById('admin-restricted-notice');
         const btnAddAccount = document.getElementById('btn-add-account');
@@ -2528,7 +2487,6 @@ import {
           }
         }
 
-        // Sembunyikan atau tampilkan header Kata Sandi & Aksi
         document.querySelectorAll('.col-header-pass, .col-header-action').forEach(el => {
           if (isSuperAdmin) el.classList.remove('hidden');
           else el.classList.add('hidden');
@@ -2536,14 +2494,16 @@ import {
 
         if (adminBody) {
           const allAdmins = loadAdminAccounts();
-          let admList = allAdmins.filter(a => 
-            !query ||
-            a.id.toLowerCase().includes(query) ||
-            a.nama.toLowerCase().includes(query) ||
-            a.username.toLowerCase().includes(query) ||
-            a.role.toLowerCase().includes(query) ||
-            ((a.loket || a.bagian || '').toLowerCase().includes(query))
-          );
+          let admList = allAdmins;
+          if (dbMasterSearchQuery) {
+            admList = admList.filter(a => 
+              a.id.toLowerCase().includes(dbMasterSearchQuery) ||
+              a.nama.toLowerCase().includes(dbMasterSearchQuery) ||
+              a.username.toLowerCase().includes(dbMasterSearchQuery) ||
+              a.role.toLowerCase().includes(dbMasterSearchQuery) ||
+              ((a.loket || a.bagian || '').toLowerCase().includes(dbMasterSearchQuery))
+            );
+          }
 
           adminBody.innerHTML = admList.map(a => `
             <tr class="hover:bg-slate-50/80 transition">
