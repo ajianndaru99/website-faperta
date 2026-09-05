@@ -32,7 +32,13 @@ export interface DocumentItem {
   keywords?: string[];
 }
 
-export type TicketStatus = 'Belum Diproses' | 'Proses Verifikasi' | 'Selesai (Siap Diambil)' | 'Ditolak';
+export type TicketStatus = 
+  | 'Belum Diproses' 
+  | 'Verifikasi Admin Loket' 
+  | 'Verifikasi Dosen / Kaprodi' 
+  | 'Proses Verifikasi' 
+  | 'Selesai (Siap Diambil)' 
+  | 'Ditolak';
 
 export interface TicketItem {
   kode: string;
@@ -425,7 +431,7 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     keperluan: "Prasyarat Pendaftaran Ujian Khusus",
     detailTambahan: "Dimohon cetak fisik resmi berstempel basah",
     format: "Cetak Fisik Berstempel Basah",
-    status: "Proses Verifikasi",
+    status: "Verifikasi Admin Loket",
     statusStep: 2,
     posisiBerkas: "Meja Verifikasi Administrasi Akademik (Gedung A, Lt. 1)",
     estimasiSelesai: "Besok, Pukul 14.00 WIB",
@@ -444,11 +450,11 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     keperluan: "Ujian Khusus: Rancangan Percobaan (3 SKS)",
     detailTambahan: "DPA: Ir. H. Sudirman, M.P. | Sisa 1 Mata Kuliah Teori",
     format: "Berkas Fisik Loket",
-    status: "Belum Diproses",
-    statusStep: 1,
-    posisiBerkas: "Antrean Masuk Loket Administrasi",
+    status: "Verifikasi Dosen / Kaprodi",
+    statusStep: 3,
+    posisiBerkas: "Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)",
     estimasiSelesai: "Senin, 07 September 2026",
-    catatanAdmin: "Permohonan baru masuk antrean. Menunggu verifikasi KHS fisik sebelum diteruskan ke Kaprodi.",
+    catatanAdmin: "Berkas fisik KHS telah lolos verifikasi loket. Sedang menunggu persetujuan dan disposisi Kaprodi Agroteknologi.",
     tanggal: "04 September 2026, 08:00 WIB",
     isNewForAdmin: true
   },
@@ -464,7 +470,7 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     detailTambahan: "Dosen: Dr. Ir. Hj. Nurhidayah, M.S. | Presensi 100%",
     format: "Surat Rekonsiliasi Nilai",
     status: "Selesai (Siap Diambil)",
-    statusStep: 3,
+    statusStep: 4,
     posisiBerkas: "Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)",
     estimasiSelesai: "Siap Diambil di Loket 1",
     catatanAdmin: "Dosen pengampu telah mengesahkan nilai A-. Berkas surat perubahan nilai fisik sudah siap diambil di Loket 1. Harap membawa KTM.",
@@ -494,12 +500,13 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
 
 export const INITIAL_DEMO_TICKETS = INITIAL_PORTAL_TICKETS;
 
-// Daftar Akun Administrator & Petugas Loket FAPERTA
+// Daftar Akun Administrator & Petugas Loket FAPERTA (Dikelola Super Admin)
 export interface AdminAccountItem {
   id: string;
   nama: string;
   username: string;
-  role: string;
+  password?: string;
+  role: 'Super Admin' | 'Dekanat' | 'Dosen / Kaprodi' | 'Petugas Loket' | string;
   loket: string;
   status: 'Aktif' | 'Nonaktif';
   terakhirAkses: string;
@@ -508,8 +515,9 @@ export interface AdminAccountItem {
 export const MASTER_ADMINS: AdminAccountItem[] = [
   {
     id: "ADM-01",
-    nama: "Admin Utama Loket",
+    nama: "Admin Utama Sistem Loket",
     username: "admin",
+    password: "admin",
     role: "Super Admin",
     loket: "Loket 1 & 2 Gedung A",
     status: "Aktif",
@@ -517,27 +525,50 @@ export const MASTER_ADMINS: AdminAccountItem[] = [
   },
   {
     id: "ADM-02",
+    nama: "Dekanat (Pimpinan Fakultas)",
+    username: "dekanat",
+    password: "faperta2026",
+    role: "Dekanat",
+    loket: "Ruang Dekanat Gedung A",
+    status: "Aktif",
+    terakhirAkses: "Hari Ini, 16:20 WIB"
+  },
+  {
+    id: "ADM-03",
+    nama: "Ir. H. Sudirman, M.P. (Kaprodi)",
+    username: "kaprodi",
+    password: "faperta2026",
+    role: "Dosen / Kaprodi",
+    loket: "Ruang Kaprodi Agroteknologi",
+    status: "Aktif",
+    terakhirAkses: "04 Sep 2026, 15:30 WIB"
+  },
+  {
+    id: "ADM-04",
     nama: "Petugas Loket Agroteknologi",
     username: "agrotek",
+    password: "admin123",
     role: "Petugas Loket",
     loket: "Loket 1 Gedung A",
     status: "Aktif",
     terakhirAkses: "04 Sep 2026, 14:10 WIB"
   },
   {
-    id: "ADM-03",
+    id: "ADM-05",
     nama: "Petugas Loket Agribisnis",
     username: "agribisnis",
+    password: "admin123",
     role: "Petugas Loket",
     loket: "Loket 2 Gedung A",
     status: "Aktif",
     terakhirAkses: "04 Sep 2026, 11:30 WIB"
   },
   {
-    id: "ADM-04",
+    id: "ADM-06",
     nama: "Staf Verifikasi Tata Usaha",
     username: "legalisir",
-    role: "Verifikator Dokumen",
+    password: "admin123",
+    role: "Petugas Loket",
     loket: "Ruang Tata Usaha",
     status: "Aktif",
     terakhirAkses: "03 Sep 2026, 15:00 WIB"

@@ -172,16 +172,80 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         // Render setiap kartu berkas
         ticketsList.forEach((ticket, idx) => {
           const isRejected = ticket.status === 'Ditolak' || ticket.statusStep === -1;
-          const isDone = ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 3;
-          const step = ticket.statusStep || (ticket.status === 'Selesai (Siap Diambil)' ? 3 : ticket.status === 'Proses Verifikasi' ? 2 : 1);
+          const isDone = ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4;
+          
+          let step = 1;
+          if (ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4) {
+            step = 4;
+          } else if (ticket.status === 'Verifikasi Dosen / Kaprodi' || ticket.statusStep === 3) {
+            step = 3;
+          } else if (ticket.status === 'Verifikasi Admin Loket' || ticket.status === 'Proses Verifikasi' || ticket.statusStep === 2) {
+            step = 2;
+          } else {
+            step = 1;
+          }
 
           const statusColors = {
             'Belum Diproses': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: '⏳' },
+            'Verifikasi Admin Loket': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
             'Proses Verifikasi': { bg: 'bg-blue-50', text: 'text-blue-800', border: 'border-blue-200', icon: '🔍' },
+            'Verifikasi Dosen / Kaprodi': { bg: 'bg-indigo-50', text: 'text-indigo-800', border: 'border-indigo-200', icon: '👨‍🏫' },
             'Selesai (Siap Diambil)': { bg: 'bg-emerald-50', text: 'text-emerald-800', border: 'border-emerald-200', icon: '📦' },
             'Ditolak': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: '❌' }
           };
           const badge = statusColors[ticket.status] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', icon: '📄' };
+
+          const dynamicPhases = {
+            1: {
+              badge: 'Tahap 1 dari 4 • Masuk Antrean Loket',
+              title: 'Berkas Baru Masuk Antrean Loket',
+              desc: 'Permohonan berkas Anda telah berhasil masuk sistem dan sedang menunggu giliran pemeriksaan kelengkapan syarat oleh petugas loket.',
+              next: 'Pemeriksaan kelengkapan berkas & pencocokan data SIAKAD oleh Admin Loket',
+              percent: 25,
+              icon: '⏳',
+              themeBg: 'bg-amber-50/80 border-amber-300',
+              badgeClass: 'bg-amber-100 text-amber-900 border-amber-300',
+              titleColor: 'text-amber-950',
+              barColor: 'bg-amber-500'
+            },
+            2: {
+              badge: 'Tahap 2 dari 4 • Proses Verifikasi Admin Loket',
+              title: 'Sedang Diverifikasi Petugas Loket',
+              desc: 'Petugas administrasi loket sedang mencocokkan data nilai/administrasi pada SIAKAD kampus dan memverifikasi kelayakan berkas fisik.',
+              next: 'Verifikasi & persetujuan akademik oleh Dosen Pengampu / Kaprodi',
+              percent: 50,
+              icon: '🔍',
+              themeBg: 'bg-blue-50/80 border-blue-300',
+              badgeClass: 'bg-blue-100 text-blue-900 border-blue-300',
+              titleColor: 'text-blue-950',
+              barColor: 'bg-blue-600'
+            },
+            3: {
+              badge: 'Tahap 3 dari 4 • Verifikasi Dosen / Kaprodi',
+              title: 'Sedang Diverifikasi Dosen / Kaprodi',
+              desc: 'Berkas Anda sedang dalam telaah persetujuan akademik atau rekonsiliasi nilai oleh Dosen Pengampu / Kaprodi Program Studi.',
+              next: 'Pencetakan salinan resmi & pembubuhan stempel basah Fakultas di Loket 1',
+              percent: 75,
+              icon: '👨‍🏫',
+              themeBg: 'bg-indigo-50/80 border-indigo-300',
+              badgeClass: 'bg-indigo-100 text-indigo-900 border-indigo-300',
+              titleColor: 'text-indigo-950',
+              barColor: 'bg-indigo-600'
+            },
+            4: {
+              badge: 'Tahap 4 dari 4 • Selesai (Siap Diambil)',
+              title: 'Dokumen Fisik Resmi Siap Diambil di Loket',
+              desc: 'Seluruh tahapan verifikasi telah disetujui. Dokumen resmi berstempel basah telah diterbitkan dan siap diambil langsung di Loket Gedung A.',
+              next: 'Kunjungi Loket 1 Gedung A Lantai 1 membawa KTM Asli & Kode Tiket',
+              percent: 100,
+              icon: '📦',
+              themeBg: 'bg-emerald-50/90 border-emerald-400',
+              badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+              titleColor: 'text-emerald-950',
+              barColor: 'bg-emerald-600'
+            }
+          };
+          const curPhase = dynamicPhases[step] || dynamicPhases[1];
 
           const card = document.createElement('div');
           card.className = `rounded-3xl border ${isRejected ? 'border-rose-200 bg-rose-50/20' : isDone ? 'border-emerald-200 bg-white' : 'border-slate-200 bg-white'} p-6 sm:p-8 shadow-sm space-y-6`;
@@ -246,38 +310,41 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                 </p>
               </div>
             ` : `
-              <!-- 3-STEP ALUR PROSES BERKAS FISIK -->
-              <div class="py-3">
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5">
-                  Tahapan Alur Pemrosesan Berkas:
-                </p>
-                <div class="grid grid-cols-3 gap-4 text-center">
-                  <!-- Step 1 -->
-                  <div class="flex flex-col items-center">
-                    <div class="h-11 w-11 rounded-2xl flex items-center justify-center text-sm font-bold shadow-xs ${step >= 1 ? 'bg-emerald-700 text-white' : 'bg-slate-100 text-slate-400'}">
-                      ${step > 1 ? '✓' : '1'}
-                    </div>
-                    <span class="text-xs font-bold mt-2.5 ${step >= 1 ? 'text-slate-900' : 'text-slate-400'}">1. Antrean Loket</span>
-                    <span class="text-[11px] text-slate-500 mt-0.5 hidden sm:block">Berkas Masuk Antrean</span>
+              <!-- KOTAK PROSES DINAMIS (MOBILE-FIRST DYNAMIC STATUS BOX) -->
+              <div class="rounded-2xl border-2 ${curPhase.themeBg} p-5 sm:p-6 shadow-xs space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black border ${curPhase.badgeClass} self-start shadow-2xs">
+                    <span>${curPhase.icon}</span>
+                    <span>${curPhase.badge}</span>
                   </div>
+                  <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <span>Progres:</span>
+                    <span class="font-mono text-slate-800 font-extrabold text-sm">${curPhase.percent}%</span>
+                  </div>
+                </div>
 
-                  <!-- Step 2 -->
-                  <div class="flex flex-col items-center">
-                    <div class="h-11 w-11 rounded-2xl flex items-center justify-center text-sm font-bold shadow-xs ${step > 2 ? 'bg-emerald-700 text-white' : step === 2 ? 'bg-blue-600 text-white ring-4 ring-blue-100' : 'bg-slate-100 text-slate-400'}">
-                      ${step > 2 ? '✓' : '2'}
-                    </div>
-                    <span class="text-xs font-bold mt-2.5 ${step >= 2 ? 'text-slate-900' : 'text-slate-400'}">2. Verifikasi</span>
-                    <span class="text-[11px] text-slate-500 mt-0.5 hidden sm:block">Pemeriksaan & Cetak</span>
-                  </div>
+                <!-- Progress Bar Indikator Kompak -->
+                <div class="w-full bg-slate-200/80 h-2.5 rounded-full overflow-hidden">
+                  <div class="${curPhase.barColor} h-full rounded-full transition-all duration-700 ease-out" style="width: ${curPhase.percent}%"></div>
+                </div>
 
-                  <!-- Step 3 -->
-                  <div class="flex flex-col items-center">
-                    <div class="h-11 w-11 rounded-2xl flex items-center justify-center text-sm font-bold shadow-xs ${step === 3 ? 'bg-emerald-600 text-white ring-4 ring-emerald-100 animate-pulse' : 'bg-slate-100 text-slate-400'}">
-                      ${step === 3 ? '✓' : '3'}
-                    </div>
-                    <span class="text-xs font-bold mt-2.5 ${step === 3 ? 'text-emerald-700 font-black' : 'text-slate-400'}">3. Siap Diambil</span>
-                    <span class="text-[11px] text-slate-500 mt-0.5 hidden sm:block">Loket 1 Gedung A</span>
-                  </div>
+                <div>
+                  <h4 class="text-base sm:text-lg font-black ${curPhase.titleColor} flex items-center gap-2">
+                    <span>${curPhase.icon}</span>
+                    <span>${curPhase.title}</span>
+                  </h4>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    ${curPhase.desc}
+                  </p>
+                </div>
+
+                <!-- Bar Langkah Selanjutnya (Efisien di Mobile) -->
+                <div class="pt-3 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 text-xs text-slate-600">
+                  <span class="font-black text-slate-800 shrink-0 flex items-center gap-1">
+                    <span>👉</span>
+                    <span>Langkah Selanjutnya:</span>
+                  </span>
+                  <span class="text-slate-700 font-medium">${curPhase.next}</span>
                 </div>
               </div>
             `}
