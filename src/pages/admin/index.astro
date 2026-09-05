@@ -345,30 +345,33 @@ import {
           <div id="view-berkas-container" class="space-y-6">
             
             <!-- Workspace Header Bar -->
-            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <div class="flex items-center gap-2.5">
+            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex flex-wrap items-center gap-3">
                   <h2 id="active-category-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                     Semua Berkas Masuk
                   </h2>
-                  <span id="filtered-count-badge" class="px-3 py-1 rounded-full text-xs font-black bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  <span 
+                    id="filtered-count-badge" 
+                    class="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs whitespace-nowrap min-w-[88px] text-center"
+                  >
                     0 Berkas
                   </span>
                 </div>
-                <p class="text-xs text-slate-500 mt-1">
+                <p class="text-xs text-slate-500 font-medium">
                   Pusat verifikasi dan disposisi posisi berkas fisik loket administrasi FAPERTA INSTIPER.
                 </p>
               </div>
 
               <!-- Controls: Toggle Sembunyikan yang Sudah Diambil + Search -->
-              <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-                <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 cursor-pointer select-none hover:bg-slate-100 transition shadow-2xs">
-                  <input type="checkbox" id="toggle-hide-taken" checked class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
-                  <span>Sembunyikan yang Sudah Diambil</span>
+              <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
+                <label class="h-10 inline-flex items-center gap-2.5 px-4 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 cursor-pointer select-none hover:bg-slate-100 transition shadow-2xs shrink-0">
+                  <input type="checkbox" id="toggle-hide-taken" checked class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer" />
+                  <span class="whitespace-nowrap">Sembunyikan yang Sudah Diambil</span>
                 </label>
 
                 <!-- Quick Search Input -->
-                <div class="sm:w-64">
+                <div class="w-full sm:w-64 md:w-72">
                   <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
                       🔍
@@ -376,8 +379,8 @@ import {
                     <input 
                       type="text" 
                       id="admin-search-input" 
-                      placeholder="Cari NIM, Nama, atau Kode..." 
-                      class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
+                      placeholder="Cari NIM, Nama, Kode..." 
+                      class="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition shadow-2xs"
                     />
                   </div>
                 </div>
@@ -449,14 +452,6 @@ import {
                   <span class="text-[9px] text-emerald-700/80 font-semibold mt-1 block">Klik untuk lihat</span>
                 </div>
               </button>
-            </div>
-
-            <!-- Notice: Kebijakan Cetak Struk di Mahasiswa -->
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 flex items-center justify-between gap-3 text-xs text-emerald-900">
-              <div class="flex items-center gap-2.5">
-                <span class="text-base">ℹ️</span>
-                <span><strong>Kebijakan Cetak Struk:</strong> Cetak tanda terima permohonan resmi dikhususkan langsung bagi <strong>Mahasiswa</strong> pada halaman Cek Status & Konfirmasi Pengajuan.</span>
-              </div>
             </div>
 
             <!-- Daftar Berkas / Tickets Cards Container -->
@@ -541,20 +536,40 @@ import {
                 </div>
               </div>
 
-              <!-- Master Search Input -->
-              <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-                <div class="relative flex-1 max-w-md">
-                  <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
-                    🔍
-                  </span>
-                  <input 
-                    type="text" 
-                    id="db-search-input" 
-                    placeholder="Cari dalam database..." 
-                    class="w-full rounded-2xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition"
-                  />
+              <!-- Master Search & Sorting Controls (Poin 2) -->
+              <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 flex-1 max-w-xl">
+                  <div class="relative flex-1 min-w-[200px]">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">
+                      🔍
+                    </span>
+                    <input 
+                      type="text" 
+                      id="db-search-input" 
+                      placeholder="Cari NIM, Nama, atau Kata Kunci..." 
+                      class="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-9 pr-3.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition shadow-2xs"
+                    />
+                  </div>
+
+                  <!-- Dropdown Pengurutan (Sort) Cepat -->
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <label for="db-sort-select" class="text-xs font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
+                    <select 
+                      id="db-sort-select" 
+                      class="h-10 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                    >
+                      <option value="nama_asc">Nama (A ➜ Z)</option>
+                      <option value="nama_desc">Nama (Z ➜ A)</option>
+                      <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
+                      <option value="nim_desc">NIM (Terbesar ➜ Terkecil)</option>
+                      <option value="angkatan_desc">Angkatan (Terbaru)</option>
+                      <option value="angkatan_asc">Angkatan (Terlama)</option>
+                      <option value="prodi_asc">Program Studi (A ➜ Z)</option>
+                    </select>
+                  </div>
                 </div>
-                <div id="db-active-count" class="text-xs font-bold text-slate-500">
+
+                <div id="db-active-count" class="text-xs font-bold text-slate-500 shrink-0">
                   Menampilkan data master
                 </div>
               </div>
@@ -567,11 +582,19 @@ import {
                   <table class="w-full text-left text-xs text-slate-700">
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4">NIM</th>
-                        <th class="py-3.5 px-4">Nama Mahasiswa</th>
-                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="nim">
+                          <span class="inline-flex items-center gap-1">NIM <span class="sort-icon-mhs opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="nama">
+                          <span class="inline-flex items-center gap-1">Nama Mahasiswa <span class="sort-icon-mhs opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="prodi">
+                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-mhs opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4">Minat Studi</th>
-                        <th class="py-3.5 px-4">Angkatan</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="angkatan">
+                          <span class="inline-flex items-center gap-1">Angkatan <span class="sort-icon-mhs opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4">Semester</th>
                         <th class="py-3.5 px-4">DPA (Dosen Pembimbing)</th>
                         <th class="py-3.5 px-4 text-center">Status</th>
@@ -594,8 +617,12 @@ import {
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
                         <th class="py-3.5 px-6 w-16 text-center">No</th>
-                        <th class="py-3.5 px-6">Nama Lengkap & Gelar</th>
-                        <th class="py-3.5 px-6">Program Studi</th>
+                        <th class="py-3.5 px-6 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-dsn" data-sort="nama">
+                          <span class="inline-flex items-center gap-1">Nama Lengkap & Gelar <span class="sort-icon-dsn opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-6 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-dsn" data-sort="prodi">
+                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-dsn opacity-60">⇅</span></span>
+                        </th>
                       </tr>
                     </thead>
                     <tbody id="table-dosen-body" class="divide-y divide-slate-100">
@@ -613,11 +640,17 @@ import {
                   <table class="w-full text-left text-xs text-slate-700">
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4">Kode MK</th>
-                        <th class="py-3.5 px-4">Nama Mata Kuliah</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="kode">
+                          <span class="inline-flex items-center gap-1">Kode MK <span class="sort-icon-mk opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="nama">
+                          <span class="inline-flex items-center gap-1">Nama Mata Kuliah <span class="sort-icon-mk opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4 text-center">SKS</th>
                         <th class="py-3.5 px-4 text-center">Semester</th>
-                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mk" data-sort="prodi">
+                          <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-mk opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4">Dosen Pengampu Utama</th>
                       </tr>
                     </thead>
@@ -636,8 +669,12 @@ import {
                   <table class="w-full text-left text-xs text-slate-700">
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4">Kode Tiket</th>
-                        <th class="py-3.5 px-4">NIM & Mahasiswa</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-arsip" data-sort="kode">
+                          <span class="inline-flex items-center gap-1">Kode Tiket <span class="sort-icon-arsip opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-arsip" data-sort="nama">
+                          <span class="inline-flex items-center gap-1">NIM & Mahasiswa <span class="sort-icon-arsip opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4">Program Studi</th>
                         <th class="py-3.5 px-4">Layanan</th>
                         <th class="py-3.5 px-4">Tanggal Pengajuan</th>
@@ -670,9 +707,15 @@ import {
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
                         <th class="py-3.5 px-4 w-12 text-center">No</th>
-                        <th class="py-3.5 px-4">Kode Tiket</th>
-                        <th class="py-3.5 px-4">Waktu Pengambilan</th>
-                        <th class="py-3.5 px-4">Mahasiswa (NIM & Nama)</th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="kode">
+                          <span class="inline-flex items-center gap-1">Kode Tiket <span class="sort-icon-taken opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="waktu">
+                          <span class="inline-flex items-center gap-1">Waktu Pengambilan <span class="sort-icon-taken opacity-60">⇅</span></span>
+                        </th>
+                        <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-taken" data-sort="nama">
+                          <span class="inline-flex items-center gap-1">Mahasiswa (NIM & Nama) <span class="sort-icon-taken opacity-60">⇅</span></span>
+                        </th>
                         <th class="py-3.5 px-4">Jenis Berkas / Layanan</th>
                         <th class="py-3.5 px-4">Petugas Penyerah</th>
                         <th class="py-3.5 px-4 text-center">Status Fisik</th>
@@ -804,168 +847,141 @@ import {
   </div>
 
   <!-- ============================================================
-       MODAL PEMROSESAN STATUS BERKAS (5 PILIHAN STATUS SPESIFIK)
+       MODAL PEMROSESAN STATUS BERKAS (SENIOR & ACCESSIBILITY FRIENDLY)
        ============================================================ -->
   <div id="edit-ticket-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"></div>
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs transition-opacity"></div>
     
-    <div class="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white shadow-2xl overflow-hidden z-10 text-left">
-      <!-- Modal Header -->
-      <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <span class="grid h-8 w-8 place-items-center rounded-xl bg-emerald-100 text-emerald-800 text-sm font-black">
-            ⚙️
-          </span>
-          <div>
-            <h3 id="modal-ticket-title" class="text-sm font-black text-slate-900">Pemrosesan & Pembaruan Status Berkas</h3>
-            <p id="modal-ticket-sub" class="text-[11px] text-slate-500 font-mono">Kode Tiket: -</p>
-          </div>
+    <div class="relative w-full max-w-2xl sm:max-w-3xl rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden z-10 text-left">
+      <!-- Modal Header (Besar & Jelas) -->
+      <div class="bg-slate-100 px-6 sm:px-8 py-5 border-b-2 border-slate-200 flex items-center justify-between">
+        <div>
+          <h3 id="modal-ticket-title" class="text-base sm:text-xl font-black text-slate-900">Pemrosesan & Disposisi Berkas</h3>
+          <p id="modal-ticket-sub" class="text-xs sm:text-sm text-slate-600 font-mono mt-0.5">Kode Tiket: -</p>
         </div>
         <button 
           type="button" 
           id="btn-close-modal" 
-          class="text-slate-400 hover:text-slate-700 text-lg font-bold p-1 cursor-pointer transition"
+          class="text-slate-400 hover:text-slate-800 text-2xl font-black p-1 cursor-pointer transition"
+          title="Tutup Modal"
         >
           ✕
         </button>
       </div>
 
       <!-- Modal Form -->
-      <form id="modal-edit-form" class="p-5 sm:p-6 space-y-4">
+      <form id="modal-edit-form" class="p-6 sm:p-8 space-y-6">
         <input type="hidden" id="modal-ticket-code" />
 
-        <!-- Pilihan Status Baru (4 Tahap + Ditolak Sesuai Kesepakatan) -->
+        <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Tanpa Icon untuk Orang Senior) -->
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-2">
-            Pilih Tahapan Status Berkas (Sinkron ke Mahasiswa):
+          <label class="block text-sm sm:text-base font-black text-slate-900 mb-2.5">
+            Pilih Tahapan Status Berkas:
           </label>
-          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-xs sm:text-sm">
             <button 
               type="button" 
               data-target-status="Belum Diproses" 
-              class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-amber-50 text-amber-900 border-amber-300"
+              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-amber-50 text-amber-900 border-amber-400"
             >
-              <span>⏳</span>
-              <span class="text-[10px]">1. Antrean Loket</span>
+              <span>1. Antrean Loket</span>
             </button>
             <button 
               type="button" 
               data-target-status="Verifikasi Admin Loket" 
-              class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
-              <span>🔍</span>
-              <span class="text-[10px]">2. Verif Admin</span>
+              <span>2. Verif Admin</span>
             </button>
             <button 
               type="button" 
               data-target-status="Verifikasi Dosen / Kaprodi" 
-              class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
-              <span>👨‍🏫</span>
-              <span class="text-[10px]">3. Dosen/Dekanat</span>
+              <span>3. Dosen/Dekanat</span>
             </button>
             <button 
               type="button" 
               data-target-status="Selesai (Siap Diambil)" 
-              class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
             >
-              <span>📦</span>
-              <span class="text-[10px]">4. Siap Ambil</span>
+              <span>4. Siap Ambil</span>
             </button>
             <button 
               type="button" 
               data-target-status="Ditolak" 
-              class="modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1"
+              class="modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 col-span-2 sm:col-span-1"
             >
-              <span>❌</span>
-              <span class="text-[10px]">Ditolak</span>
+              <span>Ditolak</span>
             </button>
           </div>
           <input type="hidden" id="modal-selected-status" value="Belum Diproses" />
         </div>
 
-        <!-- Posisi Berkas Fisik Terkini -->
+        <!-- Posisi Berkas Fisik Terkini (Setting Pengambilan Loket Admin FAPERTA) -->
         <div>
-          <label for="modal-posisi-input" class="block text-xs font-bold text-slate-700 mb-1">
+          <label for="modal-posisi-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
             Posisi Berkas Fisik Saat Ini:
           </label>
           <input 
             type="text" 
             id="modal-posisi-input" 
             required 
-            class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-900 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
-            placeholder="Contoh: Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)"
+            class="w-full rounded-2xl border-2 border-slate-300 bg-white px-4 py-3 text-sm sm:text-base text-slate-900 font-bold focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+            placeholder="Loket Admin FAPERTA"
           />
           
           <!-- Preset Posisi Cepat -->
-          <div class="mt-2 flex flex-wrap gap-1.5 text-[10px]">
-            <span class="text-slate-400 self-center">Pilihan cepat:</span>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1)">
-              Loket 1 Gedung A
+          <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+            <span class="text-slate-500 font-bold self-center">Pilihan cepat:</span>
+            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Loket Admin FAPERTA">
+              Loket Admin FAPERTA
             </button>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Meja Verifikasi SIAKAD & Dokumen Fisik">
+            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Meja Verifikasi SIAKAD & Dokumen Fisik">
               Meja Verifikasi Loket
             </button>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)">
-              Ruang Kaprodi Agrotek
-            </button>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Kaprodi Agribisnis (Gedung A, Lt. 2)">
-              Ruang Kaprodi Agribisnis
-            </button>
-            <button type="button" class="preset-posisi px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer" data-pos="Ruang Dekanat FAPERTA (Gedung A, Lt. 2)">
-              Ruang Dekanat
+            <button type="button" class="preset-posisi px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold cursor-pointer transition border border-slate-200" data-pos="Ruang Dosen Pengampu / Dekanat">
+              Ruang Dosen / Dekanat
             </button>
           </div>
         </div>
 
         <!-- Catatan Admin untuk Mahasiswa -->
         <div>
-          <label for="modal-catatan-input" class="block text-xs font-bold text-slate-700 mb-1">
+          <label for="modal-catatan-input" class="block text-sm sm:text-base font-black text-slate-900 mb-2">
             Catatan Petugas (Terbaca oleh Mahasiswa saat Cek Status):
           </label>
           <textarea 
             id="modal-catatan-input" 
-            rows="2" 
-            class="w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-900 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none font-medium transition"
-            placeholder="Tuliskan petunjuk pengambilan atau alasan perbaikan jika berkas ditolak..."
+            rows="3" 
+            class="w-full rounded-2xl border-2 border-slate-300 bg-white p-4 text-sm sm:text-base text-slate-900 font-medium focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-2xs"
+            placeholder="Tuliskan petunjuk atau keterangan perbaikan di sini..."
           ></textarea>
         </div>
 
-        <!-- Status Pengambilan Berkas Fisik (Requirement #1) -->
-        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
-          <div>
-            <span class="text-xs font-bold text-slate-800 block">Status Pengambilan Berkas Fisik:</span>
-            <span class="text-[11px] text-slate-500">Centang jika dokumen fisik sudah diambil oleh mahasiswa</span>
-          </div>
-          <label class="inline-flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs hover:border-emerald-500 transition">
-            <input type="checkbox" id="modal-sudah-diambil" class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
-            <span class="text-xs font-bold text-emerald-800">Sudah Diambil</span>
-          </label>
-        </div>
-
         <!-- Action Buttons (Termasuk Tombol Langsung Selesai) -->
-        <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
+        <div class="pt-4 border-t-2 border-slate-100 flex flex-wrap items-center justify-between gap-3">
           <button 
             type="button" 
             id="btn-modal-quick-complete" 
-            class="rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs py-2.5 px-4 font-bold shadow-xs transition cursor-pointer flex items-center gap-1.5"
-            title="Langsung selesaikan berkas ke Loket 1 Siap Diambil"
+            class="h-12 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm py-2 px-5 font-black shadow-xs transition cursor-pointer flex items-center gap-2"
+            title="Langsung selesaikan berkas ke Loket Admin FAPERTA"
           >
             <span>⚡</span>
             <span>Langsung Selesaikan</span>
           </button>
           
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2.5">
             <button 
               type="button" 
               id="btn-cancel-modal" 
-              class="rounded-xl border border-slate-200 text-xs py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold cursor-pointer transition"
+              class="h-12 rounded-2xl border-2 border-slate-300 text-xs sm:text-sm py-2 px-5 bg-white hover:bg-slate-100 text-slate-800 font-black cursor-pointer transition"
             >
               Batal
             </button>
             <button 
               type="submit" 
-              class="rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs py-2.5 px-6 font-bold shadow-sm transition cursor-pointer"
+              class="h-12 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white text-xs sm:text-sm py-2 px-7 font-black shadow-md transition cursor-pointer"
             >
               💾 Simpan Perubahan
             </button>
@@ -1562,31 +1578,38 @@ import {
                       type="button" 
                       class="btn-quick-complete rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1 transition"
                       data-kode="${t.kode}"
-                      title="Selesaikan berkas dan pindahkan ke Loket 1 Siap Diambil"
+                      title="Selesaikan berkas secara langsung"
                     >
                       <span>⚡</span>
                       <span>Langsung Selesai</span>
                     </button>
                   ` : ''}
 
-                  ${t.status === 'Selesai (Siap Diambil)' && !t.sudahDiambil ? `
-                    <button 
-                      type="button" 
-                      class="btn-mark-taken rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1 transition"
-                      data-kode="${t.kode}"
-                      title="Tandai berkas fisik telah diserahkan dan diambil oleh mahasiswa"
-                    >
-                      <span>🤝</span>
-                      <span>Serahkan (Sudah Diambil)</span>
-                    </button>
-                  ` : ''}
-
-                  ${t.sudahDiambil ? `
-                    <span class="text-[11px] font-bold text-purple-900 bg-purple-100 px-3 py-1.5 rounded-xl border border-purple-200 inline-flex items-center gap-1">
-                      <span>✓</span>
-                      <span>Diambil: ${t.tanggalDiambil || '-'}</span>
-                    </span>
-                  ` : ''}
+                  ${t.status === 'Selesai (Siap Diambil)' ? (
+                    ((t.layananId || '').toLowerCase().includes('komplain') || (t.layananNama || '').toLowerCase().includes('komplain') || (t.kode || '').toUpperCase().startsWith('KMP')) ? `
+                      <span class="text-[11px] font-bold text-blue-900 bg-blue-100/90 px-3 py-1.5 rounded-xl border border-blue-200 inline-flex items-center gap-1">
+                        <span>🌐</span>
+                        <span>Selesai Online (Tanpa Perlu ke Loket)</span>
+                      </span>
+                    ` : (
+                      !t.sudahDiambil ? `
+                        <button 
+                          type="button" 
+                          class="btn-mark-taken rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-2.5 px-3.5 font-bold shadow-xs cursor-pointer inline-flex items-center justify-center gap-1 transition"
+                          data-kode="${t.kode}"
+                          title="Tandai berkas fisik telah diserahkan di Loket Admin FAPERTA"
+                        >
+                          <span>🤝</span>
+                          <span>Serahkan (Sudah Diambil)</span>
+                        </button>
+                      ` : `
+                        <span class="text-[11px] font-bold text-purple-900 bg-purple-100 px-3 py-1.5 rounded-xl border border-purple-200 inline-flex items-center gap-1">
+                          <span>✓</span>
+                          <span>Diambil: ${t.tanggalDiambil || '-'}</span>
+                        </span>
+                      `
+                    )
+                  ) : ''}
                 </div>
               </div>
             </div>
@@ -1627,12 +1650,23 @@ import {
         const target = all.find(x => x.kode === kode);
         if (!target) return;
 
+        const isKomplain = (target.layananId || '').toLowerCase().includes('komplain') 
+          || (target.layananNama || '').toLowerCase().includes('komplain') 
+          || (target.kode || '').toUpperCase().startsWith('KMP');
+
         target.status = 'Selesai (Siap Diambil)';
         target.statusStep = 4;
-        target.posisiBerkas = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
-        target.estimasiSelesai = 'Siap Diambil di Loket 1 Gedung A';
-        target.catatanAdmin = 'Dokumen fisik resmi berstempel basah telah selesai diverifikasi dan siap diambil langsung di Loket 1 Gedung A dengan membawa KTM asli.';
         target.isNewForAdmin = false;
+
+        if (isKomplain) {
+          target.posisiBerkas = 'Selesai Diproses Online (SIAKAD)';
+          target.estimasiSelesai = 'Selesai Diproses Online';
+          target.catatanAdmin = 'Komplain nilai telah diverifikasi oleh Dosen Pengampu dan perubahan nilai telah diproses di SIAKAD. Mahasiswa tidak perlu hadir ke loket.';
+        } else {
+          target.posisiBerkas = 'Loket Admin FAPERTA';
+          target.estimasiSelesai = 'Siap Diambil di Loket Admin FAPERTA';
+          target.catatanAdmin = 'Dokumen fisik resmi berstempel basah telah selesai diverifikasi dan siap diambil di Loket Admin FAPERTA dengan membawa KTM asli.';
+        }
 
         saveTickets(all);
         renderTicketsList();
@@ -1641,13 +1675,13 @@ import {
         showAdminToast(`⚡ Berkas ${target.kode} (${target.nama}) berhasil diselesaikan langsung!`);
       }
 
-      // AKSI CEPAT: SERAHKAN BERKAS / SUDAH DIAMBIL (Requirement #1)
+      // AKSI CEPAT: SERAHKAN BERKAS / SUDAH DIAMBIL (Requirement #1 & #7)
       function markTicketAsTaken(kode) {
         const all = loadTickets();
         const target = all.find(x => x.kode === kode);
         if (!target) return;
 
-        const curAdminName = sessionStorage.getItem('portal_admin_name') || 'Petugas Loket 1';
+        const curAdminName = sessionStorage.getItem('portal_admin_name') || 'Petugas Loket';
         const now = new Date();
         const timeStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
 
@@ -1655,8 +1689,8 @@ import {
         target.tanggalDiambil = timeStr;
         target.petugasPenyerah = curAdminName;
         target.status = 'Selesai (Siap Diambil)';
-        target.posisiBerkas = `Sudah Diserahkan ke Mahasiswa (${timeStr})`;
-        target.catatanAdmin = `Berkas fisik telah diambil langsung oleh mahasiswa pada ${timeStr} melalui petugas ${curAdminName}.`;
+        target.posisiBerkas = `Diserahkan ke Mahasiswa di Loket Admin FAPERTA (${timeStr})`;
+        target.catatanAdmin = `Berkas fisik telah diambil langsung oleh mahasiswa di Loket Admin FAPERTA pada ${timeStr} melalui petugas ${curAdminName}.`;
 
         saveTickets(all);
         renderTicketsList();
@@ -1684,7 +1718,7 @@ import {
         }, 3500);
       }
 
-      // 7. Modal Disposisi / Edit Status (Perbaikan Bug Cloudflare & Fitur Lengkap)
+      // 7. Modal Disposisi / Edit Status (Senior-Friendly, Teks Jelas Tanpa Icon, Disposisi Only)
       const modal = document.getElementById('edit-ticket-modal');
       const backdrop = document.getElementById('modal-backdrop');
       const btnCloseModal = document.getElementById('btn-close-modal');
@@ -1698,7 +1732,6 @@ import {
       const modalSelectedStatus = document.getElementById('modal-selected-status');
       const modalPosisi = document.getElementById('modal-posisi-input');
       const modalCatatan = document.getElementById('modal-catatan-input');
-      const modalSudahDiambil = document.getElementById('modal-sudah-diambil');
       const modalStatusChoices = document.querySelectorAll('.modal-status-choice');
 
       function openEditModal(kode) {
@@ -1710,9 +1743,8 @@ import {
         if (modalTicketSub) modalTicketSub.textContent = `NIM: ${t.nim} • ${t.layananNama}`;
         if (modalCode) modalCode.value = t.kode;
         if (modalSelectedStatus) modalSelectedStatus.value = t.status;
-        if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Antrean Masuk Loket Administrasi FAPERTA';
+        if (modalPosisi) modalPosisi.value = t.posisiBerkas || 'Loket Admin FAPERTA';
         if (modalCatatan) modalCatatan.value = t.catatanAdmin || '';
-        if (modalSudahDiambil) modalSudahDiambil.checked = !!t.sudahDiambil;
 
         updateModalStatusChoiceUI(t.status);
 
@@ -1736,14 +1768,21 @@ import {
       function updateModalStatusChoiceUI(status) {
         modalStatusChoices.forEach(btn => {
           const s = btn.getAttribute('data-target-status');
-          if (s === status) {
-            if (s === 'Belum Diproses') btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-amber-500 text-white border-amber-600 shadow-xs ring-2 ring-amber-300';
-            else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-blue-600 text-white border-blue-700 shadow-xs ring-2 ring-blue-300';
-            else if (s === 'Verifikasi Dosen / Kaprodi') btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-indigo-600 text-white border-indigo-700 shadow-xs ring-2 ring-indigo-300';
-            else if (s === 'Selesai (Siap Diambil)') btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-emerald-600 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-300';
-            else if (s === 'Ditolak') btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-rose-600 text-white border-rose-700 shadow-xs ring-2 ring-rose-300 col-span-2 sm:col-span-1';
+          const isSelected = (s === status);
+          if (isSelected) {
+            if (s === 'Belum Diproses') {
+              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-amber-500 text-white border-amber-600 shadow-md ring-4 ring-amber-200';
+            } else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') {
+              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-blue-600 text-white border-blue-700 shadow-md ring-4 ring-blue-200';
+            } else if (s === 'Verifikasi Dosen / Kaprodi') {
+              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-indigo-600 text-white border-indigo-700 shadow-md ring-4 ring-indigo-200';
+            } else if (s === 'Selesai (Siap Diambil)') {
+              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-emerald-600 text-white border-emerald-700 shadow-md ring-4 ring-emerald-200';
+            } else if (s === 'Ditolak') {
+              btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-rose-600 text-white border-rose-700 shadow-md ring-4 ring-rose-200 col-span-2 sm:col-span-1';
+            }
           } else {
-            btn.className = 'modal-status-choice p-2 rounded-xl border text-center font-bold transition flex flex-col items-center justify-center gap-1 cursor-pointer bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
+            btn.className = 'modal-status-choice py-3.5 px-3 rounded-2xl border-2 text-center font-black transition flex items-center justify-center cursor-pointer min-h-[52px] bg-slate-50 text-slate-800 border-slate-300 hover:bg-slate-100' + (s === 'Ditolak' ? ' col-span-2 sm:col-span-1' : '');
           }
         });
       }
@@ -1754,19 +1793,30 @@ import {
           if (modalSelectedStatus) modalSelectedStatus.value = s;
           updateModalStatusChoiceUI(s);
 
+          const curCode = modalCode?.value;
+          const curTarget = loadTickets().find(x => x.kode === curCode);
+          const isKmp = curTarget && ((curTarget.layananId || '').toLowerCase().includes('komplain') || (curTarget.layananNama || '').toLowerCase().includes('komplain') || (curTarget.kode || '').toUpperCase().startsWith('KMP'));
+
           if (modalPosisi) {
-            if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Administrasi FAPERTA';
+            if (s === 'Belum Diproses') modalPosisi.value = 'Antrean Masuk Loket Admin FAPERTA';
             else if (s === 'Verifikasi Admin Loket' || s === 'Proses Verifikasi') modalPosisi.value = 'Meja Verifikasi SIAKAD & Dokumen Fisik';
             else if (s === 'Verifikasi Dosen / Kaprodi') {
-              modalPosisi.value = 'Ruang Kaprodi Agroteknologi (Gedung A, Lt. 2)';
+              modalPosisi.value = 'Ruang Dosen Pengampu / Dekanat';
               if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean'))) {
                 modalCatatan.value = 'Berkas sedang dalam tahap telaah dan verifikasi akademik oleh Dosen Pengampu / Dekanat.';
               }
             }
             else if (s === 'Selesai (Siap Diambil)') {
-              modalPosisi.value = 'Loket 1 Administrasi FAPERTA (Gedung A, Lt. 1) - Siap Diambil';
-              if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean') || modalCatatan.value.includes('telaah'))) {
-                modalCatatan.value = 'Dokumen fisik resmi berstempel basah sudah selesai. Silakan ambil di Loket 1 Gedung A dengan membawa KTM asli.';
+              if (isKmp) {
+                modalPosisi.value = 'Selesai Diproses Online (SIAKAD)';
+                if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean') || modalCatatan.value.includes('telaah'))) {
+                  modalCatatan.value = 'Komplain nilai telah diverifikasi oleh Dosen Pengampu dan nilai akhir telah disinkronkan ke SIAKAD. Mahasiswa tidak perlu ke loket.';
+                }
+              } else {
+                modalPosisi.value = 'Loket Admin FAPERTA';
+                if (modalCatatan && (!modalCatatan.value || modalCatatan.value.includes('antrean') || modalCatatan.value.includes('telaah'))) {
+                  modalCatatan.value = 'Dokumen fisik resmi berstempel basah telah selesai dan siap diambil di Loket Admin FAPERTA dengan membawa KTM asli.';
+                }
               }
             }
             else if (s === 'Ditolak') {
@@ -1803,7 +1853,6 @@ import {
         const newStatus = modalSelectedStatus?.value;
         const newPosisi = modalPosisi?.value;
         const newCatatan = modalCatatan?.value;
-        const isTaken = modalSudahDiambil ? modalSudahDiambil.checked : false;
 
         const all = loadTickets();
         const target = all.find(x => x.kode === kode);
@@ -1813,25 +1862,14 @@ import {
           target.catatanAdmin = newCatatan;
           target.isNewForAdmin = false;
 
-          if (isTaken) {
-            target.sudahDiambil = true;
-            if (!target.tanggalDiambil) {
-              const now = new Date();
-              target.tanggalDiambil = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-            }
-            if (!target.petugasPenyerah) {
-              target.petugasPenyerah = sessionStorage.getItem('portal_admin_name') || 'Petugas Loket';
-            }
-          } else {
-            target.sudahDiambil = false;
-          }
+          const isKmp = ((target.layananId || '').toLowerCase().includes('komplain') || (target.layananNama || '').toLowerCase().includes('komplain') || (target.kode || '').toUpperCase().startsWith('KMP'));
 
           if (newStatus === 'Belum Diproses') target.statusStep = 1;
           else if (newStatus === 'Verifikasi Admin Loket' || newStatus === 'Proses Verifikasi') target.statusStep = 2;
           else if (newStatus === 'Verifikasi Dosen / Kaprodi') target.statusStep = 3;
           else if (newStatus === 'Selesai (Siap Diambil)') {
             target.statusStep = 4;
-            target.estimasiSelesai = 'Siap Diambil di Loket 1 Gedung A';
+            target.estimasiSelesai = isKmp ? 'Selesai Diproses Online' : 'Siap Diambil di Loket Admin FAPERTA';
           }
           else if (newStatus === 'Ditolak') {
             target.statusStep = -1;
@@ -1843,17 +1881,20 @@ import {
           renderTicketsList();
           renderDatabaseTables(); // sync arsip & pengambilan tables
           updateRekapStats();
-          showAdminToast(`✓ Perubahan status berkas ${target.kode} berhasil disimpan!`);
+          showAdminToast(`✓ Disposisi berkas ${target.kode} berhasil diperbarui!`);
         }
       });
 
       // 8. DATABASE UTAMA ADMINISTRASI (Requirement #2 & #3)
       let activeDbTab = 'mahasiswa';
       let dbSearchQuery = '';
+      let dbSortKey = 'nama';
+      let dbSortAsc = true;
 
       const dbSubTabs = document.querySelectorAll('.db-sub-tab');
       const dbPanes = document.querySelectorAll('.db-pane');
       const dbSearchInput = document.getElementById('db-search-input');
+      const dbSortSelect = document.getElementById('db-sort-select');
 
       dbSubTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -1876,10 +1917,61 @@ import {
         renderDatabaseTables();
       });
 
+      dbSortSelect?.addEventListener('change', (e) => {
+        const val = e.target.value;
+        const parts = val.split('_');
+        dbSortKey = parts[0];
+        dbSortAsc = parts[1] === 'asc';
+        updateSortHeaderIcons();
+        renderDatabaseTables();
+      });
+
+      function attachSortHeaderListeners() {
+        document.querySelectorAll('.sort-th-mhs, .sort-th-dsn, .sort-th-mk, .sort-th-arsip, .sort-th-taken').forEach(th => {
+          th.addEventListener('click', () => {
+            const key = th.getAttribute('data-sort');
+            if (dbSortKey === key) {
+              dbSortAsc = !dbSortAsc;
+            } else {
+              dbSortKey = key;
+              dbSortAsc = true;
+            }
+            if (dbSortSelect) {
+              const val = `${dbSortKey}_${dbSortAsc ? 'asc' : 'desc'}`;
+              if (Array.from(dbSortSelect.options).some(o => o.value === val)) {
+                dbSortSelect.value = val;
+              }
+            }
+            updateSortHeaderIcons();
+            renderDatabaseTables();
+          });
+        });
+      }
+
+      function updateSortHeaderIcons() {
+        document.querySelectorAll('.sort-th-mhs, .sort-th-dsn, .sort-th-mk, .sort-th-arsip, .sort-th-taken').forEach(th => {
+          const key = th.getAttribute('data-sort');
+          const icon = th.querySelector('[class*="sort-icon"]');
+          if (icon) {
+            if (dbSortKey === key) {
+              icon.textContent = dbSortAsc ? '▲' : '▼';
+              icon.classList.remove('opacity-60');
+              icon.classList.add('text-emerald-700', 'font-black');
+            } else {
+              icon.textContent = '⇅';
+              icon.classList.add('opacity-60');
+              icon.classList.remove('text-emerald-700', 'font-black');
+            }
+          }
+        });
+      }
+
+      attachSortHeaderListeners();
+
       function renderDatabaseTables() {
         const query = dbSearchQuery;
 
-        // 1. Table Mahasiswa
+        // 1. Table Mahasiswa (Sorted)
         const mhsBody = document.getElementById('table-mahasiswa-body');
         if (mhsBody) {
           let mhsList = masterMahasiswa.filter(m => 
@@ -1889,6 +1981,15 @@ import {
             m.prodi.toLowerCase().includes(query) ||
             (m.dpa && m.dpa.toLowerCase().includes(query))
           );
+
+          mhsList.sort((a, b) => {
+            let valA = a[dbSortKey] || '';
+            let valB = b[dbSortKey] || '';
+            if (dbSortKey === 'angkatan' || dbSortKey === 'semester') {
+              return dbSortAsc ? (Number(valA) - Number(valB)) : (Number(valB) - Number(valA));
+            }
+            return dbSortAsc ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
+          });
           
           mhsBody.innerHTML = mhsList.map(m => `
             <tr class="hover:bg-slate-50/80 transition">
@@ -1924,7 +2025,7 @@ import {
           });
         }
 
-        // 2. Table Dosen (Sesuai Permintaan: Cukup Nama Lengkap & Gelar serta Program Studi saja)
+        // 2. Table Dosen (Sorted)
         const dsnBody = document.getElementById('table-dosen-body');
         if (dsnBody) {
           let dsnList = masterDosen.filter(d => 
@@ -1932,6 +2033,11 @@ import {
             d.nama.toLowerCase().includes(query) ||
             d.prodi.toLowerCase().includes(query)
           );
+
+          dsnList.sort((a, b) => {
+            let key = (dbSortKey === 'prodi') ? 'prodi' : 'nama';
+            return dbSortAsc ? a[key].localeCompare(b[key]) : b[key].localeCompare(a[key]);
+          });
 
           dsnBody.innerHTML = dsnList.map((d, idx) => `
             <tr class="hover:bg-slate-50/80 transition">
@@ -1942,7 +2048,7 @@ import {
           `).join('');
         }
 
-        // 3. Table Matkul
+        // 3. Table Matkul (Sorted)
         const mkBody = document.getElementById('table-matkul-body');
         if (mkBody) {
           let mkList = masterMatkul.filter(m => 
@@ -1952,6 +2058,11 @@ import {
             m.prodi.toLowerCase().includes(query) ||
             m.dosenPengampu.toLowerCase().includes(query)
           );
+
+          mkList.sort((a, b) => {
+            let key = (dbSortKey === 'kode' || dbSortKey === 'nim') ? 'kode' : (dbSortKey === 'prodi' ? 'prodi' : 'nama');
+            return dbSortAsc ? String(a[key] || '').localeCompare(String(b[key] || '')) : String(b[key] || '').localeCompare(String(a[key] || ''));
+          });
 
           mkBody.innerHTML = mkList.map(m => `
             <tr class="hover:bg-slate-50/80 transition">
@@ -1965,7 +2076,7 @@ import {
           `).join('');
         }
 
-        // 4. Table Arsip Seluruh Berkas
+        // 4. Table Arsip Seluruh Berkas (Sorted)
         const arsipBody = document.getElementById('table-arsip-body');
         if (arsipBody) {
           const allTickets = loadTickets();
@@ -1977,6 +2088,11 @@ import {
             (t.layananNama && t.layananNama.toLowerCase().includes(query)) ||
             (t.posisiBerkas && t.posisiBerkas.toLowerCase().includes(query))
           );
+
+          arsipList.sort((a, b) => {
+            let key = (dbSortKey === 'nim') ? 'nim' : (dbSortKey === 'kode' ? 'kode' : 'nama');
+            return dbSortAsc ? String(a[key] || '').localeCompare(String(b[key] || '')) : String(b[key] || '').localeCompare(String(a[key] || ''));
+          });
 
           arsipBody.innerHTML = arsipList.map(t => `
             <tr class="hover:bg-slate-50/80 transition">
@@ -2002,7 +2118,7 @@ import {
           `).join('');
         }
 
-        // 4b. Table Pengambilan Berkas Fisik (Requirement #1)
+        // 4b. Table Pengambilan Berkas Fisik (Sorted)
         const pengambilanBody = document.getElementById('table-pengambilan-body');
         const badgePengambilan = document.getElementById('badge-total-pengambilan');
         if (pengambilanBody) {
@@ -2017,6 +2133,13 @@ import {
               ((t.petugasPenyerah || '').toLowerCase().includes(query))
             );
           }
+
+          takenList.sort((a, b) => {
+            if (dbSortKey === 'nim') return dbSortAsc ? a.nim.localeCompare(b.nim) : b.nim.localeCompare(a.nim);
+            if (dbSortKey === 'kode') return dbSortAsc ? a.kode.localeCompare(b.kode) : b.kode.localeCompare(a.kode);
+            if (dbSortKey === 'waktu') return dbSortAsc ? (a.tanggalDiambil || '').localeCompare(b.tanggalDiambil || '') : (b.tanggalDiambil || '').localeCompare(a.tanggalDiambil || '');
+            return dbSortAsc ? a.nama.localeCompare(b.nama) : b.nama.localeCompare(a.nama);
+          });
 
           if (badgePengambilan) {
             const totalCount = allTickets.filter(t => t.sudahDiambil).length;
@@ -2042,7 +2165,7 @@ import {
                   <span class="font-mono text-[11px] text-slate-500">${t.nim}</span>
                 </td>
                 <td class="py-3.5 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
-                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.petugasPenyerah || 'Petugas Loket 1'}</td>
+                <td class="py-3.5 px-4 text-slate-700 font-medium">${t.petugasPenyerah || 'Petugas Loket'}</td>
                 <td class="py-3.5 px-4 text-center">
                   <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 border border-purple-200">
                     <span>✓</span> Telah Diambil

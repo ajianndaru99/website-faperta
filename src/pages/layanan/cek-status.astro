@@ -173,6 +173,9 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         ticketsList.forEach((ticket, idx) => {
           const isRejected = ticket.status === 'Ditolak' || ticket.statusStep === -1;
           const isDone = ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4;
+          const isKomplain = (ticket.layananId || '').toLowerCase().includes('komplain') 
+            || (ticket.layananNama || '').toLowerCase().includes('komplain') 
+            || (ticket.kode || '').toUpperCase().startsWith('KMP');
           
           let step = 1;
           if (ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4) {
@@ -211,8 +214,8 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
             2: {
               badge: 'Tahap 2 dari 4 • Proses Verifikasi Admin Loket',
               title: 'Sedang Diverifikasi Petugas Loket',
-              desc: 'Petugas administrasi loket sedang mencocokkan data nilai/administrasi pada SIAKAD kampus dan memverifikasi kelayakan berkas fisik.',
-              next: 'Verifikasi & persetujuan akademik oleh Dosen Pengampu / Kaprodi',
+              desc: 'Petugas administrasi loket sedang mencocokkan data nilai/administrasi pada SIAKAD kampus dan memverifikasi kelayakan berkas.',
+              next: 'Verifikasi & persetujuan akademik oleh Dosen Pengampu / Dekanat',
               percent: 50,
               icon: '🔍',
               themeBg: 'bg-blue-50/80 border-blue-300',
@@ -224,7 +227,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               badge: 'Tahap 3 dari 4 • Verifikasi Dosen / Dekanat',
               title: 'Sedang Diverifikasi Dosen / Dekanat',
               desc: 'Berkas Anda sedang dalam telaah persetujuan akademik, tanda tangan, atau disposisi oleh Dosen Pengampu, Kaprodi, atau Dekanat FAPERTA.',
-              next: 'Pencetakan salinan resmi & pembubuhan stempel basah Fakultas di Loket 1',
+              next: isKomplain ? 'Penyelesaian rekonsiliasi & pembaruan nilai di sistem SIAKAD' : 'Pencetakan salinan resmi & pembubuhan stempel basah Fakultas di Loket Admin FAPERTA',
               percent: 75,
               icon: '👨‍🏫',
               themeBg: 'bg-indigo-50/80 border-indigo-300',
@@ -233,12 +236,14 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               barColor: 'bg-indigo-600'
             },
             4: {
-              badge: 'Tahap 4 dari 4 • Selesai (Siap Diambil)',
-              title: 'Dokumen Fisik Resmi Siap Diambil di Loket',
-              desc: 'Seluruh tahapan verifikasi telah disetujui. Dokumen resmi berstempel basah telah diterbitkan dan siap diambil langsung di Loket Gedung A.',
-              next: 'Kunjungi Loket 1 Gedung A Lantai 1 membawa KTM Asli & Kode Tiket',
+              badge: isKomplain ? 'Tahap 4 dari 4 • Selesai Diproses (Online)' : 'Tahap 4 dari 4 • Selesai (Siap Diambil)',
+              title: isKomplain ? 'Komplain Nilai Selesai Diproses (Online)' : 'Dokumen Fisik Resmi Siap Diambil di Loket',
+              desc: isKomplain 
+                ? 'Klarifikasi dan rekonsiliasi nilai telah selesai diproses oleh Dosen Pengampu & Bagian Akademik. Pembaruan nilai dapat dicek langsung di portal SIAKAD. Mahasiswa tidak perlu hadir ke loket admin.'
+                : 'Seluruh tahapan verifikasi telah disetujui. Dokumen resmi berstempel basah telah diterbitkan dan siap diambil langsung di Loket Admin FAPERTA.',
+              next: isKomplain ? 'Periksa pembaruan nilai pada akun portal SIAKAD Anda' : 'Kunjungi Loket Admin FAPERTA membawa KTM Asli & Kode Tiket',
               percent: 100,
-              icon: '📦',
+              icon: isKomplain ? '✅' : '📦',
               themeBg: 'bg-emerald-50/90 border-emerald-400',
               badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300',
               titleColor: 'text-emerald-950',
@@ -269,17 +274,21 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               <div class="text-left sm:text-right">
                 <p class="text-xs text-slate-400 font-medium">Tanggal Pengajuan:</p>
                 <p class="text-sm font-bold text-slate-800 mt-0.5">${ticket.tanggal}</p>
-                <p class="text-xs text-slate-500 mt-1">Pengambilan: <strong class="text-slate-800">Fisik di Loket 1 Gedung A</strong></p>
+                ${isKomplain ? `
+                  <p class="text-xs text-emerald-700 font-bold mt-1">Pengambilan: <strong class="text-emerald-950">Proses Online (Tidak Perlu ke Loket)</strong></p>
+                ` : `
+                  <p class="text-xs text-slate-500 mt-1">Pengambilan: <strong class="text-slate-800">Loket Admin FAPERTA</strong></p>
+                `}
               </div>
             </div>
 
             <!-- Posisi Berkas Fisik & Estimasi Selesai Banner -->
             <div class="grid sm:grid-cols-2 gap-4 p-5 rounded-2xl ${isRejected ? 'bg-rose-50 border border-rose-200' : 'bg-slate-50 border border-slate-200'} text-sm">
               <div class="flex items-start gap-3">
-                <span class="text-lg shrink-0">${isRejected ? '❌' : '📍'}</span>
+                <span class="text-lg shrink-0">${isRejected ? '❌' : isKomplain ? '🌐' : '📍'}</span>
                 <div>
-                  <span class="font-bold text-slate-700 block text-xs uppercase tracking-wider">Posisi Berkas Fisik Terkini:</span>
-                  <p class="${isRejected ? 'text-rose-900 font-bold' : 'text-slate-900 font-bold'} mt-1">${ticket.posisiBerkas || 'Pemeriksaan Administrasi Loket'}</p>
+                  <span class="font-bold text-slate-700 block text-xs uppercase tracking-wider">Posisi Berkas Terkini:</span>
+                  <p class="${isRejected ? 'text-rose-900 font-bold' : 'text-slate-900 font-bold'} mt-1">${ticket.posisiBerkas || (isKomplain ? 'Proses Rekonsiliasi Nilai SIAKAD' : 'Loket Admin FAPERTA')}</p>
                 </div>
               </div>
               <div class="flex items-start gap-3">
@@ -296,17 +305,17 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               <div class="rounded-2xl bg-rose-50 border border-rose-200 p-6 text-sm text-rose-950 space-y-3">
                 <h4 class="font-black text-rose-900 text-base flex items-center gap-2">
                   <span>❌</span>
-                  <span>Permohonan Ditolak oleh Petugas Loket</span>
+                  <span>Permohonan Ditolak / Perlu Perbaikan</span>
                 </h4>
                 <p class="text-rose-900 leading-relaxed text-xs sm:text-sm">
-                  Permohonan berkas belum dapat dilanjutkan karena terdapat kekurangan data atau berkas belum lengkap.
+                  Permohonan berkas belum dapat dilanjutkan karena terdapat kekurangan data atau keterangan perbaikan yang harus dipenuhi.
                 </p>
                 <div class="p-4 rounded-xl bg-white border border-rose-200">
-                  <strong class="text-rose-900 block font-bold text-xs mb-1">Catatan / Alasan Penolakan Petugas:</strong>
-                  <p class="text-slate-800 italic">${ticket.catatanAdmin || 'Berkas persyaratan belum lengkap.'}</p>
+                  <strong class="text-rose-900 block font-bold text-xs mb-1">Catatan / Alasan Petugas:</strong>
+                  <p class="text-slate-800 italic">${ticket.catatanAdmin || 'Persyaratan belum lengkap.'}</p>
                 </div>
                 <p class="text-xs text-rose-800 font-medium">
-                  💡 <strong>Tindakan Mahasiswa:</strong> Silakan langsung datang ke <strong>Loket 1 Administrasi FAPERTA (Gedung A Lantai 1)</strong> dengan membawa berkas perbaikan.
+                  💡 <strong>Tindakan Mahasiswa:</strong> ${isKomplain ? 'Silakan hubungi admin atau ajukan permohonan ulang dengan melampirkan bukti yang sesuai.' : 'Silakan datang langsung ke <strong>Loket Admin FAPERTA</strong> dengan membawa berkas perbaikan.'}
                 </p>
               </div>
             ` : `
@@ -349,8 +358,33 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
               </div>
             `}
 
-            <!-- JIKA STATUS SELESAI: PANDUAN PENGAMBILAN DI LOKET -->
-            ${isDone ? `
+            <!-- JIKA STATUS SELESAI: PANDUAN PENGAMBILAN / KETERANGAN HASIL -->
+            ${isDone ? (isKomplain ? `
+              <div class="rounded-2xl bg-emerald-50/90 border-2 border-emerald-300 p-6 text-sm text-emerald-950 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <h4 class="text-base font-black text-emerald-900 flex items-center gap-2">
+                    <span>✅</span>
+                    <span>Hasil Komplain Nilai Telah Selesai Diproses (Online)</span>
+                  </h4>
+                  <span class="px-3 py-1 rounded-full bg-emerald-200 text-emerald-900 text-xs font-bold self-start">
+                    Selesai Online • Tanpa ke Loket
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">
+                  Permohonan klarifikasi dan rekonsiliasi nilai telah selesai diproses oleh Dosen Pengampu serta Bagian Administrasi Akademik. <strong>Mahasiswa tidak perlu hadir ke loket admin</strong>, cukup periksa keterangan di bawah ini dan pantau nilai pada portal SIAKAD.
+                </p>
+                <div class="p-4 rounded-xl bg-white border border-emerald-300 shadow-2xs space-y-1">
+                  <span class="text-slate-500 font-bold block text-xs">📝 Keterangan / Hasil dari Dosen & Admin:</span>
+                  <p class="text-slate-900 font-medium italic text-xs sm:text-sm">
+                    "${ticket.catatanAdmin || 'Nilai telah diverifikasi dan disesuaikan di sistem SIAKAD. Silakan cek KHS pada portal mahasiswa Anda.'}"
+                  </p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-emerald-100/80 border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2 font-medium">
+                  <span>💡</span>
+                  <span>Silakan login ke portal SIAKAD INSTIPER untuk melihat perubahan nilai pada transkrip atau KHS Anda.</span>
+                </div>
+              </div>
+            ` : `
               <div class="rounded-2xl bg-emerald-50/80 border-2 border-emerald-300 p-6 text-sm text-emerald-950 space-y-4">
                 <div class="flex items-center justify-between gap-2">
                   <h4 class="text-base font-black text-emerald-900 flex items-center gap-2">
@@ -367,7 +401,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                 <div class="grid sm:grid-cols-3 gap-3 p-4 rounded-xl bg-white border border-emerald-200 text-xs sm:text-sm">
                   <div>
                     <span class="text-slate-400 font-bold block text-[11px]">📍 Lokasi Loket:</span>
-                    <strong class="text-emerald-950">Loket 1 Gedung A Lantai 1</strong>
+                    <strong class="text-emerald-950">Loket Admin FAPERTA</strong>
                   </div>
                   <div>
                     <span class="text-slate-400 font-bold block text-[11px]">🕒 Jam Pelayanan:</span>
@@ -379,7 +413,7 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                   </div>
                 </div>
               </div>
-            ` : ''}
+            `) : ''}
 
             <!-- Catatan Petugas Loket -->
             ${ticket.catatanAdmin && !isRejected ? `
