@@ -47,6 +47,8 @@ export interface TicketItem {
   nama: string;
   prodi: string;
   semester?: string;
+  whatsapp?: string;
+  email?: string;
   layananId: string;
   layananNama: string;
   keperluan: string;
@@ -61,6 +63,7 @@ export interface TicketItem {
   isNewForAdmin?: boolean;
   sudahDiambil?: boolean;
   tanggalDiambil?: string;
+  sudahDiambilAt?: number;
   petugasPenyerah?: string;
 }
 
@@ -77,6 +80,8 @@ export interface MasterMahasiswaItem {
   semester: string;
   statusAkademik: 'Aktif' | 'Cuti' | 'Lulus';
   dpa: string;
+  whatsapp?: string;
+  email?: string;
 }
 
 export interface MasterDosenItem {
@@ -99,14 +104,14 @@ export interface MasterMataKuliahItem {
 }
 
 export const MASTER_MAHASISWA: MasterMahasiswaItem[] = [
-  { nim: "21/12345/SP", nama: "Budi Santoso", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P." },
-  { nim: "22/67890/SP", nama: "Siti Rahmawati", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S." },
-  { nim: "20/45678/SP", nama: "Ahmad Fauzi", prodi: "S1 Agroteknologi", minat: "ANTAN (Tanaman Pangan)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Prof. Dr. Ir. H. Bambang, M.P." },
-  { nim: "23/11223/SP", nama: "Dewi Lestari", prodi: "S1 Agribisnis", minat: "SEA (Ekonomi Agribisnis)", angkatan: 2023, semester: "Semester 4", statusAkademik: "Aktif", dpa: "Ir. FX. Supriyadi, M.P." },
-  { nim: "22/33445/SP", nama: "Rian Pratama", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Eko Widodo, S.P., M.Sc." },
-  { nim: "20/55667/SP", nama: "Bagus Saputra", prodi: "S1 Agribisnis", minat: "SPA (Pengolahan Agribisnis)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Ir. Endang Sulastri, M.M." },
-  { nim: "21/44556/SP", nama: "Fajar Nugraha", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P." },
-  { nim: "22/77889/SP", nama: "Putri Anggraini", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S." }
+  { nim: "21/12345/SP", nama: "Budi Santoso", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P.", whatsapp: "081234567890", email: "budi.santoso@instiperjogja.ac.id" },
+  { nim: "22/67890/SP", nama: "Siti Rahmawati", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S.", whatsapp: "081298765432", email: "siti.rahmawati@instiperjogja.ac.id" },
+  { nim: "20/45678/SP", nama: "Ahmad Fauzi", prodi: "S1 Agroteknologi", minat: "ANTAN (Tanaman Pangan)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Prof. Dr. Ir. H. Bambang, M.P.", whatsapp: "081377889900", email: "ahmad.fauzi@instiperjogja.ac.id" },
+  { nim: "23/11223/SP", nama: "Dewi Lestari", prodi: "S1 Agribisnis", minat: "SEA (Ekonomi Agribisnis)", angkatan: 2023, semester: "Semester 4", statusAkademik: "Aktif", dpa: "Ir. FX. Supriyadi, M.P.", whatsapp: "081211223344", email: "dewi.lestari@instiperjogja.ac.id" },
+  { nim: "22/33445/SP", nama: "Rian Pratama", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Eko Widodo, S.P., M.Sc.", whatsapp: "081233445566", email: "rian.pratama@instiperjogja.ac.id" },
+  { nim: "20/55667/SP", nama: "Bagus Saputra", prodi: "S1 Agribisnis", minat: "SPA (Pengolahan Agribisnis)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Ir. Endang Sulastri, M.M.", whatsapp: "081355667788", email: "bagus.saputra@instiperjogja.ac.id" },
+  { nim: "21/44556/SP", nama: "Fajar Nugraha", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P.", whatsapp: "081244556677", email: "fajar.nugraha@instiperjogja.ac.id" },
+  { nim: "22/77889/SP", nama: "Putri Anggraini", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S.", whatsapp: "081377889911", email: "putri.anggraini@instiperjogja.ac.id" }
 ];
 
 export const MASTER_DOSEN: MasterDosenItem[] = [
@@ -430,6 +435,8 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     nama: "Budi Santoso",
     prodi: "S1 Agroteknologi",
     semester: "Semester 8",
+    whatsapp: "081234567890",
+    email: "budi.santoso@instiperjogja.ac.id",
     layananId: "khs",
     layananNama: "KHS (Semester 1 - 7)",
     keperluan: "Prasyarat Pendaftaran Ujian Khusus",
@@ -449,6 +456,8 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     nama: "Budi Santoso",
     prodi: "S1 Agroteknologi",
     semester: "Semester 8",
+    whatsapp: "081234567890",
+    email: "budi.santoso@instiperjogja.ac.id",
     layananId: "ujian-khusus",
     layananNama: "Ujian Khusus: Rancangan Percobaan (3 SKS)",
     keperluan: "Ujian Khusus: Rancangan Percobaan (3 SKS)",
@@ -468,6 +477,8 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     nama: "Siti Rahmawati",
     prodi: "S1 Agribisnis",
     semester: "Semester 6",
+    whatsapp: "081298765432",
+    email: "siti.rahmawati@instiperjogja.ac.id",
     layananId: "komplain-nilai",
     layananNama: "Komplain Nilai: Manajemen Agribisnis",
     keperluan: "Komplain Nilai: Manajemen Agribisnis (Nilai SIAKAD Belum Muncul)",
@@ -479,7 +490,10 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     estimasiSelesai: "Selesai Diproses Online",
     catatanAdmin: "Komplain nilai telah diverifikasi oleh Dosen Pengampu dan perubahan nilai telah diproses di SIAKAD. Mahasiswa tidak perlu hadir ke loket.",
     tanggal: "03 September 2026, 11:20 WIB",
-    isNewForAdmin: false
+    isNewForAdmin: false,
+    sudahDiambil: true,
+    tanggalDiambil: "03 September 2026, 12:00 WIB",
+    sudahDiambilAt: 1756875600000
   },
   {
     kode: "IZN-2026-9081",
@@ -487,6 +501,8 @@ export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
     nama: "Ahmad Fauzi",
     prodi: "S1 Agroteknologi",
     semester: "Semester 10",
+    whatsapp: "081377889900",
+    email: "ahmad.fauzi@instiperjogja.ac.id",
     layananId: "izin-penelitian",
     layananNama: "Izin Penelitian: Sampel Kebun Sawit",
     keperluan: "Pengambilan Sampel Tanah di Kebun Sawit",

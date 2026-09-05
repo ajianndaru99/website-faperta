@@ -274,6 +274,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         const nama = formData.get('nama');
         const nim = formData.get('nim');
         const prodi = formData.get('prodi');
+        const whatsapp = formData.get('whatsapp') || '-';
+        const email = formData.get('email') || '-';
         const mk = formData.get('mata_kuliah');
         const dosen = formData.get('dosen');
         const kendala = formData.get('jenis_kendala');
@@ -293,6 +295,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           nama,
           nim,
           prodi,
+          whatsapp,
+          email,
           layananId: 'komplain-nilai',
           layananNama: `Komplain Nilai: ${mk}`,
           keperluan: `Komplain Nilai: ${mk}`,

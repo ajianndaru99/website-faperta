@@ -641,11 +641,11 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
         const nim = formData.get('nim');
         const prodi = formData.get('prodi');
         const semester = formData.get('semester');
+        const whatsapp = formData.get('whatsapp') || '-';
+        const email = formData.get('email') || '-';
         const semesterDimohon = formData.get('semester_dimohon');
         const keperluan = formData.get('keperluan');
         const catatan = formData.get('catatan_tambahan') || '-';
-
-
 
         const randomNum = Math.floor(1000 + Math.random() * 9000);
         const ticketCode = 'KHS-2026-' + randomNum;
@@ -663,6 +663,8 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
           nim: nim,
           prodi: prodi,
           semester: semester,
+          whatsapp: whatsapp,
+          email: email,
           layananId: 'khs',
           layananNama: 'Permohonan KHS (' + semesterDimohon + ')',
           keperluan: 'Permohonan KHS (' + semesterDimohon + ')',

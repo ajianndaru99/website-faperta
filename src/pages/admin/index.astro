@@ -591,6 +591,7 @@ import {
                         <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="prodi">
                           <span class="inline-flex items-center gap-1">Program Studi <span class="sort-icon-mhs opacity-60">⇅</span></span>
                         </th>
+                        <th class="py-3.5 px-4">Kontak (WhatsApp & Email)</th>
                         <th class="py-3.5 px-4">Minat Studi</th>
                         <th class="py-3.5 px-4 cursor-pointer select-none hover:text-emerald-800 hover:bg-emerald-50/40 transition sort-th-mhs" data-sort="angkatan">
                           <span class="inline-flex items-center gap-1">Angkatan <span class="sort-icon-mhs opacity-60">⇅</span></span>
@@ -875,6 +876,42 @@ import {
 
         <!-- Scrollable Form Body -->
         <div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 space-y-3.5">
+          <!-- Identitas Lengkap Mahasiswa Pemohon (Senior Friendly, Jelas, Rapi) -->
+          <div class="rounded-2xl border-2 border-emerald-200 bg-emerald-50/60 p-4 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200/80 pb-2 mb-2.5">
+              <span class="text-[11px] font-black uppercase tracking-wider text-emerald-900 flex items-center gap-1.5">
+                <span>🎓</span> Identitas Lengkap Mahasiswa Pemohon
+              </span>
+              <span id="modal-mhs-layanan-badge" class="font-bold text-emerald-900 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200 text-xs shadow-2xs">
+                -
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-800">
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nama Lengkap:</span>
+                <strong id="modal-mhs-nama" class="text-sm sm:text-base text-slate-900 font-extrabold block mt-0.5">-</strong>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">NIM & Program Studi:</span>
+                <p class="mt-0.5 text-xs sm:text-sm font-bold text-slate-800">
+                  <span id="modal-mhs-nim" class="font-mono text-emerald-800">-</span> · <span id="modal-mhs-prodi">-</span>
+                </p>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nomor WhatsApp:</span>
+                <div id="modal-mhs-wa-wrap" class="mt-1">
+                  <span id="modal-mhs-wa" class="font-mono font-bold text-slate-800">-</span>
+                </div>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Alamat Email:</span>
+                <div id="modal-mhs-email-wrap" class="mt-1">
+                  <span id="modal-mhs-email" class="font-mono font-bold text-slate-800">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Pilihan Tahapan Status (Tulisan Besar, Jelas, Rapi, Tanpa Icon) -->
           <div>
             <label class="block text-xs sm:text-sm font-black text-slate-900 mb-2">
@@ -1250,9 +1287,21 @@ import {
       function loadTickets() {
         try {
           const raw = localStorage.getItem('portal_faperta_tickets');
-          if (raw) return JSON.parse(raw);
-          localStorage.setItem('portal_faperta_tickets', JSON.stringify(initialPortalTickets));
-          return [...initialPortalTickets];
+          let data = raw ? JSON.parse(raw) : [...initialPortalTickets];
+          let updated = false;
+          data.forEach(t => {
+            if (!t.whatsapp || !t.email) {
+              const m = masterMahasiswa.find(mhs => mhs.nim === t.nim);
+              if (m) {
+                if (!t.whatsapp && m.whatsapp) { t.whatsapp = m.whatsapp; updated = true; }
+                if (!t.email && m.email) { t.email = m.email; updated = true; }
+              }
+            }
+          });
+          if (!raw || updated) {
+            localStorage.setItem('portal_faperta_tickets', JSON.stringify(data));
+          }
+          return data;
         } catch (e) {
           return [...initialPortalTickets];
         }
@@ -1603,6 +1652,12 @@ import {
           const cleanCase = getCleanCaseName(t);
           const displayDate = t.tanggal && t.tanggal !== 'Hari Ini' ? t.tanggal : '-';
           const displayEstimasi = (t.estimasiSelesai && t.estimasiSelesai !== '-') ? t.estimasiSelesai : '-';
+          const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
+          const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
+          const emailAddr = t.email || (mhsInfo && mhsInfo.email) || '';
+          const cleanWa = waNumber.replace(/[^0-9]/g, '');
+          const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
+
           const card = document.createElement('div');
           card.className = 'rounded-3xl border border-slate-200 bg-white p-6 shadow-xs hover:border-emerald-600/60 transition text-left';
 
@@ -1648,6 +1703,39 @@ import {
                     <p class="text-xs text-slate-500 font-mono mt-0.5">
                       NIM: <strong class="text-emerald-800 font-bold">${t.nim}</strong> · ${t.prodi} ${t.semester ? `(${t.semester})` : ''}
                     </p>
+                    <!-- Kontak Lengkap Mahasiswa (WhatsApp & Email) -->
+                    <div class="mt-2.5 flex flex-wrap items-center gap-2 text-xs">
+                      ${waNumber ? `
+                        <a 
+                          href="https://wa.me/${formattedWa}" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100 font-bold transition shadow-2xs cursor-pointer"
+                          title="Chat WhatsApp Mahasiswa"
+                        >
+                          <span>💬</span>
+                          <span class="font-mono text-[11px]">${waNumber}</span>
+                        </a>
+                      ` : `
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 text-slate-400 text-[11px]">
+                          <span>💬</span> WA: -
+                        </span>
+                      `}
+                      ${emailAddr ? `
+                        <a 
+                          href="mailto:${emailAddr}" 
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200 hover:bg-blue-100 font-medium transition shadow-2xs cursor-pointer"
+                          title="Kirim Email Mahasiswa"
+                        >
+                          <span>✉️</span>
+                          <span class="font-mono text-[11px]">${emailAddr}</span>
+                        </a>
+                      ` : `
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 text-slate-400 text-[11px]">
+                          <span>✉️</span> Email: -
+                        </span>
+                      `}
+                    </div>
                   </div>
                 </div>
 
@@ -1776,6 +1864,11 @@ import {
         target.isNewForAdmin = false;
 
         if (isKomplain) {
+          const now = new Date();
+          const timeStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+          target.sudahDiambil = true;
+          target.sudahDiambilAt = Date.now();
+          target.tanggalDiambil = timeStr;
           target.posisiBerkas = 'Selesai Diproses Online (SIAKAD)';
           target.estimasiSelesai = 'Selesai Diproses Online';
           target.catatanAdmin = 'Komplain nilai telah diverifikasi oleh Dosen Pengampu dan perubahan nilai telah diproses di SIAKAD. Mahasiswa tidak perlu hadir ke loket.';
@@ -1803,6 +1896,7 @@ import {
         const timeStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
 
         target.sudahDiambil = true;
+        target.sudahDiambilAt = Date.now();
         target.tanggalDiambil = timeStr;
         target.petugasPenyerah = curAdminName;
         target.status = 'Selesai (Siap Diambil)';
@@ -1856,6 +1950,50 @@ import {
         const all = loadTickets();
         const t = all.find(x => x.kode === kode);
         if (!t) return;
+
+        const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
+        const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
+        const emailAddr = t.email || (mhsInfo && mhsInfo.email) || '';
+        const cleanWa = waNumber.replace(/[^0-9]/g, '');
+        const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
+
+        const elNama = document.getElementById('modal-mhs-nama');
+        const elNim = document.getElementById('modal-mhs-nim');
+        const elProdi = document.getElementById('modal-mhs-prodi');
+        const elLayananBadge = document.getElementById('modal-mhs-layanan-badge');
+        const elWaWrap = document.getElementById('modal-mhs-wa-wrap');
+        const elEmailWrap = document.getElementById('modal-mhs-email-wrap');
+
+        if (elNama) elNama.textContent = t.nama;
+        if (elNim) elNim.textContent = t.nim;
+        if (elProdi) elProdi.textContent = t.prodi || (mhsInfo && mhsInfo.prodi) || '-';
+        if (elLayananBadge) elLayananBadge.textContent = t.layananNama || 'Berkas Mahasiswa';
+
+        if (elWaWrap) {
+          if (waNumber) {
+            elWaWrap.innerHTML = `
+              <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition shadow-xs cursor-pointer">
+                <span>💬 Hubungi WA:</span>
+                <span class="font-mono">${waNumber}</span>
+              </a>
+            `;
+          } else {
+            elWaWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">- Belum tercatat -</span>`;
+          }
+        }
+
+        if (elEmailWrap) {
+          if (emailAddr) {
+            elEmailWrap.innerHTML = `
+              <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 text-white font-medium text-xs hover:bg-blue-700 transition shadow-xs cursor-pointer">
+                <span>✉️ Kirim Email:</span>
+                <span class="font-mono">${emailAddr}</span>
+              </a>
+            `;
+          } else {
+            elEmailWrap.innerHTML = `<span class="text-slate-400 font-mono text-xs italic">- Belum tercatat -</span>`;
+          }
+        }
 
         if (modalTitle) modalTitle.textContent = `${t.kode} — ${t.nama}`;
         if (modalTicketSub) modalTicketSub.textContent = `NIM: ${t.nim} • ${t.layananNama}`;
@@ -2009,6 +2147,14 @@ import {
             target.estimasiSelesai = (newEstimasi && newEstimasi !== '-') 
               ? newEstimasi 
               : (isKmp ? 'Selesai Diproses Online' : 'Siap Diambil di Loket Admin FAPERTA');
+            if (isKmp) {
+              target.sudahDiambil = true;
+              if (!target.sudahDiambilAt) target.sudahDiambilAt = Date.now();
+              if (!target.tanggalDiambil) {
+                const now = new Date();
+                target.tanggalDiambil = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+              }
+            }
           }
           else if (newStatus === 'Ditolak') {
             target.statusStep = -1;
@@ -2130,27 +2276,47 @@ import {
             return dbSortAsc ? String(valA).localeCompare(String(valB)) : String(valB).localeCompare(String(valA));
           });
           
-          mhsBody.innerHTML = mhsList.map(m => `
-            <tr class="hover:bg-slate-50/80 transition">
-              <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.nim}</td>
-              <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
-              <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
-              <td class="py-3 px-4 text-slate-500">${m.minat || '-'}</td>
-              <td class="py-3 px-4 font-mono text-slate-600">${m.angkatan}</td>
-              <td class="py-3 px-4 text-slate-600">${m.semester}</td>
-              <td class="py-3 px-4 text-slate-700 font-medium">${m.dpa || '-'}</td>
-              <td class="py-3 px-4 text-center">
-                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                  ${m.statusAkademik}
-                </span>
-              </td>
-              <td class="py-3 px-4 text-right">
-                <button type="button" class="btn-check-mhs text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline cursor-pointer" data-nim="${m.nim}">
-                  Cek Berkas
-                </button>
-              </td>
-            </tr>
-          `).join('');
+          mhsBody.innerHTML = mhsList.map(m => {
+            const cleanWa = (m.whatsapp || '').replace(/[^0-9]/g, '');
+            const formattedWa = cleanWa.startsWith('0') ? ('62' + cleanWa.slice(1)) : cleanWa;
+            return `
+              <tr class="hover:bg-slate-50/80 transition">
+                <td class="py-3 px-4 font-mono font-bold text-emerald-800">${m.nim}</td>
+                <td class="py-3 px-4 font-bold text-slate-900">${m.nama}</td>
+                <td class="py-3 px-4 text-slate-600">${m.prodi}</td>
+                <td class="py-3 px-4 text-slate-700">
+                  <div class="space-y-1">
+                    ${m.whatsapp ? `
+                      <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline" title="Chat WhatsApp">
+                        <span>💬</span> <span class="font-mono">${m.whatsapp}</span>
+                      </a>
+                    ` : '<span class="text-slate-400 text-[11px]">-</span>'}
+                    ${m.email ? `
+                      <div class="block">
+                        <a href="mailto:${m.email}" class="inline-flex items-center gap-1 text-[11px] text-blue-700 hover:text-blue-900 hover:underline truncate max-w-[180px]" title="Kirim Email">
+                          <span>✉️</span> <span>${m.email}</span>
+                        </a>
+                      </div>
+                    ` : ''}
+                  </div>
+                </td>
+                <td class="py-3 px-4 text-slate-500">${m.minat || '-'}</td>
+                <td class="py-3 px-4 font-mono text-slate-600">${m.angkatan}</td>
+                <td class="py-3 px-4 text-slate-600">${m.semester}</td>
+                <td class="py-3 px-4 text-slate-700 font-medium">${m.dpa || '-'}</td>
+                <td class="py-3 px-4 text-center">
+                  <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    ${m.statusAkademik}
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-right">
+                  <button type="button" class="btn-check-mhs text-[11px] font-bold text-emerald-700 hover:text-emerald-900 underline cursor-pointer" data-nim="${m.nim}">
+                    Cek Berkas
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
 
           mhsBody.querySelectorAll('.btn-check-mhs').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -2233,12 +2399,16 @@ import {
             return dbSortAsc ? String(a[key] || '').localeCompare(String(b[key] || '')) : String(b[key] || '').localeCompare(String(a[key] || ''));
           });
 
-          arsipBody.innerHTML = arsipList.map(t => `
+          arsipBody.innerHTML = arsipList.map(t => {
+            const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
+            const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
+            return `
             <tr class="hover:bg-slate-50/80 transition">
               <td class="py-3 px-4 font-mono font-bold text-slate-900">${t.kode}</td>
               <td class="py-3 px-4">
                 <strong class="text-slate-900 block">${t.nama}</strong>
                 <span class="font-mono text-[11px] text-emerald-800">${t.nim}</span>
+                ${waNumber ? `<span class="text-slate-400 font-mono text-[10px] block">WA: ${waNumber}</span>` : ''}
               </td>
               <td class="py-3 px-4 text-slate-600">${t.prodi || '-'}</td>
               <td class="py-3 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
@@ -2254,7 +2424,8 @@ import {
                 </span>
               </td>
             </tr>
-          `).join('');
+          `;
+          }).join('');
         }
 
         // 4b. Table Pengambilan Berkas Fisik (Sorted)
@@ -2294,7 +2465,10 @@ import {
               </tr>
             `;
           } else {
-            pengambilanBody.innerHTML = takenList.map((t, idx) => `
+            pengambilanBody.innerHTML = takenList.map((t, idx) => {
+              const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
+              const waNumber = t.whatsapp || (mhsInfo && mhsInfo.whatsapp) || '';
+              return `
               <tr class="hover:bg-slate-50/80 transition">
                 <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-400">${idx + 1}</td>
                 <td class="py-3.5 px-4 font-mono font-bold text-emerald-800">${t.kode}</td>
@@ -2302,6 +2476,7 @@ import {
                 <td class="py-3.5 px-4">
                   <strong class="text-slate-900 block">${t.nama}</strong>
                   <span class="font-mono text-[11px] text-slate-500">${t.nim}</span>
+                  ${waNumber ? `<span class="text-slate-400 font-mono text-[10px] block">WA: ${waNumber}</span>` : ''}
                 </td>
                 <td class="py-3.5 px-4 text-slate-800 font-medium">${t.layananNama || '-'}</td>
                 <td class="py-3.5 px-4 text-slate-700 font-medium">${t.petugasPenyerah || 'Petugas Loket'}</td>
@@ -2311,7 +2486,8 @@ import {
                   </span>
                 </td>
               </tr>
-            `).join('');
+            `;
+            }).join('');
           }
         }
 

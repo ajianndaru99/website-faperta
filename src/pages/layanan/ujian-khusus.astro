@@ -381,6 +381,8 @@ const semesterAkhirList = [
         const nim = formData.get('nim');
         const prodi = formData.get('prodi');
         const semester = formData.get('semester');
+        const whatsapp = formData.get('whatsapp') || '-';
+        const email = formData.get('email') || '-';
         const dpa = formData.get('dpa');
         const mk1 = formData.get('mk1_nama');
         const mk2 = formData.get('mk2_nama');
@@ -402,6 +404,8 @@ const semesterAkhirList = [
           nim: nim,
           prodi: prodi,
           semester: semester,
+          whatsapp: whatsapp,
+          email: email,
           layananId: 'ujian-khusus',
           layananNama: 'Pengajuan Ujian Khusus (' + matkulSummary + ')',
           keperluan: 'Ujian Khusus: ' + matkulSummary,

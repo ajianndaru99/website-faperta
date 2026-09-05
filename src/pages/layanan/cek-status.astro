@@ -142,7 +142,32 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
         }
       }
 
-      // 2. Render Daftar Berkas Mahasiswa (Desain Bersih & Jarak Nyaman)
+      // 2. Render Daftar Berkas Mahasiswa (Desain Bersih, Ringkas, & Ada Arsip Riwayat > 12 Jam)
+      let currentSubTab = 'aktif'; // 'aktif' atau 'arsip'
+
+      function isTicketArchived(t) {
+        // Hanya berkas yang sudah selesai atau sudah diambil yang dapat diarsipkan
+        const isFinished = t.sudahDiambil || t.status === 'Selesai (Siap Diambil)' || t.status === 'Selesai';
+        if (!isFinished) return false;
+
+        // Cek timestamp saat dikonfirmasi diambil / selesai
+        let takenTimestamp = t.sudahDiambilAt;
+        if (!takenTimestamp && t.tanggalDiambil) {
+          const p = Date.parse(t.tanggalDiambil);
+          if (!isNaN(p)) takenTimestamp = p;
+        }
+        if (!takenTimestamp && t.tanggal) {
+          const p = Date.parse(t.tanggal);
+          if (!isNaN(p)) takenTimestamp = p;
+        }
+
+        if (!takenTimestamp) return !!t.sudahDiambil;
+
+        // Terarsip jika lebih dari 12 jam setelah konfirmasi diambil
+        const twelveHoursInMs = 12 * 60 * 60 * 1000;
+        return (Date.now() - takenTimestamp) >= twelveHoursInMs;
+      }
+
       function renderTickets(ticketsList, searchedNim = '') {
         notFoundCard?.classList.add('hidden');
         if (!ticketsContainer) return;
@@ -157,25 +182,108 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
 
         window.getActiveTicketForPrint = () => ticketsList && ticketsList.length > 0 ? ticketsList[0] : null;
 
+        const activeList = ticketsList.filter(t => !isTicketArchived(t));
+        const archivedList = ticketsList.filter(t => isTicketArchived(t));
+
         // Tampilkan profil jika pencarian berbasis NIM
         if (searchedNim && ticketsList.length > 0) {
           const first = ticketsList[0];
           document.getElementById('prof-nama').textContent = first.nama;
           document.getElementById('prof-nim').textContent = first.nim;
           document.getElementById('prof-prodi').textContent = first.prodi;
-          document.getElementById('prof-total').textContent = `${ticketsList.length} Berkas Surat`;
+          document.getElementById('prof-total').textContent = `${ticketsList.length} Berkas (${activeList.length} Aktif, ${archivedList.length} Arsip)`;
           profileCard?.classList.remove('hidden');
         } else {
           profileCard?.classList.add('hidden');
         }
 
+        // Tentukan default tab jika tidak ada berkas aktif
+        if (activeList.length === 0 && archivedList.length > 0) {
+          currentSubTab = 'arsip';
+        } else if (activeList.length > 0 && currentSubTab !== 'arsip') {
+          currentSubTab = 'aktif';
+        }
+
+        // Toolbar Sub-Tab Mahasiswa: Pengajuan Aktif vs Arsip Riwayat (Simpel & Mobile-Friendly)
+        const tabToolbar = document.createElement('div');
+        tabToolbar.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl shadow-2xs';
+        tabToolbar.innerHTML = `
+          <div class="inline-flex p-1 bg-white rounded-xl border border-slate-200 shadow-2xs w-full sm:w-auto">
+            <button 
+              type="button" 
+              id="btn-subtab-aktif" 
+              class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-black transition flex items-center justify-center gap-1.5 cursor-pointer ${currentSubTab === 'aktif' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}"
+            >
+              <span>📂</span>
+              <span>Pengajuan Aktif</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${currentSubTab === 'aktif' ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-700'}">${activeList.length}</span>
+            </button>
+            <button 
+              type="button" 
+              id="btn-subtab-arsip" 
+              class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-black transition flex items-center justify-center gap-1.5 cursor-pointer ${currentSubTab === 'arsip' ? 'bg-emerald-700 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}"
+            >
+              <span>📦</span>
+              <span>Arsip Riwayat</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${currentSubTab === 'arsip' ? 'bg-white/25 text-white' : 'bg-slate-100 text-slate-700'}">${archivedList.length}</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">
+            💡 Berkas otomatis terarsip jika lebih dari 12 jam setelah konfirmasi diambil.
+          </p>
+        `;
+        ticketsContainer.appendChild(tabToolbar);
+
+        tabToolbar.querySelector('#btn-subtab-aktif')?.addEventListener('click', () => {
+          currentSubTab = 'aktif';
+          renderTickets(ticketsList, searchedNim);
+        });
+        tabToolbar.querySelector('#btn-subtab-arsip')?.addEventListener('click', () => {
+          currentSubTab = 'arsip';
+          renderTickets(ticketsList, searchedNim);
+        });
+
+        const displayList = currentSubTab === 'aktif' ? activeList : archivedList;
+
+        if (displayList.length === 0) {
+          const emptyBox = document.createElement('div');
+          emptyBox.className = 'rounded-3xl border-2 border-dashed border-slate-200 bg-white p-8 text-center';
+          if (currentSubTab === 'aktif') {
+            emptyBox.innerHTML = `
+              <span class="text-3xl">🎉</span>
+              <h4 class="text-sm font-bold text-slate-800 mt-2">Tidak Ada Pengajuan Aktif</h4>
+              <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                Seluruh berkas Anda telah selesai diproses dan tersimpan di tab Arsip Riwayat (diambil lebih dari 12 jam yang lalu).
+              </p>
+              <button type="button" id="btn-switch-to-arsip" class="mt-4 px-4 py-2 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition cursor-pointer">
+                Lihat Arsip Riwayat (${archivedList.length}) →
+              </button>
+            `;
+            emptyBox.querySelector('#btn-switch-to-arsip')?.addEventListener('click', () => {
+              currentSubTab = 'arsip';
+              renderTickets(ticketsList, searchedNim);
+            });
+          } else {
+            emptyBox.innerHTML = `
+              <span class="text-3xl">📦</span>
+              <h4 class="text-sm font-bold text-slate-800 mt-2">Arsip Riwayat Masih Kosong</h4>
+              <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                Berkas layanan akan otomatis masuk ke tab arsip setelah lebih dari 12 jam dikonfirmasi diambil oleh mahasiswa.
+              </p>
+            `;
+          }
+          ticketsContainer.appendChild(emptyBox);
+          return;
+        }
+
         // Render setiap kartu berkas
-        ticketsList.forEach((ticket, idx) => {
+        displayList.forEach((ticket, idx) => {
           const isRejected = ticket.status === 'Ditolak' || ticket.statusStep === -1;
           const isDone = ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4;
           const isKomplain = (ticket.layananId || '').toLowerCase().includes('komplain') 
             || (ticket.layananNama || '').toLowerCase().includes('komplain') 
             || (ticket.kode || '').toUpperCase().startsWith('KMP');
+          const isArchived = isTicketArchived(ticket);
           
           let step = 1;
           if (ticket.status === 'Selesai (Siap Diambil)' || ticket.status === 'Selesai' || ticket.statusStep === 4) {
@@ -202,127 +310,126 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
             1: {
               badge: 'Tahap 1 dari 4 • Masuk Antrean Loket',
               title: 'Berkas Baru Masuk Antrean Loket',
-              desc: 'Permohonan berkas Anda telah berhasil masuk sistem dan sedang menunggu giliran pemeriksaan kelengkapan syarat oleh petugas loket.',
-              next: 'Pemeriksaan kelengkapan berkas & pencocokan data SIAKAD oleh Admin Loket',
               percent: 25,
               icon: '⏳',
               themeBg: 'bg-amber-50/80 border-amber-300',
               badgeClass: 'bg-amber-100 text-amber-900 border-amber-300',
               titleColor: 'text-amber-950',
-              barColor: 'bg-amber-500'
+              barColor: 'bg-amber-500',
+              defaultNote: 'Permohonan baru masuk antrean loket. Menunggu pemeriksaan data petugas loket.'
             },
             2: {
               badge: 'Tahap 2 dari 4 • Proses Verifikasi Admin Loket',
               title: 'Sedang Diverifikasi Petugas Loket',
-              desc: 'Petugas administrasi loket sedang mencocokkan data nilai/administrasi pada SIAKAD kampus dan memverifikasi kelayakan berkas.',
-              next: 'Verifikasi & persetujuan akademik oleh Dosen Pengampu / Dekanat',
               percent: 50,
               icon: '🔍',
               themeBg: 'bg-blue-50/80 border-blue-300',
               badgeClass: 'bg-blue-100 text-blue-900 border-blue-300',
               titleColor: 'text-blue-950',
-              barColor: 'bg-blue-600'
+              barColor: 'bg-blue-600',
+              defaultNote: 'Petugas loket sedang memverifikasi data dan kelengkapan berkas pada sistem akademik kampus.'
             },
             3: {
               badge: 'Tahap 3 dari 4 • Verifikasi Dosen / Dekanat',
               title: 'Sedang Diverifikasi Dosen / Dekanat',
-              desc: 'Berkas Anda sedang dalam telaah persetujuan akademik, tanda tangan, atau disposisi oleh Dosen Pengampu, Kaprodi, atau Dekanat FAPERTA.',
-              next: isKomplain ? 'Penyelesaian rekonsiliasi & pembaruan nilai di sistem SIAKAD' : 'Pencetakan salinan resmi & pembubuhan stempel basah Fakultas di Loket Admin FAPERTA',
               percent: 75,
               icon: '👨‍🏫',
               themeBg: 'bg-indigo-50/80 border-indigo-300',
               badgeClass: 'bg-indigo-100 text-indigo-900 border-indigo-300',
               titleColor: 'text-indigo-950',
-              barColor: 'bg-indigo-600'
+              barColor: 'bg-indigo-600',
+              defaultNote: isKomplain ? 'Sedang dalam telaah rekonsiliasi nilai oleh Dosen Pengampu mata kuliah.' : 'Berkas fisik sedang dalam telaah persetujuan dan tanda tangan Dekanat / Kaprodi.'
             },
             4: {
               badge: isKomplain ? 'Tahap 4 dari 4 • Selesai Diproses (Online)' : 'Tahap 4 dari 4 • Selesai (Siap Diambil)',
               title: isKomplain ? 'Komplain Nilai Selesai Diproses (Online)' : 'Dokumen Fisik Resmi Siap Diambil di Loket',
-              desc: isKomplain 
-                ? 'Klarifikasi dan rekonsiliasi nilai telah selesai diproses oleh Dosen Pengampu & Bagian Akademik. Pembaruan nilai dapat dicek langsung di portal SIAKAD. Mahasiswa tidak perlu hadir ke loket admin.'
-                : 'Seluruh tahapan verifikasi telah disetujui. Dokumen resmi berstempel basah telah diterbitkan dan siap diambil langsung di Loket Admin FAPERTA.',
-              next: isKomplain ? 'Periksa pembaruan nilai pada akun portal SIAKAD Anda' : 'Kunjungi Loket Admin FAPERTA membawa KTM Asli & Kode Tiket',
               percent: 100,
               icon: isKomplain ? '✅' : '📦',
               themeBg: 'bg-emerald-50/90 border-emerald-400',
               badgeClass: 'bg-emerald-100 text-emerald-900 border-emerald-300',
               titleColor: 'text-emerald-950',
-              barColor: 'bg-emerald-600'
+              barColor: 'bg-emerald-600',
+              defaultNote: isKomplain ? 'Klarifikasi nilai telah selesai disesuaikan di sistem SIAKAD. Mahasiswa tidak perlu hadir ke loket.' : 'Dokumen fisik resmi berstempel basah telah selesai diterbitkan dan siap diambil langsung di Loket Admin FAPERTA membawa KTM asli.'
             }
           };
           const curPhase = dynamicPhases[step] || dynamicPhases[1];
 
           const card = document.createElement('div');
-          card.className = `rounded-3xl border ${isRejected ? 'border-rose-200 bg-rose-50/20' : isDone ? 'border-emerald-200 bg-white' : 'border-slate-200 bg-white'} p-6 sm:p-8 shadow-sm space-y-6`;
+          card.className = `rounded-3xl border ${isRejected ? 'border-rose-200 bg-rose-50/20' : isArchived ? 'border-purple-200 bg-purple-50/15' : isDone ? 'border-emerald-200 bg-white' : 'border-slate-200 bg-white'} p-5 sm:p-7 shadow-xs space-y-5`;
 
           card.innerHTML = `
             <!-- Header Kartu Berkas -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
               <div>
-                <div class="flex items-center gap-2.5">
+                <div class="flex flex-wrap items-center gap-2">
                   <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${badge.bg} ${badge.text} border ${badge.border}">
                     <span>${badge.icon}</span>
                     <span>${ticket.status}</span>
                   </span>
+                  ${isArchived ? `
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-900 border border-purple-300">
+                      <span>📦</span>
+                      <span>Arsip Riwayat (&gt;12 Jam)</span>
+                    </span>
+                  ` : ''}
                   <span class="text-xs font-medium text-slate-400">Berkas #${idx + 1}</span>
                 </div>
-                <h3 class="text-2xl font-black text-slate-900 mt-2 font-mono tracking-tight">
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-2 font-mono tracking-tight">
                   ${ticket.kode}
                 </h3>
-                <p class="text-base font-bold text-emerald-800 mt-0.5">${ticket.layananNama}</p>
+                <p class="text-sm sm:text-base font-bold text-emerald-800 mt-0.5">${ticket.layananNama}</p>
               </div>
-              <div class="text-left sm:text-right">
-                <p class="text-xs text-slate-400 font-medium">Tanggal Pengajuan:</p>
+              <div class="text-left sm:text-right text-xs">
+                <p class="text-slate-400 font-medium">Tanggal Pengajuan:</p>
                 <p class="text-sm font-bold text-slate-800 mt-0.5">${ticket.tanggal}</p>
-                ${isKomplain ? `
-                  <p class="text-xs text-emerald-700 font-bold mt-1">Pengambilan: <strong class="text-emerald-950">Proses Online (Tidak Perlu ke Loket)</strong></p>
+                ${ticket.tanggalDiambil ? `
+                  <p class="text-purple-900 font-bold mt-1">Diambil: <strong>${ticket.tanggalDiambil}</strong></p>
+                ` : isKomplain ? `
+                  <p class="text-emerald-700 font-bold mt-1">Pengambilan: <strong>Proses Online (SIAKAD)</strong></p>
                 ` : `
-                  <p class="text-xs text-slate-500 mt-1">Pengambilan: <strong class="text-slate-800">Loket Admin FAPERTA</strong></p>
+                  <p class="text-slate-500 mt-1">Pengambilan: <strong>Loket Admin FAPERTA</strong></p>
                 `}
               </div>
             </div>
 
             <!-- Posisi Berkas Fisik & Estimasi Selesai Banner -->
-            <div class="grid sm:grid-cols-2 gap-4 p-5 rounded-2xl ${isRejected ? 'bg-rose-50 border border-rose-200' : 'bg-slate-50 border border-slate-200'} text-sm">
-              <div class="flex items-start gap-3">
-                <span class="text-lg shrink-0">${isRejected ? '❌' : isKomplain ? '🌐' : '📍'}</span>
+            <div class="grid sm:grid-cols-2 gap-3 p-4 rounded-2xl ${isRejected ? 'bg-rose-50 border border-rose-200' : 'bg-slate-50 border border-slate-200'} text-xs sm:text-sm">
+              <div class="flex items-start gap-2.5">
+                <span class="text-base shrink-0">${isRejected ? '❌' : isKomplain ? '🌐' : '📍'}</span>
                 <div>
-                  <span class="font-bold text-slate-700 block text-xs uppercase tracking-wider">Posisi Berkas Terkini:</span>
-                  <p class="${isRejected ? 'text-rose-900 font-bold' : 'text-slate-900 font-bold'} mt-1">${ticket.posisiBerkas || (isKomplain ? 'Proses Rekonsiliasi Nilai SIAKAD' : 'Loket Admin FAPERTA')}</p>
+                  <span class="font-bold text-slate-600 block text-[11px] uppercase tracking-wider">Posisi Berkas:</span>
+                  <p class="${isRejected ? 'text-rose-900' : 'text-slate-900'} font-bold mt-0.5">${ticket.posisiBerkas || (isKomplain ? 'Proses Rekonsiliasi Nilai SIAKAD' : 'Loket Admin FAPERTA')}</p>
                 </div>
               </div>
-              <div class="flex items-start gap-3">
-                <span class="text-lg shrink-0">${isRejected ? '⚠️' : '⏱️'}</span>
+              <div class="flex items-start gap-2.5">
+                <span class="text-base shrink-0">${isRejected ? '⚠️' : '⏱️'}</span>
                 <div>
-                  <span class="font-bold text-slate-700 block text-xs uppercase tracking-wider">Estimasi Selesai:</span>
-                  <p class="${isRejected ? 'text-rose-700' : 'text-emerald-800'} font-extrabold mt-1">${(ticket.estimasiSelesai && ticket.estimasiSelesai !== '-') ? ticket.estimasiSelesai : '-'}</p>
+                  <span class="font-bold text-slate-600 block text-[11px] uppercase tracking-wider">Estimasi Selesai:</span>
+                  <p class="${isRejected ? 'text-rose-700' : 'text-emerald-800'} font-extrabold mt-0.5">${(ticket.estimasiSelesai && ticket.estimasiSelesai !== '-') ? ticket.estimasiSelesai : '-'}</p>
                 </div>
               </div>
             </div>
 
-            <!-- JIKA DITOLAK: BANNER INFORMASI PERBAIKAN -->
+            <!-- JIKA DITOLAK: INFORMASI PERBAIKAN -->
             ${isRejected ? `
-              <div class="rounded-2xl bg-rose-50 border border-rose-200 p-6 text-sm text-rose-950 space-y-3">
-                <h4 class="font-black text-rose-900 text-base flex items-center gap-2">
+              <div class="rounded-2xl bg-rose-50 border border-rose-200 p-5 text-xs sm:text-sm text-rose-950 space-y-3">
+                <h4 class="font-black text-rose-900 text-sm sm:text-base flex items-center gap-2">
                   <span>❌</span>
                   <span>Permohonan Ditolak / Perlu Perbaikan</span>
                 </h4>
-                <p class="text-rose-900 leading-relaxed text-xs sm:text-sm">
-                  Permohonan berkas belum dapat dilanjutkan karena terdapat kekurangan data atau keterangan perbaikan yang harus dipenuhi.
-                </p>
-                <div class="p-4 rounded-xl bg-white border border-rose-200">
-                  <strong class="text-rose-900 block font-bold text-xs mb-1">Catatan / Alasan Petugas:</strong>
-                  <p class="text-slate-800 italic">${ticket.catatanAdmin || 'Persyaratan belum lengkap.'}</p>
+                <div class="p-3.5 rounded-xl bg-white border border-rose-200">
+                  <strong class="text-rose-900 block font-bold text-xs mb-1">Catatan Petugas Administrasi:</strong>
+                  <p class="text-slate-800 italic text-xs sm:text-sm leading-relaxed">${ticket.catatanAdmin || 'Persyaratan belum lengkap.'}</p>
                 </div>
                 <p class="text-xs text-rose-800 font-medium">
-                  💡 <strong>Tindakan Mahasiswa:</strong> ${isKomplain ? 'Silakan hubungi admin atau ajukan permohonan ulang dengan melampirkan bukti yang sesuai.' : 'Silakan datang langsung ke <strong>Loket Admin FAPERTA</strong> dengan membawa berkas perbaikan.'}
+                  💡 <strong>Tindakan Mahasiswa:</strong> ${isKomplain ? 'Silakan perbaiki data atau hubungi admin loket.' : 'Silakan datang langsung ke <strong>Loket Admin FAPERTA</strong> dengan membawa berkas perbaikan.'}
                 </p>
               </div>
             ` : `
-              <!-- KOTAK PROSES DINAMIS (MOBILE-FIRST DYNAMIC STATUS BOX) -->
-              <div class="rounded-2xl border-2 ${curPhase.themeBg} p-5 sm:p-6 shadow-xs space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                  <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black border ${curPhase.badgeClass} self-start shadow-2xs">
+              <!-- KOTAK PROSES DINAMIS (LANGSUNG CATATAN PETUGAS DI BAWAH JUDUL - Requirement #1) -->
+              <div class="rounded-2xl border-2 ${curPhase.themeBg} p-4 sm:p-5 shadow-xs space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black border ${curPhase.badgeClass} self-start shadow-2xs">
                     <span>${curPhase.icon}</span>
                     <span>${curPhase.badge}</span>
                   </div>
@@ -337,99 +444,87 @@ import { INITIAL_PORTAL_TICKETS } from "../../data/portalData";
                   <div class="${curPhase.barColor} h-full rounded-full transition-all duration-700 ease-out" style="width: ${curPhase.percent}%"></div>
                 </div>
 
-                <div>
-                  <h4 class="text-base sm:text-lg font-black ${curPhase.titleColor} flex items-center gap-2">
+                <!-- Judul Progres & Langsung Catatan Petugas Administrasi -->
+                <div class="space-y-2 pt-1">
+                  <h4 class="text-sm sm:text-base font-black ${curPhase.titleColor} flex items-center gap-2">
                     <span>${curPhase.icon}</span>
                     <span>${curPhase.title}</span>
                   </h4>
-                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
-                    ${curPhase.desc}
-                  </p>
-                </div>
-
-                <!-- Bar Langkah Selanjutnya (Efisien di Mobile) -->
-                <div class="pt-3 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 text-xs text-slate-600">
-                  <span class="font-black text-slate-800 shrink-0 flex items-center gap-1">
-                    <span>👉</span>
-                    <span>Langkah Selanjutnya:</span>
-                  </span>
-                  <span class="text-slate-700 font-medium">${curPhase.next}</span>
+                  
+                  <!-- Catatan Petugas Administrasi Langsung di Bawah Judul -->
+                  <div class="p-3.5 rounded-xl bg-white/95 border border-slate-200/90 shadow-2xs">
+                    <span class="font-bold text-slate-700 block text-xs mb-1 flex items-center gap-1.5">
+                      <span>💬</span>
+                      <span>Catatan Petugas Administrasi:</span>
+                    </span>
+                    <p class="text-slate-900 font-medium italic text-xs sm:text-sm leading-relaxed">
+                      "${ticket.catatanAdmin || curPhase.defaultNote}"
+                    </p>
+                  </div>
                 </div>
               </div>
             `}
 
-            <!-- JIKA STATUS SELESAI: PANDUAN PENGAMBILAN / KETERANGAN HASIL -->
+            <!-- JIKA STATUS SELESAI: PANDUAN PENGAMBILAN (DIPERTAHANKAN SESUAI PERMINTAAN USER) -->
             ${isDone ? (isKomplain ? `
-              <div class="rounded-2xl bg-emerald-50/90 border-2 border-emerald-300 p-6 text-sm text-emerald-950 space-y-4">
+              <div class="rounded-2xl bg-emerald-50/90 border-2 border-emerald-300 p-5 text-xs sm:text-sm text-emerald-950 space-y-3">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <h4 class="text-base font-black text-emerald-900 flex items-center gap-2">
+                  <h4 class="text-sm sm:text-base font-black text-emerald-900 flex items-center gap-2">
                     <span>✅</span>
-                    <span>Hasil Komplain Nilai Telah Selesai Diproses (Online)</span>
+                    <span>Hasil Komplain Nilai Selesai Diproses (Online)</span>
                   </h4>
-                  <span class="px-3 py-1 rounded-full bg-emerald-200 text-emerald-900 text-xs font-bold self-start">
-                    Selesai Online • Tanpa ke Loket
+                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-200 text-emerald-900 text-xs font-bold self-start">
+                    Selesai Online • Tanpa Perlu ke Loket
                   </span>
                 </div>
                 <p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">
-                  Permohonan klarifikasi dan rekonsiliasi nilai telah selesai diproses oleh Dosen Pengampu serta Bagian Administrasi Akademik. <strong>Mahasiswa tidak perlu hadir ke loket admin</strong>, cukup periksa keterangan di bawah ini dan pantau nilai pada portal SIAKAD.
+                  Perbaikan nilai telah disesuaikan oleh Dosen Pengampu di SIAKAD. Mahasiswa tidak perlu datang ke loket fisik, silakan langsung login ke portal SIAKAD Anda untuk melihat pembaruan nilai.
                 </p>
-                <div class="p-4 rounded-xl bg-white border border-emerald-300 shadow-2xs space-y-1">
-                  <span class="text-slate-500 font-bold block text-xs">📝 Keterangan / Hasil dari Dosen & Admin:</span>
-                  <p class="text-slate-900 font-medium italic text-xs sm:text-sm">
-                    "${ticket.catatanAdmin || 'Nilai telah diverifikasi dan disesuaikan di sistem SIAKAD. Silakan cek KHS pada portal mahasiswa Anda.'}"
-                  </p>
-                </div>
-                <div class="p-3.5 rounded-xl bg-emerald-100/80 border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2 font-medium">
-                  <span>💡</span>
-                  <span>Silakan login ke portal SIAKAD INSTIPER untuk melihat perubahan nilai pada transkrip atau KHS Anda.</span>
-                </div>
               </div>
             ` : `
-              <div class="rounded-2xl bg-emerald-50/80 border-2 border-emerald-300 p-6 text-sm text-emerald-950 space-y-4">
+              <div class="rounded-2xl bg-emerald-50/80 border-2 border-emerald-300 p-5 text-xs sm:text-sm text-emerald-950 space-y-3">
                 <div class="flex items-center justify-between gap-2">
-                  <h4 class="text-base font-black text-emerald-900 flex items-center gap-2">
+                  <h4 class="text-sm sm:text-base font-black text-emerald-900 flex items-center gap-2">
                     <span>🏢</span>
                     <span>Dokumen Fisik Sudah Siap Diambil di Loket!</span>
                   </h4>
-                  <span class="px-3 py-1 rounded-full bg-emerald-200 text-emerald-900 text-xs font-bold">
+                  <span class="px-2.5 py-0.5 rounded-full bg-emerald-200 text-emerald-900 text-xs font-bold">
                     Stempel Basah Selesai
                   </span>
                 </div>
                 <p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">
                   Salinan fisik resmi telah selesai diverifikasi dan dibubuhi cap stempel basah Fakultas Pertanian INSTIPER. Silakan ambil langsung di loket:
                 </p>
-                <div class="grid sm:grid-cols-3 gap-3 p-4 rounded-xl bg-white border border-emerald-200 text-xs sm:text-sm">
+                <div class="grid sm:grid-cols-3 gap-2.5 p-3.5 rounded-xl bg-white border border-emerald-200 text-xs">
                   <div>
-                    <span class="text-slate-400 font-bold block text-[11px]">📍 Lokasi Loket:</span>
+                    <span class="text-slate-400 font-bold block text-[10px]">📍 Lokasi Loket:</span>
                     <strong class="text-emerald-950">Loket Admin FAPERTA</strong>
                   </div>
                   <div>
-                    <span class="text-slate-400 font-bold block text-[11px]">🕒 Jam Pelayanan:</span>
+                    <span class="text-slate-400 font-bold block text-[10px]">🕒 Jam Pelayanan:</span>
                     <strong class="text-emerald-950">Senin – Jumat, 08.00 – 15.00 WIB</strong>
                   </div>
                   <div>
-                    <span class="text-slate-400 font-bold block text-[11px]">🪪 Syarat Pengambilan:</span>
+                    <span class="text-slate-400 font-bold block text-[10px]">🪪 Syarat Pengambilan:</span>
                     <strong class="text-emerald-950">Membawa KTM Asli & Kode ${ticket.kode}</strong>
                   </div>
                 </div>
+                ${ticket.sudahDiambil ? `
+                  <div class="p-2.5 rounded-xl bg-purple-100 text-purple-900 border border-purple-300 text-xs font-bold flex items-center gap-2">
+                    <span>✓</span>
+                    <span>Dokumen fisik telah diambil di loket pada ${ticket.tanggalDiambil || '-'}.</span>
+                  </div>
+                ` : ''}
               </div>
             `) : ''}
 
-            <!-- Catatan Petugas Loket -->
-            ${ticket.catatanAdmin && !isRejected ? `
-              <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5 text-xs sm:text-sm text-slate-800">
-                <span class="font-bold text-emerald-800 block mb-1">💬 Catatan Petugas Administrasi:</span>
-                <p class="leading-relaxed italic">"${ticket.catatanAdmin}"</p>
-              </div>
-            ` : ''}
-
             <!-- Footer Bukti Pengambilan & Cetak Struk Mahasiswa -->
-            <div class="pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm text-slate-600">
+            <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
               <span>Keperluan: <strong class="text-slate-900">${ticket.detailTambahan || ticket.keperluan}</strong></span>
               <button 
                 type="button" 
                 onclick="window.printOfficialTicket('${ticket.kode}')" 
-                class="no-print px-4 py-2.5 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs sm:text-sm transition flex items-center gap-2 cursor-pointer shadow-2xs"
+                class="no-print px-4 py-2 rounded-xl border border-emerald-600 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 font-bold text-xs transition flex items-center gap-2 cursor-pointer shadow-2xs"
               >
                 <span>🖨️</span>
                 <span>Cetak Tanda Terima Mahasiswa</span>
