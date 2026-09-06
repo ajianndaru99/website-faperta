@@ -489,14 +489,28 @@ import {
                   </p>
                 </div>
                 
-                <!-- Database Tabs Pills (Hanya Master Layanan & Akun Admin - Poin 5) -->
+                <!-- Database Tabs Pills (Master Layanan, Master Mahasiswa, Pengambilan Berkas, Akun Admin) -->
                 <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl self-start sm:self-center">
                   <button 
                     type="button" 
                     data-db-tab="master-layanan" 
                     class="db-sub-tab px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
                   >
-                    📋 Database Master Layanan
+                    📋 Buku Besar Layanan
+                  </button>
+                  <button 
+                    type="button" 
+                    data-db-tab="mahasiswa" 
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    🎓 Master Mahasiswa
+                  </button>
+                  <button 
+                    type="button" 
+                    data-db-tab="pengambilan" 
+                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                  >
+                    📦 Pengambilan Berkas
                   </button>
                   <button 
                     type="button" 
@@ -592,21 +606,32 @@ import {
                   </div>
                 </div>
 
-                <!-- Sort Control -->
-                <div class="flex items-center gap-1.5 shrink-0 self-start md:self-auto">
-                  <label for="db-master-sort" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
-                  <select 
-                    id="db-master-sort" 
-                    class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                <!-- Sort Control & Quick Export Excel -->
+                <div class="flex items-center gap-2 shrink-0 self-start md:self-auto">
+                  <div class="flex items-center gap-1.5">
+                    <label for="db-master-sort" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
+                    <select 
+                      id="db-master-sort" 
+                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                    >
+                      <option value="waktu_desc">Waktu (Terbaru ➜ Terlama)</option>
+                      <option value="waktu_asc">Waktu (Terlama ➜ Terbaru)</option>
+                      <option value="prodi_asc">Program Studi (A ➜ Z)</option>
+                      <option value="prodi_desc">Program Studi (Z ➜ A)</option>
+                      <option value="case_asc">Skenario Layanan (A ➜ Z)</option>
+                      <option value="nama_asc">Nama Mahasiswa (A ➜ Z)</option>
+                      <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
+                    </select>
+                  </div>
+                  <button 
+                    type="button" 
+                    id="btn-quick-export-excel" 
+                    class="h-9 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer shrink-0"
+                    title="Ekspor seluruh rekapitulasi data layanan ke format spreadsheet Excel (.xls)"
                   >
-                    <option value="waktu_desc">Waktu (Terbaru ➜ Terlama)</option>
-                    <option value="waktu_asc">Waktu (Terlama ➜ Terbaru)</option>
-                    <option value="prodi_asc">Program Studi (A ➜ Z)</option>
-                    <option value="prodi_desc">Program Studi (Z ➜ A)</option>
-                    <option value="case_asc">Skenario Layanan (A ➜ Z)</option>
-                    <option value="nama_asc">Nama Mahasiswa (A ➜ Z)</option>
-                    <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
-                  </select>
+                    <span>📊</span>
+                    <span>Ekspor Excel (.xls)</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -630,6 +655,97 @@ import {
                     </thead>
                     <tbody id="table-master-layanan-body" class="divide-y divide-slate-100">
                       <!-- Rendered by JS, dikelompokkan dengan separator baris per hari! -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE: MASTER DATA MAHASISWA (INDUK & PEMOHON) -->
+            <div id="pane-mahasiswa" class="db-pane hidden space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">🎓</span>
+                  <div>
+                    <h3 class="text-sm font-black text-slate-900">Database Master Mahasiswa FAPERTA</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Master data induk mahasiswa aktif terdaftar serta seluruh mahasiswa pemohon berkas/layanan.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="badge-mhs-count" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    0 Mahasiswa Terdata
+                  </span>
+                  <button 
+                    type="button" 
+                    id="btn-export-mahasiswa-excel" 
+                    class="px-3.5 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                    title="Unduh seluruh data master mahasiswa ke format Excel (.xls)"
+                  >
+                    <span>📊</span>
+                    <span>Ekspor Mahasiswa (.xls)</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4 w-28">NIM</th>
+                        <th class="py-3.5 px-4">Nama Mahasiswa</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Kontak (WhatsApp & Email)</th>
+                        <th class="py-3.5 px-4">Minat Studi</th>
+                        <th class="py-3.5 px-4 text-center">Angkatan</th>
+                        <th class="py-3.5 px-4 text-center">Semester</th>
+                        <th class="py-3.5 px-4">DPA (Dosen Pembimbing)</th>
+                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th class="py-3.5 px-4 text-right">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-mahasiswa-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB PANE: PENGAMBILAN BERKAS FISIK LOKET -->
+            <div id="pane-pengambilan" class="db-pane hidden space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-xs">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">📦</span>
+                  <div>
+                    <h3 class="text-sm font-black text-slate-900">Monitoring Pengambilan Berkas di Loket</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Monitoring berkas fisik yang siap diambil atau telah diserahkan langsung kepada mahasiswa di Loket FAPERTA.</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="badge-pengambilan-count" class="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-900 border border-purple-200">
+                    0 Berkas Diambil
+                  </span>
+                </div>
+              </div>
+
+              <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-700">
+                    <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                      <tr>
+                        <th class="py-3.5 px-4">Kode Tiket</th>
+                        <th class="py-3.5 px-4">Mahasiswa (NIM)</th>
+                        <th class="py-3.5 px-4">Program Studi</th>
+                        <th class="py-3.5 px-4">Layanan</th>
+                        <th class="py-3.5 px-4">Waktu Penyerahan</th>
+                        <th class="py-3.5 px-4">Petugas Loket</th>
+                        <th class="py-3.5 px-4 text-center">Status</th>
+                        <th class="py-3.5 px-4 text-right">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table-pengambilan-body" class="divide-y divide-slate-100">
+                      <!-- Rendered by JS -->
                     </tbody>
                   </table>
                 </div>
@@ -730,12 +846,19 @@ import {
 
                 <div class="mt-8 flex flex-wrap gap-3">
                   <button 
+                    id="btn-rekap-download-excel" 
+                    type="button" 
+                    class="btn-cta text-xs px-6 py-3 rounded-xl flex items-center gap-2 font-bold cursor-pointer bg-emerald-700 hover:bg-emerald-800 text-white shadow-md shadow-emerald-900/15"
+                  >
+                    <span>📊 Ekspor Laporan Excel (.xls)</span>
+                    <span class="text-[10px] bg-emerald-900/40 px-2 py-0.5 rounded-md">Format Lengkap Resmi</span>
+                  </button>
+                  <button 
                     id="btn-rekap-download-csv" 
                     type="button" 
-                    class="btn-cta text-xs px-6 py-3 rounded-xl flex items-center gap-2 font-bold cursor-pointer"
+                    class="text-xs px-5 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold flex items-center gap-1.5 cursor-pointer shadow-2xs"
                   >
-                    <span>📥 Unduh Rekap CSV</span>
-                    <span>(Excel Compatible)</span>
+                    <span>📥 Unduh CSV</span>
                   </button>
                   <button 
                     id="btn-back-to-berkas" 
@@ -1187,15 +1310,94 @@ import {
         setInterval(tick, 1000);
       }
 
-      // 3. Storage Data Management
+      // 3. Storage Data Management (Tiket & Master Mahasiswa Terintegrasi)
+      function loadMasterMahasiswa() {
+        try {
+          const raw = localStorage.getItem('portal_faperta_master_mahasiswa');
+          let list = raw ? JSON.parse(raw) : [...masterMahasiswa];
+
+          // Pastikan semua data bawaan dari portalData terdaftar
+          masterMahasiswa.forEach(initM => {
+            const cleanInitNim = String(initM.nim).trim().toLowerCase();
+            if (!list.some(m => String(m.nim).trim().toLowerCase() === cleanInitNim)) {
+              list.push(initM);
+            }
+          });
+
+          // Sinkronkan seluruh pemohon dari antrean tiket
+          const allTickets = loadRawTicketsOnly();
+          let changed = false;
+
+          allTickets.forEach(t => {
+            if (!t.nim) return;
+            const tNim = String(t.nim).trim();
+            const existing = list.find(m => String(m.nim).trim().toLowerCase() === tNim.toLowerCase());
+
+            if (!existing) {
+              list.push({
+                nim: tNim,
+                nama: t.nama || 'Mahasiswa Pemohon',
+                prodi: t.prodi || 'S1 Agroteknologi',
+                minat: 'SPKS (Kelapa Sawit)',
+                angkatan: 2024,
+                semester: t.semester || 'Semester 3',
+                statusAkademik: 'Aktif',
+                dpa: 'Ir. H. Sudirman, M.P.',
+                whatsapp: t.whatsapp || '',
+                email: t.email || '',
+                isApplicant: true
+              });
+              changed = true;
+            } else {
+              if (!existing.whatsapp && t.whatsapp) { existing.whatsapp = t.whatsapp; changed = true; }
+              if (!existing.email && t.email) { existing.email = t.email; changed = true; }
+              if (t.semester && existing.semester !== t.semester) { existing.semester = t.semester; changed = true; }
+              if (t.prodi && existing.prodi !== t.prodi) { existing.prodi = t.prodi; changed = true; }
+            }
+          });
+
+          if (!raw || changed) {
+            localStorage.setItem('portal_faperta_master_mahasiswa', JSON.stringify(list));
+          }
+          return list;
+        } catch (e) {
+          return [...masterMahasiswa];
+        }
+      }
+
+      function saveMasterMahasiswa(list) {
+        try {
+          localStorage.setItem('portal_faperta_master_mahasiswa', JSON.stringify(list));
+        } catch (e) {}
+      }
+
+      function loadRawTicketsOnly() {
+        try {
+          const raw = localStorage.getItem('portal_faperta_tickets');
+          return raw ? JSON.parse(raw) : [...initialPortalTickets];
+        } catch (e) {
+          return [...initialPortalTickets];
+        }
+      }
+
       function loadTickets() {
         try {
           const raw = localStorage.getItem('portal_faperta_tickets');
           let data = raw ? JSON.parse(raw) : [...initialPortalTickets];
           let updated = false;
+
+          // Pastikan tiket awal resmi (seperti tiket Ajian KHS-2026-8246) tercakup jika belum ada
+          initialPortalTickets.forEach(initT => {
+            if (!data.some(t => t.kode === initT.kode)) {
+              data.push(initT);
+              updated = true;
+            }
+          });
+
+          const mhsList = loadMasterMahasiswa();
           data.forEach(t => {
             if (!t.whatsapp || !t.email) {
-              const m = masterMahasiswa.find(mhs => mhs.nim === t.nim);
+              const m = mhsList.find(mhs => String(mhs.nim).trim().toLowerCase() === String(t.nim).trim().toLowerCase());
               if (m) {
                 if (!t.whatsapp && m.whatsapp) { t.whatsapp = m.whatsapp; updated = true; }
                 if (!t.email && m.email) { t.email = m.email; updated = true; }
@@ -2460,9 +2662,224 @@ import {
               });
             });
           }
+
+          // 2. Table Master Data Mahasiswa (Induk & Seluruh Pemohon Layanan)
+          const mhsBody = document.getElementById('table-mahasiswa-body');
+          const badgeMhsCount = document.getElementById('badge-mhs-count');
+          if (mhsBody) {
+            const mhsList = loadMasterMahasiswa();
+            const allTicketsList = loadTickets();
+            let filteredMhs = [...mhsList];
+
+            if (dbMasterSearchQuery) {
+              const q = dbMasterSearchQuery.toLowerCase();
+              filteredMhs = filteredMhs.filter(m => 
+                (m.nim && m.nim.toLowerCase().includes(q)) ||
+                (m.nama && m.nama.toLowerCase().includes(q)) ||
+                (m.prodi && m.prodi.toLowerCase().includes(q)) ||
+                (m.whatsapp && m.whatsapp.toLowerCase().includes(q)) ||
+                (m.email && m.email.toLowerCase().includes(q)) ||
+                (m.minat && m.minat.toLowerCase().includes(q))
+              );
+            }
+
+            if (dbFilterProdi !== 'all') {
+              filteredMhs = filteredMhs.filter(m => m.prodi === dbFilterProdi);
+            }
+
+            if (dbFilterStatus !== 'all') {
+              if (dbFilterStatus === 'Aktif' || dbFilterStatus === 'Cuti' || dbFilterStatus === 'Lulus') {
+                filteredMhs = filteredMhs.filter(m => m.statusAkademik === dbFilterStatus);
+              }
+            }
+
+            // Sortir Mahasiswa
+            if (dbMasterSort === 'nama_asc') {
+              filteredMhs.sort((a, b) => (a.nama || '').localeCompare(b.nama || ''));
+            } else if (dbMasterSort === 'nim_asc') {
+              filteredMhs.sort((a, b) => (a.nim || '').localeCompare(b.nim || ''));
+            } else if (dbMasterSort === 'prodi_asc') {
+              filteredMhs.sort((a, b) => (a.prodi || '').localeCompare(b.prodi || ''));
+            }
+
+            if (badgeMhsCount) {
+              badgeMhsCount.textContent = `${filteredMhs.length} Mahasiswa Terdata`;
+            }
+
+            if (filteredMhs.length === 0) {
+              mhsBody.innerHTML = `
+                <tr>
+                  <td colspan="10" class="py-12 text-center text-slate-400">
+                    <span class="text-3xl block mb-2">🔍</span>
+                    <strong class="text-sm text-slate-700 block">Mahasiswa tidak ditemukan</strong>
+                    <span class="text-xs text-slate-500">Coba gunakan kata kunci pencarian NIM atau nama lain.</span>
+                  </td>
+                </tr>
+              `;
+            } else {
+              mhsBody.innerHTML = filteredMhs.map(m => {
+                const cleanMhsNim = String(m.nim).trim().toLowerCase();
+                const studentTickets = allTicketsList.filter(t => String(t.nim).trim().toLowerCase() === cleanMhsNim);
+                const hasTickets = studentTickets.length > 0;
+                const formattedWa = (m.whatsapp || '').replace(/\D/g, '').replace(/^0/, '62');
+
+                return `
+                  <tr class="hover:bg-slate-50/90 transition text-xs">
+                    <td class="py-3.5 px-4 font-mono font-bold text-emerald-800 whitespace-nowrap">
+                      ${m.nim}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <strong class="text-slate-900 block font-bold text-xs sm:text-sm">${m.nama}</strong>
+                      ${hasTickets ? `
+                        <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
+                          <span>📋</span>
+                          <span>Pemohon (${studentTickets.length} Berkas)</span>
+                        </span>
+                      ` : `
+                        <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">
+                          Data Induk Terdaftar
+                        </span>
+                      `}
+                    </td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-700 whitespace-nowrap">
+                      ${m.prodi}
+                    </td>
+                    <td class="py-3.5 px-4">
+                      <div class="flex flex-col gap-1">
+                        ${m.whatsapp ? `
+                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 hover:underline">
+                            <span>💬</span> <span>${m.whatsapp}</span>
+                          </a>
+                        ` : '<span class="text-slate-400 text-[11px]">-</span>'}
+                        ${m.email ? `
+                          <a href="mailto:${m.email}" class="inline-flex items-center gap-1 text-[11px] font-mono text-slate-600 hover:underline truncate max-w-[150px]" title="${m.email}">
+                            <span>✉️</span> <span class="truncate">${m.email}</span>
+                          </a>
+                        ` : ''}
+                      </div>
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-600 font-medium">
+                      ${m.minat || '-'}
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-mono text-slate-700">
+                      ${m.angkatan || '-'}
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-slate-700">
+                      ${m.semester || '-'}
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-700 font-medium">
+                      ${m.dpa || '-'}
+                    </td>
+                    <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                      <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold ${
+                        m.statusAkademik === 'Aktif' ? 'bg-emerald-100 text-emerald-800' :
+                        m.statusAkademik === 'Cuti' ? 'bg-amber-100 text-amber-900' :
+                        'bg-blue-100 text-blue-900'
+                      }">
+                        ${m.statusAkademik || 'Aktif'}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                      ${hasTickets ? `
+                        <button 
+                          type="button" 
+                          class="btn-view-mhs-tickets px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-700 hover:text-white text-emerald-800 border border-emerald-300 text-xs font-bold transition cursor-pointer"
+                          data-nim="${m.nim}"
+                          title="Lihat riwayat permohonan berkas mahasiswa ini"
+                        >
+                          Lihat Berkas (${studentTickets.length})
+                        </button>
+                      ` : `
+                        <span class="text-slate-400 text-[11px] font-medium">Belum ada berkas</span>
+                      `}
+                    </td>
+                  </tr>
+                `;
+              }).join('');
+
+              mhsBody.querySelectorAll('.btn-view-mhs-tickets').forEach(btn => {
+                btn.addEventListener('click', () => {
+                  const targetNim = btn.getAttribute('data-nim');
+                  if (targetNim) {
+                    setMainView('berkas');
+                    const sInput = document.getElementById('admin-search-input');
+                    if (sInput) {
+                      sInput.value = targetNim;
+                      searchQuery = targetNim.toLowerCase();
+                      renderTicketsList();
+                    }
+                  }
+                });
+              });
+            }
+          }
+
+          // 3. Table Pengambilan Berkas
+          const pengambilanBody = document.getElementById('table-pengambilan-body');
+          const badgePengambilanCount = document.getElementById('badge-pengambilan-count');
+          if (pengambilanBody) {
+            const allTicketsList = loadTickets();
+            let pengambilanList = allTicketsList.filter(t => t.status === 'Selesai (Siap Diambil)' || t.sudahDiambil);
+            if (badgePengambilanCount) {
+              badgePengambilanCount.textContent = `${pengambilanList.filter(t => t.sudahDiambil).length} Berkas Sudah Diambil (${pengambilanList.length} Total Selesai)`;
+            }
+
+            if (dbMasterSearchQuery) {
+              const q = dbMasterSearchQuery.toLowerCase();
+              pengambilanList = pengambilanList.filter(t =>
+                t.kode.toLowerCase().includes(q) ||
+                t.nim.toLowerCase().includes(q) ||
+                t.nama.toLowerCase().includes(q) ||
+                (t.prodi && t.prodi.toLowerCase().includes(q))
+              );
+            }
+
+            if (pengambilanList.length === 0) {
+              pengambilanBody.innerHTML = `
+                <tr>
+                  <td colspan="8" class="py-10 text-center text-slate-400 text-xs">
+                    Tidak ada berkas yang siap diambil atau telah diserahkan.
+                  </td>
+                </tr>
+              `;
+            } else {
+              pengambilanBody.innerHTML = pengambilanList.map(t => `
+                <tr class="hover:bg-slate-50/90 transition text-xs">
+                  <td class="py-3 px-4 font-mono font-bold text-slate-900">${t.kode}</td>
+                  <td class="py-3 px-4">
+                    <strong class="text-slate-900 block">${t.nama}</strong>
+                    <span class="font-mono text-[11px] text-emerald-800 font-bold">${t.nim}</span>
+                  </td>
+                  <td class="py-3 px-4 font-medium text-slate-700">${t.prodi || '-'}</td>
+                  <td class="py-3 px-4 text-slate-600">${t.layananNama}</td>
+                  <td class="py-3 px-4 font-mono text-slate-700">${t.tanggalDiambil || (t.sudahDiambil ? 'Selesai diserahkan' : 'Menunggu pengambilan')}</td>
+                  <td class="py-3 px-4 text-slate-700">${t.petugasPenyerah || 'Loket Admin FAPERTA'}</td>
+                  <td class="py-3 px-4 text-center">
+                    <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-black ${
+                      t.sudahDiambil ? 'bg-purple-100 text-purple-900 border border-purple-200' : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                    }">
+                      ${t.sudahDiambil ? 'Sudah Diambil' : 'Siap Diambil'}
+                    </span>
+                  </td>
+                  <td class="py-3 px-4 text-right">
+                    <button type="button" class="btn-disposisi-pengambilan px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-emerald-700 hover:text-white font-bold text-xs transition cursor-pointer" data-code="${t.kode}">
+                      ⚡ Update
+                    </button>
+                  </td>
+                </tr>
+              `).join('');
+
+              pengambilanBody.querySelectorAll('.btn-disposisi-pengambilan').forEach(btn => {
+                btn.addEventListener('click', () => {
+                  const code = btn.getAttribute('data-code');
+                  if (code) openEditModal(code);
+                });
+              });
+            }
+          }
         }
 
-        // 2. Table Akun Petugas & Admin (Dikelola Super Admin)
+        // 4. Table Akun Petugas & Admin (Dikelola Super Admin)
         const adminBody = document.getElementById('table-admin-body');
         const restrictedNotice = document.getElementById('admin-restricted-notice');
         const btnAddAccount = document.getElementById('btn-add-account');
@@ -2656,7 +3073,210 @@ import {
         renderTicketsList();
       });
 
-      // 11. Ekspor CSV Rekap Data (Tersedia di Modul Rekap & Laporan)
+      // 11. Ekspor Excel Resmi (.xls) & CSV Rekap Data
+      function downloadExcelBlob(htmlContent, filename) {
+        const blob = new Blob(['\uFEFF' + htmlContent], {
+          type: 'application/vnd.ms-excel;charset=utf-8;'
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      function generateExcelReport(type = 'layanan') {
+        const allTickets = loadTickets();
+        const now = new Date();
+        const tglStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        const jamStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        const currentAdmin = sessionStorage.getItem('portal_admin_nama') || 'Admin Utama Sistem Loket';
+        const currentRole = sessionStorage.getItem('portal_admin_role') || 'Super Admin';
+
+        if (type === 'mahasiswa') {
+          const mhsList = loadMasterMahasiswa();
+          let rowsHtml = '';
+          mhsList.forEach((m, idx) => {
+            const cleanMhsNim = String(m.nim).trim().toLowerCase();
+            const studentTickets = allTickets.filter(t => String(t.nim).trim().toLowerCase() === cleanMhsNim);
+            const ticketCodes = studentTickets.map(t => t.kode).join(', ') || '-';
+            rowsHtml += `
+              <tr>
+                <td style="text-align: center;">${idx + 1}</td>
+                <td style="mso-number-format:'\\@'; font-weight: bold; text-align: center;">${m.nim}</td>
+                <td style="font-weight: bold;">${m.nama}</td>
+                <td>${m.prodi}</td>
+                <td>${m.minat || '-'}</td>
+                <td style="text-align: center;">${m.angkatan || '-'}</td>
+                <td style="text-align: center;">${m.semester || '-'}</td>
+                <td style="mso-number-format:'\\@'; text-align: center;">${m.whatsapp || '-'}</td>
+                <td>${m.email || '-'}</td>
+                <td>${m.dpa || '-'}</td>
+                <td style="text-align: center; font-weight: bold;">${m.statusAkademik || 'Aktif'}</td>
+                <td style="text-align: center;">${studentTickets.length} Berkas</td>
+                <td>${ticketCodes}</td>
+              </tr>
+            `;
+          });
+
+          const tableHtml = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+              <meta charset="utf-8">
+              <!--[if gte mso 9]>
+              <xml>
+                <x:ExcelWorkbook>
+                  <x:ExcelWorksheets>
+                    <x:ExcelWorksheet>
+                      <x:Name>Master Mahasiswa</x:Name>
+                      <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                    </x:ExcelWorksheet>
+                  </x:ExcelWorksheets>
+                </x:ExcelWorkbook>
+              </xml>
+              <![endif]-->
+              <style>
+                body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+                table { border-collapse: collapse; width: 100%; }
+                th { background-color: #065f46; color: #ffffff; font-weight: bold; border: 1px solid #047857; padding: 8px 10px; text-align: left; }
+                td { border: 1px solid #cbd5e1; padding: 6px 8px; vertical-align: middle; }
+              </style>
+            </head>
+            <body>
+              <table>
+                <tr><td colspan="13" style="font-size: 15pt; font-weight: bold; color: #065f46; text-align: center;">DATA MASTER INDUK & MAHASISWA PEMOHON LAYANAN</td></tr>
+                <tr><td colspan="13" style="font-size: 11pt; font-weight: bold; color: #334155; text-align: center;">FAKULTAS PERTANIAN - INSTITUT PERTANIAN STIPER (INSTIPER) YOGYAKARTA</td></tr>
+                <tr><td colspan="13" style="font-size: 9pt; color: #64748b; text-align: center;">Tanggal Ekspor: ${tglStr}, ${jamStr} | Dicetak oleh: ${currentAdmin} (${currentRole}) | Total Mahasiswa: ${mhsList.length} Orang</td></tr>
+                <tr><td colspan="13"></td></tr>
+                <thead>
+                  <tr>
+                    <th style="text-align: center; width: 40px;">No</th>
+                    <th style="text-align: center; width: 120px;">NIM</th>
+                    <th style="width: 180px;">Nama Mahasiswa</th>
+                    <th style="width: 140px;">Program Studi</th>
+                    <th style="width: 140px;">Minat Studi</th>
+                    <th style="text-align: center; width: 80px;">Angkatan</th>
+                    <th style="text-align: center; width: 90px;">Semester</th>
+                    <th style="text-align: center; width: 120px;">No. WhatsApp</th>
+                    <th style="width: 180px;">Email</th>
+                    <th style="width: 180px;">DPA (Dosen Pembimbing)</th>
+                    <th style="text-align: center; width: 100px;">Status Akademik</th>
+                    <th style="text-align: center; width: 100px;">Total Permohonan</th>
+                    <th style="width: 200px;">Riwayat Kode Tiket</th>
+                  </tr>
+                </thead>
+                <tbody>${rowsHtml}</tbody>
+              </table>
+            </body>
+            </html>
+          `;
+          downloadExcelBlob(tableHtml, `master-mahasiswa-faperta-${now.toISOString().slice(0, 10)}.xls`);
+          return;
+        }
+
+        // Default: Export Layanan / Rekap
+        const mhsList = loadMasterMahasiswa();
+        let rowsHtml = '';
+        allTickets.forEach((t, idx) => {
+          const dInfo = getTicketDateInfo(t);
+          const mhs = mhsList.find(m => String(m.nim).trim().toLowerCase() === String(t.nim).trim().toLowerCase());
+          const waNum = t.whatsapp || (mhs && mhs.whatsapp) || '-';
+          const emailAddr = t.email || (mhs && mhs.email) || '-';
+          const tglDiambil = t.tanggalDiambil || (t.sudahDiambil ? 'Sudah diserahkan' : '-');
+          const petPenyerah = t.petugasPenyerah || (t.sudahDiambil ? 'Admin Loket FAPERTA' : '-');
+
+          let statusBg = '#fef3c7'; let statusColor = '#92400e';
+          if (t.status === 'Selesai (Siap Diambil)' || t.status === 'Sudah Diambil') {
+            statusBg = '#d1fae5'; statusColor = '#065f46';
+          } else if (t.status.includes('Verifikasi') || t.status.includes('Proses')) {
+            statusBg = '#dbeafe'; statusColor = '#1e40af';
+          } else if (t.status === 'Ditolak') {
+            statusBg = '#ffe4e6'; statusColor = '#9f1239';
+          }
+
+          rowsHtml += `
+            <tr>
+              <td style="text-align: center;">${idx + 1}</td>
+              <td style="mso-number-format:'\\@'; font-weight: bold; text-align: center;">${t.kode}</td>
+              <td style="text-align: center;">${dInfo.displayDate}</td>
+              <td style="text-align: center;">${dInfo.timeStr}</td>
+              <td style="mso-number-format:'\\@'; font-weight: bold; text-align: center;">${t.nim}</td>
+              <td style="font-weight: bold;">${t.nama}</td>
+              <td>${t.prodi || '-'}</td>
+              <td style="text-align: center;">${t.semester || '-'}</td>
+              <td style="mso-number-format:'\\@'; text-align: center;">${waNum}</td>
+              <td>${emailAddr}</td>
+              <td>${t.layananNama || '-'}</td>
+              <td>${t.keperluan || '-'} ${t.detailTambahan ? `(${t.detailTambahan})` : ''}</td>
+              <td>${t.posisiBerkas || 'Loket Admin FAPERTA'}</td>
+              <td style="text-align: center; font-weight: bold; background-color: ${statusBg}; color: ${statusColor};">${t.status}</td>
+              <td style="text-align: center;">${t.sudahDiambil ? 'SUDAH' : 'BELUM'}</td>
+              <td>${tglDiambil} (${petPenyerah})</td>
+              <td>${t.catatanAdmin || '-'}</td>
+            </tr>
+          `;
+        });
+
+        const tableHtml = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+          <head>
+            <meta charset="utf-8">
+            <!--[if gte mso 9]>
+            <xml>
+              <x:ExcelWorkbook>
+                <x:ExcelWorksheets>
+                  <x:ExcelWorksheet>
+                    <x:Name>Rekap Layanan</x:Name>
+                    <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                  </x:ExcelWorksheet>
+                </x:ExcelWorksheets>
+              </xml>
+              <![endif]-->
+            <style>
+              body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+              table { border-collapse: collapse; width: 100%; }
+              th { background-color: #065f46; color: #ffffff; font-weight: bold; border: 1px solid #047857; padding: 8px 10px; text-align: left; }
+              td { border: 1px solid #cbd5e1; padding: 6px 8px; vertical-align: middle; }
+            </style>
+          </head>
+          <body>
+            <table>
+              <tr><td colspan="17" style="font-size: 15pt; font-weight: bold; color: #065f46; text-align: center;">REKAPITULASI ADMINISTRASI & PELAYANAN LOKET AKADEMIK</td></tr>
+              <tr><td colspan="17" style="font-size: 11pt; font-weight: bold; color: #334155; text-align: center;">FAKULTAS PERTANIAN - INSTITUT PERTANIAN STIPER (INSTIPER) YOGYAKARTA</td></tr>
+              <tr><td colspan="17" style="font-size: 9pt; color: #64748b; text-align: center;">Tanggal Ekspor: ${tglStr}, ${jamStr} | Petugas: ${currentAdmin} (${currentRole}) | Total Transaksi: ${allTickets.length} Berkas</td></tr>
+              <tr><td colspan="17"></td></tr>
+              <thead>
+                <tr>
+                  <th style="text-align: center; width: 40px;">No</th>
+                  <th style="text-align: center; width: 120px;">Kode Tiket</th>
+                  <th style="text-align: center; width: 110px;">Tanggal Pengajuan</th>
+                  <th style="text-align: center; width: 80px;">Jam</th>
+                  <th style="text-align: center; width: 110px;">NIM</th>
+                  <th style="width: 180px;">Nama Mahasiswa</th>
+                  <th style="width: 140px;">Program Studi</th>
+                  <th style="text-align: center; width: 90px;">Semester</th>
+                  <th style="text-align: center; width: 120px;">No. WhatsApp</th>
+                  <th style="width: 180px;">Email</th>
+                  <th style="width: 200px;">Jenis / Skenario Layanan</th>
+                  <th style="width: 220px;">Keperluan & Detail</th>
+                  <th style="width: 180px;">Posisi Berkas Fisik</th>
+                  <th style="text-align: center; width: 140px;">Status Berkas</th>
+                  <th style="text-align: center; width: 110px;">Pengambilan</th>
+                  <th style="width: 180px;">Waktu & Petugas Penyerahan</th>
+                  <th style="width: 250px;">Catatan Loket / Disposisi</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </body>
+          </html>
+        `;
+        downloadExcelBlob(tableHtml, `rekap-administrasi-faperta-${now.toISOString().slice(0, 10)}.xls`);
+      }
+
       function triggerExportCSV() {
         const all = loadTickets();
         const headers = ['Kode Tiket', 'NIM', 'Nama Mahasiswa', 'Program Studi', 'Layanan', 'Status', 'Posisi Berkas Fisik', 'Tanggal Pengajuan'];
@@ -2680,6 +3300,9 @@ import {
         document.body.removeChild(link);
       }
 
+      document.getElementById('btn-rekap-download-excel')?.addEventListener('click', () => generateExcelReport('layanan'));
+      document.getElementById('btn-quick-export-excel')?.addEventListener('click', () => generateExcelReport('layanan'));
+      document.getElementById('btn-export-mahasiswa-excel')?.addEventListener('click', () => generateExcelReport('mahasiswa'));
       document.getElementById('btn-rekap-download-csv')?.addEventListener('click', triggerExportCSV);
 
       function updateRekapStats() {

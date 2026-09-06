@@ -112,7 +112,8 @@ export const MASTER_MAHASISWA: MasterMahasiswaItem[] = [
   { nim: "22/33445/SP", nama: "Rian Pratama", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Eko Widodo, S.P., M.Sc.", whatsapp: "081233445566", email: "rian.pratama@instiperjogja.ac.id" },
   { nim: "20/55667/SP", nama: "Bagus Saputra", prodi: "S1 Agribisnis", minat: "SPA (Pengolahan Agribisnis)", angkatan: 2020, semester: "Semester 10", statusAkademik: "Aktif", dpa: "Ir. Endang Sulastri, M.M.", whatsapp: "081355667788", email: "bagus.saputra@instiperjogja.ac.id" },
   { nim: "21/44556/SP", nama: "Fajar Nugraha", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2021, semester: "Semester 8", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P.", whatsapp: "081244556677", email: "fajar.nugraha@instiperjogja.ac.id" },
-  { nim: "22/77889/SP", nama: "Putri Anggraini", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S.", whatsapp: "081377889911", email: "putri.anggraini@instiperjogja.ac.id" }
+  { nim: "22/77889/SP", nama: "Putri Anggraini", prodi: "S1 Agribisnis", minat: "SMBP (Bisnis Perkebunan)", angkatan: 2022, semester: "Semester 6", statusAkademik: "Aktif", dpa: "Dr. Ir. Hj. Nurhidayah, M.S.", whatsapp: "081377889911", email: "putri.anggraini@instiperjogja.ac.id" },
+  { nim: "08133978", nama: "ajian", prodi: "S1 Agroteknologi", minat: "SPKS (Kelapa Sawit)", angkatan: 2024, semester: "Semester 3", statusAkademik: "Aktif", dpa: "Ir. H. Sudirman, M.P.", whatsapp: "08121341241", email: "ajianndaru99@gmail.com" }
 ];
 
 export const MASTER_DOSEN: MasterDosenItem[] = [
@@ -430,6 +431,31 @@ export const PORTAL_DOCUMENTS: DocumentItem[] = [
 
 // Data Awal Berkas Permohonan Mahasiswa Resmi (Database Portal FAPERTA)
 export const INITIAL_PORTAL_TICKETS: TicketItem[] = [
+  {
+    kode: "KHS-2026-8246",
+    nim: "08133978",
+    nama: "ajian",
+    prodi: "S1 Agroteknologi",
+    semester: "Semester 3",
+    whatsapp: "08121341241",
+    email: "ajianndaru99@gmail.com",
+    layananId: "khs",
+    layananNama: "KHS (Seluruh Semester (Transkrip Kumulatif))",
+    keperluan: "Prasyarat Aktif Kembali Pasca Cuti / Non-Aktif",
+    detailTambahan: "Tujuan: Prasyarat Aktif Kembali Pasca Cuti / Non-Aktif | Catatan: -",
+    format: "Cetak Fisik Berstempel Basah (Ambil di Loket)",
+    status: "Selesai (Siap Diambil)",
+    statusStep: 4,
+    posisiBerkas: "Diserahkan ke Mahasiswa di Loket Admin FAPERTA (6 Sep 2026, 20.45 WIB)",
+    estimasiSelesai: "Jam 2 siang",
+    catatanAdmin: "Berkas fisik telah diambil langsung oleh mahasiswa di Loket Admin FAPERTA pada 6 Sep 2026, 20.45 WIB melalui petugas Admin Utama Sistem Loket.",
+    tanggal: "05 September 2026, 18:58 WIB",
+    isNewForAdmin: false,
+    sudahDiambil: true,
+    tanggalDiambil: "06 September 2026, 20:45 WIB",
+    sudahDiambilAt: 1757166300000,
+    petugasPenyerah: "Admin Utama Sistem Loket"
+  },
   {
     kode: "KHS-2026-7821",
     nim: "21/12345/SP",

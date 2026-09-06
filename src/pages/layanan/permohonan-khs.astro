@@ -689,6 +689,37 @@ const semesterList = Array.from({ length: 12 }, (_, i) => `Semester ${i + 1}`);
           legacyTickets.unshift(newTicket);
           localStorage.setItem('portal_khs_tickets', JSON.stringify(legacyTickets));
           localStorage.setItem('portal_khs_last_ticket', JSON.stringify(newTicket));
+
+          // Auto-sinkronisasi data pemohon ke Database Master Mahasiswa
+          try {
+            const rawMhs = localStorage.getItem('portal_faperta_master_mahasiswa');
+            const mhsList = rawMhs ? JSON.parse(rawMhs) : [];
+            const cleanNim = String(nim).trim();
+            const existingMhs = mhsList.find(m => String(m.nim).trim().toLowerCase() === cleanNim.toLowerCase());
+            if (!existingMhs) {
+              mhsList.push({
+                nim: cleanNim,
+                nama: String(nama).trim(),
+                prodi: prodi,
+                minat: 'SPKS (Kelapa Sawit)',
+                angkatan: 2024,
+                semester: semester || 'Semester 3',
+                statusAkademik: 'Aktif',
+                dpa: 'Ir. H. Sudirman, M.P.',
+                whatsapp: whatsapp || '',
+                email: email || '',
+                isApplicant: true
+              });
+            } else {
+              if (whatsapp) existingMhs.whatsapp = whatsapp;
+              if (email) existingMhs.email = email;
+              if (semester) existingMhs.semester = semester;
+              if (prodi) existingMhs.prodi = prodi;
+            }
+            localStorage.setItem('portal_faperta_master_mahasiswa', JSON.stringify(mhsList));
+          } catch (mhsErr) {
+            console.error('Gagal sinkron master mahasiswa:', mhsErr);
+          }
         } catch (err) {
           console.error(err);
         }
