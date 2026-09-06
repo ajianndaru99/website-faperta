@@ -547,31 +547,48 @@ import {
             <!-- TAB PANE: MASTER SELURUH LAYANAN DENGAN PEMISAH HARI (Poin 3 & 6) -->
             <div id="pane-master-layanan" class="db-pane space-y-4">
               
-              <!-- KPI Rekap Pemisah Waktu (Hari Ini, Kemarin, 7 Hari, Bulan Ini, Total) -->
+              <!-- KPI Rekap Pemisah Waktu Interaktif (Klik kartu untuk filter cepat tanggal) -->
               <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-                <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-300 shadow-2xs">
+                <button type="button" data-kpi-date="today" class="kpi-date-btn text-left p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-300 shadow-2xs hover:bg-emerald-100 hover:border-emerald-400 transition cursor-pointer group">
                   <span class="text-[10px] font-black text-emerald-800 uppercase tracking-wider block">🌟 Hari Ini</span>
                   <span id="kpi-db-today" class="text-lg sm:text-xl font-black text-emerald-950 font-mono mt-0.5 block">0 Layanan</span>
-                </div>
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">📅 Kemarin</span>
+                  <span class="text-[9px] text-emerald-700 font-bold opacity-0 group-hover:opacity-100 transition block mt-0.5">Filter Hari Ini →</span>
+                </button>
+                <button type="button" data-kpi-date="yesterday" class="kpi-date-btn text-left p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 transition cursor-pointer group">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block group-hover:text-emerald-800">📅 Kemarin</span>
                   <span id="kpi-db-yesterday" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
-                </div>
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">📆 7 Hari Terakhir</span>
+                  <span class="text-[9px] text-emerald-700 font-bold opacity-0 group-hover:opacity-100 transition block mt-0.5">Filter Kemarin →</span>
+                </button>
+                <button type="button" data-kpi-date="week" class="kpi-date-btn text-left p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 transition cursor-pointer group">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block group-hover:text-emerald-800">📆 7 Hari Terakhir</span>
                   <span id="kpi-db-week" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
-                </div>
-                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">🗓️ Bulan Ini</span>
+                  <span class="text-[9px] text-emerald-700 font-bold opacity-0 group-hover:opacity-100 transition block mt-0.5">Filter 7 Hari →</span>
+                </button>
+                <button type="button" data-kpi-date="month" class="kpi-date-btn text-left p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs hover:bg-emerald-50 hover:border-emerald-300 transition cursor-pointer group">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block group-hover:text-emerald-800">🗓️ Bulan Ini</span>
                   <span id="kpi-db-month" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
-                </div>
-                <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-900 text-white shadow-2xs col-span-2 sm:col-span-1">
+                  <span class="text-[9px] text-emerald-700 font-bold opacity-0 group-hover:opacity-100 transition block mt-0.5">Filter Bulan Ini →</span>
+                </button>
+                <button type="button" data-kpi-date="all" class="kpi-date-btn text-left p-3.5 rounded-2xl bg-slate-900 border border-slate-900 text-white shadow-2xs col-span-2 sm:col-span-1 hover:bg-slate-800 transition cursor-pointer group">
                   <span class="text-[10px] font-black text-slate-300 uppercase tracking-wider block">🏛️ Total Master</span>
                   <span id="kpi-db-total" class="text-lg sm:text-xl font-black text-emerald-400 font-mono mt-0.5 block">0 Layanan</span>
-                </div>
+                  <span class="text-[9px] text-emerald-400 font-bold opacity-0 group-hover:opacity-100 transition block mt-0.5">Semua Tanggal ↺</span>
+                </button>
               </div>
 
-              <!-- Filter & Sorting Controls (Foto 2: Desain Bersih 2-Tier, Simetris & Rapih) -->
+              <!-- Indikator Banner Filter Tanggal Aktif -->
+              <div id="date-filter-indicator" class="hidden items-center justify-between px-4 py-2.5 rounded-2xl bg-emerald-50 border border-emerald-300 text-xs font-bold text-emerald-950 shadow-2xs">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">📅</span>
+                  <span>Menampilkan arsip pelayanan: <span id="date-filter-display" class="font-black underline font-mono text-emerald-900"></span></span>
+                </div>
+                <button type="button" id="btn-reset-date-banner" class="text-xs text-emerald-800 hover:text-rose-700 underline cursor-pointer font-extrabold flex items-center gap-1">
+                  <span>Tampilkan Semua Waktu</span>
+                  <span class="font-mono">✕</span>
+                </button>
+              </div>
+
+              <!-- Filter & Sorting Controls (Sistem 2-Tier dengan Date Picker Tracking Waktu Lampau) -->
               <div class="p-4 sm:p-5 rounded-3xl border border-slate-200 bg-white shadow-xs space-y-3">
                 <!-- Tier 1: Pencarian Cepat & Tombol Ekspor Excel -->
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -580,7 +597,7 @@ import {
                     <input 
                       type="text" 
                       id="db-master-search" 
-                      placeholder="Cari berdasarkan NIM, Nama Mahasiswa, Kode Tiket, Petugas, atau Kata Kunci..." 
+                      placeholder="Cari berdasarkan NIM, Nama Mahasiswa, Kode Tiket, Tanggal (cth: 5 September), atau Kata Kunci..." 
                       class="h-10 w-full rounded-2xl border border-slate-200 bg-slate-50/80 pl-9 pr-4 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none transition shadow-2xs"
                     />
                   </div>
@@ -595,8 +612,8 @@ import {
                   </button>
                 </div>
 
-                <!-- Tier 2: 4 Grid Filter Dropdowns Symmetrical -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 p-2.5 bg-slate-50/80 rounded-2xl border border-slate-100">
+                <!-- Tier 2: 5 Grid Filter Dropdowns Symmetrical (Prodi, Layanan, Status, Tanggal, Sortir) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 p-2.5 bg-slate-50/80 rounded-2xl border border-slate-100">
                   <!-- 1. Filter Program Studi -->
                   <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
                     <label for="db-filter-prodi" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Prodi:</label>
@@ -642,7 +659,26 @@ import {
                     </select>
                   </div>
 
-                  <!-- 4. Sortir -->
+                  <!-- 4. Filter Tanggal Tertentu (Date Picker Tracking Surat Lampau - Poin 2) -->
+                  <div class="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <label for="db-filter-date" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Tanggal:</label>
+                    <input 
+                      type="date" 
+                      id="db-filter-date" 
+                      class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
+                      title="Pilih tanggal spesifik untuk tracking surat atau layanan di masa lampau"
+                    />
+                    <button 
+                      type="button" 
+                      id="btn-clear-date" 
+                      class="text-[11px] text-slate-400 hover:text-rose-600 font-bold px-1 transition hidden cursor-pointer" 
+                      title="Reset filter tanggal"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <!-- 5. Sortir -->
                   <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
                     <label for="db-master-sort" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Sortir:</label>
                     <select 
@@ -715,21 +751,24 @@ import {
                 </div>
               </div>
 
+              <!-- Tabel Fit Monitor (Foto 1: 5 Kolom Proporsional Zero Horizontal Scroll) -->
               <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
+                  <table class="w-full table-fixed text-left text-xs text-slate-700">
+                    <colgroup>
+                      <col class="w-[24%]" /> <!-- Mahasiswa (NIM, Nama, Badge) -->
+                      <col class="w-[24%]" /> <!-- Akademik (Prodi, Angkatan, Semester, Minat) -->
+                      <col class="w-[22%]" /> <!-- Kontak (WhatsApp & Email) -->
+                      <col class="w-[17%]" /> <!-- DPA & Status Akademik -->
+                      <col class="w-[13%]" /> <!-- Aksi -->
+                    </colgroup>
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4 w-28">NIM</th>
-                        <th class="py-3.5 px-4">Nama Mahasiswa</th>
-                        <th class="py-3.5 px-4">Program Studi</th>
-                        <th class="py-3.5 px-4">Kontak (WhatsApp & Email)</th>
-                        <th class="py-3.5 px-4">Minat Studi</th>
-                        <th class="py-3.5 px-4 text-center">Angkatan</th>
-                        <th class="py-3.5 px-4 text-center">Semester</th>
-                        <th class="py-3.5 px-4">DPA (Dosen Pembimbing)</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
-                        <th class="py-3.5 px-4 text-right">Aksi</th>
+                        <th class="py-3 px-3.5">Mahasiswa (NIM & Nama)</th>
+                        <th class="py-3 px-3.5">Akademik & Minat Studi</th>
+                        <th class="py-3 px-3.5">Kontak (WhatsApp & Email)</th>
+                        <th class="py-3 px-3.5">DPA & Status</th>
+                        <th class="py-3 px-3.5 text-right">Aksi</th>
                       </tr>
                     </thead>
                     <tbody id="table-mahasiswa-body" class="divide-y divide-slate-100">
@@ -2346,13 +2385,21 @@ import {
       let dbFilterCase = 'all';
       let dbFilterStatus = 'all';
       let dbMasterSort = 'waktu_desc';
+      let dbFilterDate = ''; // 'YYYY-MM-DD'
+      let dbFilterPeriod = 'all'; // 'all', 'today', 'yesterday', 'week', 'month', 'custom'
 
       const dbPanes = document.querySelectorAll('.db-pane');
       const dbSearchInput = document.getElementById('db-master-search');
       const dbFilterProdiSelect = document.getElementById('db-filter-prodi');
       const dbFilterCaseSelect = document.getElementById('db-filter-case');
       const dbFilterStatusSelect = document.getElementById('db-filter-status');
+      const dbFilterDateInput = document.getElementById('db-filter-date');
+      const btnClearDate = document.getElementById('btn-clear-date');
       const dbMasterSortSelect = document.getElementById('db-master-sort');
+      const dateFilterIndicator = document.getElementById('date-filter-indicator');
+      const dateFilterDisplay = document.getElementById('date-filter-display');
+      const btnResetDateBanner = document.getElementById('btn-reset-date-banner');
+      const kpiDateBtns = document.querySelectorAll('.kpi-date-btn');
 
       function switchDbTab(targetTab) {
         activeDbTab = targetTab;
@@ -2428,6 +2475,35 @@ import {
       dbFilterStatusSelect?.addEventListener('change', (e) => {
         dbFilterStatus = e.target.value;
         renderDatabaseTables();
+      });
+
+      // Filter Tanggal Input (Date Picker)
+      dbFilterDateInput?.addEventListener('input', (e) => {
+        dbFilterDate = e.target.value; // 'YYYY-MM-DD'
+        dbFilterPeriod = dbFilterDate ? 'custom' : 'all';
+        renderDatabaseTables();
+      });
+
+      // Reset Tanggal
+      function resetDbDateFilter() {
+        dbFilterDate = '';
+        dbFilterPeriod = 'all';
+        if (dbFilterDateInput) dbFilterDateInput.value = '';
+        renderDatabaseTables();
+      }
+
+      btnClearDate?.addEventListener('click', resetDbDateFilter);
+      btnResetDateBanner?.addEventListener('click', resetDbDateFilter);
+
+      // Klik kartu KPI untuk shortcut filter tanggal
+      kpiDateBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const p = btn.getAttribute('data-kpi-date') || 'all';
+          dbFilterPeriod = p;
+          dbFilterDate = '';
+          if (dbFilterDateInput) dbFilterDateInput.value = '';
+          renderDatabaseTables();
+        });
       });
 
       dbMasterSortSelect?.addEventListener('change', (e) => {
@@ -2532,7 +2608,7 @@ import {
           // Filter tickets
           let filtered = allTickets;
 
-          // Filter Search Query
+          // Filter Search Query (NIM, Nama, Kode, Layanan, Posisi, Catatan, Tanggal)
           if (dbMasterSearchQuery) {
             filtered = filtered.filter(t => 
               (t.kode || '').toLowerCase().includes(dbMasterSearchQuery) ||
@@ -2540,7 +2616,8 @@ import {
               (t.nama || '').toLowerCase().includes(dbMasterSearchQuery) ||
               (t.layananNama || '').toLowerCase().includes(dbMasterSearchQuery) ||
               (t.posisiBerkas || '').toLowerCase().includes(dbMasterSearchQuery) ||
-              (t.catatanAdmin || '').toLowerCase().includes(dbMasterSearchQuery)
+              (t.catatanAdmin || '').toLowerCase().includes(dbMasterSearchQuery) ||
+              (t.tanggal || '').toLowerCase().includes(dbMasterSearchQuery)
             );
           }
 
@@ -2564,6 +2641,80 @@ import {
               filtered = filtered.filter(t => t.status === dbFilterStatus);
             }
           }
+
+          // Filter Tanggal Spesifik (Poin 2: Tracking Surat Lampau)
+          let isDateFilterActive = false;
+          let dateFilterLabel = '';
+
+          if (dbFilterDate) {
+            isDateFilterActive = true;
+            // Parse dbFilterDate (YYYY-MM-DD) into Indonesian formatted date
+            const parts = dbFilterDate.split('-');
+            if (parts.length === 3) {
+              const y = parseInt(parts[0], 10);
+              const m = parseInt(parts[1], 10) - 1;
+              const d = parseInt(parts[2], 10);
+              const dateObj = new Date(y, m, d);
+              dateFilterLabel = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } else {
+              dateFilterLabel = dbFilterDate;
+            }
+
+            filtered = filtered.filter(t => {
+              const dInfo = getTicketDateInfo(t);
+              return dInfo.dateKey === dbFilterDate;
+            });
+          } else if (dbFilterPeriod === 'today') {
+            isDateFilterActive = true;
+            dateFilterLabel = `Hari Ini (${todayDateStr})`;
+            filtered = filtered.filter(t => {
+              const dInfo = getTicketDateInfo(t);
+              return dInfo.displayDate.toLowerCase() === todayDateStr.toLowerCase();
+            });
+          } else if (dbFilterPeriod === 'yesterday') {
+            isDateFilterActive = true;
+            dateFilterLabel = `Kemarin (${yesterdayDateStr})`;
+            filtered = filtered.filter(t => {
+              const dInfo = getTicketDateInfo(t);
+              return dInfo.displayDate.toLowerCase() === yesterdayDateStr.toLowerCase();
+            });
+          } else if (dbFilterPeriod === 'week') {
+            isDateFilterActive = true;
+            dateFilterLabel = '7 Hari Terakhir';
+            filtered = filtered.filter(t => {
+              const dInfo = getTicketDateInfo(t);
+              return dInfo.timestamp && dInfo.timestamp >= sevenDaysAgo;
+            });
+          } else if (dbFilterPeriod === 'month') {
+            isDateFilterActive = true;
+            dateFilterLabel = `Bulan Ini (${now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })})`;
+            filtered = filtered.filter(t => {
+              const dInfo = getTicketDateInfo(t);
+              return dInfo.year === currentYear && dInfo.monthName.toLowerCase() === currentMonthName;
+            });
+          }
+
+          // Update Date Banner & Clear Button UI
+          if (isDateFilterActive) {
+            dateFilterIndicator?.classList.remove('hidden');
+            dateFilterIndicator?.classList.add('flex');
+            if (dateFilterDisplay) dateFilterDisplay.textContent = dateFilterLabel;
+            btnClearDate?.classList.remove('hidden');
+          } else {
+            dateFilterIndicator?.classList.add('hidden');
+            dateFilterIndicator?.classList.remove('flex');
+            btnClearDate?.classList.add('hidden');
+          }
+
+          // Highlight active KPI card
+          kpiDateBtns.forEach(btn => {
+            const p = btn.getAttribute('data-kpi-date');
+            if (p === dbFilterPeriod) {
+              btn.classList.add('ring-2', 'ring-emerald-600', 'ring-offset-2');
+            } else {
+              btn.classList.remove('ring-2', 'ring-emerald-600', 'ring-offset-2');
+            }
+          });
 
           if (filtered.length === 0) {
             masterTableBody.innerHTML = `
@@ -2819,7 +2970,7 @@ import {
             if (filteredMhs.length === 0) {
               mhsBody.innerHTML = `
                 <tr>
-                  <td colspan="10" class="py-12 text-center text-slate-400">
+                  <td colspan="5" class="py-12 text-center text-slate-400">
                     <span class="text-3xl block mb-2">🔍</span>
                     <strong class="text-sm text-slate-700 block">Mahasiswa tidak ditemukan</strong>
                     <span class="text-xs text-slate-500">Coba gunakan kata kunci pencarian NIM atau nama lain.</span>
@@ -2834,73 +2985,85 @@ import {
                 const formattedWa = (m.whatsapp || '').replace(/\D/g, '').replace(/^0/, '62');
 
                 return `
-                  <tr class="hover:bg-slate-50/90 transition text-xs">
-                    <td class="py-3.5 px-4 font-mono font-bold text-emerald-800 whitespace-nowrap">
-                      ${m.nim}
+                  <tr class="hover:bg-slate-50/90 transition text-xs border-b border-slate-100 last:border-b-0">
+                    <!-- 1. Mahasiswa: NIM, Nama, Status Pemohon (24%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <span class="font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-xs inline-block">${m.nim}</span>
+                      <strong class="text-slate-900 block font-extrabold text-xs sm:text-sm mt-1 truncate" title="${m.nama}">${m.nama}</strong>
+                      <div class="mt-1">
+                        ${hasTickets ? `
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
+                            <span>📋</span>
+                            <span>Pemohon (${studentTickets.length} Berkas)</span>
+                          </span>
+                        ` : `
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">
+                            Data Induk Terdaftar
+                          </span>
+                        `}
+                      </div>
                     </td>
-                    <td class="py-3.5 px-4">
-                      <strong class="text-slate-900 block font-bold text-xs sm:text-sm">${m.nama}</strong>
-                      ${hasTickets ? `
-                        <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
-                          <span>📋</span>
-                          <span>Pemohon (${studentTickets.length} Berkas)</span>
-                        </span>
-                      ` : `
-                        <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600">
-                          Data Induk Terdaftar
-                        </span>
-                      `}
+
+                    <!-- 2. Akademik: Prodi, Angkatan, Semester, Minat Studi (24%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <strong class="text-slate-800 block font-bold text-xs truncate" title="${m.prodi}">${m.prodi}</strong>
+                      <div class="text-[11px] text-slate-500 font-medium mt-0.5">
+                        <span>Angk. ${m.angkatan || '-'}</span>
+                        <span class="text-slate-300 mx-1">·</span>
+                        <span>${m.semester ? (String(m.semester).toLowerCase().includes('semester') ? m.semester : 'Sem. ' + m.semester) : '-'}</span>
+                      </div>
+                      <div class="text-[11px] text-slate-600 mt-0.5 truncate" title="${m.minat || '-'}">
+                        <span class="text-slate-400 font-normal">Minat:</span> <span class="font-semibold">${m.minat || '-'}</span>
+                      </div>
                     </td>
-                    <td class="py-3.5 px-4 font-semibold text-slate-700 whitespace-nowrap">
-                      ${m.prodi}
-                    </td>
-                    <td class="py-3.5 px-4">
-                      <div class="flex flex-col gap-1">
+
+                    <!-- 3. Kontak: WhatsApp & Email (22%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <div class="space-y-1">
                         ${m.whatsapp ? `
-                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-700 hover:underline">
-                            <span>💬</span> <span>${m.whatsapp}</span>
+                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-mono font-bold transition w-fit" title="Chat WhatsApp: ${m.whatsapp}">
+                            <span>💬</span>
+                            <span>${m.whatsapp}</span>
                           </a>
-                        ` : '<span class="text-slate-400 text-[11px]">-</span>'}
+                        ` : '<span class="text-slate-400 text-xs font-mono">-</span>'}
                         ${m.email ? `
-                          <a href="mailto:${m.email}" class="inline-flex items-center gap-1 text-[11px] font-mono text-slate-600 hover:underline truncate max-w-[150px]" title="${m.email}">
-                            <span>✉️</span> <span class="truncate">${m.email}</span>
+                          <a href="mailto:${m.email}" class="flex items-center gap-1 text-[11px] font-mono text-slate-600 hover:text-emerald-800 transition truncate max-w-[170px]" title="${m.email}">
+                            <span>✉️</span>
+                            <span class="truncate">${m.email}</span>
                           </a>
                         ` : ''}
                       </div>
                     </td>
-                    <td class="py-3.5 px-4 text-slate-600 font-medium">
-                      ${m.minat || '-'}
-                    </td>
-                    <td class="py-3.5 px-4 text-center font-mono text-slate-700">
-                      ${m.angkatan || '-'}
-                    </td>
-                    <td class="py-3.5 px-4 text-center font-semibold text-slate-700">
-                      ${m.semester || '-'}
-                    </td>
-                    <td class="py-3.5 px-4 text-slate-700 font-medium">
-                      ${m.dpa || '-'}
-                    </td>
-                    <td class="py-3.5 px-4 text-center whitespace-nowrap">
-                      <span class="inline-block px-2.5 py-1 rounded-lg text-[10px] font-bold ${
-                        m.statusAkademik === 'Aktif' ? 'bg-emerald-100 text-emerald-800' :
-                        m.statusAkademik === 'Cuti' ? 'bg-amber-100 text-amber-900' :
-                        'bg-blue-100 text-blue-900'
+
+                    <!-- 4. DPA & Status Akademik (17%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <div class="truncate text-[11px] font-medium text-slate-700" title="${m.dpa || '-'}">
+                        <span class="text-slate-400 text-[10px] block font-bold uppercase tracking-wider">DPA:</span>
+                        <span class="truncate block font-semibold text-slate-800">${m.dpa || '-'}</span>
+                      </div>
+                      <span class="inline-block px-2.5 py-0.5 mt-1 rounded-md text-[10px] font-black ${
+                        m.statusAkademik === 'Aktif' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' :
+                        m.statusAkademik === 'Cuti' ? 'bg-amber-100 text-amber-900 border border-amber-300' :
+                        'bg-blue-100 text-blue-900 border border-blue-300'
                       }">
                         ${m.statusAkademik || 'Aktif'}
                       </span>
                     </td>
-                    <td class="py-3.5 px-4 text-right whitespace-nowrap">
+
+                    <!-- 5. Aksi (13%) -->
+                    <td class="py-3 px-3.5 text-right align-middle">
                       ${hasTickets ? `
                         <button 
                           type="button" 
-                          class="btn-view-mhs-tickets px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-700 hover:text-white text-emerald-800 border border-emerald-300 text-xs font-bold transition cursor-pointer"
+                          class="btn-view-mhs-tickets w-full justify-center px-2.5 py-2 rounded-xl bg-purple-50 hover:bg-purple-700 hover:text-white text-purple-900 border border-purple-300 text-xs font-bold transition cursor-pointer shadow-2xs inline-flex items-center gap-1.5"
                           data-nim="${m.nim}"
-                          title="Lihat riwayat permohonan berkas mahasiswa ini"
+                          title="Buka seluruh berkas pengajuan mahasiswa ini"
                         >
-                          Lihat Berkas (${studentTickets.length})
+                          <span>📋</span>
+                          <span>Lihat Berkas (${studentTickets.length})</span>
                         </button>
                       ` : `
-                        <span class="text-slate-400 text-[11px] font-medium">Belum ada berkas</span>
+                        <span class="text-slate-400 text-[11px] font-medium block text-right pr-2">Belum ada berkas</span>
                       `}
                     </td>
                   </tr>
