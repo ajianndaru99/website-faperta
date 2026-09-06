@@ -262,36 +262,75 @@ import {
               </nav>
             </div>
 
-            <!-- BAGIAN 2: DATA MASTER DAN REKAP & LAPORAN -->
-            <div class="border-t border-slate-100 pt-5">
-              <span class="text-xs font-black uppercase tracking-wider text-slate-400 block mb-3 px-1 text-left">
-                Data Master & Rekap
+            <!-- BAGIAN 2: DATA MASTER & ARSIP (Foto 1: Dipindahkan ke Navigasi Tab Kiri) -->
+            <div class="border-t border-slate-100 pt-4">
+              <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 block mb-2.5 px-1 text-left">
+                Database Master & Arsip
               </span>
-              <nav class="space-y-2" aria-label="Menu Data Master dan Rekap">
-                <!-- Data Master (Database Administrasi) -->
+              <nav class="space-y-1.5" aria-label="Menu Database Master dan Rekap">
+                <!-- 1. Buku Besar Layanan -->
                 <button 
                   type="button" 
-                  id="tab-btn-database" 
-                  class="admin-main-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  data-sidebar-dbtab="master-layanan" 
+                  class="admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">🗄️</span>
-                    <span>Data Master</span>
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base shrink-0">📋</span>
+                    <span class="db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate">Buku Besar Layanan</span>
                   </div>
-                  <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800">MASTER</span>
+                  <span id="badge-nav-layanan" class="db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800 font-mono">0</span>
                 </button>
 
-                <!-- Rekap dan Laporan -->
+                <!-- 2. Master Mahasiswa -->
+                <button 
+                  type="button" 
+                  data-sidebar-dbtab="mahasiswa" 
+                  class="admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
+                >
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base shrink-0">🎓</span>
+                    <span class="db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate">Master Mahasiswa</span>
+                  </div>
+                  <span id="badge-nav-mahasiswa" class="db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800 font-mono">0</span>
+                </button>
+
+                <!-- 3. Pengambilan Berkas -->
+                <button 
+                  type="button" 
+                  data-sidebar-dbtab="pengambilan" 
+                  class="admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
+                >
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base shrink-0">📦</span>
+                    <span class="db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate">Pengambilan Berkas</span>
+                  </div>
+                  <span id="badge-nav-pengambilan" class="db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800 font-mono">0</span>
+                </button>
+
+                <!-- 4. Akun Petugas & Admin -->
+                <button 
+                  type="button" 
+                  data-sidebar-dbtab="admin" 
+                  class="admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
+                >
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base shrink-0">👥</span>
+                    <span class="db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate">Akun Petugas & Admin</span>
+                  </div>
+                  <span class="db-nav-badge px-2 py-0.5 rounded-md text-[9px] font-bold bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800">PETUGAS</span>
+                </button>
+
+                <!-- 5. Rekap dan Laporan -->
                 <button 
                   type="button" 
                   id="tab-btn-rekap" 
-                  class="admin-main-tab w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold transition cursor-pointer text-slate-700 hover:bg-slate-100 hover:text-emerald-800 text-left"
+                  class="admin-main-tab group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left"
                 >
-                  <div class="flex items-center gap-3">
-                    <span class="text-lg">📊</span>
-                    <span>Rekap & Laporan</span>
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-base shrink-0">📊</span>
+                    <span class="font-bold text-slate-800 group-hover:text-emerald-900 truncate">Rekap & Laporan</span>
                   </div>
-                  <span class="text-slate-400 text-sm">→</span>
+                  <span class="text-slate-400 text-sm group-hover:text-emerald-800">→</span>
                 </button>
               </nav>
             </div>
@@ -474,98 +513,96 @@ import {
                ======================================================== -->
           <div id="view-database-container" class="hidden space-y-5">
             
-            <!-- Database Header & Controls -->
-            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs space-y-4">
+            <!-- Database Header & Controls (Foto 1: Sub-tab pills dipindah ke sidebar kiri) -->
+            <div class="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <div class="flex items-center gap-2.5">
-                    <span class="text-2xl">🗄️</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                      Database Master Administrasi Pelayanan
+                    <span class="text-2xl" id="db-header-icon">📋</span>
+                    <h2 id="db-header-title" class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                      Buku Besar Layanan Administrasi
                     </h2>
                   </div>
-                  <p class="text-xs text-slate-500 mt-1">
+                  <p id="db-header-desc" class="text-xs text-slate-500 mt-1">
                     Seluruh rekam data permohonan surat & kegiatan pelayanan mahasiswa (selesai maupun dalam proses) tercatat secara terpadu.
                   </p>
                 </div>
                 
-                <!-- Database Tabs Pills (Master Layanan, Master Mahasiswa, Pengambilan Berkas, Akun Admin) -->
-                <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl self-start sm:self-center">
-                  <button 
-                    type="button" 
-                    data-db-tab="master-layanan" 
-                    class="db-sub-tab px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer"
-                  >
+                <div class="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                  <span id="db-active-badge" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs">
                     📋 Buku Besar Layanan
-                  </button>
+                  </span>
                   <button 
                     type="button" 
-                    data-db-tab="mahasiswa" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
+                    id="btn-back-to-berkas-from-db" 
+                    class="px-3.5 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold text-xs transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
                   >
-                    🎓 Master Mahasiswa
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="pengambilan" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    📦 Pengambilan Berkas
-                  </button>
-                  <button 
-                    type="button" 
-                    data-db-tab="admin" 
-                    class="db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer"
-                  >
-                    👥 Akun Petugas & Admin
+                    <span>←</span>
+                    <span>Antrean Berkas</span>
                   </button>
                 </div>
               </div>
+            </div>
 
-              <!-- KPI Rekap Pemisah Waktu (Hari Ini, Kemarin, 7 Hari, Bulan Ini, Total - Poin 6) -->
-              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-2">
-                <div class="p-3 rounded-2xl bg-emerald-50/80 border border-emerald-300 shadow-2xs">
-                  <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">🌟 Hari Ini</span>
-                  <span id="kpi-db-today" class="text-lg sm:text-xl font-black text-emerald-950 font-mono">0 Layanan</span>
+            <!-- TAB PANE: MASTER SELURUH LAYANAN DENGAN PEMISAH HARI (Poin 3 & 6) -->
+            <div id="pane-master-layanan" class="db-pane space-y-4">
+              
+              <!-- KPI Rekap Pemisah Waktu (Hari Ini, Kemarin, 7 Hari, Bulan Ini, Total) -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-300 shadow-2xs">
+                  <span class="text-[10px] font-black text-emerald-800 uppercase tracking-wider block">🌟 Hari Ini</span>
+                  <span id="kpi-db-today" class="text-lg sm:text-xl font-black text-emerald-950 font-mono mt-0.5 block">0 Layanan</span>
                 </div>
-                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">📅 Kemarin</span>
-                  <span id="kpi-db-yesterday" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">📅 Kemarin</span>
+                  <span id="kpi-db-yesterday" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
                 </div>
-                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">📆 7 Hari Terakhir</span>
-                  <span id="kpi-db-week" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">📆 7 Hari Terakhir</span>
+                  <span id="kpi-db-week" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
                 </div>
-                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">🗓️ Bulan Ini</span>
-                  <span id="kpi-db-month" class="text-lg sm:text-xl font-black text-slate-900 font-mono">0 Layanan</span>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                  <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">🗓️ Bulan Ini</span>
+                  <span id="kpi-db-month" class="text-lg sm:text-xl font-black text-slate-900 font-mono mt-0.5 block">0 Layanan</span>
                 </div>
-                <div class="p-3 rounded-2xl bg-slate-900 border border-slate-900 text-white shadow-2xs col-span-2 sm:col-span-1">
-                  <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider block">🏛️ Total Master</span>
-                  <span id="kpi-db-total" class="text-lg sm:text-xl font-black text-emerald-400 font-mono">0 Layanan</span>
+                <div class="p-3.5 rounded-2xl bg-slate-900 border border-slate-900 text-white shadow-2xs col-span-2 sm:col-span-1">
+                  <span class="text-[10px] font-black text-slate-300 uppercase tracking-wider block">🏛️ Total Master</span>
+                  <span id="kpi-db-total" class="text-lg sm:text-xl font-black text-emerald-400 font-mono mt-0.5 block">0 Layanan</span>
                 </div>
               </div>
 
-              <!-- Filter & Sorting Controls (Prodi & Case & Status - Poin 4) -->
-              <div class="pt-3 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div class="flex flex-wrap items-center gap-2 flex-1">
-                  <!-- Search Bar -->
-                  <div class="relative min-w-[180px] flex-1">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-xs">🔍</span>
+              <!-- Filter & Sorting Controls (Foto 2: Desain Bersih 2-Tier, Simetris & Rapih) -->
+              <div class="p-4 sm:p-5 rounded-3xl border border-slate-200 bg-white shadow-xs space-y-3">
+                <!-- Tier 1: Pencarian Cepat & Tombol Ekspor Excel -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <div class="relative flex-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 text-xs">🔍</span>
                     <input 
                       type="text" 
                       id="db-master-search" 
-                      placeholder="Cari NIM, Nama, Kode Tiket..." 
-                      class="h-9 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-8 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none font-medium transition shadow-2xs"
+                      placeholder="Cari berdasarkan NIM, Nama Mahasiswa, Kode Tiket, Petugas, atau Kata Kunci..." 
+                      class="h-10 w-full rounded-2xl border border-slate-200 bg-slate-50/80 pl-9 pr-4 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:bg-white outline-none transition shadow-2xs"
                     />
                   </div>
+                  <button 
+                    type="button" 
+                    id="btn-quick-export-excel" 
+                    class="h-10 px-4 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm shadow-emerald-900/15 cursor-pointer shrink-0"
+                    title="Ekspor seluruh rekapitulasi data layanan ke format spreadsheet Excel (.xls)"
+                  >
+                    <span class="text-sm">📊</span>
+                    <span>Ekspor Excel (.xls)</span>
+                  </button>
+                </div>
 
-                  <!-- Filter Program Studi (Poin 4) -->
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <label for="db-filter-prodi" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Prodi:</label>
+                <!-- Tier 2: 4 Grid Filter Dropdowns Symmetrical -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 p-2.5 bg-slate-50/80 rounded-2xl border border-slate-100">
+                  <!-- 1. Filter Program Studi -->
+                  <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <label for="db-filter-prodi" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Prodi:</label>
                     <select 
                       id="db-filter-prodi" 
-                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                      class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
                     >
                       <option value="all">Semua Program Studi</option>
                       <option value="S1 Agroteknologi">S1 Agroteknologi</option>
@@ -573,12 +610,12 @@ import {
                     </select>
                   </div>
 
-                  <!-- Filter Case / Skenario Pelayanan (Poin 4) -->
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <label for="db-filter-case" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Case Layanan:</label>
+                  <!-- 2. Filter Case / Skenario Layanan -->
+                  <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <label for="db-filter-case" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Layanan:</label>
                     <select 
                       id="db-filter-case" 
-                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                      class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
                     >
                       <option value="all">Semua Skenario Layanan</option>
                       <option value="khs">Permohonan KHS</option>
@@ -589,12 +626,12 @@ import {
                     </select>
                   </div>
 
-                  <!-- Filter Status -->
-                  <div class="flex items-center gap-1.5 shrink-0">
-                    <label for="db-filter-status" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Status:</label>
+                  <!-- 3. Filter Status -->
+                  <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <label for="db-filter-status" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Status:</label>
                     <select 
                       id="db-filter-status" 
-                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                      class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
                     >
                       <option value="all">Semua Status</option>
                       <option value="Belum Diproses">Belum Diproses</option>
@@ -604,15 +641,13 @@ import {
                       <option value="Ditolak">Ditolak</option>
                     </select>
                   </div>
-                </div>
 
-                <!-- Sort Control & Quick Export Excel -->
-                <div class="flex items-center gap-2 shrink-0 self-start md:self-auto">
-                  <div class="flex items-center gap-1.5">
-                    <label for="db-master-sort" class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Sortir:</label>
+                  <!-- 4. Sortir -->
+                  <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <label for="db-master-sort" class="text-[10px] font-black uppercase tracking-wider text-slate-400 shrink-0">Sortir:</label>
                     <select 
                       id="db-master-sort" 
-                      class="h-9 rounded-xl border border-slate-200 bg-white px-2.5 text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 cursor-pointer shadow-2xs"
+                      class="w-full bg-transparent text-xs font-bold text-slate-800 outline-none cursor-pointer"
                     >
                       <option value="waktu_desc">Waktu (Terbaru ➜ Terlama)</option>
                       <option value="waktu_asc">Waktu (Terlama ➜ Terbaru)</option>
@@ -623,34 +658,27 @@ import {
                       <option value="nim_asc">NIM (Terkecil ➜ Terbesar)</option>
                     </select>
                   </div>
-                  <button 
-                    type="button" 
-                    id="btn-quick-export-excel" 
-                    class="h-9 px-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer shrink-0"
-                    title="Ekspor seluruh rekapitulasi data layanan ke format spreadsheet Excel (.xls)"
-                  >
-                    <span>📊</span>
-                    <span>Ekspor Excel (.xls)</span>
-                  </button>
                 </div>
               </div>
-            </div>
 
-            <!-- TAB PANE: MASTER SELURUH LAYANAN DENGAN PEMISAH HARI (Poin 3 & 6) -->
-            <div id="pane-master-layanan" class="db-pane space-y-4">
+              <!-- Tabel Fit Monitor (Poin 3: 5 Kolom Proporsional Zero Horizontal Scroll) -->
               <div class="rounded-3xl border border-slate-200 bg-white overflow-hidden shadow-xs">
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs text-slate-700">
+                  <table class="w-full table-fixed text-left text-xs text-slate-700">
+                    <colgroup>
+                      <col class="w-[18%]" /> <!-- Kode & Waktu -->
+                      <col class="w-[27%]" /> <!-- Mahasiswa & Kontak -->
+                      <col class="w-[28%]" /> <!-- Layanan & Posisi Berkas -->
+                      <col class="w-[15%]" /> <!-- Status Loket -->
+                      <col class="w-[12%]" /> <!-- Aksi Disposisi -->
+                    </colgroup>
                     <thead class="bg-slate-50 text-[11px] font-black uppercase tracking-wider text-slate-500 border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4 w-28">Waktu / Jam</th>
-                        <th class="py-3.5 px-4">Kode Tiket</th>
-                        <th class="py-3.5 px-4">Mahasiswa (NIM & Kontak)</th>
-                        <th class="py-3.5 px-4">Program Studi</th>
-                        <th class="py-3.5 px-4">Skenario Layanan (Case)</th>
-                        <th class="py-3.5 px-4">Posisi Berkas Fisik</th>
-                        <th class="py-3.5 px-4 text-center">Status</th>
-                        <th class="py-3.5 px-4 text-right">Aksi</th>
+                        <th class="py-3 px-3.5">Kode & Waktu</th>
+                        <th class="py-3 px-3.5">Mahasiswa & Kontak</th>
+                        <th class="py-3 px-3.5">Layanan & Posisi Berkas</th>
+                        <th class="py-3 px-3.5 text-center">Status Loket</th>
+                        <th class="py-3 px-3.5 text-right">Aksi</th>
                       </tr>
                     </thead>
                     <tbody id="table-master-layanan-body" class="divide-y divide-slate-100">
@@ -1419,22 +1447,36 @@ import {
         } catch (e) {}
       }
 
-      // 4. Main Navigation & Views (Berkas Masuk vs Data Master vs Rekap)
+      // 4. Main Navigation & Views (Berkas Masuk vs Database Master Tabs vs Rekap)
       let currentMainView = 'berkas'; // 'berkas', 'database', 'rekap'
-      const tabBtnDatabase = document.getElementById('tab-btn-database');
       const tabBtnRekap = document.getElementById('tab-btn-rekap');
 
       const viewBerkas = document.getElementById('view-berkas-container');
       const viewDatabase = document.getElementById('view-database-container');
       const viewRekap = document.getElementById('view-rekap-container');
 
-      function setMainView(view) {
+      function setMainView(view, targetDbTab = 'master-layanan') {
         currentMainView = view;
 
-        // Reset Data Master and Rekap button active styles
-        [tabBtnDatabase, tabBtnRekap].forEach(btn => {
-          btn?.classList.remove('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md', 'shadow-emerald-900/15');
-          btn?.classList.add('text-slate-700', 'hover:bg-slate-100', 'hover:text-emerald-800');
+        // Reset Rekap button active styles
+        tabBtnRekap?.classList.remove('bg-gradient-to-r', 'from-emerald-700', 'to-emerald-800', 'text-white', 'shadow-md', 'shadow-emerald-950/20');
+        tabBtnRekap?.classList.add('text-slate-700', 'hover:bg-emerald-50/70', 'hover:text-emerald-900');
+
+        // Reset & Update Sidebar Database Navigation Tabs
+        const dbNavBtns = document.querySelectorAll('.admin-db-nav');
+        dbNavBtns.forEach(btn => {
+          const tabName = btn.getAttribute('data-sidebar-dbtab');
+          const badge = btn.querySelector('.db-nav-badge');
+          const title = btn.querySelector('.db-nav-title');
+          if (view === 'database' && tabName === targetDbTab) {
+            btn.className = 'admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-md shadow-emerald-950/20 text-left';
+            if (title) title.className = 'db-nav-title font-bold text-white truncate';
+            if (badge) badge.className = 'db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-black flex items-center justify-center bg-white/25 text-white font-mono';
+          } else {
+            btn.className = 'admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left';
+            if (title) title.className = 'db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate';
+            if (badge) badge.className = 'db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800 font-mono';
+          }
         });
 
         viewBerkas?.classList.add('hidden');
@@ -1447,22 +1489,29 @@ import {
           renderTicketsList();
         } else if (view === 'database') {
           viewDatabase?.classList.remove('hidden');
-          tabBtnDatabase?.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md', 'shadow-emerald-900/15');
-          tabBtnDatabase?.classList.remove('text-slate-700', 'hover:bg-slate-100');
           resetCategoryTabsUI();
-          renderDatabaseTables();
+          switchDbTab(targetDbTab);
         } else if (view === 'rekap') {
           viewRekap?.classList.remove('hidden');
-          tabBtnRekap?.classList.add('bg-gradient-to-r', 'from-emerald-600', 'to-emerald-700', 'text-white', 'shadow-md', 'shadow-emerald-900/15');
-          tabBtnRekap?.classList.remove('text-slate-700', 'hover:bg-slate-100');
+          tabBtnRekap?.classList.add('bg-gradient-to-r', 'from-emerald-700', 'to-emerald-800', 'text-white', 'shadow-md', 'shadow-emerald-950/20');
+          tabBtnRekap?.classList.remove('text-slate-700', 'hover:bg-emerald-50/70', 'hover:text-emerald-900');
           resetCategoryTabsUI();
           updateRekapStats();
         }
       }
 
-      tabBtnDatabase?.addEventListener('click', () => setMainView('database'));
+      // Sidebar database subtabs click handlers (Foto 1: Navigasi Tab Kiri)
+      const sidebarDbNavs = document.querySelectorAll('.admin-db-nav');
+      sidebarDbNavs.forEach(navBtn => {
+        navBtn.addEventListener('click', () => {
+          const targetTab = navBtn.getAttribute('data-sidebar-dbtab') || 'master-layanan';
+          setMainView('database', targetTab);
+        });
+      });
+
       tabBtnRekap?.addEventListener('click', () => setMainView('rekap'));
       document.getElementById('btn-back-to-berkas')?.addEventListener('click', () => setMainView('berkas'));
+      document.getElementById('btn-back-to-berkas-from-db')?.addEventListener('click', () => setMainView('berkas'));
 
       // 5. State Filter Berkas & Category Map
       let currentCase = 'all'; // all, khs, ujian, komplain, penelitian, lainnya
@@ -2291,14 +2340,13 @@ import {
       });
 
       // 8. DATABASE MASTER SELURUH PELAYANAN (Semua Berkas Masuk, Filter Prodi & Case, Pemisah Hari - Poin 3, 4, 5, 6)
-      let activeDbTab = 'master-layanan'; // 'master-layanan' atau 'admin'
+      let activeDbTab = 'master-layanan'; // 'master-layanan', 'mahasiswa', 'pengambilan', 'admin'
       let dbMasterSearchQuery = '';
       let dbFilterProdi = 'all';
       let dbFilterCase = 'all';
       let dbFilterStatus = 'all';
       let dbMasterSort = 'waktu_desc';
 
-      const dbSubTabs = document.querySelectorAll('.db-sub-tab');
       const dbPanes = document.querySelectorAll('.db-pane');
       const dbSearchInput = document.getElementById('db-master-search');
       const dbFilterProdiSelect = document.getElementById('db-filter-prodi');
@@ -2306,21 +2354,61 @@ import {
       const dbFilterStatusSelect = document.getElementById('db-filter-status');
       const dbMasterSortSelect = document.getElementById('db-master-sort');
 
-      dbSubTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const target = tab.getAttribute('data-db-tab');
-          activeDbTab = target;
-          
-          dbSubTabs.forEach(t => {
-            t.className = 'db-sub-tab px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 cursor-pointer';
-          });
-          tab.className = 'db-sub-tab px-4 py-2 rounded-xl text-xs font-bold transition bg-white text-emerald-800 shadow-2xs cursor-pointer';
+      function switchDbTab(targetTab) {
+        activeDbTab = targetTab;
 
-          dbPanes.forEach(p => p.classList.add('hidden'));
-          document.getElementById(`pane-${target}`)?.classList.remove('hidden');
-          renderDatabaseTables();
+        // Update left sidebar active styles
+        const dbNavBtns = document.querySelectorAll('.admin-db-nav');
+        dbNavBtns.forEach(btn => {
+          const tabName = btn.getAttribute('data-sidebar-dbtab');
+          const badge = btn.querySelector('.db-nav-badge');
+          const title = btn.querySelector('.db-nav-title');
+          if (currentMainView === 'database' && tabName === targetTab) {
+            btn.className = 'admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-md shadow-emerald-950/20 text-left';
+            if (title) title.className = 'db-nav-title font-bold text-white truncate';
+            if (badge) badge.className = 'db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-black flex items-center justify-center bg-white/25 text-white font-mono';
+          } else {
+            btn.className = 'admin-db-nav group w-full flex items-center justify-between p-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-slate-700 hover:bg-emerald-50/70 hover:text-emerald-900 text-left';
+            if (title) title.className = 'db-nav-title font-bold text-slate-800 group-hover:text-emerald-900 truncate';
+            if (badge) badge.className = 'db-nav-badge min-w-[22px] h-5 px-1.5 rounded-full text-[10px] font-bold flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-emerald-100 group-hover:text-emerald-800 font-mono';
+          }
         });
-      });
+
+        // Toggle Panes
+        dbPanes.forEach(p => p.classList.add('hidden'));
+        const targetPane = document.getElementById(`pane-${targetTab}`);
+        if (targetPane) targetPane.classList.remove('hidden');
+
+        // Update Header dynamic text
+        const dbHeaderIcon = document.getElementById('db-header-icon');
+        const dbHeaderTitle = document.getElementById('db-header-title');
+        const dbHeaderDesc = document.getElementById('db-header-desc');
+        const dbActiveBadge = document.getElementById('db-active-badge');
+
+        if (targetTab === 'master-layanan') {
+          if (dbHeaderIcon) dbHeaderIcon.textContent = '📋';
+          if (dbHeaderTitle) dbHeaderTitle.textContent = 'Buku Besar Layanan Administrasi';
+          if (dbHeaderDesc) dbHeaderDesc.textContent = 'Seluruh rekam data permohonan surat & kegiatan pelayanan mahasiswa (selesai maupun dalam proses) tercatat secara terpadu.';
+          if (dbActiveBadge) dbActiveBadge.innerHTML = '📋 Buku Besar Layanan';
+        } else if (targetTab === 'mahasiswa') {
+          if (dbHeaderIcon) dbHeaderIcon.textContent = '🎓';
+          if (dbHeaderTitle) dbHeaderTitle.textContent = 'Database Master Mahasiswa FAPERTA';
+          if (dbHeaderDesc) dbHeaderDesc.textContent = 'Master data induk mahasiswa aktif terdaftar serta seluruh mahasiswa pemohon berkas/layanan.';
+          if (dbActiveBadge) dbActiveBadge.innerHTML = '🎓 Master Mahasiswa';
+        } else if (targetTab === 'pengambilan') {
+          if (dbHeaderIcon) dbHeaderIcon.textContent = '📦';
+          if (dbHeaderTitle) dbHeaderTitle.textContent = 'Monitoring Pengambilan Berkas di Loket';
+          if (dbHeaderDesc) dbHeaderDesc.textContent = 'Monitoring berkas fisik yang siap diambil atau telah diserahkan langsung kepada mahasiswa di Loket FAPERTA.';
+          if (dbActiveBadge) dbActiveBadge.innerHTML = '📦 Pengambilan Berkas';
+        } else if (targetTab === 'admin') {
+          if (dbHeaderIcon) dbHeaderIcon.textContent = '👥';
+          if (dbHeaderTitle) dbHeaderTitle.textContent = 'Manajemen Akun Petugas & Admin';
+          if (dbHeaderDesc) dbHeaderDesc.textContent = 'Kelola kredensial login, wewenang hak akses loket, dan status operasional staf loket administrasi.';
+          if (dbActiveBadge) dbActiveBadge.innerHTML = '👥 Akun Petugas & Admin';
+        }
+
+        renderDatabaseTables();
+      }
 
       dbSearchInput?.addEventListener('input', (e) => {
         dbMasterSearchQuery = e.target.value.trim().toLowerCase();
@@ -2432,6 +2520,14 @@ import {
         if (elMonth) elMonth.textContent = `${cntMonth} Layanan`;
         if (elTotal) elTotal.textContent = `${allTickets.length} Layanan`;
 
+        // Update live counter badges in left sidebar
+        const elNavLayanan = document.getElementById('badge-nav-layanan');
+        const elNavMhs = document.getElementById('badge-nav-mahasiswa');
+        const elNavPengambilan = document.getElementById('badge-nav-pengambilan');
+        if (elNavLayanan) elNavLayanan.textContent = allTickets.length;
+        if (elNavMhs) elNavMhs.textContent = loadMasterMahasiswa().length;
+        if (elNavPengambilan) elNavPengambilan.textContent = allTickets.filter(t => t.sudahDiambil).length;
+
         if (masterTableBody) {
           // Filter tickets
           let filtered = allTickets;
@@ -2472,7 +2568,7 @@ import {
           if (filtered.length === 0) {
             masterTableBody.innerHTML = `
               <tr>
-                <td colspan="8" class="py-12 text-center text-slate-400 italic">
+                <td colspan="5" class="py-12 text-center text-slate-400 italic">
                   <div class="text-3xl mb-2">🔎</div>
                   <strong class="text-slate-700 block text-sm">Tidak Ditemukan Data Layanan</strong>
                   <p class="text-xs text-slate-400 mt-1">Coba sesuaikan filter Program Studi, Case Pelayanan, atau kata kunci pencarian.</p>
@@ -2540,20 +2636,20 @@ import {
                 ? `📅 KEMARIN — ${group.displayDate}` 
                 : `🗓️ ${group.displayDate}`;
 
-              // Header Pemisah Hari (Row Separator - Poin 6)
+              // Header Pemisah Hari (Row Separator - Poin 6, colspan 5)
               htmlBuffer += `
                 <tr class="bg-gradient-to-r from-emerald-800 via-emerald-900 to-slate-900 text-white shadow-2xs select-none">
-                  <td colspan="8" class="py-2.5 px-4">
+                  <td colspan="5" class="py-2.5 px-4">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                       <div class="flex items-center gap-2">
-                        <span class="text-sm font-black uppercase tracking-wider">${dayHeaderTitle}</span>
+                        <span class="text-xs sm:text-sm font-black uppercase tracking-wider">${dayHeaderTitle}</span>
                       </div>
                       <div class="flex items-center gap-2 text-xs">
                         <span class="px-2.5 py-0.5 rounded-full font-extrabold bg-white/20 text-white font-mono">
                           ${dayTickets.length} Layanan
                         </span>
                         <span class="text-emerald-200 text-[11px] font-medium hidden sm:inline">
-                          (${daySelesai} Selesai/Diambil · ${dayProses} Proses · ${dayAntrean} Antrean)
+                          (${daySelesai} Selesai · ${dayProses} Proses · ${dayAntrean} Antrean)
                         </span>
                       </div>
                     </div>
@@ -2561,7 +2657,7 @@ import {
                 </tr>
               `;
 
-              // Render Baris-Baris Berkas pada Hari Tersebut
+              // Render Baris-Baris Berkas pada Hari Tersebut (Poin 3: 5 Kolom Proporsional Zero Horizontal Scroll)
               dayTickets.forEach(t => {
                 const dInfo = getTicketDateInfo(t);
                 const mhsInfo = masterMahasiswa.find(m => m.nim === t.nim);
@@ -2588,60 +2684,74 @@ import {
                 }
 
                 htmlBuffer += `
-                  <tr class="hover:bg-slate-50/90 transition text-xs">
-                    <td class="py-3 px-4 font-mono text-slate-500 font-bold whitespace-nowrap">
-                      ${dInfo.timeStr}
+                  <tr class="hover:bg-slate-50/90 transition text-xs border-b border-slate-100 last:border-b-0">
+                    <!-- 1. Kode Tiket & Waktu (18%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <span class="font-mono font-black text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-300 text-xs inline-block tracking-tight">${t.kode}</span>
+                      <div class="text-[11px] text-slate-500 font-semibold mt-1 flex items-center gap-1 font-mono">
+                        <span>🕒</span>
+                        <span>${dInfo.timeStr}</span>
+                      </div>
                     </td>
-                    <td class="py-3 px-4 font-mono font-bold text-slate-900 whitespace-nowrap">
-                      ${t.kode}
-                    </td>
-                    <td class="py-3 px-4 min-w-[200px]">
-                      <strong class="text-slate-900 block font-extrabold text-xs sm:text-sm">${t.nama}</strong>
-                      <span class="font-mono text-[11px] text-emerald-800 font-bold block">${t.nim}</span>
-                      <div class="mt-1 flex flex-wrap items-center gap-1.5">
+
+                    <!-- 2. Mahasiswa & Kontak (27%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <strong class="text-slate-900 block font-extrabold text-xs truncate" title="${t.nama}">${t.nama}</strong>
+                      <div class="flex items-center gap-1.5 text-[11px] mt-0.5 truncate">
+                        <span class="font-mono font-bold text-emerald-800">${t.nim}</span>
+                        <span class="text-slate-300">·</span>
+                        <span class="text-slate-600 truncate font-medium" title="${t.prodi || '-'}">${t.prodi || '-'}</span>
+                      </div>
+                      <div class="mt-1 flex items-center gap-1.5">
                         ${waNumber ? `
-                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-mono text-[10px]" title="Chat WA">
-                            <span>💬</span> <span>${waNumber}</span>
+                          <a href="https://wa.me/${formattedWa}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-bold transition" title="WhatsApp: ${waNumber}">
+                            <span>💬</span>
+                            <span>WA</span>
                           </a>
                         ` : ''}
                         ${emailAddr ? `
-                          <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-mono text-[10px] truncate max-w-[140px]" title="Email">
-                            <span>✉️</span> <span class="truncate">${emailAddr}</span>
+                          <a href="mailto:${emailAddr}" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[10px] font-medium truncate max-w-[130px] transition" title="Email: ${emailAddr}">
+                            <span>✉️</span>
+                            <span class="truncate">${emailAddr}</span>
                           </a>
                         ` : ''}
                       </div>
                     </td>
-                    <td class="py-3 px-4 text-slate-700 font-semibold whitespace-nowrap">
-                      ${t.prodi || '-'}
-                    </td>
-                    <td class="py-3 px-4 min-w-[180px]">
-                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-900 border border-emerald-200 font-bold text-[11px]">
+
+                    <!-- 3. Layanan & Posisi Berkas (28%) -->
+                    <td class="py-3 px-3.5 align-middle">
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-900 border border-emerald-200 font-extrabold text-[10px] uppercase tracking-wide">
                         <span>📄</span>
                         <span>${cleanCase}</span>
                       </span>
-                      <p class="text-[11px] text-slate-500 mt-1 leading-tight line-clamp-2">
+                      <p class="text-[11px] text-slate-800 font-semibold mt-1 leading-snug truncate" title="${t.layananNama}">
                         ${t.layananNama}
                       </p>
+                      <div class="flex items-center gap-1 text-[10px] text-slate-500 font-medium mt-0.5 truncate" title="Posisi Berkas: ${t.posisiBerkas || 'Loket Admin FAPERTA'}">
+                        <span>📍</span>
+                        <span class="truncate">${t.posisiBerkas || 'Loket Admin FAPERTA'}</span>
+                      </div>
                     </td>
-                    <td class="py-3 px-4 text-slate-700 font-medium whitespace-nowrap">
-                      ${t.posisiBerkas || 'Loket Admin FAPERTA'}
-                    </td>
-                    <td class="py-3 px-4 text-center whitespace-nowrap">
-                      <span class="inline-block px-2.5 py-1 rounded-lg text-[11px] font-black ${statusBadgeClass}">
+
+                    <!-- 4. Status Loket (15%) -->
+                    <td class="py-3 px-3.5 text-center align-middle">
+                      <span class="inline-block w-full px-2 py-1 rounded-lg text-[10px] font-black leading-tight ${statusBadgeClass}">
                         ${displayStatus}
                       </span>
                       ${t.sudahDiambil ? `
-                        <span class="block mt-1 text-[10px] font-bold text-purple-900">
+                        <span class="block mt-1 text-[10px] font-bold text-purple-900 truncate" title="Sudah Diambil: ${t.tanggalDiambil || '-'}">
                           ✓ Diambil (${t.tanggalDiambil || '-'})
                         </span>
                       ` : ''}
                     </td>
-                    <td class="py-3 px-4 text-right whitespace-nowrap">
+
+                    <!-- 5. Aksi (12%) -->
+                    <td class="py-3 px-3.5 text-right align-middle">
                       <button 
                         type="button" 
-                        class="btn-disposisi-master px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-700 hover:text-white text-slate-800 border border-slate-300 font-bold text-xs transition cursor-pointer shadow-2xs inline-flex items-center gap-1"
+                        class="btn-disposisi-master w-full justify-center px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-700 hover:text-white text-slate-800 border border-slate-300 font-bold text-xs transition cursor-pointer shadow-2xs inline-flex items-center gap-1"
                         data-code="${t.kode}"
-                        title="Perbarui Status & Disposisi Berkas"
+                        title="Disposisi & Perbarui Berkas"
                       >
                         <span>⚡</span>
                         <span>Disposisi</span>
